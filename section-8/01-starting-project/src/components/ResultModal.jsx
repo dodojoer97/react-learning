@@ -1,9 +1,20 @@
 // NEed to use forwardRef to forward a ref from one component to
-import { forwardRef } from "react";
+import { forwardRef, useImperativeHandle, useRef } from "react";
 
-const ResultModal = forwardRef(function ResultModal({ result, targetTime }, ref) {
+const ResultModal = forwardRef(function ({ result, targetTime, open }, ref) {
+	const dialog = useRef();
+
+	//  Exposes the open method to the component passing the ref
+	useImperativeHandle(ref, () => {
+		return {
+			open() {
+				dialog.current.showModal();
+			},
+		};
+	});
+
 	return (
-		<dialog ref={ref} className="result-modal">
+		<dialog ref={dialog} className="result-modal" open={open}>
 			<h2>You {result} </h2>
 			<p>
 				The tarte time was <strong>{targetTime} seconds</strong>

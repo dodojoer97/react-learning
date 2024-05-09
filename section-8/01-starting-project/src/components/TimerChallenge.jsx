@@ -7,36 +7,48 @@ export default function TimerChallenge({ title, targetTime }) {
 	// Refs will not re render when state changes
 	const timer = useRef();
 	const dialog = useRef();
+	const timeInSeconds = targetTime * 1000
 
-	const [timerStarted, setTimerStarted] = useState(false);
-	const [timerExpired, setTimerExpired] = useState(false);
+	const [timeRemaining, setTimeRemaining] = useState(timeInSeconds)
 
-	function handleStart() {
-		setTimerStarted(true);
-
-		timer.current = setTimeout(() => {
-			setTimerExpired(true);
-			// exposed by useImperativeHandle
-			dialog.current.open();
-		}, targetTime * 1000);
+	const timerIsActive = timeRemaining > 0 && timeRemaining < timeInSeconds
+	
+	if(timeRemaining <= 0) {
+		clearInterval(timer.current);
+		dialog.current.open()
 	}
 
+	function handleReset() {
+		setTimeRemaining(timeInSeconds)
+	}
+
+	function handleStart() {
+		timer.current = setInterval(() => {
+			setTimeRemaining((currentTime) => {
+				return currentTime -= 10
+			})
+		}, 10);
+	}
+
+
+
 	function handleStop() {
-		clearTimeout(timer.current);
+		dialog.current.open()
+		clearInterval(timer.current);
 	}
 
 	return (
 		<>
-			<ResultModal ref={dialog} result="Lost" targetTime={targetTime} open={timerExpired} />
+			<ResultModal ref={dialog} targetTime={targetTime} remainingTime={timeRemaining} onReset={handleReset}/>
 			<section className="challenge">
 				<h2>{title}</h2>
 				<p className="challenge-time">
 					{targetTime} second{targetTime > 1 ? "s" : ""}
 				</p>
 				<p>
-					<button onClick={timerStarted ? handleStop : handleStart}>{timerStarted ? "Stop" : "Start"} Challenge</button>
+					<button onClick={timerIsActive ? handleStop : handleStart}>{timerIsActive ? "Stop" : "Start"} Challenge</button>
 				</p>
-				<p className={timerStarted ? "active" : undefined}>{timerStarted ? "Time is running" : "Timer inactive"}</p>
+				<p className={timerIsActive ? "active" : undefined}>{timerIsActive ? "Time is running" : "Timer inactive"}</p>
 			</section>
 		</>
 	);

@@ -23,13 +23,10 @@ enum FormType {
 function App() {
 	const [formType, setFormType] = React.useState<FormType>(FormType.DEFAULT);
 	const [projects, setProjects] = React.useState<IProject[]>(initialProjects);
+	const [selectedProject, setSelectedProject] = React.useState<IProject | null>(null);
 
-	const handleCreateNewProject = (): void => {
-		setFormType(FormType.ADD);
-	};
-
-	const handleReturnToDefault = (): void => {
-		setFormType(FormType.DEFAULT);
+	const handleSetFormType = (formType: FormType): void => {
+		setFormType(formType);
 	};
 
 	const handleAddNewProject = (project: IProject): void => {
@@ -37,15 +34,23 @@ function App() {
 			const updatedProjects = [project, ...currentProjects];
 			return updatedProjects;
 		});
-		handleReturnToDefault();
+		handleSetFormType(FormType.DEFAULT);
+		setSelectedProject(null);
+	};
+
+	const handleEdit = (projectId: string): void => {
+		const selectedProject: IProject | undefined = projects.find((project) => project.id === projectId);
+		if (!selectedProject) throw new Error(`no project with id: ${projectId} found`);
+		setSelectedProject(selectedProject);
+		handleSetFormType(FormType.EDIT);
 	};
 
 	return (
 		<main className="h-screen my-8 flex gap-8">
-			<SideBar projects={projects} />
-			{formType === FormType.DEFAULT && <DefaultScreen onClick={handleCreateNewProject} />}
-			{formType === FormType.EDIT && <EditForm onSave={() => console.log("")} onCancel={handleReturnToDefault} />}
-			{formType === FormType.ADD && <AddForm onSave={handleAddNewProject} onCancel={handleReturnToDefault} />}
+			<SideBar onEdit={handleEdit} projects={projects} />
+			{formType === FormType.DEFAULT && <DefaultScreen onClick={() => handleSetFormType(FormType.ADD)} />}
+			{formType === FormType.EDIT && selectedProject && <EditForm onSave={() => console.log("")} onCancel={() => handleSetFormType(FormType.ADD)} />}
+			{formType === FormType.ADD && <AddForm onSave={handleAddNewProject} onCancel={() => handleSetFormType(FormType.DEFAULT)} />}
 		</main>
 	);
 }

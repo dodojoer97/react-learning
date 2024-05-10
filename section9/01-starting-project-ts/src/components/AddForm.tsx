@@ -40,7 +40,7 @@ const AddForm: React.FC<Props> = ({ onCancel, onSave, ...props }) => {
 
 			if (fieldName === "dueDate") {
 				updatedProject.dueDate = new Date(value);
-			} else {
+			} else if (fieldName !== "tasks") {
 				updatedProject[fieldName] = value;
 			}
 
@@ -53,6 +53,7 @@ const AddForm: React.FC<Props> = ({ onCancel, onSave, ...props }) => {
 	};
 
 	return (
+		// TODO export this form into a common component
 		<form className="w-full max-w-lg" {...props}>
 			<div className="flex flex-wrap -mx-3 mb-6 justify-end">
 				<div className="flex flex-wrap justify-between w-40">

@@ -4,7 +4,7 @@ import React from "react";
 import "./App.css";
 
 // Models
-import { IProject } from "@/models/Project";
+import { IProject } from "@/types/Project";
 
 // Components
 import SideBar from "@/components/Sidebar";

@@ -1,7 +1,7 @@
 import React from "react";
 
 // Models
-import { IProject } from "@/models/Project";
+import { IProject } from "@/types/Project";
 
 // Components
 import Input from "./Input";

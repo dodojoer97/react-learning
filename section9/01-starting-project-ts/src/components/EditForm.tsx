@@ -1,13 +1,29 @@
-import React from 'react';
+import React from "react";
+
+// Models
+import { IProject } from "@/models/Project";
+
+// Components
+import Input from "./Input";
+import TextArea from "./TextArea";
+import Button from "./Button";
+import Label from "./Label";
+
+// Util
+import formatDateForInput from "@/utils/formatDateForInput";
 
 interface Props {
-    [x: string]: any
+	[x: string]: any;
+	onSave(project: IProject): void;
+	onCancel(): void;
 }
+const Form: React.FC<Props> = ({ onCancel, onSave, ...props }) => {
+	return (
+		<>
+			edit
+			<form {...props}></form>;
+		</>
+	);
+};
 
-const Form: React.FC<Props> = ({...props}) => {
-    return <form {...props}>
-        
-    </form>
-}
-
-export default Form
+export default Form;

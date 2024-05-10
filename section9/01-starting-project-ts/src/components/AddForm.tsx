@@ -11,6 +11,7 @@ import Label from "./Label";
 
 // Util
 import formatDateForInput from "@/utils/formatDateForInput";
+import generateId from "@/utils/generateId";
 
 interface Props {
 	[x: string]: any;
@@ -20,7 +21,7 @@ interface Props {
 
 // Initial state
 const initialProject: IProject = {
-	id: "id",
+	id: generateId(),
 	title: "",
 	description: "",
 	dueDate: new Date(),
@@ -47,12 +48,20 @@ const AddForm: React.FC<Props> = ({ onCancel, onSave, ...props }) => {
 		});
 	};
 
+	const handleSave = (): void => {
+		onSave(project);
+	};
+
 	return (
 		<form className="w-full max-w-lg" {...props}>
 			<div className="flex flex-wrap -mx-3 mb-6 justify-end">
 				<div className="flex flex-wrap justify-between w-40">
-					<Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Cancel</Button>
-					<Button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">Save</Button>
+					<Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={onCancel}>
+						Cancel
+					</Button>
+					<Button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" onClick={handleSave}>
+						Save
+					</Button>
 				</div>
 			</div>
 			<div className="flex flex-wrap -mx-3 mb-6">

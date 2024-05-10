@@ -1,10 +1,9 @@
 interface Props {
-    label: string,
-    [x: string]: any
+	[x: string]: any;
 }
 
-const Button: React.FC<Props> = ({label, ...props}) => {
-    return <button {...props}>{label}</button>
-}
+const Button: React.FC<Props> = ({ children, ...props }) => {
+	return <button {...props}>{children}</button>;
+};
 
-export default Button
+export default Button;

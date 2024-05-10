@@ -1,12 +1,17 @@
-import React from 'react';
+import React from "react";
 
+// Props
 interface Props {
-    [x: string]: any; // This allows any additional string-indexed properties
-    change: (event: React.ChangeEvent<HTMLInputElement>) => void; // More specific function type for change events
+	[x: string]: any;
+	change: (event: React.ChangeEvent<HTMLInputElement>) => void; // More specific function type for change events
 }
 
 const Input: React.FC<Props> = ({ change, ...props }) => {
-    return <input {...props} onChange={change} />;
-}
+	return (
+		<div>
+			<input {...props} onChange={change} />
+		</div>
+	);
+};
 
 export default Input; // This should match the name of the component

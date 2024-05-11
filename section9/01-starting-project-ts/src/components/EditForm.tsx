@@ -1,29 +1,13 @@
 import React from "react";
 
 // Models
-import { IProject } from "@/types/Project";
+import { FormProps } from "@/types/FormProps";
 
 // Components
-import Input from "./Input";
-import TextArea from "./TextArea";
-import Button from "./Button";
-import Label from "./Label";
+import Form from "@/components/Form";
 
-// Util
-import formatDateForInput from "@/utils/formatDateForInput";
-
-interface Props {
-	[x: string]: any;
-	onSave(project: IProject): void;
-	onCancel(): void;
-}
-const Form: React.FC<Props> = ({ onCancel, onSave, ...props }) => {
-	return (
-		<>
-			edit
-			<form {...props}></form>;
-		</>
-	);
+const EditForm: React.FC<FormProps> = ({ onCancel, onSave, initialProject, ...props }) => {
+	return <Form {...props} initialProject={initialProject} onSave={onSave} onCancel={onCancel} />;
 };
 
-export default Form;
+export default EditForm;

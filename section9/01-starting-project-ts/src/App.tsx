@@ -12,7 +12,18 @@ import AddForm from "@/components/AddForm";
 import EditForm from "@/components/EditForm";
 import DefaultScreen from "@/components/DefaultScreen";
 
+// Utils
+import generateId from "./utils/generateId";
+
 const initialProjects: IProject[] = [];
+
+// Initial state
+const initialProject: IProject = {
+	id: generateId(),
+	title: "",
+	description: "",
+	dueDate: new Date(),
+};
 
 enum FormType {
 	DEFAULT = "DEFAULT",
@@ -38,19 +49,35 @@ function App() {
 		setSelectedProject(null);
 	};
 
-	const handleEdit = (projectId: string): void => {
+	const handleEditProject = (selectedProject: IProject): void => {
+		setProjects((currentProjects) => {
+			const updatedProjects: IProject[] = currentProjects.map((project) => {
+				if (project.id === selectedProject.id) {
+					return selectedProject; // Return the new item if the id matches
+				}
+				return project; // Otherwise, return the original item
+			});
+
+			return updatedProjects;
+		});
+		handleSetFormType(FormType.DEFAULT);
+		setSelectedProject(null);
+	};
+
+	const handleSelectEdit = (projectId: string): void => {
 		const selectedProject: IProject | undefined = projects.find((project) => project.id === projectId);
 		if (!selectedProject) throw new Error(`no project with id: ${projectId} found`);
+
 		setSelectedProject(selectedProject);
 		handleSetFormType(FormType.EDIT);
 	};
 
 	return (
 		<main className="h-screen my-8 flex gap-8">
-			<SideBar onEdit={handleEdit} projects={projects} />
+			<SideBar onEdit={handleSelectEdit} projects={projects} />
 			{formType === FormType.DEFAULT && <DefaultScreen onClick={() => handleSetFormType(FormType.ADD)} />}
-			{formType === FormType.EDIT && selectedProject && <EditForm onSave={() => console.log("")} onCancel={() => handleSetFormType(FormType.ADD)} />}
-			{formType === FormType.ADD && <AddForm onSave={handleAddNewProject} onCancel={() => handleSetFormType(FormType.DEFAULT)} />}
+			{formType === FormType.EDIT && selectedProject && <EditForm initialProject={selectedProject} onSave={handleEditProject} onCancel={() => handleSetFormType(FormType.ADD)} />}
+			{formType === FormType.ADD && <AddForm initialProject={initialProject} onSave={handleAddNewProject} onCancel={() => handleSetFormType(FormType.DEFAULT)} />}
 		</main>
 	);
 }

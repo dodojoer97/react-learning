@@ -36,8 +36,9 @@ function App() {
 	const [projects, setProjects] = React.useState<IProject[]>(initialProjects);
 	const [selectedProject, setSelectedProject] = React.useState<IProject | null>(null);
 
-	const handleSetFormType = (formType: FormType): void => {
-		setFormType(formType);
+	const handleCancel = (): void => {
+		setFormType(FormType.DEFAULT);
+		setSelectedProject(null);
 	};
 
 	const handleAddNewProject = (project: IProject): void => {
@@ -45,7 +46,7 @@ function App() {
 			const updatedProjects = [project, ...currentProjects];
 			return updatedProjects;
 		});
-		handleSetFormType(FormType.DEFAULT);
+		setFormType(FormType.DEFAULT);
 		setSelectedProject(null);
 	};
 
@@ -60,7 +61,7 @@ function App() {
 
 			return updatedProjects;
 		});
-		handleSetFormType(FormType.DEFAULT);
+		setFormType(FormType.DEFAULT);
 		setSelectedProject(null);
 	};
 
@@ -69,15 +70,15 @@ function App() {
 		if (!selectedProject) throw new Error(`no project with id: ${projectId} found`);
 
 		setSelectedProject(selectedProject);
-		handleSetFormType(FormType.EDIT);
+		setFormType(FormType.EDIT);
 	};
 
 	return (
 		<main className="h-screen my-8 flex gap-8">
-			<SideBar onEdit={handleSelectEdit} projects={projects} />
-			{formType === FormType.DEFAULT && <DefaultScreen onClick={() => handleSetFormType(FormType.ADD)} />}
-			{formType === FormType.EDIT && selectedProject && <EditForm initialProject={selectedProject} onSave={handleEditProject} onCancel={() => handleSetFormType(FormType.ADD)} />}
-			{formType === FormType.ADD && <AddForm initialProject={initialProject} onSave={handleAddNewProject} onCancel={() => handleSetFormType(FormType.DEFAULT)} />}
+			<SideBar selectedProject={selectedProject} projects={projects} onEdit={handleSelectEdit} />
+			{formType === FormType.DEFAULT && <DefaultScreen onClick={() => setFormType(FormType.ADD)} />}
+			{formType === FormType.EDIT && selectedProject && <EditForm initialProject={selectedProject} onSave={handleEditProject} onCancel={handleCancel} />}
+			{formType === FormType.ADD && <AddForm initialProject={initialProject} onSave={handleAddNewProject} onCancel={handleCancel} />}
 		</main>
 	);
 }

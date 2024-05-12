@@ -43,10 +43,10 @@ const Form: React.FC<FormProps> = ({ onCancel, onSave, initialProject, ...props 
 		<form className="w-2/3" {...props}>
 			<div className="flex flex-wrap -mx-3 mb-6 justify-end">
 				<div className="flex flex-wrap justify-between w-40">
-					<Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={onCancel}>
+					<Button className="bg-transparent hover:bg-amber-400 text-amber-400 font-semibold hover:text-white py-2 px-4 border border-amber-400 hover:border-transparent rounded" onClick={onCancel}>
 						Cancel
 					</Button>
-					<Button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" onClick={handleSave}>
+					<Button className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleSave}>
 						Save
 					</Button>
 				</div>

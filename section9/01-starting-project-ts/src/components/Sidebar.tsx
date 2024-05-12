@@ -15,7 +15,6 @@ interface Props {
 const SideBar: React.FC<Props> = ({ selectedProject, projects, onEdit }) => {
 	const isSelected = (id: string): boolean => {
 		if (!selectedProject) return false;
-		console.log("id: ", selectedProject.id === id);
 		return selectedProject.id === id;
 	};
 	return (

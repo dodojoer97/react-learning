@@ -40,7 +40,7 @@ const Form: React.FC<FormProps> = ({ onCancel, onSave, initialProject, ...props 
 
 	return (
 		// TODO export this form into a common component
-		<form className="w-full max-w-lg" {...props}>
+		<form className="w-2/3" {...props}>
 			<div className="flex flex-wrap -mx-3 mb-6 justify-end">
 				<div className="flex flex-wrap justify-between w-40">
 					<Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={onCancel}>

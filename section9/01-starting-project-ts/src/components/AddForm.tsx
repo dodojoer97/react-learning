@@ -1,12 +1,28 @@
 import React from "react";
 
-// Models
-import { FormProps } from "@/types/FormProps";
-
 // Components
 import Form from "@/components/Form";
 
-const AddForm: React.FC<FormProps> = ({ onCancel, onSave, initialProject, ...props }) => {
+// Utils
+import generateId from "@/utils/generateId";
+
+// Types
+import { IProject } from "@/types/Project";
+
+export interface FormProps {
+	[x: string]: any;
+	onSave(project: IProject): void;
+	onCancel(): void;
+}
+
+const AddForm: React.FC<FormProps> = ({ onCancel, onSave, ...props }) => {
+	// Initial state
+	const initialProject: IProject = {
+		id: generateId(),
+		title: "",
+		description: "",
+		dueDate: new Date(),
+	};
 	return <Form {...props} initialProject={initialProject} onSave={onSave} onCancel={onCancel} />;
 };
 

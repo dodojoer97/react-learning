@@ -12,18 +12,7 @@ import AddForm from "@/components/AddForm";
 import EditForm from "@/components/EditForm";
 import DefaultScreen from "@/components/DefaultScreen";
 
-// Utils
-import generateId from "./utils/generateId";
-
 const initialProjects: IProject[] = [];
-
-// Initial state
-const initialProject: IProject = {
-	id: generateId(),
-	title: "",
-	description: "",
-	dueDate: new Date(),
-};
 
 enum FormType {
 	DEFAULT = "DEFAULT",
@@ -68,7 +57,6 @@ function App() {
 	const handleSelectEdit = (projectId: string): void => {
 		const selectedProject: IProject | undefined = projects.find((project) => project.id === projectId);
 		if (!selectedProject) throw new Error(`no project with id: ${projectId} found`);
-
 		setSelectedProject(selectedProject);
 		setFormType(FormType.EDIT);
 	};
@@ -77,8 +65,8 @@ function App() {
 		<main className="h-screen my-8 flex gap-8">
 			<SideBar selectedProject={selectedProject} projects={projects} onEdit={handleSelectEdit} />
 			{formType === FormType.DEFAULT && <DefaultScreen onClick={() => setFormType(FormType.ADD)} />}
-			{formType === FormType.EDIT && selectedProject && <EditForm initialProject={selectedProject} onSave={handleEditProject} onCancel={handleCancel} />}
-			{formType === FormType.ADD && <AddForm initialProject={initialProject} onSave={handleAddNewProject} onCancel={handleCancel} />}
+			{formType === FormType.EDIT && selectedProject && <EditForm key={selectedProject.id} initialProject={selectedProject} onSave={handleEditProject} onCancel={handleCancel} />}
+			{formType === FormType.ADD && <AddForm onSave={handleAddNewProject} onCancel={handleCancel} />}
 		</main>
 	);
 }

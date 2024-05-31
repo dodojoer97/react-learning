@@ -13,7 +13,7 @@ import Label from "@/components/Label";
 // Util
 import formatDateForInput from "@/utils/formatDateForInput";
 
-const Form: React.FC<FormProps> = ({ onCancel, onSave, initialProject, ...props }) => {
+const Form: React.FC<FormProps> = ({ onCancel, onSave, initialProject, canDelete, onDelete, ...props }) => {
 	const [project, setProject] = React.useState<IProject>(initialProject);
 
 	const onChange = (fieldName: keyof IProject, value: string): void => {
@@ -42,13 +42,18 @@ const Form: React.FC<FormProps> = ({ onCancel, onSave, initialProject, ...props 
 		// TODO export this form into a common component
 		<form className="w-2/3" {...props}>
 			<div className="flex flex-wrap -mx-3 mb-6 justify-end">
-				<div className="flex flex-wrap justify-between w-40">
+				<div className="flex flex-wrap justify-between w-60">
 					<Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={onCancel}>
 						Cancel
 					</Button>
 					<Button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" onClick={handleSave}>
 						Save
 					</Button>
+					{canDelete && (
+						<Button className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={handleSave}>
+							Delete
+						</Button>
+					)}
 				</div>
 			</div>
 			<div className="flex flex-wrap -mx-3 mb-6">

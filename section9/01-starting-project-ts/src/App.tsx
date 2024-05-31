@@ -65,7 +65,7 @@ function App() {
 		<main className="h-screen my-8 flex gap-8">
 			<SideBar selectedProject={selectedProject} projects={projects} onEdit={handleSelectEdit} />
 			{formType === FormType.DEFAULT && <DefaultScreen onClick={() => setFormType(FormType.ADD)} />}
-			{formType === FormType.EDIT && selectedProject && <EditForm key={selectedProject.id} initialProject={selectedProject} onSave={handleEditProject} onCancel={handleCancel} />}
+			{formType === FormType.EDIT && selectedProject && <EditForm canDelete={true} key={selectedProject.id} initialProject={selectedProject} onSave={handleEditProject} onCancel={handleCancel} />}
 			{formType === FormType.ADD && <AddForm onSave={handleAddNewProject} onCancel={handleCancel} />}
 		</main>
 	);

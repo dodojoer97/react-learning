@@ -23,7 +23,7 @@ const AddForm: React.FC<FormProps> = ({ onCancel, onSave, ...props }) => {
 		description: "",
 		dueDate: new Date(),
 	};
-	return <Form {...props} initialProject={initialProject} onSave={onSave} onCancel={onCancel} />;
+	return <Form canDelete={false} {...props} initialProject={initialProject} onSave={onSave} onCancel={onCancel} />;
 };
 
 export default AddForm;

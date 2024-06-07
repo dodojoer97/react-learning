@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState, useCallback, useRef } from "react";
 
 // Data
 import QUESTIONS from "../data/questions";
+
+// Components
+import Question from "./Question.jsx";
 
 export default function Quiz() {
 	const [userAnswers, setUserAnswers] = useState([]);
@@ -9,20 +12,17 @@ export default function Quiz() {
 	// Derive instead of using state
 	const activeQuestionIndex = userAnswers.length;
 
-	function handleSelectAnswer(selectedAnswer) {
+	const handleSelectAnswer = useCallback(function handleSelectAnswer(selectedAnswer) {
 		setUserAnswers((currentAswers) => [...currentAswers, selectedAnswer]);
-	}
+	}, []);
+
+	const handleSkipAnswer = useCallback(() => handleSelectAnswer(null), [handleSelectAnswer]);
 
 	return (
-		<div id="question">
-			<h2>{QUESTIONS[activeQuestionIndex].text}</h2>
-			<ul id="answers">
-				{QUESTIONS[activeQuestionIndex].answers.map((answer) => (
-					<li key={answer} className="answer">
-						<button onClick={() => handleSelectAnswer(answer)}>{answer}</button>
-					</li>
-				))}
-			</ul>
+		<div id="quiz">
+			<div id="question">
+				<Question questionIndex={activeQuestionIndex} onSelect={handleSelectAnswer} onSkip={handleSkipAnswer} />
+			</div>
 		</div>
 	);
 }

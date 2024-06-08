@@ -13,7 +13,7 @@ const Header: FC = () => {
 				<div className="flex items-center">
 					<a href="https://react.dev" target="_blank">
 						<img src={reactLogo} className="logo react w-20" alt="React logo" />
-					</a>{" "}
+					</a>
 				</div>
 			</div>
 		</header>

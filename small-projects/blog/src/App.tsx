@@ -1,19 +1,20 @@
-import { useState } from "react";
+import { FC } from "react";
 
 // Components
 import Header from "@/components/Header";
+import PostList from "@/components/PostList";
 
 // CSS
 import "./App.css";
 
-function App() {
-	const [count, setCount] = useState(0);
-
+const App: FC = () => {
 	return (
 		<>
 			<Header />
+			<div className="container mx-auto mt-5">
+				<PostList />
+			</div>
 		</>
 	);
-}
-
+};
 export default App;

@@ -10,7 +10,7 @@ interface Props {
 
 const AddPostForm: FC<Props> = ({ onAddPost }) => {
 	const title = useRef<HTMLInputElement | null>(null);
-	const description = useRef<HTMLInputElement | null>(null);
+	const description = useRef<HTMLTextAreaElement | null>(null);
 
 	const handleAddPost = (): void => {
 		if (!title.current || !description.current) {
@@ -54,7 +54,7 @@ const AddPostForm: FC<Props> = ({ onAddPost }) => {
 				<label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
 					description
 				</label>
-				<input ref={description} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="description" type="text" placeholder="description" />
+				<textarea ref={description} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="description" placeholder="description"></textarea>
 			</div>
 			<button type="button" onClick={handleAddPost}>
 				Add

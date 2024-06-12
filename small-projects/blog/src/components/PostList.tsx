@@ -20,12 +20,14 @@ const PostList: FC = () => {
 	};
 
 	return (
-		<div className="grid gap-4 grid-cols-3 grid-rows-3">
-			{posts.map((post: Post) => (
-				<PostComponent key={post.id} {...post} />
-			))}
+		<>
 			<AddPostForm onAddPost={handleAddPost} />
-		</div>
+			<div className="grid gap-4 grid-cols-3 grid-rows-3">
+				{posts.map((post: Post) => (
+					<PostComponent key={post.id} {...post} />
+				))}
+			</div>
+		</>
 	);
 };
 

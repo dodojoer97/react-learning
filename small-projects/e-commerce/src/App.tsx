@@ -1,35 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, FC } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+// CSS
+import "./App.css";
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+// Types
+import { IProduct } from "./types";
 
-export default App
+// Components
+import Header from "@/components/Header";
+import Product from "@/components/Product";
+import Modal from "@/components/Modal";
+import Cart from "@/components/Cart";
+
+// Context
+import { CartContextProvider } from "@/store/shopping-cart-context";
+
+// Data
+import products from "@/data/products";
+
+const App: FC = () => {
+	const [isCartModalOpen, setIsCartModalOpen] = useState<boolean>(false);
+
+	const handleOpenCartModal = (): void => {
+		setIsCartModalOpen(true);
+	};
+
+	const handleCloseCartModal = (): void => {
+		setIsCartModalOpen(false);
+	};
+
+	return (
+		<CartContextProvider>
+			<Modal open={isCartModalOpen} onClose={handleCloseCartModal}>
+				<Cart />
+			</Modal>
+			<Header openCart={handleOpenCartModal} />
+			<div id="products" className="container mx-auto md:p-40">
+				{products.map((product: IProduct) => (
+					<Product key={product.id} product={product} />
+				))}
+			</div>
+		</CartContextProvider>
+	);
+};
+
+export default App;

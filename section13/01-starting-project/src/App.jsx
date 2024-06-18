@@ -11,7 +11,10 @@ function App() {
 	const [chosenCount, setChosenCount] = useState(0);
 
 	function handleSetCount(newCount) {
+		// Calling two state updating functions will not cause the component to run twice :)
 		setChosenCount(newCount);
+		setChosenCount((prevCount) => prevCount + 1);
+		console.log(chosenCount); //wont work
 	}
 
 	return (
@@ -19,7 +22,7 @@ function App() {
 			<Header />
 			<main>
 				<ConfigureCounter onSet={handleSetCount} />
-				<Counter initialCount={chosenCount} />
+				<Counter key={chosenCount} initialCount={chosenCount} />
 			</main>
 		</>
 	);

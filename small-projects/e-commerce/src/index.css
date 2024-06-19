@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+	box-sizing: border-box;
+}
+
+#cart {
+	min-width: 50vw;
+	min-height: 50vh;
+}
+
+#products {
+	list-style: none;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 2rem;
+	place-items: center;
+}
+
+@media (min-width: 768px) {
+	#products {
+		display: grid;
+	}
+}

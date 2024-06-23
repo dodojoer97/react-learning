@@ -31,7 +31,7 @@ export class PostService extends BaseService implements IPostsService {
 	 * @param baseUrl The base URL for the post service endpoints.
 	 */
 	constructor() {
-		super(import.meta.env.POSTS_API_URL); // Pass the base URL to the base class constructor
+		super(import.meta.env.VITE_POSTS_API_URL); // Pass the base URL to the base class constructor
 	}
 
 	/**

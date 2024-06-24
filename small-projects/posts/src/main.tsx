@@ -6,8 +6,4 @@ import "./index.css";
 // Init services
 import "./initServices.ts";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-	<React.StrictMode>
-		<App />
-	</React.StrictMode>
-);
+ReactDOM.createRoot(document.getElementById("root")!).render(<App />);

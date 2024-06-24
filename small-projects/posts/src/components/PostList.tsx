@@ -6,6 +6,7 @@ import { Post } from "@/models/Post";
 // Component
 import PostComponent from "./Post";
 import Modal from "./Modal";
+import Form from "./Form";
 
 const PostList: FC = () => {
 	const [posts, setPosts] = useState<Post[]>([]);
@@ -48,7 +49,7 @@ const PostList: FC = () => {
 		<>
 			{editPost && (
 				<Modal onClose={handleCloseModal} open={isEditModalOpen}>
-					{editPost.title}
+					<Form onCancel={console.log} onSave={console.log} title={editPost.title} body={editPost.body} />
 				</Modal>
 			)}
 			<div className="grid grid-cols-1 gap-6 lg:gap-8 sm:grid-cols-2 lg:grid-cols-3">

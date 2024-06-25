@@ -32,24 +32,45 @@ const PostList: FC = () => {
 		[posts]
 	);
 
-	const handleEditClick = (id: number): void => {
-		const post: Post | undefined = findPostById(id);
-		if (post) {
-			setEditPost(post);
-			setIsEditModalOpen(true);
-		}
-	};
-
-	const handleCloseModal = (): void => {
+	const handleCloseModal = useCallback((): void => {
 		setIsEditModalOpen(false);
 		setEditPost(null);
-	};
+	}, []);
+
+	const handleEditClick = useCallback(
+		(id: number): void => {
+			const post: Post | undefined = findPostById(id);
+			if (post) {
+				setEditPost(post);
+				setIsEditModalOpen(true);
+			}
+		},
+		[findPostById]
+	);
+
+	// const handleSave = useCallback(async (title: string, body: string): Promise<void> => {
+	// 	if (!editPost) return;
+
+	// 	try {
+	// 		const updatedPost = { ...editPost, title, body };
+	// 		await window.postsService.(updatedPost); // Assuming updatePost is the API call
+
+	// 		setPosts((currentPosts) =>
+	// 			currentPosts.map((post) => (post.id === updatedPost.id ? updatedPost : post))
+	// 		);
+
+	// 		setIsEditModalOpen(false);
+	// 		setEditPost(null);
+	// 	} catch (error) {
+	// 		console.error("Failed to save post:", error);
+	// 	}
+	// }, [editPost]);
 
 	return (
 		<>
 			{editPost && (
 				<Modal onClose={handleCloseModal} open={isEditModalOpen}>
-					<Form onCancel={console.log} onSave={console.log} title={editPost.title} body={editPost.body} />
+					<Form onCancel={handleCloseModal} onSave={console.log} title={editPost.title} body={editPost.body} />
 				</Modal>
 			)}
 			<div className="grid grid-cols-1 gap-6 lg:gap-8 sm:grid-cols-2 lg:grid-cols-3">

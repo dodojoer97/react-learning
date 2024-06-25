@@ -20,6 +20,7 @@ export interface IPostsService {
 	getAllPosts(): Promise<Post[]>;
 	getPost(id: string): Promise<Post>;
 	createPost(postData: CreatePostDTO): Promise<Post>;
+	editPost(postData: PostDTO): Promise<Post>;
 }
 
 /**
@@ -103,6 +104,37 @@ export class PostService extends BaseService implements IPostsService {
 		try {
 			const response = await fetch(`${this.baseUrl}/posts`, {
 				method: "POST",
+				headers: this.getDefaultHeaders(),
+				body: JSON.stringify(postData),
+			});
+
+			if (!response.ok) {
+				throw new Error(`Error creating a post`);
+			}
+
+			const data: PostDTO = await response.json();
+
+			const post: Post = this.mapPostDTOToPostModel(data);
+			return post;
+		} catch (err) {
+			if (err instanceof Error) {
+				logger.error(err.message);
+			} else {
+				logger.error("Error in createPost");
+			}
+
+			throw new Error("Error in createPost");
+		}
+	}
+	/**
+	 * edit new post based on the provided post data.
+	 * @param postData Data for creating a new post.
+	 * @returns A promise that resolves with the newly created Post object.
+	 */
+	async editPost(postData: PostDTO): Promise<Post> {
+		try {
+			const response = await fetch(`${this.baseUrl}/posts/${postData.id}`, {
+				method: "PUT",
 				headers: this.getDefaultHeaders(),
 				body: JSON.stringify(postData),
 			});

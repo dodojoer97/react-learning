@@ -1,7 +1,7 @@
 import { FC, useRef } from "react";
 
 interface Props {
-	onSave(): void;
+	onSave(title: string, body: string): void;
 	onCancel(): void;
 	title?: string;
 	body?: string;
@@ -26,7 +26,7 @@ const Form: FC<Props> = ({ onSave, onCancel, title = "", body = "" }) => {
 		const currentTitle = titleInput.current?.value || "";
 		const currentBody = bodyTextArea.current?.value || "";
 		console.log("Saving data: ", { title: currentTitle, body: currentBody });
-		onSave();
+		onSave(currentTitle, currentBody);
 	};
 
 	return (

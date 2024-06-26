@@ -4,6 +4,9 @@ import { createPortal } from "react-dom";
 // Config
 import modalDelay from "@/config/modalDelay";
 
+// CSS
+import "./Modal.css";
+
 interface Props extends PropsWithChildren {
 	open: boolean;
 	onClose(): void;

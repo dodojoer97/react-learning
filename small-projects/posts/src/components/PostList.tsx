@@ -15,6 +15,7 @@ const PostList: FC = () => {
 	const [posts, setPosts] = useState<Post[]>([]);
 	const [editPost, setEditPost] = useState<Post | null>(null);
 	const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	useEffect(() => {
 		const handleGetPosts = async () => {
@@ -58,23 +59,27 @@ const PostList: FC = () => {
 			if (!editPost) return;
 
 			try {
+				setIsLoading(true);
 				const updatedPost = { ...editPost, title, body };
 				await window.postsService.editPost(updatedPost); // Assuming updatePost is the API call
 
 				setPosts((currentPosts) => currentPosts.map((post) => (post.id === updatedPost.id ? updatedPost : post)));
 
 				setIsEditModalOpen(false);
-				setEditPost(null);
+				setTimeout(() => {
+					setEditPost(null);
+					setIsLoading(false);
+				}, modalDelay);
 			} catch (error) {
 				console.error("Failed to save post:", error);
 			}
 		},
-		[editPost]
+		[editPost, isLoading]
 	);
 
 	return (
 		<>
-			<Modal onClose={handleCloseModal} open={isEditModalOpen}>
+			<Modal onClose={handleCloseModal} isOpen={isEditModalOpen} isLoading={isLoading}>
 				{editPost && <Form onCancel={handleCloseModal} onSave={handleSave} title={editPost.title} body={editPost.body} />}
 			</Modal>
 			<div className="grid grid-cols-1 gap-6 lg:gap-8 sm:grid-cols-2 lg:grid-cols-3">

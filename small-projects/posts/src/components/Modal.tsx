@@ -1,26 +1,35 @@
 import { FC, PropsWithChildren, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 
+// Config
+import modalDelay from "@/config/modalDelay";
+
 interface Props extends PropsWithChildren {
 	open: boolean;
 	onClose(): void;
 }
 
-const Modal: FC<Props> = ({ children, onClose, open, ...props }) => {
+const Modal: FC<Props> = ({ children, onClose, open }) => {
 	const dialog = useRef<HTMLDialogElement | null>(null);
 
 	useEffect(() => {
 		if (!dialog.current) throw new Error("dialog must be defined");
+		const currentDialog = dialog.current;
+
 		if (open) {
-			dialog.current.showModal();
+			currentDialog.showModal();
+			currentDialog.style.opacity = "1";
 		} else {
-			dialog.current.close();
+			currentDialog.style.opacity = "0";
+			setTimeout(() => {
+				currentDialog.close();
+			}, modalDelay);
 		}
 	}, [open]);
 
 	return createPortal(
 		<dialog className="modal" ref={dialog} onClose={onClose}>
-			{open ? children : null}
+			{children}
 		</dialog>,
 		document.getElementById("modal") as HTMLDivElement
 	);

@@ -8,6 +8,9 @@ import PostComponent from "./Post";
 import Modal from "./Modal";
 import Form from "./Form";
 
+// Config
+import modalDelay from "@/config/modalDelay";
+
 const PostList: FC = () => {
 	const [posts, setPosts] = useState<Post[]>([]);
 	const [editPost, setEditPost] = useState<Post | null>(null);
@@ -34,7 +37,9 @@ const PostList: FC = () => {
 
 	const handleCloseModal = useCallback((): void => {
 		setIsEditModalOpen(false);
-		setEditPost(null);
+		setTimeout(() => {
+			setEditPost(null);
+		}, modalDelay);
 	}, []);
 
 	const handleEditClick = useCallback(
@@ -69,11 +74,9 @@ const PostList: FC = () => {
 
 	return (
 		<>
-			{editPost && (
-				<Modal onClose={handleCloseModal} open={isEditModalOpen}>
-					<Form onCancel={handleCloseModal} onSave={handleSave} title={editPost.title} body={editPost.body} />
-				</Modal>
-			)}
+			<Modal onClose={handleCloseModal} open={isEditModalOpen}>
+				{editPost && <Form onCancel={handleCloseModal} onSave={handleSave} title={editPost.title} body={editPost.body} />}
+			</Modal>
 			<div className="grid grid-cols-1 gap-6 lg:gap-8 sm:grid-cols-2 lg:grid-cols-3">
 				{posts.map((post: Post) => (
 					<PostComponent key={post.id} post={post} onEditClick={handleEditClick} />

@@ -5,6 +5,7 @@ import { Post } from "@/models/Post";
 
 // Components
 import Pencil from "./Pencil";
+import Person from "./Person";
 
 interface Props extends PropsWithChildren {
 	post: Post;
@@ -19,7 +20,7 @@ const PostComponent: FC<Props> = ({ onEditClick, post }) => {
 					<Pencil onClick={() => onEditClick(post.id)} className="cursor-pointer" />
 				</div>
 				<figcaption className="flex items-center space-x-4">
-					<img src="/_next/static/media/ryan-florence.3af9c9d9.jpg" alt="" className="flex-none w-14 h-14 rounded-full object-cover" loading="lazy" decoding="async" />
+					<Person />
 					<div className="flex-auto">
 						<div className="text-base text-slate-900 font-semibold dark:text-slate-300"></div>
 						<div className="mt-0.5">{post.title}</div>

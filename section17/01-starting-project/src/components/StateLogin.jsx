@@ -6,10 +6,10 @@ export default function Login() {
 		password: "",
 	});
 
+	const emailIsInvalid = enteredValues.email && !enteredValues.email.includes("@");
+
 	function handleSubmit(e) {
 		e.preventDefault();
-
-		console.log("em,ail: ", enteredEmail);
 
 		// Reset the form
 		setEnteredValues({
@@ -34,12 +34,13 @@ export default function Login() {
 			<div className="control-row">
 				<div className="control no-margin">
 					<label htmlFor="email">Email</label>
-					<input id="email" type="email" name="email" onChange={(e) => handleInputChange(e, "email")} value={enteredValues.email} />
+					<input id="email" type="email" name="email" onChange={(e) => handleInputChange("email", e)} value={enteredValues.email} />
+					{emailIsInvalid && <div className="control-error">Email is invalid</div>}
 				</div>
 
 				<div className="control no-margin">
 					<label htmlFor="password">Password</label>
-					<input id="password" type="password" name="password" onChange={(e) => handleInputChange(e, "password")} value={enteredValues.password} />
+					<input id="password" type="password" name="password" onChange={(e) => handleInputChange("password", e)} value={enteredValues.password} />
 				</div>
 			</div>
 

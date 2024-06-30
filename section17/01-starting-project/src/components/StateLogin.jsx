@@ -6,7 +6,12 @@ export default function Login() {
 		password: "",
 	});
 
-	const emailIsInvalid = enteredValues.email && !enteredValues.email.includes("@");
+	const [didEdit, setDidEdit] = useState({
+		email: false,
+		password: false,
+	});
+
+	const emailIsInvalid = didEdit.email && !enteredValues.email.includes("@");
 
 	function handleSubmit(e) {
 		e.preventDefault();
@@ -27,6 +32,22 @@ export default function Login() {
 		});
 	}
 
+	function handleInputBlur(identifier, e) {
+		setDidEdit((prevEdit) => {
+			return {
+				...prevEdit,
+				[identifier]: true,
+			};
+		});
+		console.log("blur: ", identifier);
+		// setEnteredValues((prevValues) => {
+		// 	return {
+		// 		...prevValues,
+		// 		[identifier]: e.target.value,
+		// 	};
+		// });
+	}
+
 	return (
 		<form onSubmit={handleSubmit}>
 			<h2>Login</h2>
@@ -34,7 +55,7 @@ export default function Login() {
 			<div className="control-row">
 				<div className="control no-margin">
 					<label htmlFor="email">Email</label>
-					<input id="email" type="email" name="email" onChange={(e) => handleInputChange("email", e)} value={enteredValues.email} />
+					<input id="email" type="email" name="email" onBlur={(e) => handleInputBlur("email", e)} onChange={(e) => handleInputChange("email", e)} value={enteredValues.email} />
 					{emailIsInvalid && <div className="control-error">Email is invalid</div>}
 				</div>
 

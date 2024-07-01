@@ -1,4 +1,8 @@
+import { useState } from "react";
+
 export default function Signup() {
+	const [passwordsNotEqual, setPasswordsNotEqual] = useState(false)
+	
 	function handleSubmit(e) {
 		e.preventDefault();
 
@@ -7,6 +11,12 @@ export default function Signup() {
 
 		const data = Object.fromEntries(formData.entries());
 		data.acquisition = acquisitionChannel;
+
+		if(data.password !== data['confirm-password']) {
+			setPasswordsNotEqual(true)
+			return
+		}
+
 		console.log("data: ", data);
 	}
 

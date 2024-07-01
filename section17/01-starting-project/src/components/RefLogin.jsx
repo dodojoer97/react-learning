@@ -1,6 +1,7 @@
-import { useRef } from "react";
+import { useRef, useState} from "react";
 
 export default function Login() {
+	const [isInvalidForm, setIsInvalidForm] = useState(false)
 	const email = useRef();
 	const password = useRef();
 
@@ -8,6 +9,13 @@ export default function Login() {
 		e.preventDefault();
 		const enteredEmail = email.current.value;
 		const enteredPassword = password.current.value;
+
+		if(!enteredEmail.includes("@")) {
+			setIsInvalidForm(true)
+			return
+		}
+
+		setIsInvalidForm(false)
 
 		// Reset the form
 		e.target.reset();

@@ -3,9 +3,6 @@ export interface IBaseService {
 }
 
 export class BaseService implements IBaseService {
-	/**
-	 *
-	 */
 	baseUrl: string;
 	constructor(baseUrl: string) {
 		this.baseUrl = baseUrl;

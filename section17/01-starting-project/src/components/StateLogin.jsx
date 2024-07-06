@@ -1,5 +1,11 @@
 import { useState } from "react";
 
+// Components
+import Input from "./Input";
+
+// Validation
+import { isEmail, isNotEmpty, hasMinLength } from "../util/validation";
+
 export default function Login() {
 	const [enteredValues, setEnteredValues] = useState({
 		email: "",
@@ -11,7 +17,9 @@ export default function Login() {
 		password: false,
 	});
 
-	const emailIsInvalid = didEdit.email && !enteredValues.email.includes("@");
+	const emailIsInvalid =
+		didEdit.email && !isEmail(enteredValues.email) && !isNotEmpty(enteredValues.email);
+	const passwordIsInvalid = didEdit.password && !hasMinLength(enteredValues.password, 6);
 
 	function handleSubmit(e) {
 		e.preventDefault();
@@ -53,16 +61,27 @@ export default function Login() {
 			<h2>Login</h2>
 
 			<div className="control-row">
-				<div className="control no-margin">
-					<label htmlFor="email">Email</label>
-					<input id="email" type="email" name="email" onBlur={(e) => handleInputBlur("email", e)} onChange={(e) => handleInputChange("email", e)} value={enteredValues.email} />
-					{emailIsInvalid && <div className="control-error">Email is invalid</div>}
-				</div>
+				<Input
+					label="Email"
+					id="email"
+					type="email"
+					name="email"
+					onBlur={(e) => handleInputBlur("email", e)}
+					onChange={(e) => handleInputChange("email", e)}
+					value={enteredValues.email}
+					error={emailIsInvalid && "Email is invalid"}
+				/>
 
-				<div className="control no-margin">
-					<label htmlFor="password">Password</label>
-					<input id="password" type="password" name="password" onChange={(e) => handleInputChange("password", e)} value={enteredValues.password} />
-				</div>
+				<Input
+					label="Password"
+					id="password"
+					type="password"
+					name="password"
+					onBlur={(e) => handleInputBlur("password", e)}
+					onChange={(e) => handleInputChange("password", e)}
+					value={enteredValues.password}
+					error={passwordIsInvalid && "Password is invalid"}
+				/>
 			</div>
 
 			<p className="form-actions">

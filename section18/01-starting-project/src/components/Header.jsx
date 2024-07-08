@@ -8,14 +8,22 @@ import Button from "./UI/Button";
 
 // Store
 import {CartContext} from "../store/CartContext"
+import { UserProgressContext } from "../store/UserProgressContext";
 
 
 export default function Header() {
-	const context = useContext(CartContext)
+	const cartContext = useContext(CartContext)
+	const userProgressContext = useContext(UserProgressContext)
 
-	const totalCartItems =  context.items.reduce((totalNumberOfItems, item) => {
+	const totalCartItems =  cartContext.items.reduce((totalNumberOfItems, item) => {
 		return totalNumberOfItems + item.quantity
 	}, 0)
+
+	function handleOpenCart() {
+		console.log("handleOpenCart")
+		userProgressContext.showCart()
+	}
+
 	return (
 		<header id="main-header">
 			<div id="title">
@@ -23,7 +31,7 @@ export default function Header() {
 				<h1>ReactFood</h1>
 			</div>
 			<nav>
-				<Button textOnly>Cart ({totalCartItems})</Button>
+				<Button onClick={handleOpenCart} textOnly>Cart ({totalCartItems})</Button>
 			</nav>
 		</header>
 	);

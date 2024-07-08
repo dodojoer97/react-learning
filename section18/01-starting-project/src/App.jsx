@@ -2,11 +2,16 @@
 import Header from "./components/Header";
 import Meals from "./components/Meals";
 
+// Store
+import {CartContextProvider}  from "./store/CartContext";
+
 function App() {
 	return (
 		<>
-			<Header />
-			<Meals />
+			<CartContextProvider>
+				<Header />
+				<Meals />
+			</CartContextProvider>
 		</>
 	);
 }

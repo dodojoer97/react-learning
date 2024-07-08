@@ -7,7 +7,7 @@ export const CartContext = createContext({
 });
 
 function getExisitingItemIndex(state, id) {
-	const exisitingCartItemIndex = state.items.find((item) => item.id === id);
+	const exisitingCartItemIndex = state.items.findIndex((item) => item.id === id);
 	return exisitingCartItemIndex;
 }
 
@@ -18,8 +18,7 @@ function cartReducer(state, action) {
 		const updatedItems = [...state.items];
 
 		const exisitingItemIndex = getExisitingItemIndex(state, action.item.id);
-
-		if (exisitingItemIndex) {
+		if (exisitingItemIndex > 0) {
 			const exisitingItem = state.items[exisitingItemIndex];
 			const updatedItem = {
 				...exisitingItem,
@@ -41,7 +40,7 @@ function cartReducer(state, action) {
 
 		const updatedItems = [...state.items];
 
-		if (exisitingCartItem.quantity === 1) {
+		if (exisitingCartItem && exisitingCartItem.quantity === 1) {
 			updatedItems.splice(exisitingItemIndex, 1);
 		} else {
 			const updatedItem = {

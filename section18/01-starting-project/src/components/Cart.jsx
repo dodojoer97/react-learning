@@ -36,6 +36,8 @@ export default function Cart() {
 						name={item.name}
 						price={item.price}
 						quantity={item.quantity}
+						onIncrease={() => cartContext.addItem(item)}
+						onDecrease={() => cartContext.removeItem(item.id)}
 					/>
 				))}
 			</ul>

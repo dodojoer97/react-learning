@@ -18,7 +18,6 @@ function cartReducer(state, action) {
 		const updatedItems = [...state.items];
 
 		const exisitingItemIndex = getExisitingItemIndex(state, action.item.id);
-		console.log("exisitingItemIndex: ", exisitingItemIndex);
 		if (exisitingItemIndex !== -1) {
 			const exisitingItem = state.items[exisitingItemIndex];
 			const updatedItem = {
@@ -51,6 +50,8 @@ function cartReducer(state, action) {
 
 			updatedItems[exisitingItemIndex] = updatedItem;
 		}
+
+		return { ...state, items: updatedItems };
 	}
 
 	return state;

@@ -7,6 +7,7 @@ import { UserProgressContext } from "../store/UserProgressContext";
 // Components
 import Modal from "./UI/Modal";
 import Button from "./UI/Button";
+import CartItem from "./CartItem";
 
 // Util
 import { currencyFormater } from "../util/formatting";
@@ -30,9 +31,12 @@ export default function Cart() {
 			<h2>Your Cart</h2>
 			<ul>
 				{cartContext.items.map((item) => (
-					<li key={item.id}>
-						{item.name} - {item.quantity}
-					</li>
+					<CartItem
+						key={item.id}
+						name={item.name}
+						price={item.price}
+						quantity={item.quantity}
+					/>
 				))}
 			</ul>
 			<p className="cart-total">{currencyFormater.format(cartTotal)}</p>

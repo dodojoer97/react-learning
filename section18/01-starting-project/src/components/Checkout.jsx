@@ -20,7 +20,11 @@ export default function Chekout() {
 		return totalPrice + item.quantity * item.price;
 	}, 0);
 
-    return <Modal open={userProgressContext.progress === 'checkout'}>
+    function handleCloseCheckout() {
+        userProgressContext.hideCheckout
+    }
+
+    return <Modal open={userProgressContext.progress === 'checkout'} onClose={handleCloseCheckout}>
         <form>
             <h2>checkout</h2>
             <p>Total Amount: {currencyFormater.format(cartTotal)}</p>
@@ -32,7 +36,7 @@ export default function Chekout() {
                 <Input label="City" type="text" id="city"/>
             </div>
             <p className="modal-actions">
-                <Button textOnly type="button" onClick={userProgressContext.hideCheckout}>Close</Button>
+                <Button textOnly type="button" onClick={handleCloseCheckout}>Close</Button>
                 <Button>Submit</Button>
             </p>
         </form>

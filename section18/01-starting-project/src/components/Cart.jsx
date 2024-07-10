@@ -46,7 +46,7 @@ export default function Cart() {
 				<Button onClick={handleCloseCart} textOnly>
 					Close
 				</Button>
-				<Button>Go to checkout</Button>
+				{cartContext.items.length > 0 && <Button onClick={userProgressContext.showCheckout}>Go to checkout</Button>}
 			</p>
 		</Modal>
 	);

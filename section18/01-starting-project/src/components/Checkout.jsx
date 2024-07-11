@@ -4,6 +4,7 @@ import { useContext } from "react";
 import Modal from "./UI/Modal";
 import Input from "./UI/Input";
 import Button from "./UI/Button";
+import Error from "./Error";
 
 // Store
 import { CartContext } from "../store/CartContext";
@@ -12,9 +13,21 @@ import { UserProgressContext } from "../store/UserProgressContext";
 // Util
 import { currencyFormater } from "../util/formatting";
 
+// Hooks
+import useHttp from "../hooks/useHttp";
+
+const requestConfig = {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    }
+}
+
 export default function Chekout() {
     const cartContext = useContext(CartContext)
     const userProgressContext = useContext(UserProgressContext)
+
+    const {data, isLoading, error, sendRequest} = useHttp("http://localhost:3000/orders", {...requestConfig})
 
 	const cartTotal = cartContext.items.reduce((totalPrice, item) => {
 		return totalPrice + item.quantity * item.price;
@@ -24,24 +37,46 @@ export default function Chekout() {
         userProgressContext.hideCheckout()
     }
 
+    function handleFinish() {
+        handleCloseCheckout()
+        cartContext.clearCart()
+    }
+
     function handleSubmit(e) {
         e.preventDefault()
 
         const formData = new FormData(e.target)
         const customerData = Object.fromEntries(formData.entries())
 
-        fetch("http://localhost:3000/orders", {
-            method: "POST",
-            headers: {
-                'Content-type': "application/json"
-            },
-            body: JSON.stringify(
+        sendRequest(
+            JSON.stringify(
                 {
                     order: {customer: customerData, items: cartContext.items}
                 }    
-            ),
-        })
+            )
+        )
     }
+
+    let actions = (
+        <>
+            <Button textOnly type="button" onClick={handleCloseCheckout}>Close</Button>
+            <Button>Submit</Button>
+        </>
+    )
+
+    if(isLoading) {
+        actions = <span>loading</span>
+    }
+
+    if(data && !error) {
+        return <Modal  open={userProgressContext.progress === 'checkout'} onClose={handleFinish}>
+            <h2>Success</h2>
+            <p>Your order was sent</p>
+            <p className="modal-actions"><Button onClick={handleFinish}>Okay</Button></p>
+
+        </Modal>
+    }
+
 
     return <Modal open={userProgressContext.progress === 'checkout'} onClose={handleCloseCheckout}>
         <form onSubmit={handleSubmit}>
@@ -54,9 +89,10 @@ export default function Chekout() {
                 <Input label="Postal Code" type="text" id="postal-code"/>
                 <Input label="City" type="text" id="city"/>
             </div>
+
+            {error && <Error title="Something went wrong" messsage={error}/>}
             <p className="modal-actions">
-                <Button textOnly type="button" onClick={handleCloseCheckout}>Close</Button>
-                <Button>Submit</Button>
+                {actions}
             </p>
         </form>
     </Modal>

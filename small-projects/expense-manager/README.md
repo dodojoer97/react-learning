@@ -1,30 +1,55 @@
-# React + TypeScript + Vite
+# Expense Manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+This Expense Manager is a comprehensive web application designed to help users track their daily expenses efficiently. Built using React, Tailwind CSS, and TypeScript, it features a modular component architecture, responsive design, and user-friendly interfaces.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Key Components
 
-## Expanding the ESLint configuration
+### 1. Navbar Component
+- **Purpose**: Provides navigation links and displays a summary of total expenses.
+- **Features**: Responsive design with links to different sections of the application.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### 2. Expense Form Component
+- **Purpose**: Allows users to add or edit expenses.
+- **Features**: Form with fields for expense name, amount, category, and date. Includes validation and submission functionalities.
 
-- Configure the top-level `parserOptions` property like this:
+### 3. Expense List Component
+- **Purpose**: Displays a list of all recorded expenses.
+- **Features**: Each entry shows details like name, amount, category, date, with options to edit or delete.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+### 4. Category Filter Component
+- **Purpose**: Enables filtering of expenses based on categories.
+- **Features**: Dropdown or button group to select categories for filtering the list.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### 5. Date Range Picker Component
+- **Purpose**: Allows users to filter expenses based on a custom date range.
+- **Features**: Integration of a date range picker for selecting start and end dates.
+
+### 6. Summary Component
+- **Purpose**: Provides a quick summary of expenses.
+- **Features**: Shows total expenses, expenses by category, and period comparisons.
+
+### 7. Dashboard Component
+- **Purpose**: Serves as the main view aggregating multiple components for an overall summary.
+- **Features**: Includes the Summary Component and graphical representations like charts.
+
+### 8. Alert Component
+- **Purpose**: Displays alerts or messages (success or errors).
+- **Features**: Configurable for different types of messages based on user actions.
+
+### 9. Authentication Components
+- **Purpose**: Manages user authentication.
+- **Features**: Components for login, registration, and password recovery processes.
+
+### 10. Loading Component
+- **Purpose**: Indicates ongoing data operations.
+- **Features**: Generic loading spinner or animation.
+
+### 11. Chart Components (Pie Chart, Bar Graph)
+- **Purpose**: Visualizes financial data.
+- **Features**: Uses libraries like Chart.js to render expense data graphically.
+
+### 12. Settings Component
+- **Purpose**: Manages user-specific settings like currency or theme preferences.
+- **Features**: Form inputs for setting preferences stored and retrieved from local storage or a backend.

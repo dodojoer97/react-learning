@@ -21,7 +21,7 @@ export default function Chekout() {
 	}, 0);
 
     function handleCloseCheckout() {
-        userProgressContext.hideCheckout
+        userProgressContext.hideCheckout()
     }
 
     function handleSubmit(e) {

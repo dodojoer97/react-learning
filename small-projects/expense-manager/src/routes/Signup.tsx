@@ -1,5 +1,6 @@
 // React
-import { FC } from "react";
+import { useState } from "react";
+import type { FC, FormEvent } from "react";
 
 // Components
 import Layout from "@/components/UI/Layout";
@@ -13,10 +14,32 @@ import eyeIcon from "@/assets/eye.svg";
 
 // Hooks
 import useToggleInputType from "@/hooks/useToggleInputType";
+import useInput from "@/hooks/useInput";
+
+// Util
+import isEmail from "@/utils/isEmail";
 
 const Signup: FC = () => {
+	const {
+		value: emailValue,
+		handleInputChange: handleEmailChange,
+		handleInputBlur: handleEmailBlur,
+		hasError: emailHasError,
+	} = useInput("", (value: string) => {
+		return isEmail(value);
+	});
+
 	const { type: password1InputType, toggleInputType: togglePassword1Type } = useToggleInputType();
 	const { type: password2InputType, toggleInputType: togglePassword2Type } = useToggleInputType();
+
+	// Handle submit
+	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
+
+		const formDataObj = Object.fromEntries(formData.entries());
+	};
+
 	return (
 		<Layout>
 			<div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
@@ -29,7 +52,10 @@ const Signup: FC = () => {
 					</p>
 				</div>
 
-				<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4">
+				<Form
+					className="mx-auto mb-0 mt-8 max-w-md space-y-4"
+					onSubmit={(e) => handleSubmit(e)}
+				>
 					<div>
 						<Input
 							id="email"
@@ -38,8 +64,13 @@ const Signup: FC = () => {
 							hiddenLabel
 							placeholder="Enter email"
 							required
+							value={emailValue}
+							onChange={handleEmailChange}
+							onBlur={handleEmailBlur}
 							inputIcon={emailIcon}
 						></Input>
+
+						{emailHasError && <div>error</div>}
 					</div>
 
 					<div>
@@ -69,10 +100,10 @@ const Signup: FC = () => {
 						></Input>
 					</div>
 
-					<div className="flex items-center justify-between">
+					<div>
 						<Button
 							type="submit"
-							className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
+							className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white w-full"
 						>
 							Create account
 						</Button>

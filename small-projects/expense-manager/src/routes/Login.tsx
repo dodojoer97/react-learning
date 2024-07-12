@@ -1,10 +1,14 @@
 // React
 import { FC } from "react";
 
+// Router
+import { Link } from "react-router-dom";
+
 // Components
 import Layout from "@/components/UI/Layout";
 import Form from "@/components/UI/Form";
 import Input from "@/components/UI/Input";
+import Button from "@/components/UI/Button";
 
 // Svg
 import emailIcon from "@/assets/email.svg";
@@ -19,7 +23,7 @@ const Login: FC = () => {
 		<Layout>
 			<div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
 				<div className="mx-auto max-w-lg text-center">
-					<h1 className="text-2xl font-bold sm:text-3xl">Get started today!</h1>
+					<h1 className="text-2xl font-bold sm:text-3xl">Login</h1>
 
 					<p className="mt-4 text-gray-500">
 						Lorem ipsum dolor sit amet consectetur adipisicing elit. Et libero nulla
@@ -35,6 +39,7 @@ const Login: FC = () => {
 							label="Email"
 							hiddenLabel
 							placeholder="Enter email"
+							required
 							inputIcon={emailIcon}
 						></Input>
 					</div>
@@ -48,6 +53,7 @@ const Login: FC = () => {
 							inputIcon={eyeIcon}
 							hiddenLabel
 							clickableIcon
+							required
 							onClickIcon={toggleInputType}
 						></Input>
 					</div>
@@ -55,17 +61,17 @@ const Login: FC = () => {
 					<div className="flex items-center justify-between">
 						<p className="text-sm text-gray-500">
 							No account?
-							<a className="underline" href="#">
+							<Link to="/signup" className="underline">
 								Sign up
-							</a>
+							</Link>
 						</p>
 
-						<button
+						<Button
 							type="submit"
 							className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
 						>
 							Sign in
-						</button>
+						</Button>
 					</div>
 				</Form>
 			</div>

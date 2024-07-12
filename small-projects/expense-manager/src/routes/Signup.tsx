@@ -1,5 +1,4 @@
 // React
-import { useState } from "react";
 import type { FC, FormEvent } from "react";
 
 // Components

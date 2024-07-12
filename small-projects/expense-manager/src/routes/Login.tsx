@@ -1,5 +1,5 @@
 // React
-import { FC } from "react";
+import type { FC, FormEvent } from "react";
 
 // Router
 import { Link } from "react-router-dom";
@@ -9,6 +9,7 @@ import Layout from "@/components/UI/Layout";
 import Form from "@/components/UI/Form";
 import Input from "@/components/UI/Input";
 import Button from "@/components/UI/Button";
+import InputError from "@/components/UI/InputError";
 
 // Svg
 import emailIcon from "@/assets/email.svg";
@@ -16,9 +17,40 @@ import eyeIcon from "@/assets/eye.svg";
 
 // Hooks
 import useToggleInputType from "@/hooks/useToggleInputType";
+import useInput from "@/hooks/useInput";
+
+// Util
+import { isEmail, hasMinLength } from "@/utils/utils";
 
 const Login: FC = () => {
+	const {
+		value: emailValue,
+		handleInputChange: handleEmailChange,
+		handleInputBlur: handleEmailBlur,
+		hasError: emailHasError,
+	} = useInput("", (value: string) => {
+		return isEmail(value);
+	});
+
+	const {
+		value: passwordValue,
+		handleInputChange: handlePasswordChange,
+		handleInputBlur: handlePasswordBlur,
+		hasError: password1HasError,
+	} = useInput("", (value: string) => {
+		return hasMinLength(value, 8);
+	});
+
 	const { type: passwordInputType, toggleInputType } = useToggleInputType();
+
+	// Handle submit
+	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
+
+		const formDataObj = Object.fromEntries(formData.entries());
+	};
+
 	return (
 		<Layout>
 			<div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
@@ -31,7 +63,7 @@ const Login: FC = () => {
 					</p>
 				</div>
 
-				<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4">
+				<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4" onSubmit={handleSubmit}>
 					<div>
 						<Input
 							id="email"
@@ -40,22 +72,33 @@ const Login: FC = () => {
 							hiddenLabel
 							placeholder="Enter email"
 							required
+							value={emailValue}
+							onChange={handleEmailChange}
+							onBlur={handleEmailBlur}
 							inputIcon={emailIcon}
 						></Input>
+						{emailHasError && <InputError message="Email must contain an @ sign" />}
 					</div>
 
 					<div>
 						<Input
-							id="password"
+							id="password1"
 							type={passwordInputType}
-							label="Password"
+							label="Password 1"
 							placeholder="Enter password"
 							inputIcon={eyeIcon}
 							hiddenLabel
 							clickableIcon
 							required
+							value={passwordValue}
+							onChange={handlePasswordChange}
+							onBlur={handlePasswordBlur}
 							onClickIcon={toggleInputType}
 						></Input>
+
+						{password1HasError && (
+							<InputError message="Password has to have at least 8 chars" />
+						)}
 					</div>
 
 					<div className="flex items-center justify-between">

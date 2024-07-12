@@ -7,6 +7,7 @@ import Layout from "@/components/UI/Layout";
 import Form from "@/components/UI/Form";
 import Input from "@/components/UI/Input";
 import Button from "@/components/UI/Button";
+import InputError from "@/components/UI/InputError";
 
 // Svg
 import emailIcon from "@/assets/email.svg";
@@ -91,7 +92,7 @@ const Signup: FC = () => {
 							inputIcon={emailIcon}
 						></Input>
 
-						{emailHasError && <div>error</div>}
+						{emailHasError && <InputError message="Email must contain an @ sign" />}
 					</div>
 
 					<div>
@@ -104,11 +105,15 @@ const Signup: FC = () => {
 							hiddenLabel
 							clickableIcon
 							required
-							value={emailValue}
-							onChange={handleEmailChange}
-							onBlur={handleEmailBlur}
+							value={password1Value}
+							onChange={handlePassword1Change}
+							onBlur={handlePassword1Blur}
 							onClickIcon={togglePassword1Type}
 						></Input>
+
+						{password1HasError && (
+							<InputError message="Password has to have at least 8 chars" />
+						)}
 					</div>
 					<div>
 						<Input
@@ -120,8 +125,14 @@ const Signup: FC = () => {
 							hiddenLabel
 							clickableIcon
 							required
+							value={password2Value}
+							onChange={handlePassword2Change}
+							onBlur={handlePassword2Blur}
 							onClickIcon={togglePassword2Type}
 						></Input>
+						{password2HasError && (
+							<InputError message="Password has to have at least 8 chars" />
+						)}
 					</div>
 
 					<div>

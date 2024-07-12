@@ -63,6 +63,14 @@ const Signup: FC = () => {
 		const formData = new FormData(e.currentTarget);
 
 		const formDataObj = Object.fromEntries(formData.entries());
+
+		// TODO add hook for the service usage
+		// @ts-ignore
+		const authService = window.authService;
+
+		console.log("formDataObj: ", formDataObj);
+
+		authService.signup({ email: formDataObj.email, password: formDataObj.password1 });
 	};
 
 	return (

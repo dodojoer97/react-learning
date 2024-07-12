@@ -42,17 +42,17 @@ class AuthService extends BaseService implements IAuthService {
 
 	public login(dto: LoginDTO): void {
 		try {
-			const currentUsers: User[] = this.getUsers();
-			const foundUser: User | undefined = currentUsers.find(
-				(user: User) => user.email === dto.email && user.password === dto.password
-			);
+			const foundUser: User | undefined = this.getUser(dto);
 
 			if (!foundUser) {
 				// Throw?
+				alert(" no found user");
+
 				return;
 			}
 
 			// ... Set some data for login / cookies or something
+			alert("logged in");
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with login");
@@ -70,8 +70,6 @@ class AuthService extends BaseService implements IAuthService {
 		}
 	}
 
-	// TODO add types
-
 	// ** this methods will be later in the backend, mock with local storage
 	private getUsers(): User[] {
 		const currentUsersList = localStorage.getItem("users");
@@ -82,6 +80,23 @@ class AuthService extends BaseService implements IAuthService {
 
 		const parsedUsers = JSON.parse(currentUsersList);
 		return parsedUsers;
+	}
+
+	private getUser(dto: LoginDTO | SignupDTO): User | undefined {
+		try {
+			const currentUsers: User[] = this.getUsers();
+			const foundUser: User | undefined = currentUsers.find(
+				(user: User) => user.email === dto.email && user.password === dto.password
+			);
+
+			if (!foundUser) throw new Error("No user found");
+
+			return foundUser;
+		} catch (error) {
+			if (error instanceof Error) {
+				logger.error(error.message || "Something went wrong with getUser");
+			}
+		}
 	}
 }
 

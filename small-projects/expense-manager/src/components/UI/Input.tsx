@@ -1,0 +1,39 @@
+import type { FC, HTMLProps } from "react";
+
+interface InputProps extends HTMLProps<HTMLInputElement> {
+	[key: string]: any;
+	type: string;
+	label: string;
+	id: string;
+	hiddenLabel?: boolean;
+	inputIcon?: string;
+}
+
+const Input: FC<InputProps> = ({ type, label, id, hiddenLabel, inputIcon, ...props }) => {
+	return (
+		<>
+			<div>
+				<label htmlFor={id} className={hiddenLabel ? "absolute" : undefined}>
+					{label}
+				</label>
+
+				<div className="relative">
+					<input
+						type={type}
+						id={id}
+						name={id}
+						{...props}
+						className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+					/>
+					{inputIcon && (
+						<span className="absolute inset-y-0 end-0 grid place-content-center px-4">
+							<img src={inputIcon} alt="Icon" className="size-4 text-gray-400" />
+						</span>
+					)}
+				</div>
+			</div>
+		</>
+	);
+};
+
+export default Input;

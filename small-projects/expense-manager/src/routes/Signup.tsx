@@ -35,6 +35,7 @@ const Signup: FC = () => {
 		handleInputChange: handlePassword1Change,
 		handleInputBlur: handlePassword1Blur,
 		hasError: password1HasError,
+		isTouched: isPassword1Touched,
 	} = useInput("", (value: string) => {
 		return hasMinLength(value, 8);
 	});
@@ -44,12 +45,15 @@ const Signup: FC = () => {
 		handleInputChange: handlePassword2Change,
 		handleInputBlur: handlePassword2Blur,
 		hasError: password2HasError,
+		isTouched: isPassword2Touched,
 	} = useInput("", (value: string) => {
 		return hasMinLength(value, 8);
 	});
 
 	// Check if the passowrds are equal
 	const arePasswordsEqual: boolean = password2Value === password1Value;
+	const displayPasswordsNotMatching: boolean =
+		!arePasswordsEqual && isPassword1Touched && isPassword2Touched;
 
 	const { type: password1InputType, toggleInputType: togglePassword1Type } = useToggleInputType();
 	const { type: password2InputType, toggleInputType: togglePassword2Type } = useToggleInputType();
@@ -134,6 +138,8 @@ const Signup: FC = () => {
 							<InputError message="Password has to have at least 8 chars" />
 						)}
 					</div>
+
+					{displayPasswordsNotMatching && <InputError message="Passwords must match" />}
 
 					<div>
 						<Button

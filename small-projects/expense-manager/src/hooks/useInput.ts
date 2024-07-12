@@ -13,9 +13,10 @@ const useInput = (
 	validationFn: (value: string) => boolean // More explicit type
 ): {
 	value: string;
-	handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
-	handleInputBlur: () => void;
+	handleInputChange(e: ChangeEvent<HTMLInputElement>): void;
+	handleInputBlur(): void;
 	hasError: boolean;
+	isTouched: boolean;
 } => {
 	const [value, setValue] = useState<string>(defaultValue);
 	const [isTouched, setIsTouched] = useState<boolean>(false);
@@ -36,6 +37,7 @@ const useInput = (
 		handleInputChange,
 		handleInputBlur,
 		hasError: isTouched && !valueIsValid,
+		isTouched,
 	};
 };
 

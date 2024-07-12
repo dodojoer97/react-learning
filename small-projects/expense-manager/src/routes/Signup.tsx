@@ -17,7 +17,7 @@ import useToggleInputType from "@/hooks/useToggleInputType";
 import useInput from "@/hooks/useInput";
 
 // Util
-import isEmail from "@/utils/isEmail";
+import { isEmail, hasMinLength } from "@/utils/utils";
 
 const Signup: FC = () => {
 	const {
@@ -28,6 +28,27 @@ const Signup: FC = () => {
 	} = useInput("", (value: string) => {
 		return isEmail(value);
 	});
+
+	const {
+		value: password1Value,
+		handleInputChange: handlePassword1Change,
+		handleInputBlur: handlePassword1Blur,
+		hasError: password1HasError,
+	} = useInput("", (value: string) => {
+		return hasMinLength(value, 8);
+	});
+
+	const {
+		value: password2Value,
+		handleInputChange: handlePassword2Change,
+		handleInputBlur: handlePassword2Blur,
+		hasError: password2HasError,
+	} = useInput("", (value: string) => {
+		return hasMinLength(value, 8);
+	});
+
+	// Check if the passowrds are equal
+	const arePasswordsEqual: boolean = password2Value === password1Value;
 
 	const { type: password1InputType, toggleInputType: togglePassword1Type } = useToggleInputType();
 	const { type: password2InputType, toggleInputType: togglePassword2Type } = useToggleInputType();
@@ -83,6 +104,9 @@ const Signup: FC = () => {
 							hiddenLabel
 							clickableIcon
 							required
+							value={emailValue}
+							onChange={handleEmailChange}
+							onBlur={handleEmailBlur}
 							onClickIcon={togglePassword1Type}
 						></Input>
 					</div>

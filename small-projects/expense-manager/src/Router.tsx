@@ -3,13 +3,15 @@ import { createBrowserRouter, createRoutesFromElements, Route } from "react-rout
 
 // Routes
 import Home from "@/routes/Home";
+import Login from "@/routes/Login";
+import Signup from "@/routes/Signup";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
 		<>
 			<Route path="/" element={<Home />} />
-			<Route path="/login" element={<div>login</div>} />
-			<Route path="/signup" element={<div>signup</div>} />
+			<Route path="/login" element={<Login />} />
+			<Route path="/signup" element={<Signup />} />
 		</>
 	)
 );

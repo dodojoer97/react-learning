@@ -10,7 +10,11 @@ import Input from "@/components/UI/Input";
 import emailIcon from "@/assets/email.svg";
 import eyeIcon from "@/assets/eye.svg";
 
+// Hooks
+import useToggleInputType from "@/hooks/useToggleInputType";
+
 const Login: FC = () => {
+	const { type: passwordInputType, toggleInputType } = useToggleInputType();
 	return (
 		<Layout>
 			<div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
@@ -38,11 +42,13 @@ const Login: FC = () => {
 					<div>
 						<Input
 							id="password"
-							type="password"
+							type={passwordInputType}
 							label="Password"
-							hiddenLabel
 							placeholder="Enter password"
 							inputIcon={eyeIcon}
+							hiddenLabel
+							clickableIcon
+							onClickIcon={toggleInputType}
 						></Input>
 					</div>
 

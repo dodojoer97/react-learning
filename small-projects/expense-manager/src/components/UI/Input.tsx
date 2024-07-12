@@ -7,9 +7,20 @@ interface InputProps extends HTMLProps<HTMLInputElement> {
 	id: string;
 	hiddenLabel?: boolean;
 	inputIcon?: string;
+	clickableIcon?: boolean;
+	onClickIcon?(): void;
 }
 
-const Input: FC<InputProps> = ({ type, label, id, hiddenLabel, inputIcon, ...props }) => {
+const Input: FC<InputProps> = ({
+	type,
+	label,
+	id,
+	hiddenLabel,
+	inputIcon,
+	clickableIcon,
+	onClickIcon,
+	...props
+}) => {
 	return (
 		<>
 			<div>
@@ -27,7 +38,14 @@ const Input: FC<InputProps> = ({ type, label, id, hiddenLabel, inputIcon, ...pro
 					/>
 					{inputIcon && (
 						<span className="absolute inset-y-0 end-0 grid place-content-center px-4">
-							<img src={inputIcon} alt="Icon" className="size-4 text-gray-400" />
+							<img
+								onClick={() => onClickIcon?.()}
+								src={inputIcon}
+								alt="Icon"
+								className={`size-4 text-gray-400, ${
+									clickableIcon ? "cursor-pointer" : ""
+								}`}
+							/>
 						</span>
 					)}
 				</div>

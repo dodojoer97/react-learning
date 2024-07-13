@@ -12,6 +12,9 @@ import SignupDTO from "@/DTO/request/Signup";
 // Models
 import User from "@/models/User";
 
+// Utils
+import { promisify } from "@/utils/utils";
+
 const logger = new Logger("AuthService");
 
 /**
@@ -34,7 +37,7 @@ class AuthService extends BaseService implements IAuthService {
 
 			localStorage.setItem("users", JSON.stringify(updatedUsers));
 
-			return newUser;
+			return promisify(newUser, 500);
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with signup");
@@ -47,15 +50,8 @@ class AuthService extends BaseService implements IAuthService {
 		try {
 			const foundUser: User | undefined = this.getUser(dto);
 
-			if (!foundUser) {
-				// Throw?
-				alert(" no found user");
-
-				return;
-			}
-
 			// ... Set some data for login / cookies or something
-			alert("logged in");
+			return promisify(foundUser, 500);
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with login");
@@ -67,6 +63,7 @@ class AuthService extends BaseService implements IAuthService {
 	public async logout(): Promise<void> {
 		try {
 			// to implement
+			promisify("", 500);
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with logout");

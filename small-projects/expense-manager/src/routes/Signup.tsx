@@ -1,5 +1,9 @@
 // React
+import { useContext } from "react";
 import type { FC, FormEvent } from "react";
+
+// Router
+import { useNavigate } from "react-router-dom";
 
 // Components
 import Layout from "@/components/UI/Layout";
@@ -19,7 +23,19 @@ import useInput from "@/hooks/useInput";
 // Util
 import { isEmail, hasMinLength } from "@/utils/utils";
 
+// Store
+import { AuthContext } from "@/store/AuthContext";
+
+// DTO
+import SignupDTO from "@/DTO/request/Signup";
+
 const Signup: FC = () => {
+	// Store
+	const authCTX = useContext(AuthContext);
+
+	// Navigation
+	const navigate = useNavigate();
+
 	const {
 		value: emailValue,
 		handleInputChange: handleEmailChange,
@@ -58,19 +74,20 @@ const Signup: FC = () => {
 	const { type: password2InputType, toggleInputType: togglePassword2Type } = useToggleInputType();
 
 	// Handle submit
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 
-		const formDataObj = Object.fromEntries(formData.entries());
+		const formDataObj = Object.fromEntries(formData.entries()) as {
+			email: string;
+			password1: string;
+		};
 
-		// TODO add hook for the service usage
-		// @ts-ignore
-		const authService = window.authService;
+		const dto = new SignupDTO(formDataObj.email, formDataObj.password1);
 
-		console.log("formDataObj: ", formDataObj);
+		await authCTX.signup(dto);
 
-		authService.signup({ email: formDataObj.email, password: formDataObj.password1 });
+		navigate("/login");
 	};
 
 	return (

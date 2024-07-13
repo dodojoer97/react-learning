@@ -17,7 +17,7 @@ import { IAuthContext } from "./AuthContext.d";
 import isError from "@/utils/isError";
 
 // Base context with default values
-const AuthContext: Context<IAuthContext> = createContext<IAuthContext>({
+export const AuthContext: Context<IAuthContext> = createContext<IAuthContext>({
 	signup: async () => undefined,
 	login: async () => {},
 	logout: async () => {},

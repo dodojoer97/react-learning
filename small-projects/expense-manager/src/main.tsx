@@ -8,9 +8,6 @@ import App from "./App.tsx";
 // CSS
 import "./index.css";
 
-// Init services
-import "./initServices.ts";
-
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>
 		<App />

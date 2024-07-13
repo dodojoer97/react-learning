@@ -7,8 +7,17 @@ import { RouterProvider } from "react-router-dom";
 // Router
 import router from "./Router";
 
+// Context
+import AuthContextProvider from "@/store/AuthContext";
+
 const App: FC = () => {
-	return <RouterProvider router={router} fallbackElement={<p>Initial Load...</p>} />;
+	return (
+		<>
+			<AuthContextProvider>
+				<RouterProvider router={router} fallbackElement={<p>Initial Load...</p>} />;
+			</AuthContextProvider>
+		</>
+	);
 };
 
 export default App;

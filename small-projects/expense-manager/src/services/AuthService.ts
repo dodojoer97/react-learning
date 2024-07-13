@@ -5,7 +5,7 @@ import BaseService from "./BaseService";
 import { Logger } from "@/classes/Logger";
 
 // Interface
-import { IAuthService } from "./AuthService.d";
+import { IAuthService } from "@/services/AuthService.d";
 import LoginDTO from "@/DTO/request/Login";
 import SignupDTO from "@/DTO/request/Signup";
 
@@ -25,7 +25,7 @@ class AuthService extends BaseService implements IAuthService {
 		super(baseUrl);
 	}
 
-	public signup(dto: SignupDTO): void {
+	public async signup(dto: SignupDTO): Promise<User | undefined> {
 		try {
 			const currentUsers: User[] = this.getUsers();
 			const newUser = new User(uuidv4(), dto.email, dto.password);
@@ -33,14 +33,17 @@ class AuthService extends BaseService implements IAuthService {
 			const updatedUsers: User[] = [...currentUsers, newUser];
 
 			localStorage.setItem("users", JSON.stringify(updatedUsers));
+
+			return newUser;
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with signup");
 			}
+			throw error;
 		}
 	}
 
-	public login(dto: LoginDTO): void {
+	public async login(dto: LoginDTO): Promise<User | undefined> {
 		try {
 			const foundUser: User | undefined = this.getUser(dto);
 
@@ -57,16 +60,18 @@ class AuthService extends BaseService implements IAuthService {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with login");
 			}
+			throw error;
 		}
 	}
 
-	public logout(): void {
+	public async logout(): Promise<void> {
 		try {
 			// to implement
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with logout");
 			}
+			throw error;
 		}
 	}
 
@@ -96,6 +101,7 @@ class AuthService extends BaseService implements IAuthService {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with getUser");
 			}
+			throw error;
 		}
 	}
 }

@@ -19,6 +19,7 @@ import eyeIcon from "@/assets/eye.svg";
 // Hooks
 import useToggleInputType from "@/hooks/useToggleInputType";
 import useInput from "@/hooks/useInput";
+import useFormSubmission from "@/hooks/useFormSubmission"
 
 // Util
 import { isEmail, hasMinLength } from "@/utils/utils";
@@ -30,6 +31,8 @@ import { AuthContext } from "@/store/AuthContext";
 import LoginDTO from "@/DTO/request/Login";
 
 const Login: FC = () => {
+
+
 	// Navigation
 	const navigate = useNavigate();
 
@@ -52,33 +55,26 @@ const Login: FC = () => {
 	const hasErrors: boolean = emailField.hasError || password1Field.hasError
 
 
+
 	// Handle submit
-	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
+
+	const { handleSubmit, isSubmitted} = useFormSubmission(async () => {
 		if(hasErrors) return
 
 		authCTX.clearError()
-
-		const formData = new FormData(e.currentTarget);
-
-		const formDataObj = Object.fromEntries(formData.entries()) as {
-			email: string;
-			password: string;
-		};
-
-		const dto = new LoginDTO(formDataObj.email, formDataObj.password);
+		const dto = new LoginDTO(emailField.value, password1Field.value);
 
 		await authCTX.login(dto);
-	};
+	})
 
 	// Handle post-signup logic
 	useEffect(() => {
-		if (!authCTX.error) {
+		if (!authCTX.error && isSubmitted) {
 			// Show a success message or redirect to a success page
 			alert("Signup successful! Please log in to continue.");
 			navigate("/"); // Redirect to login page
 		}
-	}, [authCTX.error, navigate]);
+	}, [authCTX.error, isSubmitted]);
 
 	return (
 		<Layout>

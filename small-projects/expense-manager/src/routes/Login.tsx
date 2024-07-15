@@ -80,9 +80,7 @@ const Login: FC = () => {
 			setIsSubmitted(false)
 		}
 
-
-
-	}, [isSubmitted, navigate, hasErrors])
+	}, [isSubmitted, navigate])
 
 	return (
 		<Layout>

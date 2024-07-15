@@ -23,15 +23,21 @@ import useInput from "@/hooks/useInput";
 import { isEmail, hasMinLength } from "@/utils/utils";
 
 const Login: FC = () => {
-	const emailInput = useInput("", (value: string) => {
+	// Form fields
+	const emailField = useInput("", (value: string) => {
 		return isEmail(value);
 	});
 
-	const passwordInput = useInput("", (value: string) => {
+	const password1Field = useInput("", (value: string) => {
 		return hasMinLength(value, 8);
 	});
 
+	// Toggle input type
 	const { type: passwordInputType, toggleInputType } = useToggleInputType();
+
+	// Check if we have any errors
+	const hasErrors: boolean = emailField.hasError || password1Field.hasError
+
 
 	// Handle submit
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -62,12 +68,12 @@ const Login: FC = () => {
 							hiddenLabel
 							placeholder="Enter email"
 							required
-							value={emailInput.value}
-							onChange={emailInput.handleInputChange}
-							onBlur={emailInput.handleInputBlur}
+							value={emailField.value}
+							onChange={emailField.handleInputChange}
+							onBlur={emailField.handleInputBlur}
 							inputIcon={emailIcon}
 						></Input>
-						{emailInput.hasError && <InputError message="Email must contain an @ sign" />}
+						{emailField.hasError && <InputError message="Email must contain an @ sign" />}
 					</div>
 
 					<div>
@@ -80,13 +86,13 @@ const Login: FC = () => {
 							hiddenLabel
 							clickableIcon
 							required
-							value={passwordInput.value}
-							onChange={passwordInput.handleInputChange}
-							onBlur={passwordInput.handleInputBlur}
+							value={password1Field.value}
+							onChange={password1Field.handleInputChange}
+							onBlur={password1Field.handleInputBlur}
 							onClickIcon={toggleInputType}
 						></Input>
 
-						{passwordInput.hasError && (
+						{password1Field.hasError && (
 							<InputError message="Password has to have at least 8 chars" />
 						)}
 					</div>
@@ -101,7 +107,8 @@ const Login: FC = () => {
 
 						<Button
 							type="submit"
-							className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
+							disabled={hasErrors}
+							className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white disabled:bg-slate-400"
 						>
 							Sign in
 						</Button>

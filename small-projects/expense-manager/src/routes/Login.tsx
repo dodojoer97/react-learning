@@ -1,8 +1,9 @@
 // React
 import type { FC, FormEvent } from "react";
+import { useContext, useEffect } from "react";
 
 // Router
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // Components
 import Layout from "@/components/UI/Layout";
@@ -22,7 +23,19 @@ import useInput from "@/hooks/useInput";
 // Util
 import { isEmail, hasMinLength } from "@/utils/utils";
 
+// Store
+import { AuthContext } from "@/store/AuthContext";
+
+// DTO
+import LoginDTO from "@/DTO/request/Login";
+
 const Login: FC = () => {
+	// Navigation
+	const navigate = useNavigate();
+
+	// Store
+	const authCTX = useContext(AuthContext);
+	
 	// Form fields
 	const emailField = useInput("", (value: string) => {
 		return isEmail(value);
@@ -40,12 +53,32 @@ const Login: FC = () => {
 
 
 	// Handle submit
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		if(hasErrors) return
+
+		authCTX.clearError()
+
 		const formData = new FormData(e.currentTarget);
 
-		const formDataObj = Object.fromEntries(formData.entries());
+		const formDataObj = Object.fromEntries(formData.entries()) as {
+			email: string;
+			password: string;
+		};
+
+		const dto = new LoginDTO(formDataObj.email, formDataObj.password);
+
+		await authCTX.login(dto);
 	};
+
+	// Handle post-signup logic
+	useEffect(() => {
+		if (!authCTX.error) {
+			// Show a success message or redirect to a success page
+			alert("Signup successful! Please log in to continue.");
+			navigate("/"); // Redirect to login page
+		}
+	}, [authCTX.error, navigate]);
 
 	return (
 		<Layout>
@@ -114,6 +147,7 @@ const Login: FC = () => {
 						</Button>
 					</div>
 				</Form>
+				{authCTX.error && <div className="error">{authCTX.error}</div>}
 			</div>
 		</Layout>
 	);

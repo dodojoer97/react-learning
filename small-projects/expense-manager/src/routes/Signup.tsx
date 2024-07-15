@@ -1,5 +1,5 @@
 // React
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import type { FC, FormEvent } from "react";
 
 // Router
@@ -69,6 +69,10 @@ const Signup: FC = () => {
 	// Handle submit
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+        if (hasErrors) return; // Prevent submission if there are errors
+
+
+		authCTX.clearError()
 		const formData = new FormData(e.currentTarget);
 
 		const formDataObj = Object.fromEntries(formData.entries()) as {
@@ -80,9 +84,17 @@ const Signup: FC = () => {
 
 		await authCTX.signup(dto);
 
-		navigate("/login");
 	};
 
+	// Handle post-signup logic
+	useEffect(() => {
+		if (!authCTX.error) {
+			// Show a success message or redirect to a success page
+			alert("Signup successful! Please log in to continue.");
+			navigate("/login"); // Redirect to login page
+		}
+	}, [authCTX.error, navigate]);
+	
 	return (
 		<Layout>
 			<div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
@@ -168,6 +180,7 @@ const Signup: FC = () => {
 						</Button>
 					</div>
 				</Form>
+				{authCTX.error && <div className="error">{authCTX.error}</div>}
 			</div>
 		</Layout>
 	);

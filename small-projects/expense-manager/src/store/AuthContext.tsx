@@ -21,6 +21,7 @@ export const AuthContext: Context<IAuthContext> = createContext<IAuthContext>({
 	signup: async () => undefined,
 	login: async () => {},
 	logout: async () => {},
+	clearError: () => {},
 	user: undefined,
 	loading: false,
 	error: null,
@@ -58,10 +59,12 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 			const user: User | undefined = await authService.login(dto);
 			setUser(user);
+			
 
 			setLoading(false);
 		} catch (error) {
 			if (isError(error)) {
+				console.log('error: ', error.message)
 				setError(error.message);
 			}
 			setError("Something went wrong with login");
@@ -88,6 +91,10 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		}
 	};
 
+	const clearError = (): void => {
+		setError(null)
+	}
+
 	const contextValue = {
 		signup,
 		login,
@@ -95,6 +102,7 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		user,
 		loading,
 		error,
+		clearError
 	};
 
 	return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

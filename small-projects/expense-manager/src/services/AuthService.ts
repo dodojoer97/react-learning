@@ -38,6 +38,8 @@ class AuthService extends BaseService implements IAuthService {
 	 */
 	public async signup(dto: SignupDTO): Promise<User | undefined> {
 		try {
+			if(this.checkEmailExists(dto.email)) throw new Error("User with same credetials already exists")
+
 			const currentUsers: User[] = this.getUsers();
 			const newUser = new User(uuidv4(), dto.email, dto.password);
 
@@ -45,7 +47,7 @@ class AuthService extends BaseService implements IAuthService {
 
 			localStorage.setItem("users", JSON.stringify(updatedUsers));
 
-			return promisify(newUser, 500);
+			return promisify(newUser, 1000);
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with signup");
@@ -85,7 +87,11 @@ class AuthService extends BaseService implements IAuthService {
 			}
 			throw error;
 		}
+		
 	}
+
+
+	// ****** TODO create real backed *****
 
 	/**
 	 * Retrieves all users from local storage.
@@ -114,7 +120,7 @@ class AuthService extends BaseService implements IAuthService {
 				(user: User) => user.email === dto.email && user.password === dto.password
 			);
 
-			if (!foundUser) throw new Error("No user found");
+			if (!foundUser) throw new Error("No user found with specified credentials");
 
 			return foundUser;
 		} catch (error) {
@@ -123,6 +129,17 @@ class AuthService extends BaseService implements IAuthService {
 			}
 			throw error;
 		}
+	}
+
+
+	private checkEmailExists(email: string): boolean  {
+		const currentUsers: User[] = this.getUsers()
+
+		// Array of emails
+		const emails = currentUsers.map((user: User) => user.email)
+
+		
+		return emails.includes(email)
 	}
 }
 

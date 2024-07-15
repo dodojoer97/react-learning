@@ -2,6 +2,9 @@
 import type { FC } from "react"
 import { useContext, useEffect } from "react"
 
+// Translation
+import { useTranslation } from 'react-i18next';
+
 // Router
 import { Link, useNavigate } from "react-router-dom"
 
@@ -31,6 +34,8 @@ import { AuthContext } from "@/store/AuthContext"
 import LoginDTO from "@/DTO/request/Login"
 
 const Login: FC = () => {
+	const { t } = useTranslation();
+
 	// Navigation
 	const navigate = useNavigate()
 
@@ -143,11 +148,11 @@ const Login: FC = () => {
 
 					<div className='flex items-center justify-between'>
 						<p className='text-sm text-gray-500'>
-							No account?
+							{t('no')}
 							<Link
 								to='/signup'
 								className='underline'>
-								Sign up
+								{t('signup')}
 							</Link>
 						</p>
 
@@ -155,7 +160,8 @@ const Login: FC = () => {
 							type='submit'
 							disabled={hasErrors}
 							className='inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white disabled:bg-slate-400'>
-							Sign in
+							{t('signin')}
+
 						</Button>
 					</div>
 				</Form>

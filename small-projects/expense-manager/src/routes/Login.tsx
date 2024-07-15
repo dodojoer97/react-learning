@@ -1,5 +1,5 @@
 // React
-import type { FC, FormEvent } from "react";
+import type { FC } from "react";
 import { useContext, useEffect } from "react";
 
 // Router

@@ -19,6 +19,7 @@ import eyeIcon from "@/assets/eye.svg";
 // Hooks
 import useToggleInputType from "@/hooks/useToggleInputType";
 import useInput from "@/hooks/useInput";
+import useFormSubmission from "@/hooks/useFormSubmission"
 
 // Util
 import { isEmail, hasMinLength, checkValuesEqual } from "@/utils/utils";
@@ -65,36 +66,25 @@ const Signup: FC = () => {
 	// Check if we have any errors
 	const hasErrors: boolean = emailField.hasError || password1Field.hasError || password2Field.hasError
 
-
 	// Handle submit
-	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-        if (hasErrors) return; // Prevent submission if there are errors
+	const { handleSubmit, isSubmitted} = useFormSubmission(async () => {
+		if(hasErrors) return
 
-
-		authCTX.clearError()
-		const formData = new FormData(e.currentTarget);
-
-		const formDataObj = Object.fromEntries(formData.entries()) as {
-			email: string;
-			password1: string;
-		};
-
-		const dto = new SignupDTO(formDataObj.email, formDataObj.password1);
+		const dto = new SignupDTO(emailField.value, password1Field.value);
 
 		await authCTX.signup(dto);
+	})
 
-	};
 
 	// Handle post-signup logic
 	useEffect(() => {
-		if (!authCTX.error) {
+		if (!authCTX.error && isSubmitted) {
 			// Show a success message or redirect to a success page
 			alert("Signup successful! Please log in to continue.");
 			navigate("/login"); // Redirect to login page
 		}
 	}, [authCTX.error, navigate]);
-	
+
 	return (
 		<Layout>
 			<div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">

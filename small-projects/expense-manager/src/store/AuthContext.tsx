@@ -42,6 +42,8 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 			const user: User | undefined = await authService.signup(dto);
 			setUser(user);
 			setLoading(false);
+
+
 		} catch (error) {
 			if (isError(error)) {
 				setError(error.message);
@@ -62,6 +64,8 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 			
 
 			setLoading(false);
+			clearError();
+
 		} catch (error) {
 			if (isError(error)) {
 				console.log('error: ', error.message)

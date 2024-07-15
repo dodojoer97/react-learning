@@ -61,7 +61,6 @@ const Login: FC = () => {
 	const { handleSubmit, isSubmitted} = useFormSubmission(async () => {
 		if(hasErrors) return
 
-		authCTX.clearError()
 		const dto = new LoginDTO(emailField.value, password1Field.value);
 
 		await authCTX.login(dto);
@@ -69,6 +68,8 @@ const Login: FC = () => {
 
 	// Handle post-signup logic
 	useEffect(() => {
+		console.log("authCTX.error: ", authCTX.error)
+		console.log("isSubmitted: ", isSubmitted)
 		if (!authCTX.error && isSubmitted) {
 			// Show a success message or redirect to a success page
 			alert("Signup successful! Please log in to continue.");

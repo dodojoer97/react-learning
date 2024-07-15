@@ -23,21 +23,11 @@ import useInput from "@/hooks/useInput";
 import { isEmail, hasMinLength } from "@/utils/utils";
 
 const Login: FC = () => {
-	const {
-		value: emailValue,
-		handleInputChange: handleEmailChange,
-		handleInputBlur: handleEmailBlur,
-		hasError: emailHasError,
-	} = useInput("", (value: string) => {
+	const emailInput = useInput("", (value: string) => {
 		return isEmail(value);
 	});
 
-	const {
-		value: passwordValue,
-		handleInputChange: handlePasswordChange,
-		handleInputBlur: handlePasswordBlur,
-		hasError: password1HasError,
-	} = useInput("", (value: string) => {
+	const passwordInput = useInput("", (value: string) => {
 		return hasMinLength(value, 8);
 	});
 
@@ -72,31 +62,31 @@ const Login: FC = () => {
 							hiddenLabel
 							placeholder="Enter email"
 							required
-							value={emailValue}
-							onChange={handleEmailChange}
-							onBlur={handleEmailBlur}
+							value={emailInput.value}
+							onChange={emailInput.handleInputChange}
+							onBlur={emailInput.handleInputBlur}
 							inputIcon={emailIcon}
 						></Input>
-						{emailHasError && <InputError message="Email must contain an @ sign" />}
+						{emailInput.hasError && <InputError message="Email must contain an @ sign" />}
 					</div>
 
 					<div>
 						<Input
-							id="password1"
+							id="password"
 							type={passwordInputType}
-							label="Password 1"
+							label="Password"
 							placeholder="Enter password"
 							inputIcon={eyeIcon}
 							hiddenLabel
 							clickableIcon
 							required
-							value={passwordValue}
-							onChange={handlePasswordChange}
-							onBlur={handlePasswordBlur}
+							value={passwordInput.value}
+							onChange={passwordInput.handleInputChange}
+							onBlur={passwordInput.handleInputBlur}
 							onClickIcon={toggleInputType}
 						></Input>
 
-						{password1HasError && (
+						{passwordInput.hasError && (
 							<InputError message="Password has to have at least 8 chars" />
 						)}
 					</div>

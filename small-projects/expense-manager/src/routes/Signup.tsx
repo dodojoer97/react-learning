@@ -21,7 +21,7 @@ import useToggleInputType from "@/hooks/useToggleInputType";
 import useInput from "@/hooks/useInput";
 
 // Util
-import { isEmail, hasMinLength } from "@/utils/utils";
+import { isEmail, hasMinLength, checkValuesEqual } from "@/utils/utils";
 
 // Store
 import { AuthContext } from "@/store/AuthContext";
@@ -36,42 +36,35 @@ const Signup: FC = () => {
 	// Navigation
 	const navigate = useNavigate();
 
-	const {
-		value: emailValue,
-		handleInputChange: handleEmailChange,
-		handleInputBlur: handleEmailBlur,
-		hasError: emailHasError,
-	} = useInput("", (value: string) => {
+	// Email field
+	const emailField = useInput("", (value: string) => {
 		return isEmail(value);
 	});
 
-	const {
-		value: password1Value,
-		handleInputChange: handlePassword1Change,
-		handleInputBlur: handlePassword1Blur,
-		hasError: password1HasError,
-		isTouched: isPassword1Touched,
-	} = useInput("", (value: string) => {
+	// Password fields
+	const password1Field =  useInput("", (value: string) => {
+		return hasMinLength(value, 8);
+	});
+	const password2Field = useInput("", (value: string) => {
 		return hasMinLength(value, 8);
 	});
 
-	const {
-		value: password2Value,
-		handleInputChange: handlePassword2Change,
-		handleInputBlur: handlePassword2Blur,
-		hasError: password2HasError,
-		isTouched: isPassword2Touched,
-	} = useInput("", (value: string) => {
-		return hasMinLength(value, 8);
-	});
-
-	// Check if the passowrds are equal
-	const arePasswordsEqual: boolean = password2Value === password1Value;
-	const displayPasswordsNotMatching: boolean =
-		!arePasswordsEqual && isPassword1Touched && isPassword2Touched;
-
+		
+	// Input type togglers
 	const { type: password1InputType, toggleInputType: togglePassword1Type } = useToggleInputType();
 	const { type: password2InputType, toggleInputType: togglePassword2Type } = useToggleInputType();
+
+
+	// Check if the passowrds are equal
+	const arePasswordsEqual: boolean = checkValuesEqual(password1Field.value, password2Field.value)
+
+	// Check if the passwords are not equal, and they both been edited
+	const displayPasswordsNotMatching: boolean =
+		!arePasswordsEqual && password1Field.isTouched && password2Field.isTouched;
+
+	// Check if we have any errors
+	const hasErrors: boolean = emailField.hasError || password1Field.hasError || password2Field.hasError
+
 
 	// Handle submit
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -114,13 +107,13 @@ const Signup: FC = () => {
 							hiddenLabel
 							placeholder="Enter email"
 							required
-							value={emailValue}
-							onChange={handleEmailChange}
-							onBlur={handleEmailBlur}
+							value={emailField.value}
+							onChange={emailField.handleInputChange}
+							onBlur={emailField.handleInputBlur}
 							inputIcon={emailIcon}
 						></Input>
 
-						{emailHasError && <InputError message="Email must contain an @ sign" />}
+						{emailField.hasError && <InputError message="Email must contain an @ sign" />}
 					</div>
 
 					<div>
@@ -133,13 +126,13 @@ const Signup: FC = () => {
 							hiddenLabel
 							clickableIcon
 							required
-							value={password1Value}
-							onChange={handlePassword1Change}
-							onBlur={handlePassword1Blur}
+							value={password1Field.value}
+							onChange={password1Field.handleInputChange}
+							onBlur={password1Field.handleInputBlur}
 							onClickIcon={togglePassword1Type}
 						></Input>
 
-						{password1HasError && (
+						{password1Field.hasError && (
 							<InputError message="Password has to have at least 8 chars" />
 						)}
 					</div>
@@ -153,12 +146,12 @@ const Signup: FC = () => {
 							hiddenLabel
 							clickableIcon
 							required
-							value={password2Value}
-							onChange={handlePassword2Change}
-							onBlur={handlePassword2Blur}
+							value={password2Field.value}
+							onChange={password2Field.handleInputChange}
+							onBlur={password2Field.handleInputBlur}
 							onClickIcon={togglePassword2Type}
 						></Input>
-						{password2HasError && (
+						{password2Field.hasError && (
 							<InputError message="Password has to have at least 8 chars" />
 						)}
 					</div>
@@ -168,7 +161,8 @@ const Signup: FC = () => {
 					<div>
 						<Button
 							type="submit"
-							className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white w-full"
+							disabled={hasErrors}
+							className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white w-full disabled:bg-slate-400"
 						>
 							Create account
 						</Button>

@@ -43,3 +43,16 @@ export const promisify = <T>(
 		}, resolveTime);
 	});
 };
+
+
+/**
+ * Checks if two values are equal.
+ *
+ * @template T - The type of the values to compare.
+ * @param {T} value1 - The first value to compare.
+ * @param {T} value2 - The second value to compare.
+ * @returns {boolean} - Returns true if the values are equal, otherwise false.
+ */
+export const checkValuesEqual = <T>(value1: T , value2: T): boolean => {
+	return value1 === value2
+}

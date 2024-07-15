@@ -57,7 +57,6 @@ const Login: FC = () => {
 
 
 	// Handle submit
-
 	const { handleSubmit, isSubmitted} = useFormSubmission(async () => {
 		if(hasErrors) return
 
@@ -68,11 +67,7 @@ const Login: FC = () => {
 
 	// Handle post-signup logic
 	useEffect(() => {
-		console.log("authCTX.error: ", authCTX.error)
-		console.log("isSubmitted: ", isSubmitted)
 		if (!authCTX.error && isSubmitted) {
-			// Show a success message or redirect to a success page
-			alert("Signup successful! Please log in to continue.");
 			navigate("/"); // Redirect to login page
 		}
 	}, [authCTX.error, isSubmitted]);
@@ -127,6 +122,9 @@ const Login: FC = () => {
 						)}
 					</div>
 
+					{authCTX.error && <InputError message={authCTX.error} className="text-red-600"/>}
+
+
 					<div className="flex items-center justify-between">
 						<p className="text-sm text-gray-500">
 							No account?
@@ -144,7 +142,6 @@ const Login: FC = () => {
 						</Button>
 					</div>
 				</Form>
-				{authCTX.error && <div className="error">{authCTX.error}</div>}
 			</div>
 		</Layout>
 	);

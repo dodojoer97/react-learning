@@ -34,7 +34,7 @@ const Input: FC<InputProps> = ({
 						id={id}
 						name={id}
 						{...props}
-						className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+						className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus-visible:outline-black"
 					/>
 					{inputIcon && (
 						<span className="absolute inset-y-0 end-0 grid place-content-center px-4">

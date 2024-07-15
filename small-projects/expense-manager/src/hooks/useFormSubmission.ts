@@ -8,6 +8,7 @@ import { useState } from 'react';
  *  - `isSubmitting`: a boolean indicating if the submission is in progress
  *  - `error`: a string storing an error message if an error occurs
  *  - `handleSubmit`: a function to call when the form is submitted
+ * -   `setIsSubmitted`: a funciton to update the submission state
  */
 const useFormSubmission = (handleSubmitLogic: () => Promise<void>) => {
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
@@ -27,7 +28,7 @@ const useFormSubmission = (handleSubmitLogic: () => Promise<void>) => {
         }
     };
 
-    return { isSubmitted, error, handleSubmit };
+    return { isSubmitted, error, handleSubmit, setIsSubmitted};
 }
 
 export default useFormSubmission;

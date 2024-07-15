@@ -83,7 +83,7 @@ const Signup: FC = () => {
 			alert("Signup successful! Please log in to continue.");
 			navigate("/login"); // Redirect to login page
 		}
-	}, [authCTX.error, navigate]);
+	}, [authCTX.error, isSubmitted]);
 
 	return (
 		<Layout>
@@ -170,7 +170,7 @@ const Signup: FC = () => {
 						</Button>
 					</div>
 				</Form>
-				{authCTX.error && <div className="error">{authCTX.error}</div>}
+				{authCTX.error && isSubmitted && <div className="error">{authCTX.error}</div>}
 			</div>
 		</Layout>
 	);

@@ -69,7 +69,6 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 		} catch (error) {
 			if (isError(error)) {
-				console.log('error: ', error.message)
 				setError(error.message);
 				return
 			}

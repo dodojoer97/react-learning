@@ -13,7 +13,6 @@ const NavigationGuard: FC<PropsWithChildren> = ({ children }) => {
 
   const location = useLocation()
   useEffect(() => {
-    console.log("clearError")
     clearError();
   }, [location]);
 

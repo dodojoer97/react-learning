@@ -2,70 +2,96 @@
 
 ## Overview
 
-This Expense Manager is a comprehensive web application designed to help users track their daily expenses efficiently. Built using React, Tailwind CSS, and TypeScript, it features a modular component architecture, responsive design, and user-friendly interfaces.
+The Expense Manager is a dynamic web application designed for tracking and managing daily expenses. Developed using React, Tailwind CSS, and TypeScript, it features a responsive design, modular component architecture, and intuitive user interfaces. This application simplifies personal finance management through structured navigation and efficient data handling.
+
+## Application Structure
+
+This section outlines the application's routing and page layout, providing details on how components are organized across different routes.
+
+### Routes
+
+1. **Home Page (`/`)**
+   - **Components**: Header
+   - **Description**: Presents a welcoming title and brief description of the application, serving as an entry point to other features.
+
+2. **Expenses (`/expenses`)**
+   - **Components**: Header, Expense List, Expense Form, Category Filter, Date Range Picker
+   - **Description**: This page is dedicated to expense management, allowing users to add new expenses, edit existing ones, and filter through expenses by category or date.
+
+3. **Analytics (`/analytics`)**
+   - **Components**: Header, Chart Components (Pie Chart, Bar Graph), Date Range Picker
+   - **Description**: Provides visual analytics of financial data, enabling users to gain insights through charts and graphs based on selected date ranges.
+
+4. **Login Page (`/login`)**
+   - **Components**: Header, Login Component
+   - **Description**: Facilitates user authentication with a form for entering credentials. This page provides access to registered users to manage their expenses.
+
+5. **Signup Page (`/signup`)**
+   - **Components**: Header, Signup Component
+   - **Description**: Allows new users to create an account, enabling them to use the application's features to manage personal finances.
+
+6. **Settings Page (`/settings`)**
+   - **Components**: Header, Settings Component
+   - **Description**: Enables users to customize application settings such as currency or theme preferences. Provides tools to manage account details and configuration.
 
 ## Key Components
 
-### 1. Navbar Component
+### 1. Header Component
 
--   **Purpose**: Provides navigation links and displays a summary of total expenses.
--   **Features**: Responsive design with links to different sections of the application.
+-   **Purpose**: Provides navigation links and quick access to major sections of the application.
+-   **Features**: Responsive design with links to the Home, Expenses, Analytics, Login, Signup, and Settings pages.
 
 ### 2. Expense Form Component
 
--   **Purpose**: Allows users to add or edit expenses.
--   **Features**: Form with fields for expense name, amount, category, and date. Includes validation and submission functionalities.
+-   **Purpose**: Facilitates the addition and editing of expenses.
+-   **Features**: A form equipped with fields for expense name, amount, category, and date, along with validation and submission functionalities.
 
 ### 3. Expense List Component
 
--   **Purpose**: Displays a list of all recorded expenses.
--   **Features**: Each entry shows details like name, amount, category, date, with options to edit or delete.
+-   **Purpose**: Displays all recorded expenses.
+-   **Features**: Shows detailed entries including name, amount, category, date, with options to edit or delete.
 
 ### 4. Category Filter Component
 
--   **Purpose**: Enables filtering of expenses based on categories.
--   **Features**: Dropdown or button group to select categories for filtering the list.
+-   **Purpose**: Enables expenses to be filtered based on categories.
+-   **Features**: Utilizes a dropdown or button group for category selection.
 
 ### 5. Date Range Picker Component
 
--   **Purpose**: Allows users to filter expenses based on a custom date range.
--   **Features**: Integration of a date range picker for selecting start and end dates.
+-   **Purpose**: Filters expenses over a selected date range.
+-   **Features**: Integrates a date range picker tool for defining specific start and end dates.
 
 ### 6. Summary Component
 
--   **Purpose**: Provides a quick summary of expenses.
--   **Features**: Shows total expenses, expenses by category, and period comparisons.
+-   **Purpose**: Provides a brief overview of expenses.
+-   **Features**: Displays total expenses, categorized expenses, and comparative analyses over different periods.
 
 ### 7. Dashboard Component
 
--   **Purpose**: Serves as the main view aggregating multiple components for an overall summary.
--   **Features**: Includes the Summary Component and graphical representations like charts.
+-   **Purpose**: Acts as the central hub for viewing various financial summaries.
+-   **Features**: Incorporates Summary and Chart Components for a holistic financial overview.
 
 ### 8. Alert Component
 
--   **Purpose**: Displays alerts or messages (success or errors).
--   **Features**: Configurable for different types of messages based on user actions.
+-   **Purpose**: Communicates alerts or messages (successes or errors).
+-   **Features**: Customizable to display various message types based on user actions.
 
 ### 9. Authentication Components
 
--   **Purpose**: Manages user authentication.
--   **Features**: Components for login, registration, and password recovery processes.
+-   **Purpose**: Handles user authentication.
+-   **Features**: Includes components for login, registration, and password recovery.
 
 ### 10. Loading Component
 
 -   **Purpose**: Indicates ongoing data operations.
--   **Features**: Generic loading spinner or animation.
+-   **Features**: Displays a generic loading spinner or animation.
 
 ### 11. Chart Components (Pie Chart, Bar Graph)
 
--   **Purpose**: Visualizes financial data.
--   **Features**: Uses libraries like Chart.js to render expense data graphically.
+-   **Purpose**: Graphically represents financial data.
+-   **Features**: Employs libraries like Chart.js to visualize data effectively.
 
 ### 12. Settings Component
 
--   **Purpose**: Manages user-specific settings like currency or theme preferences.
--   **Features**: Form inputs for setting preferences stored and retrieved from local storage or a backend.
-
-### 13. Login Component
-
-### 14. Signup component
+-   **Purpose**: Manages user-specific settings such as currency or theme preferences.
+-   **Features**: Offers form inputs for configuring and retrieving settings from local storage or a backend.

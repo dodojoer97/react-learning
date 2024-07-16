@@ -6,13 +6,13 @@ import type { ChangeEvent } from "react";
  *
  * @param defaultValue The default value of the input.
  * @param validationFn The validation function to fire, should return `true` if valid.
- * @param clearError The error cleaning function to fire
+ * @param clearErrorFN The error cleaning function to fire
  * @returns Object containing input value, handlers for change and blur, and error state.
  */
 const useInput = (
 	defaultValue: string,
 	validationFn: (value: string) => boolean, // More explicit type
-	clearError?: () => void
+	clearErrorFN?: () => void
 ): {
 	value: string;
 	handleInputChange(e: ChangeEvent<HTMLInputElement>): void;
@@ -28,7 +28,7 @@ const useInput = (
 	function handleInputChange(e: ChangeEvent<HTMLInputElement>): void {
 		setValue(e.target.value);
 		setIsTouched(true);
-		clearError && clearError()
+		clearErrorFN && clearErrorFN()
 	}
 
 	function handleInputBlur(): void {

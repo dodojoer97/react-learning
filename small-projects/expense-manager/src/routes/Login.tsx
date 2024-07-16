@@ -91,11 +91,10 @@ const Login: FC = () => {
 		<Layout>
 			<div className='mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8'>
 				<div className='mx-auto max-w-lg text-center'>
-					<h1 className='text-2xl font-bold sm:text-3xl'>Login</h1>
+					<h1 className='text-2xl font-bold sm:text-3xl'>{t('loginTitle')}</h1>
 
 					<p className='mt-4 text-gray-500'>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Et libero
-						nulla eaque error neque ipsa culpa autem, at itaque nostrum!
+						{t('loginDesc')}
 					</p>
 				</div>
 
@@ -106,9 +105,9 @@ const Login: FC = () => {
 						<Input
 							id='email'
 							type='email'
-							label='Email'
+							label={t('enterEmail')}
 							hiddenLabel
-							placeholder='Enter email'
+							placeholder={t('enterEmail')}
 							required
 							value={emailField.value}
 							onChange={emailField.handleInputChange}
@@ -123,8 +122,8 @@ const Login: FC = () => {
 						<Input
 							id='password'
 							type={passwordInputType}
-							label='Password'
-							placeholder='Enter password'
+							label={t('enterPassword')}
+							placeholder={t('enterPassword')}
 							inputIcon={eyeIcon}
 							hiddenLabel
 							clickableIcon
@@ -148,7 +147,7 @@ const Login: FC = () => {
 
 					<div className='flex items-center justify-between'>
 						<p className='text-sm text-gray-500'>
-							{t('no')}
+							{t('noAccount')}
 							<Link
 								to='/signup'
 								className='underline'>

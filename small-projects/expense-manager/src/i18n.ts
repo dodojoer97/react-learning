@@ -3,12 +3,12 @@ import i18n from "i18next"
 import { initReactI18next } from "react-i18next"
 
 // Types
-import { Translations } from "@/locales/translation.d"
+import { ITranslationResources } from "@/locales/translation.d"
 
 // Translation objects
 import translationEN from "./locales/en/translations"
 
-const resources: { [locale: string]: { translation: Translations } } = {
+const resources: ITranslationResources  = {
 	en: {
 		translation: translationEN,
 	},

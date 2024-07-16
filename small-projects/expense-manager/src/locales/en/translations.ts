@@ -4,7 +4,8 @@ import {
 	ILoginTranslations,
 	IFormTranslations,
 	ISignupTranslations,
-	IHeaderTranslations
+	IHeaderTranslations,
+	ISettingsTranslations
 } from "@/locales/translation.d"
 
 // Translations for the home page
@@ -44,4 +45,8 @@ export const formsTranslations: IFormTranslations = {
 export const headerTranslations: IHeaderTranslations = {
 	signin: "Log in",
 	signup: "Sign up"
+}
+
+export const settingsTranslations: ISettingsTranslations =  {
+	settingsTitle: "Settings"
 }

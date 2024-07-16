@@ -12,10 +12,11 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
 	const authCTX = useContext(AuthContext);
 	return (
 		<>
-			<div className="relative">
+			<div className="relative bg-slate-50">
 				<Header />
-				<section className="bg-slate-50 h-svh">{children}</section>
-
+				<div className='mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8'>
+					<section className="bg-slate-50 h-svh">{children}</section>
+				</div>
 				{authCTX.loading && <Loader />}
 			</div>
 		</>

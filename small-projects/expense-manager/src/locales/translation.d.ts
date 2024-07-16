@@ -29,6 +29,10 @@ export interface IHeaderTranslations {
 	signup: string
 }
 
+export interface ISettingsTranslations {
+	settingsTitle: string
+}
+
 export interface ILocaleTranslations {
 	[locale: string]: {
 		home: IHomeTranslation
@@ -36,5 +40,6 @@ export interface ILocaleTranslations {
 		signup: ISignupTranslations
 		forms: IFormTranslations
 		header: IHeaderTranslations
+		settings: ISettingsTranslations
 	}
 }

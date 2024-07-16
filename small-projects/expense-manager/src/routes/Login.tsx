@@ -78,7 +78,7 @@ const Login: FC = () => {
 
 	useEffect(() => {
 		if (!authCTX.error && isSubmitted) {
-			navigate("/") 
+			navigate("/settings") 
 		}
 
 		return () => {
@@ -89,7 +89,6 @@ const Login: FC = () => {
 
 	return (
 		<Layout>
-			<div className='mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8'>
 				<div className='mx-auto max-w-lg text-center'>
 					<h1 className='text-2xl font-bold sm:text-3xl'>{t('loginTitle')}</h1>
 
@@ -164,7 +163,6 @@ const Login: FC = () => {
 						</Button>
 					</div>
 				</Form>
-			</div>
 		</Layout>
 	)
 }

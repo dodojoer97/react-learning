@@ -6,15 +6,23 @@ import { initReactI18next } from "react-i18next"
 import { ILocaleTranslations } from "@/locales/translation.d"
 
 // Translation objects
-import {homeTranslations, loginTranslations, signupTranslations, formsTranslations, headerTranslations} from "./locales/en/translations"
+import {
+	homeTranslations,
+	loginTranslations,
+	signupTranslations,
+	formsTranslations,
+	headerTranslations,
+	settingsTranslations,
+} from "./locales/en/translations"
 
-const resources: ILocaleTranslations  = {
+const resources: ILocaleTranslations = {
 	en: {
-    home: homeTranslations,
-    login: loginTranslations,
-    signup: signupTranslations,
-    forms: formsTranslations,
-    header: headerTranslations
+		home: homeTranslations,
+		login: loginTranslations,
+		signup: signupTranslations,
+		forms: formsTranslations,
+		header: headerTranslations,
+		settings: settingsTranslations,
 	},
 }
 
@@ -24,7 +32,7 @@ i18n
 		resources,
 		lng: "en", // language to use
 		fallbackLng: "en", // language to use if translations in user language are not available
-    ns: ["home", "login", "signup", "forms"], // available namespaces
+		ns: ["home", "login", "signup", "forms"], // available namespaces
 		interpolation: {
 			escapeValue: false, // react already safes from xss
 		},

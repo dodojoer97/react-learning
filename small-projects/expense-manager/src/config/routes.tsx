@@ -5,6 +5,7 @@ import {ReactNode } from "react";
 import LoginPage from '@/routes/Login';
 import HomePage from '@/routes/Home';
 import SignUp from '@/routes/Signup';
+import Settings from '@/routes/Settings';
 
 // Define the interface for a route configuration
 export interface RouteConfig {
@@ -29,6 +30,11 @@ export const routeConfig: RouteConfig[] = [
         path: "/signup",
         component: <SignUp />,
         protected: false,
+    },
+    {
+        path: "/settings",
+        component: <Settings />,
+        protected: true,
     },
 ];
 

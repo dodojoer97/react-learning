@@ -1,5 +1,5 @@
 // React
-import type { FC } from "react";
+import { FC } from "react";
 
 // React router
 import { RouterProvider } from "react-router-dom";
@@ -9,6 +9,8 @@ import router from "./Router";
 
 // Context
 import AuthContextProvider from "@/store/AuthContext";
+
+
 
 const App: FC = () => {
 	return (

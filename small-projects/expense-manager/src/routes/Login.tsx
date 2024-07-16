@@ -34,7 +34,7 @@ import { AuthContext } from "@/store/AuthContext"
 import LoginDTO from "@/DTO/request/Login"
 
 const Login: FC = () => {
-	const { t } = useTranslation("login");
+	const { t } = useTranslation(["login", "forms"]);
 
 	// Navigation
 	const navigate = useNavigate()
@@ -105,16 +105,16 @@ const Login: FC = () => {
 						<Input
 							id='email'
 							type='email'
-							label={t('enterEmail')}
+							label={t('forms:enterEmail')}
 							hiddenLabel
-							placeholder={t('enterEmail')}
+							placeholder={t('forms:enterEmail')}
 							required
 							value={emailField.value}
 							onChange={emailField.handleInputChange}
 							onBlur={emailField.handleInputBlur}
 							inputIcon={emailIcon}></Input>
 						{emailField.hasError && (
-							<InputError message='Email must contain an @ sign' />
+							<InputError message={t('forms:noEmailMatching')} />
 						)}
 					</div>
 
@@ -122,8 +122,8 @@ const Login: FC = () => {
 						<Input
 							id='password'
 							type={passwordInputType}
-							label={t('enterPassword')}
-							placeholder={t('enterPassword')}
+							label={t('forms:enterPassword')}
+							placeholder={t('forms:enterPassword')}
 							inputIcon={eyeIcon}
 							hiddenLabel
 							clickableIcon
@@ -134,7 +134,7 @@ const Login: FC = () => {
 							onClickIcon={toggleInputType}></Input>
 
 						{password1Field.hasError && (
-							<InputError message='Password has to have at least 8 chars' />
+							<InputError message={t('forms:notPasswordLength')} />
 						)}
 					</div>
 

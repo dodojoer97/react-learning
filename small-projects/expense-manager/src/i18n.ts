@@ -6,7 +6,7 @@ import { initReactI18next } from "react-i18next"
 import { ILocaleTranslations } from "@/locales/translation.d"
 
 // Translation objects
-import {homeTranslations, loginTranslations, signupTranslations, formsTranslations} from "./locales/en/translations"
+import {homeTranslations, loginTranslations, signupTranslations, formsTranslations, headerTranslations} from "./locales/en/translations"
 
 const resources: ILocaleTranslations  = {
 	en: {
@@ -14,6 +14,7 @@ const resources: ILocaleTranslations  = {
     login: loginTranslations,
     signup: signupTranslations,
     forms: formsTranslations,
+    header: headerTranslations
 	},
 }
 

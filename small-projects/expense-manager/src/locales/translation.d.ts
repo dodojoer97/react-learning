@@ -13,6 +13,9 @@ export interface ILoginTranslations {
 export interface IFormTranslations {
 	enterPassword: string
 	enterEmail: string
+    notPasswordLength: string
+	notMatchingPasswords: string
+    noEmailMatching: string
 }
 
 export interface ISignupTranslations {
@@ -21,11 +24,17 @@ export interface ISignupTranslations {
 	createAccount: string
 }
 
+export interface IHeaderTranslations {
+	signin: string
+	signup: string
+}
+
 export interface ILocaleTranslations {
 	[locale: string]: {
 		home: IHomeTranslation
 		login: ILoginTranslations
 		signup: ISignupTranslations
 		forms: IFormTranslations
+		header: IHeaderTranslations
 	}
 }

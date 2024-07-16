@@ -1,6 +1,9 @@
 import { FC, useState } from "react";
 import { Link } from "react-router-dom"; // Import Link
 
+// Translation
+import { useTranslation } from 'react-i18next';
+
 // Assets
 import viteLogo from "/vite.svg";
 import closeIcon from "@/assets/close.svg";
@@ -10,6 +13,8 @@ import burgerIcon from "@/assets/burger.svg";
 import Button from "@/components/UI/Button";
 
 const Header: FC = () => {
+	const {t} = useTranslation("header")
+
 	const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
 	const handleToggleMenu = (): void => {
@@ -31,13 +36,13 @@ const Header: FC = () => {
 							to="/login"
 							className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
 						>
-							Log in
+							{t('signin')}
 						</Link>
 						<Link
 							to="/signup"
 							className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
 						>
-							Signup
+							{t('signup')}
 						</Link>
 						<Button
 							onClick={handleToggleMenu}
@@ -46,7 +51,6 @@ const Header: FC = () => {
 							aria-controls="mobile-menu-2"
 							aria-expanded="false"
 						>
-							<span className="sr-only">Open main menu</span>
 							<img src={menuIcon} alt="menuIcon" className={` w-6 h-6`} />
 						</Button>
 					</div>

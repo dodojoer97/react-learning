@@ -131,9 +131,9 @@ const Signup: FC = () => {
 						<Input
 							id='email'
 							type='email'
-							label='Email'
+							label={t('forms:enterEmail')}
 							hiddenLabel
-							placeholder='Enter email'
+							placeholder={t('forms:enterEmail')}
 							required
 							value={emailField.value}
 							onChange={emailField.handleInputChange}
@@ -141,7 +141,7 @@ const Signup: FC = () => {
 							inputIcon={emailIcon}></Input>
 
 						{emailField.hasError && (
-							<InputError message='Email must contain an @ sign' />
+							<InputError message={t('forms:noEmailMatching')} />
 						)}
 					</div>
 
@@ -149,8 +149,8 @@ const Signup: FC = () => {
 						<Input
 							id='password1'
 							type={password1InputType}
-							label='Password 1'
-							placeholder='Enter password'
+							label={t('forms:enterPassword')}
+							placeholder={t('forms:enterPassword')}
 							inputIcon={eyeIcon}
 							hiddenLabel
 							clickableIcon
@@ -161,15 +161,15 @@ const Signup: FC = () => {
 							onClickIcon={togglePassword1Type}></Input>
 
 						{password1Field.hasError && (
-							<InputError message='Password has to have at least 8 chars' />
+							<InputError message={t('forms:notPasswordLength')} />
 						)}
 					</div>
 					<div>
 						<Input
 							id='password2'
 							type={password2InputType}
-							label='Confirm password'
-							placeholder='Confirm password'
+							label={t('forms:enterPassword')}
+							placeholder={t('forms:enterPassword')}
 							inputIcon={eyeIcon}
 							hiddenLabel
 							clickableIcon
@@ -179,12 +179,12 @@ const Signup: FC = () => {
 							onBlur={password2Field.handleInputBlur}
 							onClickIcon={togglePassword2Type}></Input>
 						{password2Field.hasError && (
-							<InputError message='Password has to have at least 8 chars' />
+							<InputError message={t('forms:notPasswordLength')} />
 						)}
 					</div>
 
 					{displayPasswordsNotMatching && (
-						<InputError message='Passwords must match' />
+						<InputError  message={t('forms:notMatchingPasswords')} />
 					)}
 
 					{authCTX.error && (
@@ -199,7 +199,7 @@ const Signup: FC = () => {
 							type='submit'
 							disabled={hasErrors}
 							className='inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white w-full disabled:bg-slate-400'>
-							Create account
+								{t('signup:createAccount')}
 						</Button>
 					</div>
 				</Form>

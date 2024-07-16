@@ -34,7 +34,7 @@ import { AuthContext } from "@/store/AuthContext"
 import LoginDTO from "@/DTO/request/Login"
 
 const Login: FC = () => {
-	const { t } = useTranslation();
+	const { t } = useTranslation("login");
 
 	// Navigation
 	const navigate = useNavigate()

@@ -2,6 +2,9 @@
 import { useContext, useEffect } from "react"
 import type { FC } from "react"
 
+// Translation
+import { useTranslation } from 'react-i18next';
+
 // Router
 import { useNavigate } from "react-router-dom"
 
@@ -31,6 +34,10 @@ import { AuthContext } from "@/store/AuthContext"
 import SignupDTO from "@/DTO/request/Signup"
 
 const Signup: FC = () => {
+	const { t, ready } = useTranslation(["signup", "forms"]);
+	if (!ready) {
+		return <div>Loading...</div>; // Or some loading spinner
+	  }
 	// Store
 	const authCTX = useContext(AuthContext)
 
@@ -110,11 +117,10 @@ const Signup: FC = () => {
 		<Layout>
 			<div className='mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8'>
 				<div className='mx-auto max-w-lg text-center'>
-					<h1 className='text-2xl font-bold sm:text-3xl'>Get started today!</h1>
+					<h1 className='text-2xl font-bold sm:text-3xl'>{t('signup:signupTitle')}</h1>
 
 					<p className='mt-4 text-gray-500'>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Et libero
-						nulla eaque error neque ipsa culpa autem, at itaque nostrum!
+						{t('signup:signupDesc')}
 					</p>
 				</div>
 

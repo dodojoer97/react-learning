@@ -7,7 +7,7 @@ import Layout from "@/components/UI/Layout";
 import { useTranslation } from 'react-i18next';
 
 const Home: FC = () => {
-	const {t} = useTranslation()
+	const {t} = useTranslation("home")
 
 	return (
 		<Layout>

@@ -16,20 +16,16 @@ export interface IFormTranslations {
 }
 
 export interface ISignupTranslations {
-    signupTitle: string
-    signupDesc: string
-    createAccount: string
+	signupTitle: string
+	signupDesc: string
+	createAccount: string
 }
 
 export interface ILocaleTranslations {
-    home: IHomeTranslation,
-    login: ILoginTranslations,
-    signup: ISignupTranslations,
-    forms: IFormTranslations
-}
-
-export interface ITranslationResources {
-    [language: string]: {
-        translation: ILocaleTranslations;
-    };
+	[locale: string]: {
+		home: IHomeTranslation
+		login: ILoginTranslations
+		signup: ISignupTranslations
+		forms: IFormTranslations
+	}
 }

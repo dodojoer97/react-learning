@@ -5,8 +5,8 @@
  * @returns {boolean} Returns true if the string includes an '@', indicating it could be an email address.
  */
 export const isEmail = (value: string): boolean => {
-	return value.includes("@");
-};
+	return value.includes("@")
+}
 
 /**
  * Determines if the provided string meets a minimum length requirement.
@@ -16,8 +16,8 @@ export const isEmail = (value: string): boolean => {
  * @returns {boolean} Returns true if the string's length is greater than or equal to the minLength.
  */
 export const hasMinLength = (value: string, minLength: number): boolean => {
-	return value.length >= minLength;
-};
+	return value.length >= minLength
+}
 
 /**
  * Converts a value to a Promise that resolves or rejects after a specified time.
@@ -36,14 +36,13 @@ export const promisify = <T>(
 	return new Promise((resolve, reject) => {
 		setTimeout(() => {
 			if (shouldReject) {
-				reject(new Error("Promise rejected as requested."));
+				reject(new Error("Promise rejected as requested."))
 			} else {
-				resolve(value);
+				resolve(value)
 			}
-		}, resolveTime);
-	});
-};
-
+		}, resolveTime)
+	})
+}
 
 /**
  * Checks if two values are equal.
@@ -53,6 +52,27 @@ export const promisify = <T>(
  * @param {T} value2 - The second value to compare.
  * @returns {boolean} - Returns true if the values are equal, otherwise false.
  */
-export const checkValuesEqual = <T>(value1: T , value2: T): boolean => {
+export const checkValuesEqual = <T>(value1: T, value2: T): boolean => {
 	return value1 === value2
+}
+
+/**
+ * Retrieves the currency sign for a given currency code.
+ *
+ * This function uses `Intl.NumberFormat` to format a number according to the specified currency
+ * and extracts the currency sign from the formatted parts.
+ *
+ * @param {string} currency - The currency code (e.g., "USD", "ILS").
+ * @returns {string} - The currency sign associated with the given currency code.
+ */
+
+export const getCurrencySign = (currency: string): string => {
+	const formatter = new Intl.NumberFormat("en-US", {
+		style: "currency",
+		currency,
+	})
+	const parts = formatter.formatToParts(1.0)
+	const currencySign =
+		parts.find((part) => part.type === "currency")?.value || ""
+	return currencySign
 }

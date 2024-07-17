@@ -1,25 +1,29 @@
 // React
-import { FC } from "react";
+import { FC } from "react"
 
 // React router
-import { RouterProvider } from "react-router-dom";
+import { RouterProvider } from "react-router-dom"
 
 // Router
-import router from "./Router";
+import router from "./Router"
 
 // Context
-import AuthContextProvider from "@/store/AuthContext";
-
-
+import AuthContextProvider from "@/store/AuthContext"
+import SettingsContextProvider from "@/store/SettingsContext"
 
 const App: FC = () => {
 	return (
 		<>
 			<AuthContextProvider>
-				<RouterProvider router={router} fallbackElement={<p>Initial Load...</p>} />;
+				<SettingsContextProvider>
+					<RouterProvider
+						router={router}
+						fallbackElement={<p>Initial Load...</p>}
+					/>
+				</SettingsContextProvider>
 			</AuthContextProvider>
 		</>
-	);
-};
+	)
+}
 
-export default App;
+export default App

@@ -37,7 +37,7 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	const formatCurrency = (amount: number): string => {
 		return new Intl.NumberFormat("en-US", {
 			style: "currency",
-			currency: currency.sign,
+			currency: currency.value,
 		}).format(amount)
 	}
 

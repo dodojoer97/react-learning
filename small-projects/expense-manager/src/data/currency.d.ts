@@ -1,4 +1,4 @@
 export interface Currency {
-	descriptor: string
-	sign: string
+	text: string
+	value: string
 }

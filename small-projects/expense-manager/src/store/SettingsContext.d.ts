@@ -6,4 +6,5 @@ export interface ISettingsContext {
 	categories: Category[]
 	addCategory: (category: Category) => void
 	formatCurrency: (amount: number) => string
+	setCurrency: (currency: Currency) => void
 }

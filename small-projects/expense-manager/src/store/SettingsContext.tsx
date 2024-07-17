@@ -23,6 +23,7 @@ export const SettingsContext: Context<ISettingsContext> =
 		categories: [],
 		formatCurrency: () => "",
 		addCategory: () => {},
+		setCurrency: () => {},
 	})
 
 const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -44,6 +45,10 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		setCategories([...categories, category])
 	}
 
+	const handleSetCurrency = (currency: Currency): void => {
+		setCurrency(currency)
+	}
+
 	// Values
 	const contextValue: ISettingsContext = {
 		currency,
@@ -51,6 +56,7 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		categories,
 		formatCurrency,
 		addCategory,
+		setCurrency: handleSetCurrency,
 	}
 
 	return (

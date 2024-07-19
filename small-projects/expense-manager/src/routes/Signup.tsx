@@ -188,7 +188,7 @@ const Signup: FC = () => {
 						disabled={hasErrors || isLoading}
 						className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white w-full disabled:bg-slate-400"
 					>
-						{false ? <Loader /> : t("signup:createAccount")}
+						{isLoading ? <Loader /> : t("signup:createAccount")}
 					</Button>
 				</div>
 			</Form>

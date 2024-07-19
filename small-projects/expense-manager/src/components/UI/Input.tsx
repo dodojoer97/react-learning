@@ -1,7 +1,7 @@
-import type { FC } from "react"
+import type { FC } from "react";
 
 // Props
-import { InputProps } from "./Input.d"
+import { InputProps } from "./Input.d";
 
 const Input: FC<InputProps> = ({
 	type,
@@ -16,26 +16,24 @@ const Input: FC<InputProps> = ({
 	return (
 		<>
 			<div>
-				<label
-					htmlFor={id}
-					className={hiddenLabel ? "absolute" : undefined}>
+				<label htmlFor={id} className={hiddenLabel ? "opacity-0" : undefined}>
 					{label}
 				</label>
 
-				<div className='relative'>
+				<div className="relative">
 					<input
 						type={type}
 						id={id}
 						name={id}
 						{...props}
-						className='w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus-visible:outline-black'
+						className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus-visible:outline-black"
 					/>
 					{inputIcon && (
-						<span className='absolute inset-y-0 end-0 grid place-content-center px-4'>
+						<span className="absolute inset-y-0 end-0 grid place-content-center px-4">
 							<img
 								onClick={() => onClickIcon?.()}
 								src={inputIcon}
-								alt='Icon'
+								alt="Icon"
 								className={`size-4 text-gray-400, ${
 									clickableIcon ? "cursor-pointer" : ""
 								}`}
@@ -45,7 +43,7 @@ const Input: FC<InputProps> = ({
 				</div>
 			</div>
 		</>
-	)
-}
+	);
+};
 
-export default Input
+export default Input;

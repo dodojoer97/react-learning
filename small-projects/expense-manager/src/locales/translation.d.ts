@@ -33,6 +33,7 @@ export interface IHeaderTranslations {
 
 export interface ISettingsTranslations {
 	settingsTitle: string;
+	categoriesTitle: string;
 }
 
 export interface ILocaleTranslations {

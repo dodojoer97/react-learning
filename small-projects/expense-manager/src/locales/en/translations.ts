@@ -51,4 +51,5 @@ export const headerTranslations: IHeaderTranslations = {
 
 export const settingsTranslations: ISettingsTranslations = {
 	settingsTitle: "Settings",
+	categoriesTitle: "Categories",
 };

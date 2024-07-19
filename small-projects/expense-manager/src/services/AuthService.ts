@@ -38,7 +38,8 @@ class AuthService extends BaseService implements IAuthService {
 	 */
 	public async signup(dto: SignupDTO): Promise<User | undefined> {
 		try {
-			if(this.checkEmailExists(dto.email)) throw new Error("User with same credetials already exists")
+			if (this.checkEmailExists(dto.email))
+				throw new Error("User with same credetials already exists");
 
 			const currentUsers: User[] = this.getUsers();
 			const newUser = new User(uuidv4(), dto.email, dto.password);
@@ -65,6 +66,10 @@ class AuthService extends BaseService implements IAuthService {
 		try {
 			const foundUser: User | undefined = this.getUser(dto);
 
+			if (foundUser) {
+				this.storeToken(foundUser.id);
+			}
+
 			return promisify(foundUser, 500);
 		} catch (error) {
 			if (error instanceof Error) {
@@ -80,6 +85,7 @@ class AuthService extends BaseService implements IAuthService {
 	 */
 	public async logout(): Promise<void> {
 		try {
+			this.removeToken();
 			promisify("", 500);
 		} catch (error) {
 			if (error instanceof Error) {
@@ -87,11 +93,48 @@ class AuthService extends BaseService implements IAuthService {
 			}
 			throw error;
 		}
-		
 	}
 
+	/**
+	 * Stores the authentication token in local storage.
+	 * @param {string} token - The authentication token to be stored.
+	 */
+	private storeToken(token: string): void {
+		localStorage.setItem("authToken", token);
+	}
+
+	/**
+	 * Removes the authentication token from local storage.
+	 */
+	private removeToken(): void {
+		localStorage.removeItem("authToken");
+	}
+
+	/**
+	 * Retrieves the authentication token from local storage.
+	 * @returns {string | null} The authentication token if available, otherwise null.
+	 */
+	private getToken(): string | null {
+		return localStorage.getItem("authToken");
+	}
 
 	// ****** TODO create real backed *****
+	/**
+	 * Simulates validation of the authentication token by checking if it exists in the list of known user IDs.
+	 * @param {string} token - The authentication token to verify.
+	 * @returns {boolean} True if the token is valid, otherwise false.
+	 */
+	public async verifyToken(): Promise<boolean> {
+		try {
+			const token = this.getToken();
+			const users = this.getUsers(); // Assuming getUsers() fetches users with their tokens
+			const isValid = users.some((user) => user.id === token);
+
+			return promisify(isValid, 1000);
+		} catch (error) {
+			return false;
+		}
+	}
 
 	/**
 	 * Retrieves all users from local storage.
@@ -131,15 +174,18 @@ class AuthService extends BaseService implements IAuthService {
 		}
 	}
 
-
-	private checkEmailExists(email: string): boolean  {
-		const currentUsers: User[] = this.getUsers()
+	/**
+	 * Finds a user that matches the provided DTO credentials.
+	 * @param {string} email  - email string
+	 * @returns {boolean} check if the email is in the users array
+	 */
+	private checkEmailExists(email: string): boolean {
+		const currentUsers: User[] = this.getUsers();
 
 		// Array of emails
-		const emails = currentUsers.map((user: User) => user.email)
+		const emails = currentUsers.map((user: User) => user.email);
 
-		
-		return emails.includes(email)
+		return emails.includes(email);
 	}
 }
 

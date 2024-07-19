@@ -1,10 +1,10 @@
-import type { Category } from "@/models/Category"
+import type { Category } from "@/models/Category";
 
 export interface ISettingsContext {
-	currency: Currency
-	availableCurrencies: Currency[]
-	categories: Category[]
-	addCategory: (category: Category) => void
-	formatCurrency: (amount: number) => string
-	setCurrency: (currency: Currency) => void
+	currency: Currency;
+	availableCurrencies: Currency[];
+	categories: Category[];
+	addCategory: (category: Category) => void;
+	formatAmount: (amount: number) => string;
+	setCurrency: (currency: Currency) => void;
 }

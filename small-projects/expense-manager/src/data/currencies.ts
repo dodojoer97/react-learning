@@ -1,8 +1,8 @@
-import { Currency } from "./currency.d"
+import { Currency } from "./currency.d";
 
 const currencies: Currency[] = [
-	{ text: "ILS", value: "₪" },
-	{ text: "USD", value: "$" },
-]
+	{ text: "ILS ₪", value: "₪" },
+	{ text: "USD $", value: "$" },
+];
 
-export default currencies
+export default currencies;

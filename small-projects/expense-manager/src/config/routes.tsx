@@ -2,10 +2,10 @@
 import { ReactNode } from "react";
 
 // Routes
-import LoginPage from "@/routes/Login";
-import HomePage from "@/routes/Home";
-import SignUp from "@/routes/Signup";
-import Settings from "@/routes/Settings";
+import LoginPage from "@/pages/Login";
+import HomePage from "@/pages/Home";
+import SignUp from "@/pages/Signup";
+import Settings from "@/pages/Settings";
 
 // Define the interface for a route configuration
 export interface RouteConfig {

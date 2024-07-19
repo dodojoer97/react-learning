@@ -1,4 +1,8 @@
-import { FC, useState } from "react";
+// React
+import type { FC } from "react";
+import { useState, useContext } from "react";
+
+// Router
 import { NavLink } from "react-router-dom"; // Import NavLink
 
 // Translation
@@ -12,7 +16,11 @@ import burgerIcon from "@/assets/burger.svg";
 // Componenets
 import Button from "@/components/UI/Button";
 
+// Store
+import { AuthContext } from "@/store/AuthContext";
+
 const Header: FC = () => {
+	const { user } = useContext(AuthContext);
 	const { t } = useTranslation("header");
 
 	// CSS classes
@@ -72,16 +80,32 @@ const Header: FC = () => {
 					style={{ top: "61px" }}
 				>
 					<ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-						<li>
-							<NavLink
-								to="/settings"
-								className={({ isActive }) =>
-									`${baseNavClasses} ${isActive ? activeNavClasses : ""}`
-								}
-							>
-								{t("settings")}
-							</NavLink>
-						</li>
+						{user && (
+							<>
+								<li>
+									<NavLink
+										to="/settings"
+										className={({ isActive }) =>
+											`${baseNavClasses} ${isActive ? activeNavClasses : ""}`
+										}
+										end
+									>
+										{t("settings")}
+									</NavLink>
+								</li>
+								<li>
+									<NavLink
+										to="/settings/categories"
+										className={({ isActive }) =>
+											`${baseNavClasses} ${isActive ? activeNavClasses : ""}`
+										}
+										end
+									>
+										{t("categories")}
+									</NavLink>
+								</li>
+							</>
+						)}
 					</ul>
 				</div>
 			</nav>

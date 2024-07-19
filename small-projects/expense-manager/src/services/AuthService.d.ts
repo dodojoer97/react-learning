@@ -20,9 +20,8 @@ export interface IAuthService {
 	logout(): Promise<void>;
 
 	/**
-	 * Verifies if the provided token is valid by checking against a list of known user tokens.
-	 * @param {string} token - The authentication token to verify.
-	 * @returns {Promise<boolean>} True if the token is valid, otherwise false.
+	 * Simulates validation of the authentication token by retrieving the user associated with it.
+	 * @returns {Promise<User | undefined>} A promise that resolves to the user object if the token is valid, or undefined if it is not or an error occurs.
 	 */
-	verifyToken(token: string): Promise<boolean>;
+	verifyToken(): Promise<User | undefined>;
 }

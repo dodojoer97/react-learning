@@ -1,38 +1,73 @@
-// React
+// React imports
 import type { FC, PropsWithChildren } from "react";
 import { useEffect, useContext, useMemo } from "react";
 
-// Router
+// Router imports
 import { useLocation, useNavigate } from "react-router-dom";
 
-// Store
+// Store import for authentication context
 import { AuthContext } from "@/store/AuthContext";
 
-// Config
+// Services import for authentication service
+import AuthService from "@/services/AuthService";
+
+// Config import for route configuration
 import { routeConfig, RouteConfig } from "@/config/routes";
+
+// Models
+import User from "@/models/User";
 
 // Create the set of protected routes once, outside the component to avoid recreating it on each render
 const protectedRoutes: Set<string> = new Set(
-    routeConfig.filter((route: RouteConfig) => route.protected).map((route: RouteConfig) => route.path)
+	routeConfig
+		.filter((route: RouteConfig) => route.protected)
+		.map((route: RouteConfig) => route.path)
 );
 
 const NavigationGuard: FC<PropsWithChildren> = ({ children }) => {
-    const { user, clearError } = useContext(AuthContext);
-    const location = useLocation();
-    const navigate = useNavigate();
+	const { user, setUser, clearError, setLoading } = useContext(AuthContext);
+	const location = useLocation();
+	const navigate = useNavigate();
 
-    useEffect(() => {
-        // Clear any existing errors when the location changes
-        clearError();
+	const authService = useMemo(() => new AuthService(), []);
 
-        // Redirect the user to the login page if not authenticated and trying to access a protected route
-        if (!user && protectedRoutes.has(location.pathname)) {
-            // Redirect to login page and pass the current location in the state so we can redirect back after login
-            navigate('/login', { state: { from: location }, replace: true });
-        }
-    }, [user, location, navigate]);
+	useEffect(() => {
+		const checkSession = async () => {
+			console.log("check 1");
 
-    return <>{children}</>;
+			setLoading(true);
+			try {
+				let verifiedUser: User | undefined;
+				const storedToken = localStorage.getItem("authToken");
+
+				if (storedToken) {
+					verifiedUser = await authService.verifyToken();
+
+					if (verifiedUser) {
+						setUser(verifiedUser);
+					} else {
+						throw new Error("Session invalid");
+					}
+				}
+
+				if (!storedToken || !verifiedUser) {
+					if (protectedRoutes.has(location.pathname)) {
+						navigate("/login", { state: { from: location }, replace: true });
+					}
+				}
+			} catch (error) {
+				console.error("Error verifying token:", error);
+				// Handle error (e.g., show a notification to the user)
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		checkSession();
+		clearError();
+	}, [authService, location.pathname, navigate]);
+
+	return <>{children}</>;
 };
 
 export default NavigationGuard;

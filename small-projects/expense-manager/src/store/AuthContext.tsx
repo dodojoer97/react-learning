@@ -22,6 +22,8 @@ export const AuthContext: Context<IAuthContext> = createContext<IAuthContext>({
 	login: async () => {},
 	logout: async () => {},
 	clearError: () => {},
+	setLoading: () => {},
+	setUser: () => {},
 	user: undefined,
 	loading: false,
 	error: null,
@@ -42,12 +44,10 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 			const user: User | undefined = await authService.signup(dto);
 			setUser(user);
 			setLoading(false);
-
-
 		} catch (error) {
 			if (isError(error)) {
 				setError(error.message);
-				return
+				return;
 			}
 			setError("Something went wrong with signup");
 		} finally {
@@ -62,15 +62,13 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 			const user: User | undefined = await authService.login(dto);
 			setUser(user);
-			
 
 			setLoading(false);
 			clearError();
-
 		} catch (error) {
 			if (isError(error)) {
 				setError(error.message);
-				return
+				return;
 			}
 			setError("Something went wrong with login");
 		} finally {
@@ -89,7 +87,7 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		} catch (error) {
 			if (isError(error)) {
 				setError(error.message);
-				return
+				return;
 			}
 			setError("Something went wrong with logout");
 		} finally {
@@ -98,17 +96,27 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	};
 
 	const clearError = (): void => {
-		setError(null)
-	}
+		setError(null);
+	};
+
+	const handleSetLoading = (loading: boolean): void => {
+		setLoading(loading);
+	};
+
+	const handleSetUser = (user: User): void => {
+		setUser(user);
+	};
 
 	const contextValue = {
 		signup,
 		login,
 		logout,
+		setLoading: handleSetLoading,
+		setUser: handleSetUser,
+		clearError,
 		user,
 		loading,
 		error,
-		clearError
 	};
 
 	return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

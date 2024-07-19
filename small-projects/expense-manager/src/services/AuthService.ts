@@ -120,19 +120,21 @@ class AuthService extends BaseService implements IAuthService {
 
 	// ****** TODO create real backed *****
 	/**
-	 * Simulates validation of the authentication token by checking if it exists in the list of known user IDs.
-	 * @param {string} token - The authentication token to verify.
-	 * @returns {boolean} True if the token is valid, otherwise false.
+	 * Simulates validation of the authentication token by retrieving the user associated with it.
+	 * @returns {Promise<User | undefined>} A promise that resolves to the user object if the token is valid, or undefined if it is not or an error occurs.
 	 */
-	public async verifyToken(): Promise<boolean> {
+	public async verifyToken(): Promise<User | undefined> {
 		try {
-			const token = this.getToken();
-			const users = this.getUsers(); // Assuming getUsers() fetches users with their tokens
-			const isValid = users.some((user) => user.id === token);
+			const token = this.getToken(); // Retrieves the token from local storage
+			const users = this.getUsers(); // Retrieves all users
+			const user = users.find((user) => user.id === token); // Finds the user with the matching token
 
-			return promisify(isValid, 1000);
+			return promisify(user, 1000); // Returns the user asynchronously, simulating a delayed response
 		} catch (error) {
-			return false;
+			if (error instanceof Error) {
+				logger.error(error.message || "Something went wrong with getUser");
+			}
+			throw error;
 		}
 	}
 

@@ -7,6 +7,8 @@ export interface IAuthContext {
 	login: (dto: LoginDTO) => Promise<void>;
 	logout: () => Promise<void>;
 	clearError: () => void;
+	setLoading: (loading: boolean) => void;
+	setUser: (user: User) => void;
 	user: User | undefined;
 	loading: boolean;
 	error: string | null;

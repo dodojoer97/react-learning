@@ -14,10 +14,10 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
 		<>
 			<div className="relative bg-slate-50">
 				<Header />
-				<div className='mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8'>
+				<div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
 					<section className="bg-slate-50 h-svh">{children}</section>
 				</div>
-				{authCTX.loading && <Loader />}
+				{/* {authCTX.loading && <Loader />} */}
 			</div>
 		</>
 	);

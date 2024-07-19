@@ -50,18 +50,6 @@ const Header: FC = () => {
 					>
 						<img src={menuIcon} alt="menuIcon" className={` w-6 h-6`} />
 					</Button>
-					{user && (
-						<Button
-							onClick={logout}
-							type="button"
-							className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-							aria-controls="mobile-menu-2"
-							aria-expanded="false"
-						>
-							{/* <img src={menuIcon} alt="menuIcon" className={` w-6 h-6`} /> */}
-							logout
-						</Button>
-					)}
 
 					<NavLink to="/" className="flex items-center">
 						<img src={viteLogo} className="mr-3 h-6 sm:h-9" alt="Vite logo" />
@@ -83,6 +71,17 @@ const Header: FC = () => {
 						>
 							{t("signup")}
 						</NavLink>
+						{user && (
+							<Button
+								onClick={logout}
+								type="button"
+								className={baseNavClasses}
+								aria-controls="mobile-menu-2"
+								aria-expanded="false"
+							>
+								logout
+							</Button>
+						)}
 					</div>
 				</div>
 				<div

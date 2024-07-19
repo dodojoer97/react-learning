@@ -2,6 +2,8 @@
 import { createContext, useState, FC, Context } from "react";
 import type { PropsWithChildren } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 // DTO
 import SignupDTO from "@/DTO/request/Signup";
 import LoginDTO from "../DTO/request/Login";
@@ -80,7 +82,7 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		try {
 			setLoading(true);
 
-			authService.logout();
+			await authService.logout();
 
 			setUser(undefined);
 			setLoading(false);

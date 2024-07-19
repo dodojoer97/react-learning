@@ -36,8 +36,6 @@ const NavigationGuard: FC<PropsWithChildren> = ({ children }) => {
 
 	useEffect(() => {
 		const checkSession = async () => {
-			console.log("check 1");
-
 			setLoading(true); // Set loading state to true
 			try {
 				let verifiedUser: User | undefined;
@@ -80,7 +78,7 @@ const NavigationGuard: FC<PropsWithChildren> = ({ children }) => {
 		}
 		// Clear any existing errors when the location changes
 		clearError();
-	}, [authService, location.pathname, navigate]);
+	}, [authService, location.pathname, navigate, user]);
 
 	// Render children components
 	return <>{children}</>;

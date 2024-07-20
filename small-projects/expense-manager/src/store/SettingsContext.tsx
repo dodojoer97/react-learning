@@ -16,6 +16,9 @@ import currencies from "@/data/currencies";
 // MOCK
 import initialCategories from "@/MOCK/initialCategories";
 
+// Service
+import SettingsService from "@/services/SettingsService";
+
 export const SettingsContext: Context<ISettingsContext> = createContext<ISettingsContext>({
 	currency: currencies[0],
 	availableCurrencies: currencies,
@@ -26,6 +29,8 @@ export const SettingsContext: Context<ISettingsContext> = createContext<ISetting
 });
 
 const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
+	const settingsService = new SettingsService();
+
 	// State
 	const [currency, setCurrency] = useState<Currency>(currencies[0]);
 	const [availableCurrencies, setAvailableCurrencies] = useState<Currency[]>(currencies);
@@ -39,8 +44,10 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		}).format(amount);
 	};
 
-	const addCategory = (category: Category): void => {
-		setCategories([...categories, category]);
+	const addCategory = async (category: Category, userId: string): Promise<void> => {
+		const updatedCategories: Category[] = [...categories, category];
+		setCategories(updatedCategories);
+		await settingsService.setCategories(updatedCategories, userId);
 	};
 
 	const handleSetCurrency = (currency: Currency): void => {

@@ -97,7 +97,7 @@ class AuthService extends BaseService implements IAuthService {
 	 * @param {string} token - The authentication token to be stored.
 	 */
 	private async storeToken(token: string): Promise<void> {
-		await this.put("authToken", token);
+		await this.put("authToken", { token });
 	}
 
 	/**
@@ -109,9 +109,9 @@ class AuthService extends BaseService implements IAuthService {
 
 	/**
 	 * Retrieves the authentication token from local storage.
-	 * @returns {Promise<string | null>} The authentication token if available, otherwise null.
+	 * @returns {Promise<T | null>} The authentication token if available, otherwise null.
 	 */
-	private async getToken(): Promise<string | null> {
+	private async getToken<T extends { token: string }>(): Promise<T | null> {
 		return await this.get("authToken");
 	}
 
@@ -122,9 +122,9 @@ class AuthService extends BaseService implements IAuthService {
 	 */
 	public async verifyToken(): Promise<User | undefined> {
 		try {
-			const token = await this.getToken(); // Retrieves the token from local storage
+			const tokenObj = await this.getToken(); // Retrieves the token from local storage
 			const users = (await this.get<User[]>("users")) || []; // Retrieves all users
-			const user = users.find((user) => user.id === token); // Finds the user with the matching token
+			const user = users.find((user: User) => user.id === tokenObj?.token); // Finds the user with the matching token
 
 			return user; // Returns the user asynchronously, simulating a delayed response
 		} catch (error) {
@@ -141,6 +141,7 @@ class AuthService extends BaseService implements IAuthService {
 	 */
 	private async getUsers(): Promise<User[]> {
 		const currentUsersList = await this.get<User[]>("users");
+		console.log("currentUsersList: ", currentUsersList);
 		if (!currentUsersList || currentUsersList.length === 0) {
 			logger.info("No available users in signup");
 			return [];
@@ -157,6 +158,7 @@ class AuthService extends BaseService implements IAuthService {
 	private async getUser(dto: LoginDTO | SignupDTO): Promise<User | undefined> {
 		try {
 			const currentUsers: User[] = await this.getUsers();
+			console.log("currentUsers: ", currentUsers);
 			const foundUser: User | undefined = currentUsers.find(
 				(user: User) => user.email === dto.email && user.password === dto.password
 			);

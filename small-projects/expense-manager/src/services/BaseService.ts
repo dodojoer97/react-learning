@@ -127,16 +127,30 @@ class BaseService implements IBaseService {
 	 */
 	private async localGet<T>(endpoint: string, params?: T): Promise<T> {
 		let data = localStorage.getItem(endpoint);
-		if (params && data) {
-			const parsedData = JSON.parse(data) as T[];
-			const filteredData = parsedData.filter((item) => {
-				return Object.keys(params).every(
-					(key) => (item as any)[key] === (params as any)[key]
-				);
-			});
-			return this.promisify(filteredData as unknown as T, 1000);
+
+		if (!data) {
+			return this.promisify(null as unknown as T, 1000);
 		}
-		return this.promisify(data ? JSON.parse(data) : null, 1000);
+
+		try {
+			const parsedData = JSON.parse(data);
+			if (params) {
+				// const filteredData = parsedData.filter((item: T) => {
+				// 	return Object.keys(params).every(
+				// 		(key) => (item as any)[key] === (params as any)[key]
+				// 	);
+				// });
+				return this.promisify(parsedData as unknown as T, 1000);
+			}
+			return this.promisify(parsedData, 1000);
+		} catch (e) {
+			// If JSON.parse fails, return the raw string
+			if (!params) {
+				return this.promisify(data as unknown as T, 1000);
+			} else {
+				throw new Error("Filtering parameters provided, but data is not JSON");
+			}
+		}
 	}
 
 	/**
@@ -161,9 +175,11 @@ class BaseService implements IBaseService {
 		let currentItem = localStorage.getItem(endpoint);
 		if (currentItem) {
 			// Parse the current item
-			const currentData = JSON.parse(currentItem) as T;
+			const currentData = JSON.parse(currentItem) as any;
 			// Merge the current item with the new data
-			const updatedData = { ...currentData, ...data };
+			const updatedData = Array.isArray(currentData)
+				? [...currentData, ...(data as Array<any>)]
+				: { ...currentData, ...data };
 			// Store the updated item back in localStorage
 			localStorage.setItem(endpoint, JSON.stringify(updatedData));
 			return this.promisify(updatedData, 1000);

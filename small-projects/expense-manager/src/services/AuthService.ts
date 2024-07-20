@@ -12,9 +12,6 @@ import SignupDTO from "@/DTO/request/Signup";
 // Models
 import User from "@/models/User";
 
-// Utils
-import { promisify } from "@/utils/utils";
-
 const logger = new Logger("AuthService");
 
 /**
@@ -27,7 +24,7 @@ class AuthService extends BaseService implements IAuthService {
 	 * Sets up the base URL for the API.
 	 */
 	constructor() {
-		const baseUrl = "http://localhost:8000/someurl";
+		const baseUrl = "localStorage";
 		super(baseUrl);
 	}
 
@@ -38,16 +35,18 @@ class AuthService extends BaseService implements IAuthService {
 	 */
 	public async signup(dto: SignupDTO): Promise<User | undefined> {
 		try {
-			if (this.checkEmailExists(dto.email))
-				throw new Error("User with same credetials already exists");
+			if (await this.checkEmailExists(dto.email)) {
+				throw new Error("User with same credentials already exists");
+			}
 
-			const currentUsers: User[] = this.getUsers();
+			const currentUsers: User[] = (await this.get<User[]>("users")) || [];
 			const newUser = new User(uuidv4(), dto.email, dto.password);
 
 			const updatedUsers: User[] = [...currentUsers, newUser];
-			localStorage.setItem("users", JSON.stringify(updatedUsers));
 
-			return promisify(newUser, 1000);
+			await this.put("users", updatedUsers);
+
+			return newUser;
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with signup");
@@ -63,13 +62,13 @@ class AuthService extends BaseService implements IAuthService {
 	 */
 	public async login(dto: LoginDTO): Promise<User | undefined> {
 		try {
-			const foundUser: User | undefined = this.getUser(dto);
+			const foundUser: User | undefined = await this.getUser(dto);
 
 			if (foundUser) {
 				this.storeToken(foundUser.id);
 			}
 
-			return promisify(foundUser, 500);
+			return foundUser;
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with login");
@@ -85,7 +84,7 @@ class AuthService extends BaseService implements IAuthService {
 	public async logout(): Promise<void> {
 		try {
 			this.removeToken();
-			promisify("", 500);
+			await this.promisify<void>(undefined, 500);
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with logout");
@@ -117,7 +116,7 @@ class AuthService extends BaseService implements IAuthService {
 		return localStorage.getItem("authToken");
 	}
 
-	// ****** TODO create real backed *****
+	// ****** TODO create real backend *****
 	/**
 	 * Simulates validation of the authentication token by retrieving the user associated with it.
 	 * @returns {Promise<User | undefined>} A promise that resolves to the user object if the token is valid, or undefined if it is not or an error occurs.
@@ -125,13 +124,13 @@ class AuthService extends BaseService implements IAuthService {
 	public async verifyToken(): Promise<User | undefined> {
 		try {
 			const token = this.getToken(); // Retrieves the token from local storage
-			const users = this.getUsers(); // Retrieves all users
+			const users = (await this.get<User[]>("users")) || []; // Retrieves all users
 			const user = users.find((user) => user.id === token); // Finds the user with the matching token
 
-			return promisify(user, 1000); // Returns the user asynchronously, simulating a delayed response
+			return user; // Returns the user asynchronously, simulating a delayed response
 		} catch (error) {
 			if (error instanceof Error) {
-				logger.error(error.message || "Something went wrong with getUser");
+				logger.error(error.message || "Something went wrong with verifyToken");
 			}
 			throw error;
 		}
@@ -141,15 +140,14 @@ class AuthService extends BaseService implements IAuthService {
 	 * Retrieves all users from local storage.
 	 * @returns {User[]} An array of user objects.
 	 */
-	private getUsers(): User[] {
-		const currentUsersList = localStorage.getItem("users");
-		if (!currentUsersList && !currentUsersList?.length) {
+	private async getUsers(): Promise<User[]> {
+		const currentUsersList = await this.get<User[]>("users");
+		if (!currentUsersList || currentUsersList.length === 0) {
 			logger.info("No available users in signup");
 			return [];
 		}
 
-		const parsedUsers = JSON.parse(currentUsersList);
-		return parsedUsers;
+		return currentUsersList;
 	}
 
 	/**
@@ -157,9 +155,9 @@ class AuthService extends BaseService implements IAuthService {
 	 * @param {LoginDTO | SignupDTO} dto - DTO containing email and password for user lookup.
 	 * @returns {User | undefined} The found user or undefined if no user matches the credentials.
 	 */
-	private getUser(dto: LoginDTO | SignupDTO): User | undefined {
+	private async getUser(dto: LoginDTO | SignupDTO): Promise<User | undefined> {
 		try {
-			const currentUsers: User[] = this.getUsers();
+			const currentUsers: User[] = await this.getUsers();
 			const foundUser: User | undefined = currentUsers.find(
 				(user: User) => user.email === dto.email && user.password === dto.password
 			);
@@ -176,12 +174,12 @@ class AuthService extends BaseService implements IAuthService {
 	}
 
 	/**
-	 * Finds a user that matches the provided DTO credentials.
-	 * @param {string} email  - email string
-	 * @returns {boolean} check if the email is in the users array
+	 * Checks if an email already exists in the users array.
+	 * @param {string} email - The email to check.
+	 * @returns {Promise<boolean>} True if the email exists, otherwise false.
 	 */
-	private checkEmailExists(email: string): boolean {
-		const currentUsers: User[] = this.getUsers();
+	private async checkEmailExists(email: string): Promise<boolean> {
+		const currentUsers: User[] = await this.getUsers();
 
 		// Array of emails
 		const emails = currentUsers.map((user: User) => user.email);

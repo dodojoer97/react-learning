@@ -28,6 +28,9 @@ class BaseService implements IBaseService {
 	 * @returns {Promise<T>} A promise that resolves to the response data.
 	 */
 	async get<T extends object>(endpoint: string, params?: T): Promise<T> {
+		if (this.isLocalEnvironment()) {
+			return this.localGet<T>(endpoint, params);
+		}
 		const url = new URL(`${this.baseUrl}/${endpoint}`);
 		if (params) {
 			Object.keys(params).forEach((key) =>
@@ -48,6 +51,9 @@ class BaseService implements IBaseService {
 	 * @returns {Promise<T>} A promise that resolves to the response data.
 	 */
 	async post<T extends object>(endpoint: string, data: T): Promise<T> {
+		if (this.isLocalEnvironment()) {
+			return this.localPost<T>(endpoint, data);
+		}
 		const response = await fetch(`${this.baseUrl}/${endpoint}`, {
 			method: "POST",
 			headers: this.getDefaultHeaders(),
@@ -63,6 +69,9 @@ class BaseService implements IBaseService {
 	 * @returns {Promise<T>} A promise that resolves to the response data.
 	 */
 	async put<T extends object>(endpoint: string, data: T): Promise<T> {
+		if (this.isLocalEnvironment()) {
+			return this.localPut<T>(endpoint, data);
+		}
 		const response = await fetch(`${this.baseUrl}/${endpoint}`, {
 			method: "PUT",
 			headers: this.getDefaultHeaders(),
@@ -77,6 +86,9 @@ class BaseService implements IBaseService {
 	 * @returns {Promise<T>} A promise that resolves to the response data.
 	 */
 	async delete<T>(endpoint: string): Promise<T> {
+		if (this.isLocalEnvironment()) {
+			return this.localDelete<T>(endpoint);
+		}
 		const response = await fetch(`${this.baseUrl}/${endpoint}`, {
 			method: "DELETE",
 			headers: this.getDefaultHeaders(),
@@ -97,6 +109,90 @@ class BaseService implements IBaseService {
 		}
 		const data = await response.json();
 		return data as T;
+	}
+
+	/**
+	 * Check if the environment is local.
+	 * @returns {boolean} True if local environment, false otherwise.
+	 */
+	private isLocalEnvironment(): boolean {
+		return this.baseUrl.includes("localStorage");
+	}
+
+	/**
+	 * Local implementation of GET request with query parameters.
+	 * @param {string} endpoint - The endpoint to get data from.
+	 * @param {T} [params] - Optional query parameters.
+	 * @returns {Promise<T>} A promise that resolves to the data.
+	 */
+	private async localGet<T extends object>(endpoint: string, params?: T): Promise<T> {
+		let data = localStorage.getItem(endpoint);
+		if (params && data) {
+			const parsedData = JSON.parse(data) as T[];
+			const filteredData = parsedData.filter((item) => {
+				return Object.keys(params).every(
+					(key) => (item as any)[key] === (params as any)[key]
+				);
+			});
+			return this.promisify(filteredData as unknown as T, 1000);
+		}
+		return this.promisify(data ? JSON.parse(data) : null, 1000);
+	}
+
+	/**
+	 * Local implementation of POST request.
+	 * @param {string} endpoint - The endpoint to post data to.
+	 * @param {T} data - The data to post.
+	 * @returns {Promise<T>} A promise that resolves to the data.
+	 */
+	private async localPost<T extends object>(endpoint: string, data: T): Promise<T> {
+		localStorage.setItem(endpoint, JSON.stringify(data));
+		return this.promisify(data, 1000);
+	}
+
+	/**
+	 * Local implementation of PUT request.
+	 * @param {string} endpoint - The endpoint to put data to.
+	 * @param {T} data - The data to put.
+	 * @returns {Promise<T>} A promise that resolves to the updated data.
+	 */
+	private async localPut<T extends object>(endpoint: string, data: T): Promise<T> {
+		// Get the current item from localStorage
+		let currentItem = localStorage.getItem(endpoint);
+		if (currentItem) {
+			// Parse the current item
+			const currentData = JSON.parse(currentItem) as T;
+			// Merge the current item with the new data
+			const updatedData = { ...currentData, ...data };
+			// Store the updated item back in localStorage
+			localStorage.setItem(endpoint, JSON.stringify(updatedData));
+			return this.promisify(updatedData, 1000);
+		} else {
+			// If no current item, just set the new data
+			localStorage.setItem(endpoint, JSON.stringify(data));
+			return this.promisify(data, 1000);
+		}
+	}
+
+	/**
+	 * Local implementation of DELETE request.
+	 * @param {string} endpoint - The endpoint to delete data from.
+	 * @returns {Promise<T>} A promise that resolves to the data.
+	 */
+	private async localDelete<T>(endpoint: string): Promise<T> {
+		const data = localStorage.getItem(endpoint);
+		localStorage.removeItem(endpoint);
+		return this.promisify(data ? JSON.parse(data) : null, 1000);
+	}
+
+	/**
+	 * Promisify a value with a delay.
+	 * @param value The value to promisify.
+	 * @param delay The delay in milliseconds.
+	 * @returns A promise that resolves to the value after the specified delay.
+	 */
+	protected promisify<T>(value: T, delay: number): Promise<T> {
+		return new Promise((resolve) => setTimeout(() => resolve(value), delay));
 	}
 }
 

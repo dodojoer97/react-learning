@@ -45,7 +45,6 @@ class AuthService extends BaseService implements IAuthService {
 			const newUser = new User(uuidv4(), dto.email, dto.password);
 
 			const updatedUsers: User[] = [...currentUsers, newUser];
-
 			localStorage.setItem("users", JSON.stringify(updatedUsers));
 
 			return promisify(newUser, 1000);

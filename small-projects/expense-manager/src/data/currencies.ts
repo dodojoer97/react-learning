@@ -1,4 +1,4 @@
-import { Currency } from "./currency.d";
+import Currency from "@/models/Currency";
 
 const currencies: Currency[] = [
 	{ text: "ILS ₪", value: "₪" },

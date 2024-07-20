@@ -18,7 +18,7 @@ class SettingsService extends BaseService implements ISettingsService {
 	 * Sets up the base URL for the API.
 	 */
 	constructor() {
-		const baseUrl = "http://localhost:8000/someurl";
+		const baseUrl = "localStorage";
 		super(baseUrl);
 	}
 
@@ -52,6 +52,30 @@ class SettingsService extends BaseService implements ISettingsService {
 	public async setCurrency(userId: string, currency: Currency): Promise<void> {
 		const endpoint = `users/${userId}/currency`;
 		await this.put<Currency>(endpoint, currency);
+	}
+
+	/**
+	 * Creates a new category for a user.
+	 * @param {Category} category - The category to create.
+	 * @param {string} userId - The ID of the user.
+	 * @returns {Promise<void>} A promise that resolves when the operation is complete.
+	 */
+	public async createCategory(category: Category, userId: string): Promise<void> {
+		const endpoint = `users/${userId}/categories`;
+		const categories = await this.get<Category[]>(endpoint);
+		categories.push(category);
+		await this.put<Category[]>(endpoint, categories);
+	}
+
+	/**
+	 * Edits an existing category for a user.
+	 * @param {Category} category - The category to edit.
+	 * @param {string} userId - The ID of the user.
+	 * @returns {Promise<void>} A promise that resolves when the operation is complete.
+	 */
+	public async editCategory(category: Category, userId: string): Promise<void> {
+		const endpoint = `users/${userId}/categories/${category.id}`;
+		await this.put<Category>(endpoint, category);
 	}
 }
 

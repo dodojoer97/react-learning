@@ -1,13 +1,8 @@
 // Interface
-import {ICategory} from "./Category.d"
+import { ICategory } from "./Category.d";
 
 class Category implements ICategory {
-    image: string;
-    name: string;
-    constructor(image: string, name: string) {
-        this.image = image,
-        this.name = name
-    }
+	constructor(public image: string, public name: string, public id: string) {}
 }
 
-export default Category
+export default Category;

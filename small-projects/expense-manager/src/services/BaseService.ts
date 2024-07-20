@@ -27,7 +27,7 @@ class BaseService implements IBaseService {
 	 * @param {T} [params] - Optional query parameters.
 	 * @returns {Promise<T>} A promise that resolves to the response data.
 	 */
-	async get<T extends object>(endpoint: string, params?: T): Promise<T> {
+	async get<T>(endpoint: string, params?: T): Promise<T> {
 		if (this.isLocalEnvironment()) {
 			return this.localGet<T>(endpoint, params);
 		}
@@ -68,7 +68,7 @@ class BaseService implements IBaseService {
 	 * @param {T} data - The data to send in the request body.
 	 * @returns {Promise<T>} A promise that resolves to the response data.
 	 */
-	async put<T extends object>(endpoint: string, data: T): Promise<T> {
+	async put<T>(endpoint: string, data: T): Promise<T> {
 		if (this.isLocalEnvironment()) {
 			return this.localPut<T>(endpoint, data);
 		}
@@ -125,7 +125,7 @@ class BaseService implements IBaseService {
 	 * @param {T} [params] - Optional query parameters.
 	 * @returns {Promise<T>} A promise that resolves to the data.
 	 */
-	private async localGet<T extends object>(endpoint: string, params?: T): Promise<T> {
+	private async localGet<T>(endpoint: string, params?: T): Promise<T> {
 		let data = localStorage.getItem(endpoint);
 		if (params && data) {
 			const parsedData = JSON.parse(data) as T[];
@@ -145,7 +145,7 @@ class BaseService implements IBaseService {
 	 * @param {T} data - The data to post.
 	 * @returns {Promise<T>} A promise that resolves to the data.
 	 */
-	private async localPost<T extends object>(endpoint: string, data: T): Promise<T> {
+	private async localPost<T>(endpoint: string, data: T): Promise<T> {
 		localStorage.setItem(endpoint, JSON.stringify(data));
 		return this.promisify(data, 1000);
 	}
@@ -156,7 +156,7 @@ class BaseService implements IBaseService {
 	 * @param {T} data - The data to put.
 	 * @returns {Promise<T>} A promise that resolves to the updated data.
 	 */
-	private async localPut<T extends object>(endpoint: string, data: T): Promise<T> {
+	private async localPut<T>(endpoint: string, data: T): Promise<T> {
 		// Get the current item from localStorage
 		let currentItem = localStorage.getItem(endpoint);
 		if (currentItem) {

@@ -65,7 +65,7 @@ class AuthService extends BaseService implements IAuthService {
 			const foundUser: User | undefined = await this.getUser(dto);
 
 			if (foundUser) {
-				this.storeToken(foundUser.id);
+				await this.storeToken(foundUser.id);
 			}
 
 			return foundUser;
@@ -83,7 +83,7 @@ class AuthService extends BaseService implements IAuthService {
 	 */
 	public async logout(): Promise<void> {
 		try {
-			this.removeToken();
+			await this.removeToken();
 			await this.promisify<void>(undefined, 500);
 		} catch (error) {
 			if (error instanceof Error) {
@@ -97,23 +97,23 @@ class AuthService extends BaseService implements IAuthService {
 	 * Stores the authentication token in local storage.
 	 * @param {string} token - The authentication token to be stored.
 	 */
-	private storeToken(token: string): void {
-		localStorage.setItem("authToken", token);
+	private async storeToken(token: string): Promise<void> {
+		await this.put("authToken", token);
 	}
 
 	/**
 	 * Removes the authentication token from local storage.
 	 */
-	private removeToken(): void {
-		localStorage.removeItem("authToken");
+	private async removeToken(): Promise<void> {
+		await this.delete("authToken");
 	}
 
 	/**
 	 * Retrieves the authentication token from local storage.
-	 * @returns {string | null} The authentication token if available, otherwise null.
+	 * @returns {Promise<string | null>} The authentication token if available, otherwise null.
 	 */
-	private getToken(): string | null {
-		return localStorage.getItem("authToken");
+	private async getToken(): Promise<string | null> {
+		return await this.get("authToken");
 	}
 
 	// ****** TODO create real backend *****
@@ -123,7 +123,7 @@ class AuthService extends BaseService implements IAuthService {
 	 */
 	public async verifyToken(): Promise<User | undefined> {
 		try {
-			const token = this.getToken(); // Retrieves the token from local storage
+			const token = await this.getToken(); // Retrieves the token from local storage
 			const users = (await this.get<User[]>("users")) || []; // Retrieves all users
 			const user = users.find((user) => user.id === token); // Finds the user with the matching token
 
@@ -138,7 +138,7 @@ class AuthService extends BaseService implements IAuthService {
 
 	/**
 	 * Retrieves all users from local storage.
-	 * @returns {User[]} An array of user objects.
+	 * @returns {Promise<User[]>} An array of user objects.
 	 */
 	private async getUsers(): Promise<User[]> {
 		const currentUsersList = await this.get<User[]>("users");
@@ -153,7 +153,7 @@ class AuthService extends BaseService implements IAuthService {
 	/**
 	 * Finds a user that matches the provided DTO credentials.
 	 * @param {LoginDTO | SignupDTO} dto - DTO containing email and password for user lookup.
-	 * @returns {User | undefined} The found user or undefined if no user matches the credentials.
+	 * @returns {Promise<User | undefined>} The found user or undefined if no user matches the credentials.
 	 */
 	private async getUser(dto: LoginDTO | SignupDTO): Promise<User | undefined> {
 		try {

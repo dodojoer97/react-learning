@@ -1,5 +1,5 @@
 // React
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import type { FC, PropsWithChildren, Context } from "react";
 import { createContext } from "react";
 
@@ -19,6 +19,9 @@ import initialCategories from "@/MOCK/initialCategories";
 // Service
 import SettingsService from "@/services/SettingsService";
 
+// Store
+import { AuthContext } from "./AuthContext";
+
 export const SettingsContext: Context<ISettingsContext> = createContext<ISettingsContext>({
 	currency: currencies[0],
 	availableCurrencies: currencies,
@@ -30,6 +33,8 @@ export const SettingsContext: Context<ISettingsContext> = createContext<ISetting
 
 const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	const settingsService = new SettingsService();
+
+	const { user } = useContext(AuthContext); // Access user from AuthContext
 
 	// State
 	const [currency, setCurrency] = useState<Currency>(currencies[0]);
@@ -53,6 +58,22 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	const handleSetCurrency = (currency: Currency): void => {
 		setCurrency(currency);
 	};
+
+	// Fetch categories from backend on mount
+	useEffect(() => {
+		const fetchCategories = async (): Promise<void> => {
+			if (user?.id) {
+				try {
+					const fetchedCategories = await settingsService.getCategories(user.id);
+					setCategories(fetchedCategories);
+				} catch (error) {
+					console.error("Failed to fetch categories:", error);
+				}
+			}
+		};
+
+		fetchCategories();
+	}, [user]);
 
 	// Values
 	const contextValue: ISettingsContext = {

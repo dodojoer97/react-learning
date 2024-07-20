@@ -5,7 +5,7 @@ import { createContext } from "react";
 
 // Interface
 import { ISettingsContext } from "./SettingsContext.d";
-import { Currency } from "@/data/currency";
+import Currency from "@/models/Currency";
 
 // Models
 import Category from "@/models/Category";

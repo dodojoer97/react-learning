@@ -84,7 +84,6 @@ class AuthService extends BaseService implements IAuthService {
 	public async logout(): Promise<void> {
 		try {
 			await this.removeToken();
-			await this.promisify<void>(undefined, 500);
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with logout");

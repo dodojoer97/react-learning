@@ -7,4 +7,5 @@ export interface ISettingsContext {
 	addCategory: (category: Category, userId: string) => void;
 	formatAmount: (amount: number) => string;
 	setCurrency: (currency: Currency) => void;
+	setCategories: Dispatch<SetStateAction<Category[]>>
 }

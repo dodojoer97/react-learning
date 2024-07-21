@@ -19,9 +19,6 @@ import initialCategories from "@/MOCK/initialCategories";
 // Service
 import SettingsService from "@/services/SettingsService";
 
-// Store
-import { AuthContext } from "./AuthContext";
-
 export const SettingsContext: Context<ISettingsContext> = createContext<ISettingsContext>({
 	currency: currencies[0],
 	availableCurrencies: currencies,
@@ -29,12 +26,11 @@ export const SettingsContext: Context<ISettingsContext> = createContext<ISetting
 	formatAmount: () => "",
 	addCategory: () => {},
 	setCurrency: () => {},
+	setCategories: () => {}
 });
 
 const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	const settingsService = new SettingsService();
-
-	const { user } = useContext(AuthContext); // Access user from AuthContext
 
 	// State
 	const [currency, setCurrency] = useState<Currency>(currencies[0]);
@@ -48,32 +44,18 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 			currency: currency.value,
 		}).format(amount);
 	};
-
+	
 	const addCategory = async (category: Category, userId: string): Promise<void> => {
-		const updatedCategories: Category[] = [...categories, category];
-		setCategories(updatedCategories);
-		await settingsService.setCategories(updatedCategories, userId);
+		// Use functional update form to ensure you're working with the most current state
+		setCategories(currentCategories => {
+			const updatedCategories = [...currentCategories, category];
+			// Call to update categories in the backend
+			settingsService.setCategories(updatedCategories, userId).catch(error => {
+				console.error("Failed to update categories:", error);
+			});
+			return updatedCategories;
+		});
 	};
-
-	const handleSetCurrency = (currency: Currency): void => {
-		setCurrency(currency);
-	};
-
-	// Fetch categories from backend on mount
-	useEffect(() => {
-		const fetchCategories = async (): Promise<void> => {
-			if (user?.id) {
-				try {
-					const fetchedCategories = await settingsService.getCategories(user.id);
-					setCategories(fetchedCategories);
-				} catch (error) {
-					console.error("Failed to fetch categories:", error);
-				}
-			}
-		};
-
-		fetchCategories();
-	}, [user]);
 
 	// Values
 	const contextValue: ISettingsContext = {
@@ -82,7 +64,8 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		categories,
 		formatAmount,
 		addCategory,
-		setCurrency: handleSetCurrency,
+		setCurrency,
+		setCategories
 	};
 
 	return <SettingsContext.Provider value={contextValue}>{children}</SettingsContext.Provider>;

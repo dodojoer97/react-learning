@@ -13,8 +13,19 @@ import Input from "@/components/UI/Input";
 import Button from "@/components/UI/Button";
 import InputError from "@/components/UI/InputError";
 
-const Settings: FC = () => {
+// Store
+import { SettingsContext } from "@/store/SettingsContext";
+
+// Hooks
+import Category from "@/models/Category";
+
+const Categories: FC = () => {
+	const settingsCTX = useContext(SettingsContext)
 	const { t } = useTranslation("settings");
+
+	useEffect(() => {
+		settingsCTX.fetchCategories()
+	}, [])
 
 	return (
 		<Layout>
@@ -22,8 +33,12 @@ const Settings: FC = () => {
 				<h1 className="text-2xl font-bold sm:text-3xl">{t("categoriesTitle")}</h1>
 			</div>
 			<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4"></Form>
+
+			<ul>
+				{settingsCTX.categories.map((category: Category) => <li key={category.id}>{category.name}</li>)}
+			</ul>
 		</Layout>
 	);
 };
 
-export default Settings;
+export default Categories;

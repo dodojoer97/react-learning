@@ -8,9 +8,14 @@ import Loader from "@/components/UI/Loader";
 
 // Context
 import { AuthContext } from "@/store/AuthContext";
+import { SettingsContext } from "@/store/SettingsContext";
 
 const Layout: FC<PropsWithChildren> = ({ children }) => {
 	const authCTX = useContext(AuthContext);
+	const settingsCTX = useContext(SettingsContext)
+
+	const isLoadingAny: boolean = authCTX.loading || settingsCTX.loading
+	
 	return (
 		<>
 			<div className="relative bg-slate-50">

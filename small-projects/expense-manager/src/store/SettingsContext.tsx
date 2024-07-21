@@ -18,24 +18,28 @@ import initialCategories from "@/MOCK/initialCategories";
 
 // Service
 import SettingsService from "@/services/SettingsService";
+import {AuthContext} from "./AuthContext";
 
 export const SettingsContext: Context<ISettingsContext> = createContext<ISettingsContext>({
 	currency: currencies[0],
 	availableCurrencies: currencies,
 	categories: [],
+	loading: false,
 	formatAmount: () => "",
 	addCategory: () => {},
 	setCurrency: () => {},
-	setCategories: () => {}
+	fetchCategories: () => {}
 });
 
 const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
+	const { user } = useContext(AuthContext);
 	const settingsService = new SettingsService();
 
 	// State
 	const [currency, setCurrency] = useState<Currency>(currencies[0]);
 	const [availableCurrencies, setAvailableCurrencies] = useState<Currency[]>(currencies);
 	const [categories, setCategories] = useState<Category[]>(initialCategories);
+	const [loading, setLoading] = useState<boolean>(false)
 
 	// Methods
 	const formatAmount = (amount: number): string => {
@@ -57,15 +61,39 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		});
 	};
 
+	const fetchCategories = async (): Promise<void> => {
+		if (user?.id) {
+			try {
+				setLoading(true)
+				const fetchedCategories: Category[] =
+					await settingsService.getCategories(user.id) || []
+				
+					console.log("fetchedCategories: ", fetchedCategories)
+				setCategories((currentCategories: Category[]) => {
+					const updatedCategories = [
+						...currentCategories,
+						...fetchedCategories,
+					]
+					return updatedCategories
+				})
+			} catch (error) {
+				console.error("Failed to fetch categories:", error)
+			}finally{
+				setLoading(false)
+			}
+		}
+	}
+
 	// Values
 	const contextValue: ISettingsContext = {
 		currency,
 		availableCurrencies,
 		categories,
+		loading,
 		formatAmount,
 		addCategory,
 		setCurrency,
-		setCategories
+		fetchCategories
 	};
 
 	return <SettingsContext.Provider value={contextValue}>{children}</SettingsContext.Provider>;

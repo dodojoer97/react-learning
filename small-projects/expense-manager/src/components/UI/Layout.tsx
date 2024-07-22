@@ -10,11 +10,14 @@ import Loader from "@/components/UI/Loader";
 import { AuthContext } from "@/store/AuthContext";
 import { SettingsContext } from "@/store/SettingsContext";
 
-const Layout: FC<PropsWithChildren> = ({ children }) => {
-	const authCTX = useContext(AuthContext);
-	const settingsCTX = useContext(SettingsContext)
+// Hooks
+import useLoading from "@/hooks/useLoading";
 
-	const isLoadingAny: boolean = authCTX.loading || settingsCTX.loading
+const Layout: FC<PropsWithChildren> = ({ children }) => {
+	const authCTX = useContext(AuthContext)
+	const settingsContext = useContext(SettingsContext)
+
+	const loading: boolean = useLoading([authCTX, settingsContext])
 	
 	return (
 		<>
@@ -23,7 +26,7 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
 				<div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
 					<section className="bg-slate-50 h-svh">{children}</section>
 				</div>
-				{authCTX.loading && (
+				{loading && (
 					<Overlay>
 						<Loader />
 					</Overlay>

@@ -4,6 +4,10 @@ import {FC} from "react"
 // Models
 import Category from "@/models/Category"
 
+// FontAwesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+
 interface ICategoryProps {
     category: Category
 }
@@ -11,7 +15,7 @@ interface ICategoryProps {
 const CategoryComp: FC<ICategoryProps> = ({category}) => {
     return <>
         <article className="flex justify-between">
-            <img src={category.image} alt="Category image" />
+            <FontAwesomeIcon icon={category.icon}/>
             <p>{category.name}</p>
         </article>
     </>

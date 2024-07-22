@@ -1,5 +1,8 @@
+// FontAwesome 
+import type {  IconDefinition } from '@fortawesome/free-solid-svg-icons';
+
 export interface ICategory {
 	id: string;
-	image: string;
+	icon: IconDefinition;
 	name: string;
 }

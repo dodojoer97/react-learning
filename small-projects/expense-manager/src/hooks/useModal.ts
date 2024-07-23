@@ -1,15 +1,17 @@
-import type { Dispatch, SetStateAction } from "react"
 import { useState } from "react"
 
 const useModal = (): {
 	isModalOpen: boolean
-	setIsModalOpen: Dispatch<SetStateAction<boolean>>
+	toggleModal(): void
 } => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
+	const toggleModal = (): void => {
+		setIsModalOpen(prev => !prev);
+	};
 	return {
 		isModalOpen,
-		setIsModalOpen,
+		toggleModal,
 	}
 }
 

@@ -1,4 +1,3 @@
-// src/config/firebase.ts
 import * as admin from "firebase-admin";
 import * as serviceAccount from "../../serviceAccountKey.json";
 
@@ -7,4 +6,9 @@ admin.initializeApp({
 });
 
 const db = admin.firestore();
+db.settings({
+	host: "localhost:8080",
+	ssl: false,
+});
+
 export { db };

@@ -1,0 +1,77 @@
+# Node modules
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Firebase emulators and other local settings
+firebase-debug.log
+.firebaserc
+
+# TypeScript
+dist/
+*.tsbuildinfo
+
+# Environment variables
+.env
+
+# Service account key
+serviceAccountKey.json
+
+# IDE/editor specific files
+.vscode/
+.idea/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Optional npm cache directory
+.npm/
+
+# Coverage directory used by testing tools
+coverage/
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Dependency directories
+jspm_packages/
+
+# Optional TypeScript cache
+*.tsbuildinfo
+
+# Compiled output
+lib/
+tmp/
+
+# Optional prebuild artifacts
+prebuilds/
+
+# Tern project directory
+.tern-port
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env.*
+
+# npm-babel cache
+.npmrc
+
+# WebStorm and other JetBrains IDEs
+.idea/
+*.iml
+*.iws
+out/

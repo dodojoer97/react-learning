@@ -47,11 +47,12 @@ const CategoryComp: FC<ICategoryProps> = ({ category }) => {
 				</Button>
 			</article>
 			{isModalOpen && (
-				<Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+				<Modal isOpen={isModalOpen} onClose={handleCloseModal} isFullScreen>
 					<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4" key={category.id}>
 						<Input
 							id="name"
 							label="name"
+							className="w-12"
 							value={nameField.value}
 							onChange={nameField.handleInputChange}
 							onBlur={nameField.handleInputBlur}

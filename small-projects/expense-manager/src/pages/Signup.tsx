@@ -20,7 +20,7 @@ import Loader from "@/components/UI/Loader";
 import emailIcon from "@/assets/email.svg";
 import eyeIcon from "@/assets/eye.svg";
 
-// Hooks
+// Hookss
 import useToggleInputType from "@/hooks/useToggleInputType";
 import useInput from "@/hooks/useInput";
 import useFormSubmission from "@/hooks/useFormSubmission";
@@ -30,6 +30,7 @@ import { isEmail, hasMinLength, checkValuesEqual } from "@/utils/utils";
 
 // Store
 import { AuthContext } from "@/store/AuthContext";
+import { SettingsContext } from "@/store/SettingsContext";
 
 // DTO
 import SignupDTO from "@/DTO/request/Signup";
@@ -41,6 +42,7 @@ const Signup: FC = () => {
 	}
 	// Store
 	const authCTX = useContext(AuthContext);
+	const settingsCTX = useContext(SettingsContext);
 
 	// Navigation
 	const navigate = useNavigate();

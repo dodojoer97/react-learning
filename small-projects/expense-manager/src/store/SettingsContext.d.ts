@@ -1,6 +1,5 @@
 import type { Category } from "@/models/Category";
-import {ILoadingContext} from "@/types/common/index"
-
+import { ILoadingContext } from "@/types/common/index";
 
 export interface ISettingsContext extends ILoadingContext {
 	currency: Currency;
@@ -10,4 +9,5 @@ export interface ISettingsContext extends ILoadingContext {
 	formatAmount: (amount: number) => string;
 	setCurrency: (currency: Currency) => void;
 	fetchCategories: () => void;
+	setDefaultCategories: (userId) => Promise<void>;
 }

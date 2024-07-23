@@ -18,7 +18,7 @@ import initialCategories from "@/MOCK/initialCategories";
 
 // Service
 import SettingsService from "@/services/SettingsService";
-import {AuthContext} from "./AuthContext";
+import { AuthContext } from "./AuthContext";
 
 export const SettingsContext: Context<ISettingsContext> = createContext<ISettingsContext>({
 	currency: currencies[0],
@@ -28,7 +28,8 @@ export const SettingsContext: Context<ISettingsContext> = createContext<ISetting
 	formatAmount: () => "",
 	addCategory: () => {},
 	setCurrency: () => {},
-	fetchCategories: () => {}
+	fetchCategories: () => {},
+	setDefaultCategories: async () => {},
 });
 
 const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -39,7 +40,7 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	const [currency, setCurrency] = useState<Currency>(currencies[0]);
 	const [availableCurrencies, setAvailableCurrencies] = useState<Currency[]>(currencies);
 	const [categories, setCategories] = useState<Category[]>(initialCategories);
-	const [loading, setLoading] = useState<boolean>(false)
+	const [loading, setLoading] = useState<boolean>(false);
 
 	// Methods
 	const formatAmount = (amount: number): string => {
@@ -48,13 +49,13 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 			currency: currency.value,
 		}).format(amount);
 	};
-	
+
 	const addCategory = async (category: Category, userId: string): Promise<void> => {
 		// Use functional update form to ensure you're working with the most current state
-		setCategories(currentCategories => {
+		setCategories((currentCategories) => {
 			const updatedCategories = [...currentCategories, category];
 			// Call to update categories in the backend
-			settingsService.setCategories(updatedCategories, userId).catch(error => {
+			settingsService.setCategories(updatedCategories, userId).catch((error) => {
 				console.error("Failed to update categories:", error);
 			});
 			return updatedCategories;
@@ -64,25 +65,38 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	const fetchCategories = async (): Promise<void> => {
 		if (user?.id) {
 			try {
-				setLoading(true)
+				setLoading(true);
 				const fetchedCategories: Category[] =
-					await settingsService.getCategories(user.id) || []
-				
-					console.log("fetchedCategories: ", fetchedCategories)
+					(await settingsService.getCategories(user.id)) || [];
+
+				console.log("fetchedCategories: ", fetchedCategories);
 				setCategories((currentCategories: Category[]) => {
-					const updatedCategories = [
-						...currentCategories,
-						...fetchedCategories,
-					]
-					return updatedCategories
-				})
+					const updatedCategories = [...currentCategories, ...fetchedCategories];
+					return updatedCategories;
+				});
 			} catch (error) {
-				console.error("Failed to fetch categories:", error)
-			}finally{
-				setLoading(false)
+				console.error("Failed to fetch categories:", error);
+			} finally {
+				setLoading(false);
 			}
 		}
-	}
+	};
+
+	// Assign deafult categories to a new user will be done in the backend
+	const setDefaultCategories = async (userId: string): Promise<void> => {
+		if (user?.id) {
+			try {
+				setLoading(true);
+				settingsService.setCategories(initialCategories, userId).catch((error) => {
+					console.error("Failed to update categories:", error);
+				});
+			} catch (error) {
+				console.error("Failed to fetch categories:", error);
+			} finally {
+				setLoading(false);
+			}
+		}
+	};
 
 	// Values
 	const contextValue: ISettingsContext = {
@@ -93,7 +107,8 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		formatAmount,
 		addCategory,
 		setCurrency,
-		fetchCategories
+		fetchCategories,
+		setDefaultCategories,
 	};
 
 	return <SettingsContext.Provider value={contextValue}>{children}</SettingsContext.Provider>;

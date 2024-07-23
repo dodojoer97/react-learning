@@ -48,7 +48,7 @@ const CategoryComp: FC<ICategoryProps> = ({ category }) => {
 			</article>
 			{isModalOpen && (
 				<Modal isOpen={isModalOpen} onClose={handleCloseModal} isFullScreen>
-					<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4" key={category.id}>
+					<Form className="mx-auto px-7 mb-0 mt-8 max-w-md space-y-4" key={category.id}>
 						<Input
 							id="name"
 							label="name"

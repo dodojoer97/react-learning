@@ -1,6 +1,6 @@
 // React
 import type { FC, PropsWithChildren, MouseEvent } from "react";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 
 // UI components
@@ -30,11 +30,11 @@ const Modal: FC<IModalProps> = ({ isOpen, children, onClose }) => {
 		};
 	}, [onClose]);
 
-	const handleBackdropClick = (event: MouseEvent<HTMLDivElement>) => {
+	const handleBackdropClick = useCallback((event: MouseEvent<HTMLDivElement>) => {
 		if (event.target === modalRef.current) {
 			onClose();
 		}
-	};
+	}, []);
 
 	console.log("isOpen: ", isOpen);
 

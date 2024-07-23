@@ -1,6 +1,6 @@
 // React
 import type { FC } from "react";
-import { useState, useContext } from "react";
+import { useState, useContext, useCallback } from "react";
 
 // Router
 import { NavLink } from "react-router-dom"; // Import NavLink
@@ -30,9 +30,9 @@ const Header: FC = () => {
 
 	const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
-	const handleToggleMenu = (): void => {
-		setMobileMenuOpen((isOpen: boolean) => !isOpen);
-	};
+	const handleToggleMenu = useCallback(() => {
+		setMobileMenuOpen((isOpen) => !isOpen);
+	}, []);
 
 	// Icon to display, burger or close
 	const menuIcon: string = mobileMenuOpen ? closeIcon : burgerIcon;

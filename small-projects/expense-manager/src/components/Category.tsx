@@ -12,18 +12,28 @@ import { faPencil } from "@fortawesome/free-solid-svg-icons";
 // UI Components
 import Button from "@/components/UI/Button";
 import Modal from "@/components/UI/Modal";
+import Form from "@/components/UI/Form";
+import Input from "@/components/UI/Input";
+import InputError from "@/components/UI/InputError";
 
 // Hooks
 import useModal from "@/hooks/useModal";
+import useInput from "@/hooks/useInput";
 
 interface ICategoryProps {
 	category: Category;
 }
 
 const CategoryComp: FC<ICategoryProps> = ({ category }) => {
+	// Hooks
 	const { isModalOpen, toggleModal } = useModal();
+	const nameField = useInput(category.name, (value) => true);
 
-	const handleToggleModal = useCallback(toggleModal, [toggleModal]);
+	// Closes the modal and resets the input values
+	const handleCloseModal = (): void => {
+		toggleModal();
+		nameField.resetInputValue();
+	};
 
 	return (
 		<>
@@ -32,13 +42,21 @@ const CategoryComp: FC<ICategoryProps> = ({ category }) => {
 					<FontAwesomeIcon icon={category.icon} className="text-blue-500 text-2xl mr-4" />
 					<p className="text-lg font-semibold text-gray-800">{category.name}</p>
 				</div>
-				<Button onClick={handleToggleModal}>
+				<Button onClick={toggleModal}>
 					<FontAwesomeIcon icon={faPencil} />
 				</Button>
 			</article>
 			{isModalOpen && (
-				<Modal isOpen={isModalOpen} onClose={handleToggleModal}>
-					<p>test</p>
+				<Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+					<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4" key={category.id}>
+						<Input
+							id="name"
+							label="name"
+							value={nameField.value}
+							onChange={nameField.handleInputChange}
+							onBlur={nameField.handleInputBlur}
+						/>
+					</Form>
 				</Modal>
 			)}
 		</>

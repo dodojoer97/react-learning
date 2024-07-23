@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { ChangeEvent } from "react";
 
 /**
@@ -7,7 +7,7 @@ import type { ChangeEvent } from "react";
  * @param defaultValue The default value of the input.
  * @param validationFn The validation function to fire, should return `true` if valid.
  * @param clearErrorFN The error cleaning function to fire
- * @returns Object containing input value, handlers for change and blur, and error state.
+ * @returns Object containing input value, handlers for change and blur, and error state, function to reset the input.
  */
 const useInput = (
 	defaultValue: string,
@@ -19,21 +19,28 @@ const useInput = (
 	handleInputBlur(): void;
 	hasError: boolean;
 	isTouched: boolean;
+	resetInputValue(): void;
 } => {
 	const [value, setValue] = useState<string>(defaultValue);
 	const [isTouched, setIsTouched] = useState<boolean>(false);
 
+	const originalValue = useRef<string>(value);
+
 	const valueIsValid: boolean = validationFn(value);
 
-	function handleInputChange(e: ChangeEvent<HTMLInputElement>): void {
+	const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		setValue(e.target.value);
 		setIsTouched(true);
-		clearErrorFN && clearErrorFN()
-	}
+		clearErrorFN && clearErrorFN();
+	};
 
-	function handleInputBlur(): void {
+	const handleInputBlur = (): void => {
 		setIsTouched(true);
-	}
+	};
+
+	const resetInputValue = (): void => {
+		setValue(originalValue.current);
+	};
 
 	return {
 		value,
@@ -41,6 +48,7 @@ const useInput = (
 		handleInputBlur,
 		hasError: isTouched && !valueIsValid,
 		isTouched,
+		resetInputValue,
 	};
 };
 

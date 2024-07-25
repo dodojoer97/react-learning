@@ -11,4 +11,4 @@ db.settings({
 	ssl: false,
 });
 
-export { db };
+export { db, admin };

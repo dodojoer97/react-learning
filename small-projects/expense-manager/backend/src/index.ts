@@ -1,7 +1,7 @@
 // src/index.ts
 import express from "express";
 import bodyParser from "body-parser";
-import userRoutes from "./routes/userRoutes";
+import userRoutes from "./routes/authRoutes";
 import expenseRoutes from "./routes/expenseRoutes";
 import categoryRoutes from "./routes/categoryRoutes";
 

@@ -13,6 +13,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "firebase": "^9.23.0",
     "i18next": "^23.12.1",
     "i18next-http-backend": "^2.5.2",
     "react": "^18.3.1",
@@ -22,6 +23,7 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
+    "@types/firebase": "^3.2.1",
     "@types/i18next": "^13.0.0",
     "@types/node": "^20.14.10",
     "@types/react": "^18.3.3",

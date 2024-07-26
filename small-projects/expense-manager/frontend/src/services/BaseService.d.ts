@@ -1,4 +1,12 @@
 /**
+ * Base RequestOptions interface to define common options for making HTTP requests.
+ */
+export interface RequestOptions {
+	headers?: Record<string, string>;
+	params?: Record<string, string>;
+}
+
+/**
  * Base service interface to define common methods for making HTTP requests.
  */
 export interface IBaseService {
@@ -13,31 +21,34 @@ export interface IBaseService {
 	/**
 	 * Make a GET request to the specified endpoint.
 	 * @param {string} endpoint - The endpoint to send the request to.
-	 * @param {T} [params] - Optional query parameters.
-	 * @returns {Promise<T>} A promise that resolves to the response data.
+	 * @param {RequestOptions} [options] - Optional query parameters and headers.
+	 * @returns {Promise<any>} A promise that resolves to the response data.
 	 */
-	get<T extends object>(endpoint: string, params?: T): Promise<T>;
+	get(endpoint: string, options?: RequestOptions): Promise<any>;
 
 	/**
 	 * Make a POST request to the specified endpoint.
 	 * @param {string} endpoint - The endpoint to send the request to.
 	 * @param {T} data - The data to send in the request body.
-	 * @returns {Promise<T>} A promise that resolves to the response data.
+	 * @param {RequestOptions} [options] - Optional query parameters and headers.
+	 * @returns {Promise<any>} A promise that resolves to the response data.
 	 */
-	post<T extends object>(endpoint: string, data: T): Promise<T>;
+	post<T extends object>(endpoint: string, data: T, options?: RequestOptions): Promise<any>;
 
 	/**
 	 * Make a PUT request to the specified endpoint.
 	 * @param {string} endpoint - The endpoint to send the request to.
 	 * @param {T} data - The data to send in the request body.
-	 * @returns {Promise<T>} A promise that resolves to the response data.
+	 * @param {RequestOptions} [options] - Optional query parameters and headers.
+	 * @returns {Promise<any>} A promise that resolves to the response data.
 	 */
-	put<T extends object>(endpoint: string, data: T): Promise<T>;
+	put<T extends object>(endpoint: string, data: T, options?: RequestOptions): Promise<any>;
 
 	/**
 	 * Make a DELETE request to the specified endpoint.
 	 * @param {string} endpoint - The endpoint to send the request to.
-	 * @returns {Promise<T>} A promise that resolves to the response data.
+	 * @param {RequestOptions} [options] - Optional query parameters and headers.
+	 * @returns {Promise<any>} A promise that resolves to the response data.
 	 */
-	delete<T>(endpoint: string): Promise<T>;
+	delete(endpoint: string, options?: RequestOptions): Promise<any>;
 }

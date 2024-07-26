@@ -1,8 +1,8 @@
 // Interface
-import { IBaseService } from "./BaseService.d";
+import { IBaseService, RequestOptions } from "./BaseService.d";
 
 /**
- * Base service class to be used by other services, provides a base url, and methods to handle HTTP requests.
+ * Base service class to be used by other services, provides a base URL, and methods to handle HTTP requests.
  */
 class BaseService implements IBaseService {
 	baseUrl: string;
@@ -24,70 +24,89 @@ class BaseService implements IBaseService {
 	/**
 	 * Make a GET request to the specified endpoint.
 	 * @param {string} endpoint - The endpoint to send the request to.
-	 * @param {T} [params] - Optional query parameters.
-	 * @returns {Promise<T>} A promise that resolves to the response data.
+	 * @param {RequestOptions} [options] - Optional query parameters and headers.
+	 * @returns {Promise<any>} A promise that resolves to the response data.
 	 */
-	async get<T>(endpoint: string, params?: T): Promise<T> {
+	async get(endpoint: string, options?: RequestOptions): Promise<any> {
 		const url = new URL(`${this.baseUrl}/${endpoint}`);
-		if (params) {
-			Object.keys(params).forEach((key) =>
-				url.searchParams.append(key, (params as any)[key])
+		if (options?.params) {
+			Object.keys(options.params).forEach((key) =>
+				url.searchParams.append(key, options.params![key])
 			);
 		}
 		const response = await fetch(url.toString(), {
 			method: "GET",
-			headers: this.getDefaultHeaders(),
+			headers: {
+				...this.getDefaultHeaders(),
+				...options?.headers,
+			},
 		});
-		return this.handleResponse<T>(response);
+		return this.handleResponse<any>(response);
 	}
 
 	/**
 	 * Make a POST request to the specified endpoint.
 	 * @param {string} endpoint - The endpoint to send the request to.
 	 * @param {T} data - The data to send in the request body.
-	 * @returns {Promise<T>} A promise that resolves to the response data.
+	 * @param {RequestOptions} [options] - Optional query parameters and headers.
+	 * @returns {Promise<any>} A promise that resolves to the response data.
 	 */
-	async post<T extends object>(endpoint: string, data: T): Promise<any> {
+	async post<T extends object>(
+		endpoint: string,
+		data: T,
+		options?: RequestOptions
+	): Promise<any> {
 		const response = await fetch(`${this.baseUrl}/${endpoint}`, {
 			method: "POST",
-			headers: this.getDefaultHeaders(),
+			headers: {
+				...this.getDefaultHeaders(),
+				...options?.headers,
+			},
 			body: JSON.stringify(data),
 		});
-		return this.handleResponse<T>(response);
+		return this.handleResponse<any>(response);
 	}
 
 	/**
 	 * Make a PUT request to the specified endpoint.
 	 * @param {string} endpoint - The endpoint to send the request to.
 	 * @param {T} data - The data to send in the request body.
-	 * @returns {Promise<T>} A promise that resolves to the response data.
+	 * @param {RequestOptions} [options] - Optional query parameters and headers.
+	 * @returns {Promise<any>} A promise that resolves to the response data.
 	 */
-	async put<T>(endpoint: string, data: T): Promise<any> {
+	async put<T extends object>(endpoint: string, data: T, options?: RequestOptions): Promise<any> {
 		const response = await fetch(`${this.baseUrl}/${endpoint}`, {
 			method: "PUT",
-			headers: this.getDefaultHeaders(),
+			headers: {
+				...this.getDefaultHeaders(),
+				...options?.headers,
+			},
 			body: JSON.stringify(data),
 		});
-		return this.handleResponse<T>(response);
+		return this.handleResponse<any>(response);
 	}
 
 	/**
 	 * Make a DELETE request to the specified endpoint.
 	 * @param {string} endpoint - The endpoint to send the request to.
-	 * @returns {Promise<T>} A promise that resolves to the response data.
+	 * @param {RequestOptions} [options] - Optional query parameters and headers.
+	 * @returns {Promise<any>} A promise that resolves to the response data.
 	 */
-	async delete<T>(endpoint: string): Promise<any> {
+	async delete(endpoint: string, options?: RequestOptions): Promise<any> {
 		const response = await fetch(`${this.baseUrl}/${endpoint}`, {
 			method: "DELETE",
-			headers: this.getDefaultHeaders(),
+			headers: {
+				...this.getDefaultHeaders(),
+				...options?.headers,
+			},
 		});
-		return this.handleResponse<T>(response);
+		return this.handleResponse<any>(response);
 	}
 
 	/**
 	 * Handle the response from the fetch request.
 	 * @param {Response} response - The response object from the fetch request.
-	 * @returns {Promise<T>} A promise that resolves to the parsed response data.
+	 * @returns {Promise<any>} A promise that resolves to the parsed response data.
 	 * @throws {Error} If the response is not ok.
 	 */
 	private async handleResponse<T>(response: Response): Promise<any> {

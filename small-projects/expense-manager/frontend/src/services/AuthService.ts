@@ -94,6 +94,33 @@ class AuthService extends BaseService implements IAuthService {
 	}
 
 	/**
+	 * Verifies the token by sending it to the backend for verification.
+	 * @returns {Promise<User | undefined>} A promise that resolves to the user object if the token is valid, or undefined if it is not.
+	 */
+	public async verifyToken(): Promise<User | undefined> {
+		try {
+			const token = this.getToken();
+			if (!token) return undefined;
+
+			const response = await this.get("/auth/verify-token", {
+				headers: { Authorization: `Bearer ${token}` },
+			});
+			if (response.valid) {
+				return response.user;
+			} else {
+				this.removeToken();
+				return undefined;
+			}
+		} catch (error) {
+			if (error instanceof Error) {
+				logger.error(error.message || "Something went wrong with verifyToken");
+			}
+			this.removeToken();
+			return undefined;
+		}
+	}
+
+	/**
 	 * Stores the authentication token in local storage.
 	 * @param {string} token - The authentication token to be stored.
 	 */

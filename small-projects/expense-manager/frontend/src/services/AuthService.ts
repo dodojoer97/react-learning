@@ -43,7 +43,7 @@ class AuthService extends BaseService implements IAuthService {
 	public async register(dto: RegisterRequestDTO): Promise<User | undefined> {
 		try {
 			const response: RegisterResponseDTO = await this.post<RegisterRequestDTO>(
-				"/auth/register",
+				"auth/register",
 				dto
 			);
 
@@ -65,7 +65,7 @@ class AuthService extends BaseService implements IAuthService {
 	 */
 	public async login(dto: LoginRequestDTO): Promise<User | undefined> {
 		try {
-			const response: LoginResponseDTO = await this.post<LoginRequestDTO>("/auth/login", dto);
+			const response: LoginResponseDTO = await this.post<LoginRequestDTO>("auth/login", dto);
 
 			this.storeToken(response.token);
 			const decodedUser = this.decodeToken(response.token);
@@ -102,7 +102,7 @@ class AuthService extends BaseService implements IAuthService {
 			const token = this.getToken();
 			if (!token) return undefined;
 
-			const response = await this.get("/auth/verify-token", {
+			const response = await this.get("auth/verify-token", {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			if (response.valid) {

@@ -97,6 +97,7 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	// Verify token
 	const verifyToken = async (): Promise<void> => {
+		console.log("verifyToken");
 		try {
 			setLoading(true);
 			const user = await authService.verifyToken();

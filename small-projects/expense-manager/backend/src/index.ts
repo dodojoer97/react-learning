@@ -4,8 +4,17 @@ import bodyParser from "body-parser";
 import userRoutes from "./routes/authRoutes";
 import expenseRoutes from "./routes/expenseRoutes";
 import categoryRoutes from "./routes/categoryRoutes";
+import cors from "cors";
+
+// CORS options
+const corsOptions = {
+	origin: "localhost", // Configure the allowed origin
+};
 
 const app = express();
+
+app.use(cors(corsOptions));
+
 const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());

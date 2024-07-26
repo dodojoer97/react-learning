@@ -79,6 +79,7 @@ class AuthService {
 			}
 
 			const decoded = jwt.verify(token, this.jwtSecret) as JwtPayload;
+			console.log("decoded: ", decoded);
 			const user = await userRepository.getUserByEmail(decoded.email);
 			if (user) {
 				logger.info(`Token verified for user ${decoded.email}`);

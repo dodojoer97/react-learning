@@ -1,5 +1,3 @@
-// firebaseClient.ts
-
 import { initializeApp } from "firebase/app";
 import {
 	getAuth,
@@ -40,18 +38,25 @@ if (process.env.USE_FIREBASE_EMULATOR === "true") {
 }
 
 // Initialize Firebase Admin SDK
-admin.initializeApp({
-	credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
-});
+if (!admin.apps.length) {
+	admin.initializeApp({
+		credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
+		projectId: process.env.FIREBASE_PROJECT_ID,
+	});
+}
+
+if (process.env.USE_FIREBASE_EMULATOR === "true") {
+	process.env.FIRESTORE_EMULATOR_HOST = "localhost:8080";
+	process.env.FIREBASE_AUTH_EMULATOR_HOST = "localhost:9099";
+}
 
 const adminDb = admin.firestore();
-adminDb.settings({
-	host: "localhost:8080",
-	ssl: false,
-});
 
-// Exporting Client SDK instances
-export { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, clientDb };
-
-// Exporting Admin SDK instances
-export { admin, adminDb };
+export {
+	auth,
+	createUserWithEmailAndPassword,
+	signInWithEmailAndPassword,
+	clientDb,
+	admin,
+	adminDb,
+};

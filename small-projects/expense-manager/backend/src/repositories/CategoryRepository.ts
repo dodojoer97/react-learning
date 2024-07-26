@@ -1,9 +1,9 @@
 // src/repositories/CategoryRepository.ts
-import { db } from "../config/firebase";
+import { adminDb } from "../config/firebase";
 import { Category } from "../models/Category";
 
 class CategoryRepository {
-	private categoriesCollection = db.collection("categories");
+	private categoriesCollection = adminDb.collection("categories");
 
 	async addCategory(category: Category): Promise<void> {
 		const categoryDoc = this.categoriesCollection.doc(category.id);
@@ -11,7 +11,7 @@ class CategoryRepository {
 	}
 
 	async addCategories(categories: Category[]): Promise<void> {
-		const batch = db.batch();
+		const batch = adminDb.batch();
 		categories.forEach((category) => {
 			const categoryDoc = this.categoriesCollection.doc(category.id);
 			batch.set(categoryDoc, category);

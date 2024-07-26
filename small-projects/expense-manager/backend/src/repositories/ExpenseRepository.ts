@@ -1,9 +1,9 @@
 // src/repositories/ExpenseRepository.ts
-import { db } from "../config/firebase";
+import { adminDb } from "../config/firebase";
 import { Expense } from "../models/Expense";
 
 class ExpenseRepository {
-	private expensesCollection = db.collection("expenses");
+	private expensesCollection = adminDb.collection("expenses");
 
 	async addExpense(expense: Expense): Promise<void> {
 		const expenseDoc = this.expensesCollection.doc(expense.id);

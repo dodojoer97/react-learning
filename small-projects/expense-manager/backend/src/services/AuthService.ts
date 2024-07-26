@@ -39,7 +39,7 @@ class AuthService {
 			} else {
 				logger.error("An unknown error occurred during login");
 			}
-			return null;
+			throw error;
 		}
 	}
 
@@ -68,7 +68,7 @@ class AuthService {
 			} else {
 				logger.error("An unknown error occurred during registration");
 			}
-			return null;
+			throw error;
 		}
 	}
 

@@ -1,8 +1,13 @@
 // firebaseClient.ts
 
-import { initializeApp as initializeClientApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { getFirestore as getClientFirestore } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import {
+	getAuth,
+	connectAuthEmulator,
+	createUserWithEmailAndPassword,
+	signInWithEmailAndPassword,
+} from "firebase/auth";
+import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
 import dotenv from "dotenv";
 import * as admin from "firebase-admin";
 import * as serviceAccount from "../../serviceAccountKey.json";
@@ -21,17 +26,26 @@ const clientConfig = {
 	measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
 
-const clientApp = initializeClientApp(clientConfig);
+const clientApp = initializeApp(clientConfig);
 const auth = getAuth(clientApp);
-const clientDb = getClientFirestore(clientApp);
+
+if (process.env.USE_FIREBASE_EMULATOR === "true") {
+	connectAuthEmulator(auth, "http://localhost:9099");
+}
+
+const clientDb = getFirestore(clientApp);
+
+if (process.env.USE_FIREBASE_EMULATOR === "true") {
+	connectFirestoreEmulator(clientDb, "localhost", 8080);
+}
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
 });
 
-const db = admin.firestore();
-db.settings({
+const adminDb = admin.firestore();
+adminDb.settings({
 	host: "localhost:8080",
 	ssl: false,
 });
@@ -40,4 +54,4 @@ db.settings({
 export { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, clientDb };
 
 // Exporting Admin SDK instances
-export { admin, db };
+export { admin, adminDb };

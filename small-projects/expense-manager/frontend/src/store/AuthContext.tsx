@@ -1,8 +1,6 @@
 // React
-import { createContext, useState, FC, Context } from "react";
+import { createContext, useState, FC, Context, useEffect } from "react";
 import type { PropsWithChildren } from "react";
-
-import { useNavigate } from "react-router-dom";
 
 // DTO
 import SignupDTO from "@/DTO/request/Signup";
@@ -97,6 +95,19 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		}
 	};
 
+	// Verify token
+	const verifyToken = async (): Promise<void> => {
+		try {
+			setLoading(true);
+			const user = await authService.verifyToken();
+			setUser(user);
+		} catch (error) {
+			setUser(undefined);
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	const clearError = (): void => {
 		setError(null);
 	};
@@ -108,6 +119,11 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	const handleSetUser = (user: User): void => {
 		setUser(user);
 	};
+
+	// Verify token on load
+	useEffect(() => {
+		verifyToken();
+	}, []);
 
 	const contextValue = {
 		signup,

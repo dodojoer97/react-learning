@@ -1,13 +1,17 @@
-// src/repositories/userRepository.ts
-import { admin } from "../config/firebase";
+import { admin } from "../config/firebaseAdmin";
 import { User } from "../models/User";
 
 class UserRepository {
 	async getUserByEmail(email: string): Promise<User | null> {
 		try {
 			const userRecord = await admin.auth().getUserByEmail(email);
-			return { uid: userRecord.uid, email: userRecord.email, password: "" };
+			return {
+				uid: userRecord.uid,
+				email: userRecord.email,
+				password: userRecord.passwordHash,
+			};
 		} catch (error) {
+			console.error("getUserByEmail error: ", error);
 			return null;
 		}
 	}

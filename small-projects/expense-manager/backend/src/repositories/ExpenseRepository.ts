@@ -1,5 +1,5 @@
 // src/repositories/ExpenseRepository.ts
-import { db } from "../config/firebase";
+import { db } from "../config/firebaseAdmin";
 import { Expense } from "../models/Expense";
 
 class ExpenseRepository {

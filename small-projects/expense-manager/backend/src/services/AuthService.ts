@@ -1,4 +1,8 @@
-// src/services/authService.ts
+import {
+	auth,
+	createUserWithEmailAndPassword,
+	signInWithEmailAndPassword,
+} from "../config/firebaseClient";
 import userRepository from "../repositories/UserRepository";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import bcrypt from "bcryptjs";
@@ -16,13 +20,17 @@ class AuthService {
 				throw new Error("Email and password are required");
 			}
 
-			const user = await userRepository.getUserByEmail(email);
-			if (user && bcrypt.compareSync(password, user.password as string)) {
-				logger.info(`User ${email} logged in successfully`);
-				return jwt.sign({ uid: user.uid, email: user.email }, this.jwtSecret, {
+			const userCredential = await signInWithEmailAndPassword(auth, email, password);
+			const user = userCredential.user;
+
+			if (user) {
+				const token = jwt.sign({ uid: user.uid, email: user.email }, this.jwtSecret, {
 					expiresIn: "1h",
 				});
+				logger.info(`User ${email} logged in successfully`);
+				return token;
 			}
+
 			logger.warn(`Login failed for user ${email}`);
 			return null;
 		} catch (error) {
@@ -41,14 +49,17 @@ class AuthService {
 				throw new Error("Email and password are required");
 			}
 
-			const hashedPassword = bcrypt.hashSync(password, 10);
-			const newUser = await userRepository.createUser(email, hashedPassword);
-			if (newUser) {
-				logger.info(`User ${email} registered successfully`);
-				return jwt.sign({ uid: newUser.uid, email: newUser.email }, this.jwtSecret, {
+			const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+			const user = userCredential.user;
+
+			if (user) {
+				const token = jwt.sign({ uid: user.uid, email: user.email }, this.jwtSecret, {
 					expiresIn: "1h",
 				});
+				logger.info(`User ${email} registered successfully`);
+				return token;
 			}
+
 			logger.warn(`Registration failed for user ${email}`);
 			return null;
 		} catch (error) {

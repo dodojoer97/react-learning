@@ -1,5 +1,5 @@
 // src/repositories/CategoryRepository.ts
-import { db } from "../config/firebase";
+import { db } from "../config/firebaseAdmin";
 import { Category } from "../models/Category";
 
 class CategoryRepository {

@@ -108,14 +108,14 @@ class AuthService extends BaseService implements IAuthService {
 			if (response.valid) {
 				return response.user;
 			} else {
-				// this.removeToken();
+				this.removeToken();
 				return undefined;
 			}
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with verifyToken");
 			}
-			// this.removeToken();
+			this.removeToken();
 			return undefined;
 		}
 	}

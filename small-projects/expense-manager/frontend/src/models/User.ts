@@ -1,10 +1,10 @@
 import { IUser } from "./User.d";
 
 class User implements IUser {
-	id: string;
+	uid: string;
 	email: string;
-	constructor(id: string, email: string) {
-		this.id = id;
+	constructor(uid: string, email: string) {
+		this.uid = uid;
 		this.email = email;
 	}
 }

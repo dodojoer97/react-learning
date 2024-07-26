@@ -121,21 +121,16 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		setUser(user);
 	};
 
-	// Verify token on load
-	useEffect(() => {
-		verifyToken();
-	}, []);
-
-	const contextValue = {
+	const contextValue: IAuthContext = {
 		signup,
 		login,
 		logout,
 		setLoading: handleSetLoading,
 		setUser: handleSetUser,
 		clearError,
-		user,
 		loading,
 		error,
+		user,
 	};
 
 	return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

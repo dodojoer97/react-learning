@@ -1,29 +1,15 @@
 {
 	"compilerOptions": {
-		"baseUrl": ".", // This must be set for paths to work
-		"paths": {
-			"@/*": ["src/*"], // Corresponds to the Vite alias
-			"@common/*": ["../common/*"]
-		},
 		"composite": true,
-		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-		"target": "ES2020",
-		"useDefineForClassFields": true,
-		"lib": ["ES2020", "DOM", "DOM.Iterable"],
-		"module": "ESNext",
+		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
 		"skipLibCheck": true,
+		"module": "ESNext",
+		"moduleResolution": "node", // Changed from "bundler" to "node"
 		"allowSyntheticDefaultImports": true,
-		"moduleResolution": "node",
-		"allowImportingTsExtensions": true,
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"moduleDetection": "force",
-		"noEmit": true,
-		"jsx": "react-jsx",
 		"strict": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true
+		"noEmit": true,
+		"checkJs": true,
+		"types": ["node"] // Ensure Node types are included
 	},
-	"include": ["src", "../common"]
+	"include": ["vite.config.ts"]
 }

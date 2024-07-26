@@ -1,4 +1,5 @@
 {
+	"extends": "./tsconfig.json",
 	"compilerOptions": {
 		"baseUrl": ".", // This must be set for paths to work
 		"paths": {

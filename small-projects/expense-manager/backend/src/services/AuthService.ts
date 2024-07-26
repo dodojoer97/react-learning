@@ -19,7 +19,6 @@ class AuthService {
 	async register(email: string, password: string): Promise<string | null> {
 		const hashedPassword = bcrypt.hashSync(password, 10);
 		const newUser = await userRepository.createUser(email, hashedPassword);
-		console.log("newUser: ", newUser);
 		if (newUser) {
 			return jwt.sign({ uid: newUser.uid, email: newUser.email }, this.jwtSecret, {
 				expiresIn: "1h",

@@ -1,4 +1,4 @@
-import { admin } from "../config/firebaseAdmin";
+import { admin } from "../config/firebase";
 import { User } from "../models/User";
 
 class UserRepository {

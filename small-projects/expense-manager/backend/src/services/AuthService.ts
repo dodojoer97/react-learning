@@ -2,7 +2,7 @@ import {
 	auth,
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
-} from "../config/firebaseClient";
+} from "../config/firebase";
 import userRepository from "../repositories/UserRepository";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import bcrypt from "bcryptjs";

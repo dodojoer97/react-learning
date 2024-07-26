@@ -1,5 +1,5 @@
 // src/repositories/ExpenseRepository.ts
-import { db } from "../config/firebaseAdmin";
+import { db } from "../config/firebase";
 import { Expense } from "../models/Expense";
 
 class ExpenseRepository {
@@ -12,7 +12,7 @@ class ExpenseRepository {
 
 	async getExpensesByUser(userId: string): Promise<Expense[]> {
 		const snapshot = await this.expensesCollection.where("userId", "==", userId).get();
-		return snapshot.docs.map((doc) => doc.data() as Expense);
+		return snapshot.docs.map((doc: any) => doc.data() as Expense);
 	}
 }
 

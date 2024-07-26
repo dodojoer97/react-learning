@@ -41,7 +41,7 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	const signup = async (dto: SignupDTO): Promise<void> => {
 		try {
 			setLoading(true);
-			const user: User | undefined = await authService.signup(dto);
+			const user: User | undefined = await authService.register(dto);
 			setUser(user);
 			setLoading(false);
 		} catch (error) {

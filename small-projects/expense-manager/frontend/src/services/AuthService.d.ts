@@ -4,7 +4,7 @@ export interface IAuthService {
 	 * @param {SignupDTO} dto - The data transfer object containing the signup information.
 	 * @returns {Promise<User | undefined>} A promise that resolves to the new user object or undefined.
 	 */
-	signup(dto: SignupDTO): Promise<User | undefined>;
+	register(dto: SignupDTO): Promise<User | undefined>;
 
 	/**
 	 * Logs in a user using the provided DTO and returns the user object or undefined if an error occurs.

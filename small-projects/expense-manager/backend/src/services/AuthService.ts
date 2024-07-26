@@ -1,6 +1,6 @@
 // src/services/authService.ts
 import userRepository from "../repositories/UserRepository";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
 class AuthService {
@@ -25,6 +25,19 @@ class AuthService {
 			});
 		}
 		return null;
+	}
+
+	async verifyToken(token: string): Promise<{ valid: boolean; user?: any }> {
+		try {
+			const decoded = jwt.verify(token, this.jwtSecret) as JwtPayload;
+			const user = await userRepository.getUserByEmail(decoded.email);
+			if (user) {
+				return { valid: true, user };
+			}
+			return { valid: false };
+		} catch (error) {
+			return { valid: false };
+		}
 	}
 }
 

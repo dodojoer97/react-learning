@@ -33,7 +33,7 @@ import { AuthContext } from "@/store/AuthContext";
 import { SettingsContext } from "@/store/SettingsContext";
 
 // DTO
-import SignupDTO from "@/DTO/request/Signup";
+import RegisterDTO from "@/DTO/request/Register";
 
 const Signup: FC = () => {
 	const { t, ready } = useTranslation(["signup", "forms"]);
@@ -91,7 +91,7 @@ const Signup: FC = () => {
 	const { handleSubmit, isSubmitted, setIsSubmitted, isLoading } = useFormSubmission(async () => {
 		if (hasErrors) return;
 
-		const dto = new SignupDTO(emailField.value, password1Field.value);
+		const dto = new RegisterDTO(emailField.value, password1Field.value);
 
 		await authCTX.signup(dto);
 	});

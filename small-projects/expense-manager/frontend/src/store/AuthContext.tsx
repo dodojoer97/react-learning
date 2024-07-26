@@ -3,7 +3,7 @@ import { createContext, useState, FC, Context, useEffect } from "react";
 import type { PropsWithChildren } from "react";
 
 // DTO
-import SignupDTO from "@/DTO/request/Signup";
+import RegisterDTO from "@/DTO/request/Register";
 import LoginDTO from "../DTO/request/Login";
 import User from "@/models/User";
 
@@ -38,7 +38,7 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	const [error, setError] = useState<string | null>(null);
 
 	// Register the user
-	const signup = async (dto: SignupDTO): Promise<void> => {
+	const signup = async (dto: RegisterDTO): Promise<void> => {
 		try {
 			setLoading(true);
 			const user: User | undefined = await authService.register(dto);

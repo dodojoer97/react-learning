@@ -6,8 +6,15 @@ import { Logger } from "@/classes/Logger";
 
 // Interface
 import { IAuthService } from "@/services/AuthService.d";
-import LoginDTO from "@/DTO/request/Login";
-import SignupDTO from "@/DTO/request/Signup";
+
+// *** DTO ***
+// * Request *
+import LoginRequestDTO from "@/DTO/request/Login";
+import RegisterRequestDTO from "@/DTO/request/Register";
+
+// * Response *
+import RegisterResponseDTO from "@/DTO/response/Register";
+import LoginResponseDTO from "@/DTO/response/Login";
 
 // Models
 import User from "@/models/User";
@@ -30,23 +37,19 @@ class AuthService extends BaseService implements IAuthService {
 
 	/**
 	 * Signs up a new user and stores it in the local storage.
-	 * @param {SignupDTO} dto - The data transfer object containing the signup information.
+	 * @param {RegisterRequestDTO} dto - The data transfer object containing the signup information.
 	 * @returns {Promise<User | undefined>} A promise that resolves to the new user object or undefined if an error occurs.
 	 */
-	public async register(dto: SignupDTO): Promise<User | undefined> {
+	public async register(dto: RegisterRequestDTO): Promise<User | undefined> {
 		try {
-			if (await this.checkEmailExists(dto.email)) {
-				throw new Error("User with same credentials already exists");
-			}
+			const response: RegisterResponseDTO = await this.post<RegisterRequestDTO>(
+				"/auth/register",
+				dto
+			);
 
-			const currentUsers: User[] = (await this.get<User[]>("users")) || [];
-			const newUser = new User(uuidv4(), dto.email, dto.password);
-
-			const updatedUsers: User[] = [...currentUsers, newUser];
-
-			await this.put("users", updatedUsers);
-
-			return newUser;
+			this.storeToken(response.token);
+			const decodedUser = this.decodeToken(response.token);
+			return decodedUser;
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with signup");
@@ -57,18 +60,16 @@ class AuthService extends BaseService implements IAuthService {
 
 	/**
 	 * Logs in a user if the user exists.
-	 * @param {LoginDTO} dto - The data transfer object containing the login credentials.
+	 * @param {LoginRequestDTO} dto - The data transfer object containing the login credentials.
 	 * @returns {Promise<User | undefined>} A promise that resolves to the user object if found, or undefined if not.
 	 */
-	public async login(dto: LoginDTO): Promise<User | undefined> {
+	public async login(dto: LoginRequestDTO): Promise<User | undefined> {
 		try {
-			const foundUser: User | undefined = await this.getUser(dto);
+			const response: LoginResponseDTO = await this.post<LoginRequestDTO>("/auth/login", dto);
 
-			if (foundUser) {
-				await this.storeToken(foundUser.id);
-			}
-
-			return foundUser;
+			this.storeToken(response.token);
+			const decodedUser = this.decodeToken(response.token);
+			return decodedUser;
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with login");
@@ -83,7 +84,7 @@ class AuthService extends BaseService implements IAuthService {
 	 */
 	public async logout(): Promise<void> {
 		try {
-			await this.removeToken();
+			this.removeToken();
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with logout");
@@ -96,23 +97,23 @@ class AuthService extends BaseService implements IAuthService {
 	 * Stores the authentication token in local storage.
 	 * @param {string} token - The authentication token to be stored.
 	 */
-	private async storeToken(token: string): Promise<void> {
-		await this.put("authToken", { token });
+	private storeToken(token: string): void {
+		localStorage.setItem("token", token);
 	}
 
 	/**
 	 * Removes the authentication token from local storage.
 	 */
-	private async removeToken(): Promise<void> {
-		await this.delete("authToken");
+	private removeToken(): void {
+		localStorage.removeItem("token");
 	}
 
 	/**
 	 * Retrieves the authentication token from local storage.
 	 * @returns {Promise<T | null>} The authentication token if available, otherwise null.
 	 */
-	private async getToken<T extends { token: string }>(): Promise<T | null> {
-		return await this.get("toehn");
+	private getToken(): string | null {
+		return localStorage.getItem("token");
 	}
 
 	private decodeToken(token: string): User {

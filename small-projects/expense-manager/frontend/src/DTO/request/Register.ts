@@ -1,7 +1,7 @@
 // Interface
-import { ISignupDTO } from "@/DTO/request/Signup.d";
+import { IRegisterDTO } from "@/DTO/request/Register.d";
 
-class SignupDTO implements ISignupDTO {
+class RegisterDTO implements IRegisterDTO {
 	email: string;
 	password: string;
 	constructor(email: string, password: string) {
@@ -10,4 +10,4 @@ class SignupDTO implements ISignupDTO {
 	}
 }
 
-export default SignupDTO;
+export default RegisterDTO;

@@ -47,7 +47,7 @@ class BaseService implements IBaseService {
 	 * @param {T} data - The data to send in the request body.
 	 * @returns {Promise<T>} A promise that resolves to the response data.
 	 */
-	async post<T extends object>(endpoint: string, data: T): Promise<T> {
+	async post<T extends object>(endpoint: string, data: T): Promise<any> {
 		const response = await fetch(`${this.baseUrl}/${endpoint}`, {
 			method: "POST",
 			headers: this.getDefaultHeaders(),
@@ -62,7 +62,7 @@ class BaseService implements IBaseService {
 	 * @param {T} data - The data to send in the request body.
 	 * @returns {Promise<T>} A promise that resolves to the response data.
 	 */
-	async put<T>(endpoint: string, data: T): Promise<T> {
+	async put<T>(endpoint: string, data: T): Promise<any> {
 		const response = await fetch(`${this.baseUrl}/${endpoint}`, {
 			method: "PUT",
 			headers: this.getDefaultHeaders(),
@@ -76,7 +76,7 @@ class BaseService implements IBaseService {
 	 * @param {string} endpoint - The endpoint to send the request to.
 	 * @returns {Promise<T>} A promise that resolves to the response data.
 	 */
-	async delete<T>(endpoint: string): Promise<T> {
+	async delete<T>(endpoint: string): Promise<any> {
 		const response = await fetch(`${this.baseUrl}/${endpoint}`, {
 			method: "DELETE",
 			headers: this.getDefaultHeaders(),
@@ -90,7 +90,7 @@ class BaseService implements IBaseService {
 	 * @returns {Promise<T>} A promise that resolves to the parsed response data.
 	 * @throws {Error} If the response is not ok.
 	 */
-	private async handleResponse<T>(response: Response): Promise<T> {
+	private async handleResponse<T>(response: Response): Promise<any> {
 		if (!response.ok) {
 			const errorText = await response.text();
 			throw new Error(errorText || "Network response was not ok");

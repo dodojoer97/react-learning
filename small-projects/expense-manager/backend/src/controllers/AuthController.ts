@@ -13,6 +13,7 @@ class AuthController {
 	}
 
 	async register(req: Request, res: Response) {
+		console.log("register");
 		const { email, password } = req.body;
 		const token = await authService.register(email, password);
 		if (token) {

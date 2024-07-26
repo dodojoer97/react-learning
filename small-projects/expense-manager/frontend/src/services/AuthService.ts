@@ -31,7 +31,7 @@ class AuthService extends BaseService implements IAuthService {
 	 * Sets up the base URL for the API.
 	 */
 	constructor() {
-		const baseUrl = "localStorage";
+		const baseUrl = "http://localhost:3000";
 		super(baseUrl);
 	}
 

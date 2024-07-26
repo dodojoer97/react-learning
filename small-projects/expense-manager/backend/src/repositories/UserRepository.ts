@@ -17,6 +17,7 @@ class UserRepository {
 			const userRecord = await admin.auth().createUser({ email, password });
 			return { uid: userRecord.uid, email: userRecord.email, password: password };
 		} catch (error) {
+			console.error("createUser error: ", error);
 			return null;
 		}
 	}

@@ -6,8 +6,7 @@ import {
 import userRepository from "../repositories/UserRepository";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { Logger } from "../../../common/classes/Logger";
-import isError from "../../../common/utils/isError";
+import { Logger, isError } from "@common/index";
 
 const logger = new Logger("AuthService");
 

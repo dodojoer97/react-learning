@@ -14,7 +14,7 @@ import AuthService from "@/services/AuthService";
 import { IAuthContext } from "./AuthContext.d";
 
 // Utils
-import isError from "@common/utils/isError";
+import { Logger, isError } from "@common/index";
 
 // Base context with default values
 export const AuthContext: Context<IAuthContext> = createContext<IAuthContext>({

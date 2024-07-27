@@ -1,10 +1,11 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
+		"rootDir": "../",
 		"baseUrl": ".", // This must be set for paths to work
 		"paths": {
 			"@/*": ["src/*"], // Corresponds to the Vite alias
-			"@common/*": ["../common/*"]
+			"@common/*": ["../common/src/*"]
 		},
 		"composite": true,
 		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
@@ -18,6 +19,7 @@
 		"allowImportingTsExtensions": true,
 		"resolveJsonModule": true,
 		"isolatedModules": true,
+		"types": ["node"],
 		"moduleDetection": "force",
 		"noEmit": true,
 		"jsx": "react-jsx",
@@ -26,5 +28,9 @@
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true
 	},
-	"include": ["src", "../common"]
+	"include": [
+		"src",
+		"**/*.d.ts", // Ensures all .d.ts files are included
+		"../common/src/**/*" // Files from the common directory
+	]
 }

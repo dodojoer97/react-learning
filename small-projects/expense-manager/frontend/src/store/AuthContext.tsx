@@ -13,9 +13,6 @@ import AuthService from "@/services/AuthService";
 // Interface
 import { IAuthContext } from "./AuthContext.d";
 
-// Utils
-import { Logger, isError } from "@common/index";
-
 // Base context with default values
 export const AuthContext: Context<IAuthContext> = createContext<IAuthContext>({
 	signup: async () => undefined,
@@ -130,7 +127,6 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		clearError,
 		loading,
 		error,
-		user,
 	};
 
 	return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

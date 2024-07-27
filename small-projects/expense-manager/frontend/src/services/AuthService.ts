@@ -1,8 +1,6 @@
-import { v4 as uuidv4 } from "uuid";
-
 // Classes
 import BaseService from "./BaseService";
-import { Logger } from "@common/classes/Logger";
+import { Logger } from "../../../common/src/index";
 
 // Interface
 import { IAuthService } from "@/services/AuthService.d";

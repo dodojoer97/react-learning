@@ -29,7 +29,6 @@ export const SettingsContext: Context<ISettingsContext> = createContext<ISetting
 	addCategory: () => {},
 	setCurrency: () => {},
 	fetchCategories: () => {},
-	setDefaultCategories: async () => {},
 });
 
 const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -39,7 +38,7 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	// State
 	const [currency, setCurrency] = useState<Currency>(currencies[0]);
 	const [availableCurrencies, setAvailableCurrencies] = useState<Currency[]>(currencies);
-	const [categories, setCategories] = useState<Category[]>(initialCategories);
+	const [categories, setCategories] = useState<Category[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 
 	// Methods
@@ -63,32 +62,15 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	};
 
 	const fetchCategories = async (): Promise<void> => {
-		if (user?.id) {
+		if (user?.uid) {
 			try {
 				setLoading(true);
 				const fetchedCategories: Category[] =
-					(await settingsService.getCategories(user.id)) || [];
+					(await settingsService.getCategories(user.uid)) || [];
 
-				console.log("fetchedCategories: ", fetchedCategories);
 				setCategories((currentCategories: Category[]) => {
 					const updatedCategories = [...currentCategories, ...fetchedCategories];
 					return updatedCategories;
-				});
-			} catch (error) {
-				console.error("Failed to fetch categories:", error);
-			} finally {
-				setLoading(false);
-			}
-		}
-	};
-
-	// Assign deafult categories to a new user will be done in the backend
-	const setDefaultCategories = async (userId: string): Promise<void> => {
-		if (user?.id) {
-			try {
-				setLoading(true);
-				settingsService.setCategories(initialCategories, userId).catch((error) => {
-					console.error("Failed to update categories:", error);
 				});
 			} catch (error) {
 				console.error("Failed to fetch categories:", error);
@@ -108,7 +90,6 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		addCategory,
 		setCurrency,
 		fetchCategories,
-		setDefaultCategories,
 	};
 
 	return <SettingsContext.Provider value={contextValue}>{children}</SettingsContext.Provider>;

@@ -40,7 +40,7 @@ class SettingsService extends BaseService implements ISettingsService {
 	 */
 	public async getCategories(userId: string): Promise<Category[]> {
 		const endpoint = `users/${userId}/categories`;
-		return this.get<Category[]>(endpoint);
+		return this.get(endpoint);
 	}
 
 	/**
@@ -62,9 +62,9 @@ class SettingsService extends BaseService implements ISettingsService {
 	 */
 	public async createCategory(category: Category, userId: string): Promise<void> {
 		const endpoint = `users/${userId}/categories`;
-		const categories = await this.get<Category[]>(endpoint);
+		const categories = await this.get(endpoint);
 		categories.push(category);
-		await this.put<Category[]>(endpoint, categories);
+		await this.put(endpoint, categories);
 	}
 
 	/**
@@ -77,7 +77,7 @@ class SettingsService extends BaseService implements ISettingsService {
 		// Real endpoint
 		// const endpoint = `users/${userId}/categories/${category.id}`;
 		const localEndpoint = `users/${userId}/categories`;
-		await this.put<Category>(localEndpoint, category);
+		await this.put(localEndpoint, category);
 	}
 }
 

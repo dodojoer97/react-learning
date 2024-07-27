@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import authService from "../services/AuthService";
-import { Logger } from "../../../common/classes/Logger";
-import isError from "../../../common/utils/isError";
+import { Logger } from "../classes/Logger";
+import { isError } from "../utils/isError";
 
 const logger = new Logger("AuthController");
 

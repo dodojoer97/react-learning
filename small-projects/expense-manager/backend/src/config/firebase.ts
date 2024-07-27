@@ -37,13 +37,10 @@ if (process.env.USE_FIREBASE_EMULATOR === "true") {
 	connectFirestoreEmulator(clientDb, "localhost", 8080);
 }
 
-// Initialize Firebase Admin SDK
-if (!admin.apps.length) {
-	admin.initializeApp({
-		credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
-		projectId: process.env.FIREBASE_PROJECT_ID,
-	});
-}
+admin.initializeApp({
+	credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
+	projectId: process.env.FIREBASE_PROJECT_ID,
+});
 
 if (process.env.USE_FIREBASE_EMULATOR === "true") {
 	process.env.FIRESTORE_EMULATOR_HOST = "localhost:8080";

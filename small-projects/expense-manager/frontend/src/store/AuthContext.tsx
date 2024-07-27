@@ -79,9 +79,8 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const logout = async (): Promise<void> => {
 		try {
-			setLoading(true);
-
 			await authService.logout();
+			setLoading(true);
 
 			setUser(undefined);
 			setLoading(false);

@@ -4,6 +4,7 @@ import { useState, useContext, useCallback } from "react";
 
 // Router
 import { NavLink } from "react-router-dom"; // Import NavLink
+import { useNavigate } from "react-router-dom";
 
 // Translation
 import { useTranslation } from "react-i18next";
@@ -21,6 +22,7 @@ import { AuthContext } from "@/store/AuthContext";
 
 const Header: FC = () => {
 	const { user, logout } = useContext(AuthContext);
+	const navigate = useNavigate();
 	const { t } = useTranslation("header");
 
 	// CSS classes
@@ -33,6 +35,11 @@ const Header: FC = () => {
 	const handleToggleMenu = useCallback(() => {
 		setMobileMenuOpen((isOpen) => !isOpen);
 	}, []);
+
+	const handleLogout = (): void => {
+		logout();
+		navigate("/login");
+	};
 
 	// Icon to display, burger or close
 	const menuIcon: string = mobileMenuOpen ? closeIcon : burgerIcon;
@@ -55,25 +62,29 @@ const Header: FC = () => {
 						<img src={viteLogo} className="mr-3 h-6 sm:h-9" alt="Vite logo" />
 					</NavLink>
 					<div className="flex items-center lg:order-2">
-						<NavLink
-							to="/login"
-							className={({ isActive }) =>
-								`${baseNavClasses} ${isActive ? activeNavClasses : ""}`
-							}
-						>
-							{t("signin")}
-						</NavLink>
-						<NavLink
-							to="/signup"
-							className={({ isActive }) =>
-								`${baseNavClasses} ${isActive ? activeNavClasses : ""}`
-							}
-						>
-							{t("signup")}
-						</NavLink>
+						{!user && (
+							<>
+								<NavLink
+									to="/login"
+									className={({ isActive }) =>
+										`${baseNavClasses} ${isActive ? activeNavClasses : ""}`
+									}
+								>
+									{t("signin")}
+								</NavLink>
+								<NavLink
+									to="/signup"
+									className={({ isActive }) =>
+										`${baseNavClasses} ${isActive ? activeNavClasses : ""}`
+									}
+								>
+									{t("signup")}
+								</NavLink>
+							</>
+						)}
 						{user && (
 							<Button
-								onClick={logout}
+								onClick={handleLogout}
 								type="button"
 								className={baseNavClasses}
 								aria-controls="mobile-menu-2"

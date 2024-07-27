@@ -1,2 +1,2 @@
-export { Logger } from "@/classes/Logger";
-export { isError } from "@/utils/isError";
+export { Logger } from "./classes/Logger";
+export { isError } from "./utils/isError";

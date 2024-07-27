@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import authService from "../services/AuthService";
 import { Logger } from "../classes/Logger";
-import { isError } from "../utils/isError";
+import { isError, isFirebaseError } from "../utils/isError";
+import * as admin from "firebase-admin";
 
 const logger = new Logger("AuthController");
 
@@ -21,18 +22,31 @@ class AuthController {
 				res.status(401).json({ message: "Invalid email or password" });
 			}
 		} catch (error) {
-			if (isError(error)) {
+			if (isFirebaseError(error)) {
+				switch (error.code) {
+					case "auth/wrong-password":
+						res.status(401).json({ message: "Wrong password" });
+						break;
+					case "auth/user-not-found":
+						res.status(404).json({ message: "User not found" });
+						break;
+					// Handle other Firebase Auth errors
+					default:
+						logger.error(`Firebase Auth Error during login: ${error.message}`);
+						res.status(500).json({ message: "Internal server error" });
+				}
+			} else if (isError(error)) {
 				logger.error(`Error during login: ${error.message}`);
+				res.status(500).json({ message: "Internal server error" });
 			} else {
 				logger.error("An unknown error occurred during login");
+				res.status(500).json({ message: "Internal server error" });
 			}
-			res.status(500).json({ message: "Internal server error" });
 		}
 	}
 
 	async register(req: Request, res: Response) {
 		try {
-			console.log("register");
 			const { email, password } = req.body;
 
 			if (!email || !password) {
@@ -46,12 +60,23 @@ class AuthController {
 				res.status(400).json({ message: "Registration failed" });
 			}
 		} catch (error) {
-			if (isError(error)) {
+			if (isFirebaseError(error)) {
+				switch (error.code) {
+					case "auth/email-already-in-use":
+						res.status(400).json({ message: "Email already in use" });
+						break;
+					// Handle other Firebase Auth errors
+					default:
+						logger.error(`Firebase Auth Error during registration: ${error.message}`);
+						res.status(500).json({ message: "Internal server error" });
+				}
+			} else if (isError(error)) {
 				logger.error(`Error during registration: ${error.message}`);
+				res.status(500).json({ message: "Internal server error" });
 			} else {
 				logger.error("An unknown error occurred during registration");
+				res.status(500).json({ message: "Internal server error" });
 			}
-			res.status(500).json({ message: "Internal server error" });
 		}
 	}
 
@@ -69,12 +94,16 @@ class AuthController {
 				res.status(401).json({ message: "Invalid token" });
 			}
 		} catch (error) {
-			if (isError(error)) {
+			if (isFirebaseError(error)) {
+				logger.error(`Firebase Auth Error during token verification: ${error.message}`);
+				res.status(500).json({ message: "Internal server error" });
+			} else if (isError(error)) {
 				logger.error(`Error during token verification: ${error.message}`);
+				res.status(500).json({ message: "Internal server error" });
 			} else {
 				logger.error("An unknown error occurred during token verification");
+				res.status(500).json({ message: "Internal server error" });
 			}
-			res.status(500).json({ message: "Internal server error" });
 		}
 	}
 }

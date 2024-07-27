@@ -1,5 +1,7 @@
-export interface Category {
-	id: string;
-	userId: string;
-	name: string;
+// Interface
+import { ICategory } from "./Category.d";
+// FontAwesome
+
+export class Category implements ICategory {
+	constructor(public icon: string, public name: string) {}
 }

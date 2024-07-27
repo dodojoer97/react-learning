@@ -13,9 +13,6 @@ import Category from "@/models/Category";
 // Data
 import currencies from "@/data/currencies";
 
-// MOCK
-import initialCategories from "@/MOCK/initialCategories";
-
 // Service
 import SettingsService from "@/services/SettingsService";
 import { AuthContext } from "./AuthContext";

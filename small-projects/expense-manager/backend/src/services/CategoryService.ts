@@ -3,12 +3,16 @@ import categoryRepository from "../repositories/CategoryRepository";
 import { Category } from "../models/Category";
 
 class CategoryService {
-	async createCategory(category: Category): Promise<void> {
+	async addCategory(category: Category): Promise<void> {
 		await categoryRepository.addCategory(category);
 	}
 
-	async fetchCategoriesByUser(userId: string): Promise<Category[]> {
+	async getCategoriesByUser(userId: string): Promise<Category[]> {
 		return await categoryRepository.getCategoriesByUser(userId);
+	}
+
+	async addDefaultCategories(): Promise<void> {
+		return await categoryRepository.addCategories([]);
 	}
 }
 

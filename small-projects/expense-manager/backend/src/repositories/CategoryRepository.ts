@@ -6,14 +6,14 @@ class CategoryRepository {
 	private categoriesCollection = adminDb.collection("categories");
 
 	async addCategory(category: Category): Promise<void> {
-		const categoryDoc = this.categoriesCollection.doc(category.id);
+		const categoryDoc = this.categoriesCollection.doc(category.name);
 		await categoryDoc.set(category);
 	}
 
 	async addCategories(categories: Category[]): Promise<void> {
 		const batch = adminDb.batch();
 		categories.forEach((category) => {
-			const categoryDoc = this.categoriesCollection.doc(category.id);
+			const categoryDoc = this.categoriesCollection.doc(category.name);
 			batch.set(categoryDoc, category);
 		});
 		await batch.commit();

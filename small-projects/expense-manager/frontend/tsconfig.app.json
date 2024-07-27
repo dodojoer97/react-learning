@@ -1,7 +1,6 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
-		"rootDir": "../",
 		"baseUrl": ".", // This must be set for paths to work
 		"paths": {
 			"@/*": ["src/*"], // Corresponds to the Vite alias

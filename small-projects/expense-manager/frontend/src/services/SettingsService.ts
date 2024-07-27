@@ -24,7 +24,7 @@ class SettingsService extends BaseService implements ISettingsService {
 	 * Sets up the base URL for the API.
 	 */
 	constructor() {
-		const baseUrl = "localStorage";
+		const baseUrl = "http://localhost:3000";
 		super(baseUrl);
 	}
 
@@ -45,15 +45,14 @@ class SettingsService extends BaseService implements ISettingsService {
 	 * @returns {Promise<Category[]>} A promise that resolves to an array of categories.
 	 */
 	public async getCategories(userId: string): Promise<Category[]> {
-		const endpoint = `users/${userId}/categories`;
+		const endpoint = `categories/${userId}`;
 		const categories: GetCategoriesDTO = await this.get(endpoint);
 		return this.buildCategories(categories);
 	}
 
 	private buildCategories(dto: GetCategoriesDTO): Category[] {
 		const categories: Category[] = dto.map(
-			(category) =>
-				new Category(categoryImages[category.icon], category.name, category.userId)
+			(category) => new Category(categoryImages[category.icon], category.name, category.id)
 		);
 		return categories;
 	}

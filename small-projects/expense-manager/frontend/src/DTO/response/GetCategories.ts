@@ -1,7 +1,7 @@
 export interface Category {
 	icon: string;
 	name: string;
-	userId: string;
+	id: string;
 }
 
 type GetCategoriesDTO = Category[];

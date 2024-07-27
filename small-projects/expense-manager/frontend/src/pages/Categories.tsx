@@ -14,8 +14,7 @@ import Button from "@/components/UI/Button";
 import InputError from "@/components/UI/InputError";
 
 // Components
-import CategoryComp from "@/components/Category"
-
+import CategoryComp from "@/components/Category";
 
 // Store
 import { SettingsContext } from "@/store/SettingsContext";
@@ -23,15 +22,13 @@ import { SettingsContext } from "@/store/SettingsContext";
 // Hooks
 import Category from "@/models/Category";
 
-
-
 const Categories: FC = () => {
-	const settingsCTX = useContext(SettingsContext)
+	const settingsCTX = useContext(SettingsContext);
 	const { t } = useTranslation("settings");
 
 	useEffect(() => {
-		settingsCTX.fetchCategories()
-	}, [])
+		settingsCTX.fetchCategories();
+	}, []);
 
 	return (
 		<Layout>
@@ -41,7 +38,9 @@ const Categories: FC = () => {
 			<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4"></Form>
 
 			<ul>
-				{settingsCTX.categories.map((category: Category) => <CategoryComp key={category.id} category={category} />)}
+				{settingsCTX.categories.map((category: Category) => (
+					<CategoryComp key={category.id} category={category} />
+				))}
 			</ul>
 		</Layout>
 	);

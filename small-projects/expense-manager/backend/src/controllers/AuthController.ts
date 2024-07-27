@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import authService from "../services/AuthService";
+import categoryService from "../services/CategoryService";
 import { Logger } from "../classes/Logger";
 import { isError, isFirebaseError } from "../utils/isError";
-import * as admin from "firebase-admin";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 const logger = new Logger("AuthController");
 
@@ -54,7 +55,11 @@ class AuthController {
 			}
 
 			const token = await authService.register(email, password);
+
 			if (token) {
+				const { uid } = jwt.decode(token) as { uid: string };
+				await categoryService.addDefaultCategoriesForUser(uid);
+
 				res.status(201).json({ token });
 			} else {
 				res.status(400).json({ message: "Registration failed" });

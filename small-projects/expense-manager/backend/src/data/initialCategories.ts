@@ -1,5 +1,5 @@
 // Model
-import { Category } from "@/models/Category";
+import { Category } from "../models/Category";
 
 const initialCategories: Category[] = [
 	new Category("faBowlFood", "Food"),

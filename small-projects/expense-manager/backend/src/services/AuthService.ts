@@ -36,6 +36,7 @@ class AuthService {
 		} catch (error) {
 			if (isError(error)) {
 				logger.error(`Error during login: ${error.message}`);
+				throw new Error();
 			} else {
 				logger.error("An unknown error occurred during login");
 			}

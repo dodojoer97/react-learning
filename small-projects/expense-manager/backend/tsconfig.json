@@ -10,13 +10,8 @@
 		"baseUrl": ".",
 		"types": ["node"],
 		"paths": {
-			"@/*": ["src/*"],
-			"@common/*": ["../common/src/*"]
+			"@/*": ["src/*"]
 		}
 	},
-	"include": [
-		"src",
-		"**/*.d.ts", // Ensures all .d.ts files are included
-		"../common/src/**/*" // Files from the common directory
-	]
+	"include": ["src"]
 }

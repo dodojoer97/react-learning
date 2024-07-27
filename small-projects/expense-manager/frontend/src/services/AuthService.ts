@@ -1,6 +1,6 @@
 // Classes
 import BaseService from "./BaseService";
-import { Logger } from "../../../common/src/index";
+import { Logger } from "@/classes/Logger";
 
 // Interface
 import { IAuthService } from "@/services/AuthService.d";

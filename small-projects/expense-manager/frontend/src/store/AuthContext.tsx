@@ -1,5 +1,5 @@
 // React
-import { createContext, useState, FC, Context, useEffect } from "react";
+import { createContext, useState, FC, Context } from "react";
 import type { PropsWithChildren } from "react";
 
 // DTO
@@ -13,6 +13,9 @@ import AuthService from "@/services/AuthService";
 // Interface
 import { IAuthContext } from "./AuthContext.d";
 
+// Utils
+import { isError } from "@/utils/isError";
+
 // Base context with default values
 export const AuthContext: Context<IAuthContext> = createContext<IAuthContext>({
 	signup: async () => undefined,
@@ -21,6 +24,7 @@ export const AuthContext: Context<IAuthContext> = createContext<IAuthContext>({
 	clearError: () => {},
 	setLoading: () => {},
 	setUser: () => {},
+	verifyToken: () => {},
 	user: undefined,
 	loading: false,
 	error: null,
@@ -125,8 +129,10 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		setLoading: handleSetLoading,
 		setUser: handleSetUser,
 		clearError,
+		verifyToken,
 		loading,
 		error,
+		user,
 	};
 
 	return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

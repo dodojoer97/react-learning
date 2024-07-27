@@ -11,7 +11,7 @@ export interface IAuthContext extends ILoadingContext {
 	clearError: () => void;
 	setLoading: (loading: boolean) => void;
 	setUser: (user: User) => void;
-	verifyToken: () => void;
+	verifyToken: () => Promise<User | undefined>;
 	user: User | undefined;
 	error: string | null;
 	loading: boolean;

@@ -24,7 +24,7 @@ export const AuthContext: Context<IAuthContext> = createContext<IAuthContext>({
 	clearError: () => {},
 	setLoading: () => {},
 	setUser: () => {},
-	verifyToken: () => {},
+	verifyToken: async () => undefined,
 	user: undefined,
 	loading: false,
 	error: null,
@@ -97,12 +97,14 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	};
 
 	// Verify token
-	const verifyToken = async (): Promise<void> => {
-		console.log("verifyToken");
+	const verifyToken = async (): Promise<User | undefined> => {
 		try {
 			setLoading(true);
 			const user = await authService.verifyToken();
+
 			setUser(user);
+
+			return user;
 		} catch (error) {
 			setUser(undefined);
 		} finally {

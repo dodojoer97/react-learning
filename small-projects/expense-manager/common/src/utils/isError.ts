@@ -5,8 +5,6 @@
  * @param {unknown} error - The value to be checked.
  * @returns {boolean} Returns true if the value is an Error, false otherwise.
  */
-const isError = (error: unknown): error is Error => {
+export const isError = (error: unknown): error is Error => {
 	return error instanceof Error;
 };
-
-export default isError;

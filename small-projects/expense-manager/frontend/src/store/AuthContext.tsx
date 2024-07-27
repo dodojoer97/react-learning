@@ -47,7 +47,7 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 			setLoading(false);
 		} catch (error) {
 			if (isError(error)) {
-				setError(error.message);
+				setError(JSON.parse(error.message).message);
 				return;
 			}
 			setError("Something went wrong with signup");
@@ -68,7 +68,7 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 			clearError();
 		} catch (error) {
 			if (isError(error)) {
-				setError(error.message);
+				setError(JSON.parse(error.message).message);
 				return;
 			}
 			setError("Something went wrong with login");

@@ -7,7 +7,7 @@ class CategoryController {
 	async addCategory(req: Request, res: Response): Promise<void> {
 		try {
 			const category: Category = req.body;
-			await categoryService.createCategory(category);
+			// await categoryService.addCategoryForUser(category);
 			res.status(201).send(category);
 		} catch (error: any) {
 			res.status(500).send(error.message);
@@ -17,7 +17,7 @@ class CategoryController {
 	async getCategoriesByUser(req: Request, res: Response): Promise<void> {
 		try {
 			const { userId } = req.params;
-			const categories = await categoryService.fetchCategoriesByUser(userId);
+			const categories = await categoryService.getCategoriesByUser(userId);
 			res.status(200).send(categories);
 		} catch (error: any) {
 			res.status(500).send(error.message);

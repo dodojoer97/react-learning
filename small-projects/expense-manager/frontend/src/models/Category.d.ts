@@ -1,8 +1,8 @@
-// FontAwesome 
-import type {  IconDefinition } from '@fortawesome/free-solid-svg-icons';
+// FontAwesome
+import type { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
 export interface ICategory {
-	id: string;
+	userId: string;
 	icon: IconDefinition;
 	name: string;
 }

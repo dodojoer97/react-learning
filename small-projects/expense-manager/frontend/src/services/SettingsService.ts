@@ -8,6 +8,12 @@ import BaseService from "./BaseService";
 import Category from "@/models/Category";
 import Currency from "@/models/Currency";
 
+// DTO
+import GetCategoriesDTO from "@/DTO/response/GetCategories";
+
+// Config
+import categoryImages from "@/config/categoryImages";
+
 /**
  *  SettingsService class for handling settings.
  *  Extends BaseService to use common service functionalities.
@@ -40,9 +46,17 @@ class SettingsService extends BaseService implements ISettingsService {
 	 */
 	public async getCategories(userId: string): Promise<Category[]> {
 		const endpoint = `users/${userId}/categories`;
-		return this.get(endpoint);
+		const categories: GetCategoriesDTO = await this.get(endpoint);
+		return this.buildCategories(categories);
 	}
 
+	private buildCategories(dto: GetCategoriesDTO): Category[] {
+		const categories: Category[] = dto.map(
+			(category) =>
+				new Category(categoryImages[category.icon], category.name, category.userId)
+		);
+		return categories;
+	}
 	/**
 	 * Sets currency for a user.
 	 * @param {Currency} currency - The currency to set.

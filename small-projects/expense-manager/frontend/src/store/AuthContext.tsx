@@ -1,5 +1,5 @@
 // React
-import { createContext, useState, FC, Context, useCallback } from "react";
+import { createContext, useState, FC, Context, useCallback, useEffect } from "react";
 import type { PropsWithChildren } from "react";
 
 // DTO
@@ -24,10 +24,10 @@ export const AuthContext: Context<IAuthContext> = createContext<IAuthContext>({
 	clearError: () => {},
 	setLoading: () => {},
 	setUser: () => {},
-	verifyToken: async () => undefined,
 	user: undefined,
 	loading: false,
 	error: null,
+	isAuthenticated: false,
 });
 
 const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -36,7 +36,20 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const [user, setUser] = useState<User | undefined>(undefined);
 	const [loading, setLoading] = useState<boolean>(false);
+	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
+
+	useEffect(() => {
+		const initializeAuth = async () => {
+			const currentUser = await authService.verifyToken();
+			if (currentUser) {
+				setUser(currentUser);
+				setIsAuthenticated(true);
+			}
+		};
+
+		initializeAuth();
+	}, []);
 
 	// Register the user
 	const signup = async (dto: RegisterDTO): Promise<void> => {
@@ -63,6 +76,7 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 			const user: User | undefined = await authService.login(dto);
 			setUser(user);
+			setIsAuthenticated(true);
 
 			setLoading(false);
 			clearError();
@@ -83,6 +97,8 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 			setLoading(true);
 
 			setUser(undefined);
+			setIsAuthenticated(false);
+
 			setLoading(false);
 		} catch (error) {
 			if (isError(error)) {
@@ -94,22 +110,6 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 			setLoading(false);
 		}
 	};
-
-	// Verify token
-	const verifyToken = useCallback(async (): Promise<User | undefined> => {
-		try {
-			setLoading(true);
-			const user = await authService.verifyToken();
-
-			setUser(user);
-
-			return user;
-		} catch (error) {
-			setUser(undefined);
-		} finally {
-			setLoading(false);
-		}
-	}, []);
 
 	const clearError = useCallback((): void => {
 		setError(null);
@@ -130,10 +130,10 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		setLoading: handleSetLoading,
 		setUser: handleSetUser,
 		clearError,
-		verifyToken,
 		loading,
 		error,
 		user,
+		isAuthenticated,
 	};
 
 	return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

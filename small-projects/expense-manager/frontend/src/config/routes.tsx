@@ -12,7 +12,7 @@ import Categories from "@/pages/Categories";
 export interface RouteConfig {
 	path: string;
 	component: ReactNode;
-	protected: boolean;
+	isProtected: boolean;
 }
 
 // Create the route configuration array
@@ -20,26 +20,26 @@ export const routeConfig: RouteConfig[] = [
 	{
 		path: "/login",
 		component: <LoginPage />,
-		protected: false,
+		isProtected: false,
 	},
 	{
 		path: "/",
 		component: <HomePage />,
-		protected: false,
+		isProtected: false,
 	},
 	{
 		path: "/signup",
 		component: <SignUp />,
-		protected: false,
+		isProtected: false,
 	},
 	{
 		path: "/settings",
 		component: <Settings />,
-		protected: true,
+		isProtected: true,
 	},
 	{
 		path: "/settings/categories",
 		component: <Categories />,
-		protected: true,
+		isProtected: true,
 	},
 ];

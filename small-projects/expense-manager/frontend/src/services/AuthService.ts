@@ -62,6 +62,11 @@ class AuthService extends BaseService implements IAuthService {
 	 * @returns {Promise<User | undefined>} A promise that resolves to the user object if found, or undefined if not.
 	 */
 	public async login(dto: LoginRequestDTO): Promise<User | undefined> {
+		const currentUser = await this.verifyToken();
+		if (currentUser) {
+			return currentUser;
+		}
+
 		try {
 			const response: LoginResponseDTO = await this.post<LoginRequestDTO>("auth/login", dto);
 

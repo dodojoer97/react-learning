@@ -3,11 +3,22 @@ import { Request, Response } from "express";
 import categoryService from "../services/CategoryService";
 import { Category } from "../models/Category";
 
+// DTO
+import CreateCategoryDTO from "../DTO/request/CreateCategory";
+
+// UUID
+import { v4 } from "uuid";
+
 class CategoryController {
 	async addCategory(req: Request, res: Response): Promise<void> {
 		try {
-			const category: Category = req.body;
-			// await categoryService.addCategoryForUser(category);
+			const dto: CreateCategoryDTO = req.body;
+			const { category, userId } = dto;
+
+			// TODO move the creation Id to service or repo
+			const categoryModel = new Category(category.icon, category.name, v4());
+
+			await categoryService.addCategoryForUser(categoryModel, userId);
 			res.status(201).send(category);
 		} catch (error: any) {
 			res.status(500).send(error.message);

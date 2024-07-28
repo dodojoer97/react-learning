@@ -74,10 +74,10 @@ class SettingsService extends BaseService implements ISettingsService {
 	 * @returns {Promise<void>} A promise that resolves when the operation is complete.
 	 */
 	public async createCategory(category: Category, userId: string): Promise<void> {
-		const endpoint = `users/${userId}/categories`;
-		const categories = await this.get(endpoint);
-		categories.push(category);
-		await this.put(endpoint, categories);
+		const endpoint = `categories`;
+		const categories = await this.post(endpoint, { category, userId });
+
+		return categories;
 	}
 
 	/**

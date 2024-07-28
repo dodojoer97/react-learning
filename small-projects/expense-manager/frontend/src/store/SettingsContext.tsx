@@ -47,15 +47,18 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	};
 
 	const addCategory = async (category: Category, userId: string): Promise<void> => {
-		// Use functional update form to ensure you're working with the most current state
-		setCategories((currentCategories) => {
-			const updatedCategories = [...currentCategories, category];
-			// Call to update categories in the backend
-			settingsService.setCategories(updatedCategories, userId).catch((error) => {
-				console.error("Failed to update categories:", error);
-			});
-			return updatedCategories;
-		});
+		try {
+			setLoading(true);
+			setCategories((currentCategories) => [...currentCategories, category]);
+
+			await settingsService.createCategory(category, userId);
+
+			setLoading(false);
+		} catch (error) {
+			console.error("Failed to fetch categories:", error);
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	const fetchCategories = async (): Promise<void> => {

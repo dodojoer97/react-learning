@@ -77,10 +77,6 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		}
 	};
 
-	useEffect(() => {
-		fetchCategories();
-	}, [user]);
-
 	// Values
 	const contextValue: ISettingsContext = {
 		currency,

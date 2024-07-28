@@ -12,6 +12,7 @@ import AuthContextProvider from "@/store/AuthContext";
 import SettingsContextProvider from "@/store/SettingsContext";
 
 const App: FC = () => {
+	console.log("app render");
 	return (
 		<>
 			<AuthContextProvider>

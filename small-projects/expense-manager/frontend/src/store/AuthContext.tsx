@@ -1,5 +1,5 @@
 // React
-import { createContext, useState, FC, Context } from "react";
+import { createContext, useState, FC, Context, useCallback } from "react";
 import type { PropsWithChildren } from "react";
 
 // DTO
@@ -96,7 +96,7 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	};
 
 	// Verify token
-	const verifyToken = async (): Promise<User | undefined> => {
+	const verifyToken = useCallback(async (): Promise<User | undefined> => {
 		try {
 			setLoading(true);
 			const user = await authService.verifyToken();
@@ -109,19 +109,19 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		} finally {
 			setLoading(false);
 		}
-	};
+	}, []);
 
-	const clearError = (): void => {
+	const clearError = useCallback((): void => {
 		setError(null);
-	};
+	}, []);
 
-	const handleSetLoading = (loading: boolean): void => {
+	const handleSetLoading = useCallback((loading: boolean): void => {
 		setLoading(loading);
-	};
+	}, []);
 
-	const handleSetUser = (user: User): void => {
+	const handleSetUser = useCallback((user: User): void => {
 		setUser(user);
-	};
+	}, []);
 
 	const contextValue: IAuthContext = {
 		signup,

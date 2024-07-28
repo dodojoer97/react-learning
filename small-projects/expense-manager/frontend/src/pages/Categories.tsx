@@ -24,13 +24,14 @@ import { AuthContext } from "@/store/AuthContext";
 import Category from "@/models/Category";
 
 const Categories: FC = () => {
-	console.log("Categories render");
 	const settingsCTX = useContext(SettingsContext);
+	const authCTX = useContext(AuthContext);
 	const { t } = useTranslation("settings");
 
 	useEffect(() => {
+		console.log("Categories useEffect");
 		settingsCTX.fetchCategories();
-	}, []);
+	}, [authCTX.user]);
 
 	return (
 		<Layout>

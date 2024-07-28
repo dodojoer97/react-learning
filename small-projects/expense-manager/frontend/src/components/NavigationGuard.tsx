@@ -22,23 +22,20 @@ const protectedRoutes: Set<string> = new Set(
 );
 
 const NavigationGuard: FC<PropsWithChildren> = ({ children }) => {
+	console.log("NavigationGuard render");
 	// Destructure authentication context values
-	const { clearError, verifyToken } = useContext(AuthContext);
+	const { clearError, verifyToken, user } = useContext(AuthContext);
 
 	// Get the current location and navigate function from the router
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	// Memoize the instance of the authentication service to prevent re-creating it on each render
-	const authService = useMemo(() => new AuthService(), []);
-
 	// Check protected routes for logged in users
 	useEffect(() => {
 		// Clear auth error on route change
-		// clearError();
+		clearError();
 
 		const handleVerifyToken = async (): Promise<void> => {
-			console.log("handleVerifyToken");
 			const user = await verifyToken();
 
 			if (protectedRoutes.has(location.pathname) && !user) {
@@ -49,7 +46,11 @@ const NavigationGuard: FC<PropsWithChildren> = ({ children }) => {
 		handleVerifyToken();
 
 		// Clear any existing errors when the location changes
-	}, [authService, location.pathname, navigate]);
+	}, [location.pathname]);
+
+	useEffect(() => {
+		console.log("user updated");
+	}, [user]);
 
 	// Render children components
 	return <>{children}</>;

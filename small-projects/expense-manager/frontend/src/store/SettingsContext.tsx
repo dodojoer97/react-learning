@@ -65,10 +65,7 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 				const fetchedCategories: Category[] =
 					(await settingsService.getCategories(user.uid)) || [];
 
-				setCategories((currentCategories: Category[]) => {
-					const updatedCategories = [...currentCategories, ...fetchedCategories];
-					return updatedCategories;
-				});
+				setCategories(fetchedCategories);
 			} catch (error) {
 				console.error("Failed to fetch categories:", error);
 			} finally {

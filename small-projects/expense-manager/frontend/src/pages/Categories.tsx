@@ -25,13 +25,11 @@ import Category from "@/models/Category";
 
 const Categories: FC = () => {
 	const settingsCTX = useContext(SettingsContext);
-	const authCTX = useContext(AuthContext);
 	const { t } = useTranslation("settings");
 
 	useEffect(() => {
-		console.log("Categories useEffect");
 		settingsCTX.fetchCategories();
-	}, [authCTX.user]);
+	}, []);
 
 	return (
 		<Layout>

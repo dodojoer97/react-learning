@@ -35,19 +35,32 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	const authService = new AuthService();
 
 	const [user, setUser] = useState<User | undefined>(undefined);
-	const [loading, setLoading] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(true);
 	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
 
-	useEffect(() => {
-		const initializeAuth = async () => {
+	const initializeAuth = async () => {
+		try {
+			setLoading(true);
 			const currentUser = await authService.verifyToken();
 			if (currentUser) {
 				setUser(currentUser);
 				setIsAuthenticated(true);
 			}
-		};
 
+			setLoading(false);
+		} catch (error) {
+			if (isError(error)) {
+				setError(JSON.parse(error.message).message);
+				return;
+			}
+			setError("Something went wrong with signup");
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	useEffect(() => {
 		initializeAuth();
 	}, []);
 

@@ -25,7 +25,7 @@ export const SettingsContext: Context<ISettingsContext> = createContext<ISetting
 	formatAmount: () => "",
 	addCategory: () => {},
 	setCurrency: () => {},
-	fetchCategories: () => {},
+	fetchCategories: async () => {},
 });
 
 const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -76,6 +76,10 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 			}
 		}
 	};
+
+	useEffect(() => {
+		fetchCategories();
+	}, [user]);
 
 	// Values
 	const contextValue: ISettingsContext = {

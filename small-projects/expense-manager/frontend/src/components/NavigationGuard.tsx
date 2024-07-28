@@ -35,9 +35,10 @@ const NavigationGuard: FC<PropsWithChildren> = ({ children }) => {
 	// Check protected routes for logged in users
 	useEffect(() => {
 		// Clear auth error on route change
-		clearError();
+		// clearError();
 
 		const handleVerifyToken = async (): Promise<void> => {
+			console.log("handleVerifyToken");
 			const user = await verifyToken();
 
 			if (protectedRoutes.has(location.pathname) && !user) {

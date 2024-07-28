@@ -18,11 +18,13 @@ import CategoryComp from "@/components/Category";
 
 // Store
 import { SettingsContext } from "@/store/SettingsContext";
+import { AuthContext } from "@/store/AuthContext";
 
 // Hooks
 import Category from "@/models/Category";
 
 const Categories: FC = () => {
+	console.log("Categories render");
 	const settingsCTX = useContext(SettingsContext);
 	const { t } = useTranslation("settings");
 

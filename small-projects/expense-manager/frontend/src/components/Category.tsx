@@ -20,9 +20,6 @@ import InputError from "@/components/UI/InputError";
 import useModal from "@/hooks/useModal";
 import useInput from "@/hooks/useInput";
 
-// Config
-import categoryImages from "@/config/categoryImages";
-
 interface ICategoryProps {
 	category: Category;
 }

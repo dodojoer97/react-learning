@@ -12,7 +12,7 @@ import Currency from "@/models/Currency";
 import GetCategoriesDTO from "@/DTO/response/GetCategories";
 
 // Config
-import categoryImages from "@/config/categoryImages";
+import { categoryIcons } from "@/config/categoryIcons";
 
 /**
  *  SettingsService class for handling settings.
@@ -52,7 +52,7 @@ class SettingsService extends BaseService implements ISettingsService {
 
 	private buildCategories(dto: GetCategoriesDTO): Category[] {
 		const categories: Category[] = dto.map(
-			(category) => new Category(categoryImages[category.icon], category.name, category.id)
+			(category) => new Category(categoryIcons[category.icon], category.name, category.id)
 		);
 		return categories;
 	}

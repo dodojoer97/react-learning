@@ -8,8 +8,7 @@ import {
 	faMugHot,
 } from "@fortawesome/free-solid-svg-icons";
 
-// Category name to image mapping
-const categoryImages: { [key: string]: IconDefinition } = {
+const categoryIcons: { [key: string]: IconDefinition } = {
 	faBowlFood, // food
 	faHouse, // house
 	faBus, // public transport
@@ -18,4 +17,13 @@ const categoryImages: { [key: string]: IconDefinition } = {
 	faMugHot, // coffee
 };
 
-export default categoryImages;
+const categoryIconNames: { [key: string]: string } = {
+	food: "faBowlFood",
+	house: "faHouse",
+	publicTransport: "faBus",
+	bills: "faPlug",
+	bar: "faBeer",
+	coffee: "faMugHot",
+};
+
+export { categoryIcons, categoryIconNames };

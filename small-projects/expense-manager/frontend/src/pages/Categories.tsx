@@ -11,6 +11,7 @@ import Layout from "@/components/UI/Layout";
 
 // Components
 import CategoryComp from "@/components/Category";
+import AddCategoryForm from "@/components/AddCategoryForm";
 
 // Store
 import { SettingsContext } from "@/store/SettingsContext";
@@ -33,6 +34,7 @@ const Categories: FC = () => {
 				<h1 className="text-2xl font-bold sm:text-3xl">{t("categoriesTitle")}</h1>
 			</div>
 			{/* ADD CATEGORY FORM */}
+			<AddCategoryForm />
 
 			<ul>
 				{settingsCTX.categories.map((category: Category) => (

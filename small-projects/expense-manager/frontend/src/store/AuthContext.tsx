@@ -16,6 +16,9 @@ import { IAuthContext } from "./AuthContext.d";
 // Utils
 import { isError } from "@common";
 
+// Location
+import { useLocation } from "react-router-dom";
+
 // Base context with default values
 export const AuthContext: Context<IAuthContext> = createContext<IAuthContext>({
 	signup: async () => undefined,
@@ -33,6 +36,8 @@ export const AuthContext: Context<IAuthContext> = createContext<IAuthContext>({
 const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	// Service
 	const authService = new AuthService();
+
+	const location = useLocation();
 
 	const [user, setUser] = useState<User | undefined>(undefined);
 	const [loading, setLoading] = useState<boolean>(true);
@@ -63,6 +68,10 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	useEffect(() => {
 		initializeAuth();
 	}, []);
+
+	useEffect(() => {
+		clearError();
+	}, [location.pathname]);
 
 	// Register the user
 	const signup = async (dto: RegisterDTO): Promise<void> => {

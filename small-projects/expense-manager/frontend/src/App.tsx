@@ -15,11 +15,11 @@ const App: FC = () => {
 	console.log("app render");
 	return (
 		<>
-			<AuthContextProvider>
-				<SettingsContextProvider>
-					<RouterProvider router={router} fallbackElement={<p>Initial Load...</p>} />
-				</SettingsContextProvider>
-			</AuthContextProvider>
+			<RouterProvider router={router}>
+				<AuthContextProvider>
+					<SettingsContextProvider></SettingsContextProvider>
+				</AuthContextProvider>
+			</RouterProvider>
 		</>
 	);
 };

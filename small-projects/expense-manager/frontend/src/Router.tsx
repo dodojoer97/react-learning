@@ -1,21 +1,25 @@
-// React router
+// Imports as before
 import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
-
-// Routes
-import { routeConfig } from "@/config/routes";
-
-// Components
-// import NavigationGuard from "@/components/NavigationGuard";
+import RouteWrapper from "./components/RouteWrapper";
 import PrivateRoute from "./components/PrivateRoute";
+import { routeConfig } from "@/config/routes";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
 		<>
-			{routeConfig.map(({ path, component, isProtected }) => (
+			{routeConfig.map(({ path, component: Component, isProtected }) => (
 				<Route
 					key={path}
 					path={path}
-					element={isProtected ? <PrivateRoute>{component}</PrivateRoute> : component}
+					element={
+						<RouteWrapper>
+							{isProtected ? (
+								<PrivateRoute>{Component}</PrivateRoute>
+							) : (
+								<>{Component}</>
+							)}
+						</RouteWrapper>
+					}
 				/>
 			))}
 		</>

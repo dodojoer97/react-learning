@@ -5,6 +5,8 @@ import "./i18n";
 import React from "react";
 import ReactDOM from "react-dom/client";
 
+import {Logger} from "@common"
+
 // APP
 import App from "./App.tsx";
 

@@ -44,7 +44,7 @@ const AddCategoryForm: FC = () => {
 			className="mx-auto mb-0 mt-8 max-w-md space-y-4 bg-red-50 rounded p-4"
 			onSubmit={handleSubmit}
 		>
-			<IconSelector onSelect={handleSelectIcon} />
+			<IconSelector onSelect={handleSelectIcon} selectedIcon={iconName || ""} />
 
 			<Input
 				id="name"

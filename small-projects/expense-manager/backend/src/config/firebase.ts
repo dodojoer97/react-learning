@@ -26,7 +26,6 @@ const clientConfig = {
 
 const clientApp = initializeApp(clientConfig);
 const auth = getAuth(clientApp);
-
 if (process.env.USE_FIREBASE_EMULATOR === "true") {
 	connectAuthEmulator(auth, "http://localhost:9099");
 }

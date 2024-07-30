@@ -3,9 +3,7 @@
 		"baseUrl": ".", // This must be set for paths to work
 		"paths": {
 			"@/*": ["src/*"], // Corresponds to the Vite alias
-			"@common": [
-				"../common"
-			]
+			"@common": ["../common/"]
 		},
 		"composite": true,
 		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
@@ -33,10 +31,10 @@
 	"include": ["src"],
 	"exclude": ["node_modules"],
 	"references": [
-        {
-            "path": "../common",
-            // add 'prepend' if you want to include the referenced project in your output file
-            "prepend": false
-        }
-    ]
+		{
+			"path": "../common",
+			// add 'prepend' if you want to include the referenced project in your output file
+			"prepend": false
+		}
+	]
 }

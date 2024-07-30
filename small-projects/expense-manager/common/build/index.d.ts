@@ -1,5 +1,3 @@
-// Classes
 export { Logger } from "./classes/Logger";
-
-// Utils
 export { isError, isFirebaseError } from "./utils/isError";
+//# sourceMappingURL=index.d.ts.map

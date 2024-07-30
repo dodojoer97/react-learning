@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"target": "ES6",
 		"module": "CommonJS",
-		"outDir": "./dist",
+		"outDir": "./dist", // Corrected from "./srtc" to "./dist"
 		"strict": true,
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
@@ -10,15 +10,16 @@
 		"baseUrl": ".",
 		"types": ["node"],
 		"paths": {
-			"@/*": ["src/*"]
+			"@/*": ["src/*"],
+			"@common": ["../common/"]
 		}
 	},
 	"include": ["src"],
+	"exclude": ["node_modules"],
 	"references": [
-        {
-            "path": "../common",
-            // add 'prepend' if you want to include the referenced project in your output file
-            "prepend": false
-        }
-    ]
+		{
+			"path": "../common",
+			"prepend": false
+		}
+	]
 }

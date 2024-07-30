@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import authService from "../services/AuthService";
 import categoryService from "../services/CategoryService";
-import { Logger } from "../classes/Logger";
-import { isError, isFirebaseError } from "../utils/isError";
+import { isError, isFirebaseError, Logger } from "@common";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
 const logger = new Logger("AuthController");

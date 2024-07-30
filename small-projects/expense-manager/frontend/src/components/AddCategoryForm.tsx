@@ -14,13 +14,55 @@ import InputError from "@/components/UI/InputError";
 
 // Hooks
 import useInput from "@/hooks/useInput";
+import useFormSubmission from "@/hooks/useFormSubmission";
+
+// Util
+import { hasMinLength } from "@/utils/utils";
+import Category from "@/models/Category";
 
 const AddCategoryForm: FC = () => {
+	// TODO ADD TRANSLATIONS
+	const [iconName, setIconName] = useState<string | null>(null);
+
 	const settingsCTX = useContext(SettingsContext);
 
+	const categoryNameField = useInput("", (value: string) => {
+		return hasMinLength(value, 8);
+	});
+
+	const handleSelectIcon = (iconName: string): void => {
+		setIconName(iconName);
+	};
+
+	const { handleSubmit } = useFormSubmission(async () => {
+		console.log("iconName: ", iconName);
+		console.log("name: ", categoryNameField.value);
+	});
+
 	return (
-		<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4">
-			<IconSelector onSelect={(iconName) => console.log("select: ", iconName)} />
+		<Form
+			className="mx-auto mb-0 mt-8 max-w-md space-y-4 bg-red-50 rounded p-4"
+			onSubmit={handleSubmit}
+		>
+			<IconSelector onSelect={handleSelectIcon} />
+
+			<Input
+				id="name"
+				label="Category name"
+				placeholder="Category name"
+				required
+				value={categoryNameField.value}
+				onChange={categoryNameField.handleInputChange}
+				onBlur={categoryNameField.handleInputBlur}
+			/>
+
+			<Button
+				type="submit"
+				disabled={categoryNameField.hasError}
+				className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white disabled:bg-slate-400"
+			>
+				SAVE
+			</Button>
 		</Form>
 	);
 };

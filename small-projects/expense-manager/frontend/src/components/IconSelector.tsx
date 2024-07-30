@@ -14,6 +14,8 @@ interface IIconSelectorProps {
 const IconSelector: FC<IIconSelectorProps> = ({ onSelect }) => {
 	return (
 		<>
+			{/* TODO add content */}
+			<h2>Select an icon</h2>
 			<div className="grid grid-cols-4 gap-4">
 				{Object.entries(categoryIconNames).map(([_, iconName]) => (
 					<article

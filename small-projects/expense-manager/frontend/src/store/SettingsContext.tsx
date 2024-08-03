@@ -47,35 +47,38 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	};
 
 	const addCategory = async (category: Category): Promise<void> => {
-		if (user?.uid) {
-			try {
-				setLoading(true);
-				setCategories((currentCategories) => [...currentCategories, category]);
+		if (!user?.uid) throw new Error("User id is mandatory in addCategory");
+		try {
+			setLoading(true);
 
-				await settingsService.createCategory(category, user.uid);
+			const fetchedCategories: Category[] = await settingsService.createCategory(
+				category,
+				user.uid
+			);
 
-				setLoading(false);
-			} catch (error) {
-				console.error("Failed to fetch categories:", error);
-			} finally {
-				setLoading(false);
-			}
+			setCategories(fetchedCategories);
+
+			setLoading(false);
+		} catch (error) {
+			console.error("Failed to fetch categories:", error);
+		} finally {
+			setLoading(false);
 		}
 	};
 
 	const fetchCategories = async (): Promise<void> => {
-		if (user?.uid) {
-			try {
-				setLoading(true);
-				const fetchedCategories: Category[] =
-					(await settingsService.getCategories(user.uid)) || [];
+		if (!user?.uid) throw new Error("User id is mandatory in fetchCategories");
 
-				setCategories(fetchedCategories);
-			} catch (error) {
-				console.error("Failed to fetch categories:", error);
-			} finally {
-				setLoading(false);
-			}
+		try {
+			setLoading(true);
+			const fetchedCategories: Category[] =
+				(await settingsService.getCategories(user.uid)) || [];
+
+			setCategories(fetchedCategories);
+		} catch (error) {
+			console.error("Failed to fetch categories:", error);
+		} finally {
+			setLoading(false);
 		}
 	};
 

@@ -29,7 +29,7 @@ const AddCategoryForm: FC = () => {
 	const authCTX = useContext(AuthContext);
 
 	const categoryNameField = useInput("", (value: string) => {
-		return hasMinLength(value, 8);
+		return hasMinLength(value, 4);
 	});
 
 	const handleSelectIcon = (iconName: string): void => {

@@ -18,8 +18,11 @@ class CategoryController {
 			// TODO move the creation Id to service or repo
 			const categoryModel = new Category(category.icon, category.name, v4());
 
-			await categoryService.addCategoryForUser(categoryModel, userId);
-			res.status(201).send(category);
+			const categories: Category[] = await categoryService.addCategoryForUser(
+				categoryModel,
+				userId
+			);
+			res.status(201).send(categories);
 		} catch (error: any) {
 			res.status(500).send(error.message);
 		}

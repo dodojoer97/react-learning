@@ -2,13 +2,24 @@
 import categoryRepository from "../repositories/CategoryRepository";
 import { Category } from "../models/Category";
 
-// Data
 import initialCategories from "../data/initialCategories";
 
 class CategoryService {
 	// Adds a single category for a specific user
-	async addCategoryForUser(category: Category, userId: string): Promise<void> {
+	async addCategoryForUser(category: Category, userId: string): Promise<Category[]> {
+		// Check if the category already exists for the user
+		const exists = await categoryRepository.categoryExistsForUser(category.name, userId);
+		if (exists) {
+			throw new Error(
+				`Category with name ${category.name} already exists for user ${userId}`
+			);
+		}
+
+		// Add the category for the user
 		await categoryRepository.addCategoryForUser(category, userId);
+
+		// Retrieve and return the updated list of categories for the user
+		return await this.getCategoriesByUser(userId);
 	}
 
 	// Retrieves categories for a specific user

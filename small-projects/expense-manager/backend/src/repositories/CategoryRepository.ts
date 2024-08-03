@@ -28,6 +28,15 @@ class CategoryRepository {
 		const snapshot = await this.categoriesCollection.where("userId", "==", userId).get();
 		return snapshot.docs.map((doc) => doc.data() as Category);
 	}
+
+	// Check if a category exists for a specific user
+	async categoryExistsForUser(categoryName: string, userId: string): Promise<boolean> {
+		const snapshot = await this.categoriesCollection
+			.where("name", "==", categoryName)
+			.where("userId", "==", userId)
+			.get();
+		return !snapshot.empty;
+	}
 }
 
 export default new CategoryRepository();

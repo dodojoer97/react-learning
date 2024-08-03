@@ -1,3 +1,7 @@
+.sliding-panel {
+	transform: translateX(-100%);
+}
+
 .sliding-panel.open {
 	animation: slide-right 0.3s ease-out forwards;
 }

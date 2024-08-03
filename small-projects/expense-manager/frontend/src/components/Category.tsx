@@ -28,7 +28,7 @@ interface ICategoryProps {
 const CategoryComp: FC<ICategoryProps> = ({ category }) => {
 	// Hooks
 	const { isOpen: isModalOpen, toggleOpen: toggleModal } = useIsOpen();
-	const { isOpen: isSlidingPanelOpen, toggleOpen: togglePanelOpen } = useIsOpen(true);
+	const { isOpen: isSlidingPanelOpen, toggleOpen: togglePanelOpen, isClosing } = useIsOpen(true);
 
 	const nameField = useInput(category.name, (value) => true);
 
@@ -52,7 +52,7 @@ const CategoryComp: FC<ICategoryProps> = ({ category }) => {
 					<FontAwesomeIcon icon={faPencil} />
 				</Button>
 			</article>
-			<SlidingPanel isOpen={isSlidingPanelOpen} onClose={togglePanelOpen}>
+			<SlidingPanel isOpen={isSlidingPanelOpen} isClosing={isClosing} onClose={togglePanelOpen}>
 				TEST
 			</SlidingPanel>
 			{/* // <Modal isOpen={isModalOpen} onClose={handleCloseModal} isFullScreen>

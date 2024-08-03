@@ -1,0 +1,29 @@
+.sliding-panel.open {
+	animation: slide-right 0.3s ease-out forwards;
+}
+
+.sliding-panel.closing {
+	animation: slide-left 0.3s ease-out forwards;
+}
+
+.sliding-panel.fullscreen {
+	@apply w-[100vw] h-[100dvh];
+}
+
+@keyframes slide-right {
+	from {
+		transform: translateX(-100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
+@keyframes slide-left {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-100%);
+	}
+}

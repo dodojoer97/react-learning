@@ -15,9 +15,10 @@ import Modal from "@/components/UI/Modal";
 import Form from "@/components/UI/Form";
 import Input from "@/components/UI/Input";
 import InputError from "@/components/UI/InputError";
+import SlidingPanel from "@/components/UI/SlidingPanel";
 
 // Hooks
-import useModal from "@/hooks/useModal";
+import useIsOpen from "@/hooks/useIsOpen";
 import useInput from "@/hooks/useInput";
 
 interface ICategoryProps {
@@ -26,7 +27,9 @@ interface ICategoryProps {
 
 const CategoryComp: FC<ICategoryProps> = ({ category }) => {
 	// Hooks
-	const { isModalOpen, toggleModal } = useModal();
+	const { isOpen: isModalOpen, toggleOpen: toggleModal } = useIsOpen();
+	const { isOpen: isSlidingPanelOpen, toggleOpen: togglePanelOpen } = useIsOpen(true);
+
 	const nameField = useInput(category.name, (value) => true);
 
 	// Closes the modal and resets the input values
@@ -45,24 +48,25 @@ const CategoryComp: FC<ICategoryProps> = ({ category }) => {
 					/>
 					<p className="text-lg font-semibold text-gray-800">{category.name}</p>
 				</div>
-				<Button onClick={toggleModal}>
+				<Button onClick={togglePanelOpen}>
 					<FontAwesomeIcon icon={faPencil} />
 				</Button>
 			</article>
-			{isModalOpen && (
-				<Modal isOpen={isModalOpen} onClose={handleCloseModal} isFullScreen>
-					<Form className="mx-auto px-7 mb-0 mt-8 max-w-md space-y-4" key={category.id}>
-						<Input
-							id="name"
-							label="name"
-							className="w-12"
-							value={nameField.value}
-							onChange={nameField.handleInputChange}
-							onBlur={nameField.handleInputBlur}
-						/>
-					</Form>
-				</Modal>
-			)}
+			<SlidingPanel isOpen={isSlidingPanelOpen} onClose={togglePanelOpen}>
+				TEST
+			</SlidingPanel>
+			{/* // <Modal isOpen={isModalOpen} onClose={handleCloseModal} isFullScreen>
+				// 	<Form className="mx-auto px-7 mb-0 mt-8 max-w-md space-y-4" key={category.id}>
+				// 		<Input
+				// 			id="name"
+				// 			label="name"
+				// 			className="w-12"
+				// 			value={nameField.value}
+				// 			onChange={nameField.handleInputChange}
+				// 			onBlur={nameField.handleInputBlur}
+				// 		/>
+				// 	</Form>
+				// </Modal> */}
 		</>
 	);
 };

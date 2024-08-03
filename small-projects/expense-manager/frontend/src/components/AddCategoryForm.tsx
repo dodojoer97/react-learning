@@ -4,6 +4,7 @@ import { useState, useContext } from "react";
 
 // Store
 import { SettingsContext } from "@/store/SettingsContext";
+import { AuthContext } from "@/store/AuthContext";
 
 // Copmonents
 import Form from "@/components/UI/Form";
@@ -25,6 +26,7 @@ const AddCategoryForm: FC = () => {
 	const [iconName, setIconName] = useState<string | null>(null);
 
 	const settingsCTX = useContext(SettingsContext);
+	const authCTX = useContext(AuthContext);
 
 	const categoryNameField = useInput("", (value: string) => {
 		return hasMinLength(value, 8);
@@ -35,8 +37,10 @@ const AddCategoryForm: FC = () => {
 	};
 
 	const { handleSubmit } = useFormSubmission(async () => {
-		console.log("iconName: ", iconName);
-		console.log("name: ", categoryNameField.value);
+		if (!iconName) return;
+		const createdCategory = new Category(iconName, categoryNameField.value, "");
+
+		await settingsCTX.addCategory(createdCategory);
 	});
 
 	return (
@@ -59,7 +63,7 @@ const AddCategoryForm: FC = () => {
 			<Button
 				type="submit"
 				disabled={categoryNameField.hasError}
-				className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white disabled:bg-slate-400"
+				className="inline-block rounded-lg w-full bg-blue-500 px-5 py-3 text-sm font-medium text-white disabled:bg-slate-400"
 			>
 				SAVE
 			</Button>

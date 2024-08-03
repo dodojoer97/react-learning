@@ -23,7 +23,7 @@ export const SettingsContext: Context<ISettingsContext> = createContext<ISetting
 	categories: [],
 	loading: false,
 	formatAmount: () => "",
-	addCategory: () => {},
+	addCategory: async () => {},
 	setCurrency: () => {},
 	fetchCategories: async () => {},
 });
@@ -46,18 +46,20 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		}).format(amount);
 	};
 
-	const addCategory = async (category: Category, userId: string): Promise<void> => {
-		try {
-			setLoading(true);
-			setCategories((currentCategories) => [...currentCategories, category]);
+	const addCategory = async (category: Category): Promise<void> => {
+		if (user?.uid) {
+			try {
+				setLoading(true);
+				setCategories((currentCategories) => [...currentCategories, category]);
 
-			await settingsService.createCategory(category, userId);
+				await settingsService.createCategory(category, user.uid);
 
-			setLoading(false);
-		} catch (error) {
-			console.error("Failed to fetch categories:", error);
-		} finally {
-			setLoading(false);
+				setLoading(false);
+			} catch (error) {
+				console.error("Failed to fetch categories:", error);
+			} finally {
+				setLoading(false);
+			}
 		}
 	};
 

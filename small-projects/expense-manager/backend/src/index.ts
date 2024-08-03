@@ -8,7 +8,7 @@ import cors from "cors";
 
 // CORS options
 const corsOptions = {
-	origin: process.env.CORS_ORIGIN || "http://localhost:5173", // Updated CORS origin
+	origin: process.env.CORS_ORIGIN || "http://localhost:5173" || "http://127.0.0.1:5173/login", // Updated CORS origin
 };
 
 const app = express();

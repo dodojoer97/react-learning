@@ -15,17 +15,18 @@ interface IIconSelectorProps {
 const IconSelector: FC<IIconSelectorProps> = ({ onSelect, selectedIcon }) => {
 	const baseIconClasses =
 		"flex justify-center items-center p-4 bg-white shadow-md rounded-lg hover:bg-gray-50 transition-colors my-2 cursor-pointer";
+	const selectedIconClasses =
+		"shadow-lg shadow-blue-600 bg-blue-100 border-2 border-blue-500 scale-105 transform transition-all duration-300";
+
 	return (
 		<>
-			{/* TODO add content */}
-			<h2>Select an icon</h2>
-			{selectedIcon}
+			<h2 className="text-lg font-semibold mb-4">Select an icon</h2>
 			<div className="grid grid-cols-4 gap-4">
 				{Object.entries(categoryIconNames).map(([_, iconName]) => (
 					<article
 						key={iconName}
 						className={`${baseIconClasses} ${
-							selectedIcon === iconName ? "shadow-md shadow-blue-600" : ""
+							selectedIcon === iconName ? selectedIconClasses : ""
 						}`}
 						onClick={() => onSelect(iconName)}
 					>

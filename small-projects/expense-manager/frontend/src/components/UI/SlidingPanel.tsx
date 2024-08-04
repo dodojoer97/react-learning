@@ -10,17 +10,13 @@ import "./SlidingPanel.css";
 interface ISlidingPanelProps extends PropsWithChildren {
 	onClose(): void;
 	isOpen: boolean;
-	isClosing: boolean;
 }
 
-const SlidingPanel: FC<ISlidingPanelProps> = ({ children, onClose, isOpen, isClosing }) => {
-	const openClass = isOpen ? "open" : "";
-	const closingClass = isClosing ? "closing" : "";
+const SlidingPanel: FC<ISlidingPanelProps> = ({ children, onClose, isOpen }) => {
+	const openClass = isOpen ? "open" : "closed";
 
 	return (
-		<div
-			className={`sliding-panel fullscreen bg-white fixed top-0 right-0 z-20 ${openClass} ${closingClass}`}
-		>
+		<div className={`sliding-panel fullscreen bg-white fixed top-0 right-0 z-20 ${openClass} `}>
 			<div className="flex justify-end px-2 py-1">
 				<CloseButton onClose={onClose} />
 			</div>

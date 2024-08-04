@@ -27,14 +27,13 @@ interface ICategoryProps {
 
 const CategoryComp: FC<ICategoryProps> = ({ category }) => {
 	// Hooks
-	const { isOpen: isModalOpen, toggleOpen: toggleModal } = useIsOpen();
-	const { isOpen: isSlidingPanelOpen, toggleOpen: togglePanelOpen, isClosing } = useIsOpen(true);
+	const { isOpen: isSlidingPanelOpen, toggleOpen: togglePanelOpen } = useIsOpen(true);
 
 	const nameField = useInput(category.name, (value) => true);
 
 	// Closes the modal and resets the input values
 	const handleCloseModal = (): void => {
-		toggleModal();
+		togglePanelOpen();
 		nameField.resetInputValue();
 	};
 
@@ -52,21 +51,18 @@ const CategoryComp: FC<ICategoryProps> = ({ category }) => {
 					<FontAwesomeIcon icon={faPencil} />
 				</Button>
 			</article>
-			<SlidingPanel isOpen={isSlidingPanelOpen} isClosing={isClosing} onClose={togglePanelOpen}>
-				TEST
+			<SlidingPanel isOpen={isSlidingPanelOpen} onClose={togglePanelOpen}>
+				<Form className="mx-auto px-7 mb-0 mt-8 max-w-md space-y-4" key={category.id}>
+					<Input
+						id="name"
+						label="name"
+						className="w-12"
+						value={nameField.value}
+						onChange={nameField.handleInputChange}
+						onBlur={nameField.handleInputBlur}
+					/>
+				</Form>
 			</SlidingPanel>
-			{/* // <Modal isOpen={isModalOpen} onClose={handleCloseModal} isFullScreen>
-				// 	<Form className="mx-auto px-7 mb-0 mt-8 max-w-md space-y-4" key={category.id}>
-				// 		<Input
-				// 			id="name"
-				// 			label="name"
-				// 			className="w-12"
-				// 			value={nameField.value}
-				// 			onChange={nameField.handleInputChange}
-				// 			onBlur={nameField.handleInputBlur}
-				// 		/>
-				// 	</Form>
-				// </Modal> */}
 		</>
 	);
 };

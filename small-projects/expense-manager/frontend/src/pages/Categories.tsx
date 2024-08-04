@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 
 // UI Components
 import Layout from "@/components/UI/Layout";
+import SlidingPanel from "@/components/UI/SlidingPanel";
 
 // Components
 import CategoryComp from "@/components/Category";
@@ -19,10 +20,16 @@ import { AuthContext } from "@/store/AuthContext";
 
 // Hooks
 import Category from "@/models/Category";
+import useIsOpen from "@/hooks/useIsOpen";
+
+// FontAwesome
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 const Categories: FC = () => {
 	const settingsCTX = useContext(SettingsContext);
 	const { t } = useTranslation("settings");
+	const { isClosing, isOpen, toggleOpen } = useIsOpen(true);
 
 	useEffect(() => {
 		settingsCTX.fetchCategories();
@@ -33,8 +40,18 @@ const Categories: FC = () => {
 			<div className="mx-auto max-w-lg text-center">
 				<h1 className="text-2xl font-bold sm:text-3xl">{t("categoriesTitle")}</h1>
 			</div>
-			{/* ADD CATEGORY FORM */}
-			<AddCategoryForm />
+
+			<div className="flex justify-end">
+				<FontAwesomeIcon
+					className="cursor-pointer w-10 h-10 text-blue-600"
+					icon={faPlusCircle}
+					onClick={toggleOpen}
+				/>
+			</div>
+
+			<SlidingPanel isClosing={isClosing} isOpen={isOpen} onClose={toggleOpen}>
+				<AddCategoryForm />
+			</SlidingPanel>
 
 			<ul>
 				{settingsCTX.categories.map((category: Category) => (

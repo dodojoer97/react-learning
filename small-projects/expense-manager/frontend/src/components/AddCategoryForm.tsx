@@ -21,7 +21,11 @@ import useFormSubmission from "@/hooks/useFormSubmission";
 import { hasMinLength } from "@/utils/utils";
 import Category from "@/models/Category";
 
-const AddCategoryForm: FC = () => {
+interface IProps {
+	onSave(): void;
+}
+
+const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 	// TODO ADD TRANSLATIONS
 	const [iconName, setIconName] = useState<string | null>(null);
 
@@ -41,24 +45,27 @@ const AddCategoryForm: FC = () => {
 		const createdCategory = new Category(iconName, categoryNameField.value, "");
 
 		await settingsCTX.addCategory(createdCategory);
+		onSave();
 	});
 
 	return (
 		<Form
-			className="mx-auto mb-0 mt-8 max-w-md space-y-4 bg-red-50 rounded p-4"
+			className="mx-auto mb-0 mt-8 max-w-md space-y-4 bg-red-50 rounded p-4 flex flex-col justify-between h-[90%]"
 			onSubmit={handleSubmit}
 		>
-			<IconSelector onSelect={handleSelectIcon} selectedIcon={iconName || ""} />
+			<div>
+				<IconSelector onSelect={handleSelectIcon} selectedIcon={iconName || ""} />
 
-			<Input
-				id="name"
-				label="Category name"
-				placeholder="Category name"
-				required
-				value={categoryNameField.value}
-				onChange={categoryNameField.handleInputChange}
-				onBlur={categoryNameField.handleInputBlur}
-			/>
+				<Input
+					id="name"
+					label="Category name"
+					placeholder="Category name"
+					required
+					value={categoryNameField.value}
+					onChange={categoryNameField.handleInputChange}
+					onBlur={categoryNameField.handleInputBlur}
+				/>
+			</div>
 
 			<Button
 				type="submit"

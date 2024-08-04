@@ -16,7 +16,9 @@ const SlidingPanel: FC<ISlidingPanelProps> = ({ children, onClose, isOpen }) => 
 	const openClass = isOpen ? "open" : "closed";
 
 	return (
-		<div className={`sliding-panel fullscreen bg-white fixed top-0 right-0 z-20 ${openClass} `}>
+		<div
+			className={`sliding-panel fullscreen bg-white fixed top-0 right-0 z-20 p-1 ${openClass} `}
+		>
 			<div className="flex justify-end px-2 py-1">
 				<CloseButton onClose={onClose} />
 			</div>

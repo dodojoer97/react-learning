@@ -29,7 +29,7 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 const Categories: FC = () => {
 	const settingsCTX = useContext(SettingsContext);
 	const { t } = useTranslation("settings");
-	const { isClosing, isOpen, toggleOpen } = useIsOpen(true);
+	const { isOpen, toggleOpen } = useIsOpen(true);
 
 	useEffect(() => {
 		settingsCTX.fetchCategories();
@@ -49,8 +49,8 @@ const Categories: FC = () => {
 				/>
 			</div>
 
-			<SlidingPanel isClosing={isClosing} isOpen={isOpen} onClose={toggleOpen}>
-				<AddCategoryForm />
+			<SlidingPanel isOpen={isOpen} onClose={toggleOpen}>
+				<AddCategoryForm onSave={toggleOpen} />
 			</SlidingPanel>
 
 			<ul>

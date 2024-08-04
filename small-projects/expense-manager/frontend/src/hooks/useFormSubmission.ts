@@ -1,15 +1,15 @@
 import { useState } from "react";
 
 /**
- * Custom hook to handle form submissions with async logic.
+ * Custom hook to manage form submissions incorporating asynchronous operations.
  *
- * @param handleSubmitLogic - A callback function containing the submission logic which is expected to be an async operation.
- * @returns An object containing:
- *  - `isSubmitting`: a boolean indicating if the submission is in progress
- *  - `error`: a string storing an error message if an error occurs
- *  - `handleSubmit`: a function to call when the form is submitted
- * -   `setIsSubmitted`: a funciton to update the submission state
- * -   `isLoading`: a boolean that indicates loading state
+ * @param {() => Promise<void>} handleSubmitLogic - A callback function containing the logic to be executed upon form submission.
+ * @returns {object} An object containing:
+ *  - `isSubmitted`: Boolean indicating whether the form has been submitted.
+ *  - `error`: String or null capturing any error message that occurs during form submission.
+ *  - `handleSubmit`: Function to be invoked on form submission, handling event prevention, logic execution, and state updates.
+ *  - `setIsSubmitted`: Function to update the submission state.
+ *  - `isLoading`: Boolean indicating if the submission logic is currently being executed.
  */
 const useFormSubmission = (handleSubmitLogic: () => Promise<void>) => {
 	const [isSubmitted, setIsSubmitted] = useState<boolean>(false);

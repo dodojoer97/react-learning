@@ -61,6 +61,7 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 			setLoading(false);
 		} catch (error) {
 			console.error("Failed to fetch categories:", error);
+			throw error;
 		} finally {
 			setLoading(false);
 		}
@@ -77,6 +78,7 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 			setCategories(fetchedCategories);
 		} catch (error) {
 			console.error("Failed to fetch categories:", error);
+			throw error;
 		} finally {
 			setLoading(false);
 		}

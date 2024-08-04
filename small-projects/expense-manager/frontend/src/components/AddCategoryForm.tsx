@@ -40,7 +40,7 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 		setIconName(iconName);
 	};
 
-	const { handleSubmit } = useFormSubmission(async () => {
+	const { handleSubmit, error } = useFormSubmission(async () => {
 		if (!iconName) return;
 		const createdCategory = new Category(iconName, categoryNameField.value, "");
 
@@ -65,11 +65,17 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 					onChange={categoryNameField.handleInputChange}
 					onBlur={categoryNameField.handleInputBlur}
 				/>
+
+				{categoryNameField.hasError && (
+					<InputError message={"some error of length"} className="text-red-600" />
+				)}
 			</div>
+
+			{error && <InputError message={error} className="text-red-600" />}
 
 			<Button
 				type="submit"
-				disabled={categoryNameField.hasError}
+				disabled={categoryNameField.hasError || !iconName}
 				className="inline-block rounded-lg w-full bg-blue-500 px-5 py-3 text-sm font-medium text-white disabled:bg-slate-400"
 			>
 				SAVE

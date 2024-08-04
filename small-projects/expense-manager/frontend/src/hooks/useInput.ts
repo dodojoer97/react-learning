@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import type { ChangeEvent } from "react";
 
 /**
@@ -24,7 +24,7 @@ const useInput = (
 	const [value, setValue] = useState<string>(defaultValue);
 	const [isTouched, setIsTouched] = useState<boolean>(false);
 
-	const originalValue = useRef<string>(value);
+	const originalValue = useRef<string>(defaultValue);
 
 	const valueIsValid: boolean = validationFn(value);
 
@@ -41,6 +41,13 @@ const useInput = (
 	const resetInputValue = (): void => {
 		setValue(originalValue.current);
 	};
+
+	// useEffect(() => {
+	// 	return () => {
+	// 		// Any cleanup logic here
+	// 		resetInputValue(); // Call this function if you need to reset state when unmounting
+	// 	};
+	// }, []);
 
 	return {
 		value,

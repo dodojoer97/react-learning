@@ -1,5 +1,5 @@
 // React
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useCallback } from "react";
 
 // Models
@@ -27,15 +27,19 @@ interface ICategoryProps {
 
 const CategoryComp: FC<ICategoryProps> = ({ category }) => {
 	// Hooks
-	const { isOpen: isSlidingPanelOpen, toggleOpen: togglePanelOpen } = useIsOpen(true);
-
+	const { isOpen, toggleOpen } = useIsOpen(true);
 	const nameField = useInput(category.name, (value) => true);
 
+	console.log("isOpen: ", isOpen);
 	// Closes the modal and resets the input values
 	const handleCloseModal = (): void => {
-		togglePanelOpen();
+		toggleOpen();
 		nameField.resetInputValue();
 	};
+
+	useEffect(() => {
+		nameField.resetInputValue();
+	}, [isOpen]); // Re-run effect if defaultValue changes
 
 	return (
 		<>
@@ -47,11 +51,12 @@ const CategoryComp: FC<ICategoryProps> = ({ category }) => {
 					/>
 					<p className="text-lg font-semibold text-gray-800">{category.name}</p>
 				</div>
-				<Button onClick={togglePanelOpen}>
+				<Button onClick={toggleOpen}>
 					<FontAwesomeIcon icon={faPencil} />
 				</Button>
 			</article>
-			<SlidingPanel isOpen={isSlidingPanelOpen} onClose={togglePanelOpen}>
+
+			<SlidingPanel isOpen={isOpen} onClose={toggleOpen}>
 				<Form className="mx-auto px-7 mb-0 mt-8 max-w-md space-y-4" key={category.id}>
 					<Input
 						id="name"

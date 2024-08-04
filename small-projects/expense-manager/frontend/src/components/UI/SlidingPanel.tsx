@@ -22,7 +22,7 @@ const SlidingPanel: FC<ISlidingPanelProps> = ({ children, onClose, isOpen }) => 
 			<div className="flex justify-end px-2 py-1">
 				<CloseButton onClose={onClose} />
 			</div>
-			{children}
+			{isOpen && children}
 		</div>
 	);
 };

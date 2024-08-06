@@ -89,7 +89,7 @@ class SettingsService extends BaseService implements ISettingsService {
 	public async editCategory(userId: string, categoryId: string, newName: string): Promise<void> {
 		// Real endpoint
 		// const endpoint = `users/${userId}/categories/${category.id}`;
-		const endpoint = `/categories/${userId}/${categoryId}`;
+		const endpoint = `categories/${userId}/${categoryId}`;
 		await this.put(endpoint, { name: newName });
 	}
 }

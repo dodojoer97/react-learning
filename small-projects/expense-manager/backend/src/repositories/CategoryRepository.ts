@@ -48,12 +48,12 @@ class CategoryRepository {
 		const snapshot = await categoryDoc.get();
 
 		const data = snapshot.data();
-
-		if (snapshot.exists && data && data.userId === userId) {
-			await categoryDoc.update(newData);
-		} else {
-			throw new Error(`Category with ID ${categoryId} does not exist for user ${userId}`);
-		}
+		console.log("data: ", data);
+		// if (snapshot.exists && data && data.userId === userId) {
+		// 	await categoryDoc.update(newData);
+		// } else {
+		// 	throw new Error(`Category with ID ${categoryId} does not exist for user ${userId}`);
+		// }
 	}
 }
 

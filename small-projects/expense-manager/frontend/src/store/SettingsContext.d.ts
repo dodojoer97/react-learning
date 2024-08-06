@@ -9,4 +9,5 @@ export interface ISettingsContext extends ILoadingContext {
 	formatAmount: (amount: number) => string;
 	setCurrency: (currency: Currency) => void;
 	fetchCategories: () => Promise<void>;
+	editCategory: (category: Category, newName: string) => Promise<void>;
 }

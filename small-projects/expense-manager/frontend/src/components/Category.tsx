@@ -1,6 +1,5 @@
 // React
-import { FC, useEffect } from "react";
-import { useCallback } from "react";
+import { FC, useEffect, useContext } from "react";
 
 // Models
 import Category from "@/models/Category";
@@ -24,29 +23,31 @@ import useFormSubmission from "@/hooks/useFormSubmission";
 // Util
 import { hasMinLength } from "@/utils/utils";
 
+// Store
+import { SettingsContext } from "@/store/SettingsContext";
+
 interface ICategoryProps {
 	category: Category;
 }
 
 const CategoryComp: FC<ICategoryProps> = ({ category }) => {
+	// TODO ADD TRANSLATIONS
+	// Store
+	const settingsCTX = useContext(SettingsContext);
+
 	// Hooks
 	const { isOpen, toggleOpen } = useIsOpen(true);
 	const nameField = useInput(category.name, (value) => {
 		return hasMinLength(value, 4);
 	});
 
-	// TODO ADD TRANSLATIONS
-	// Closes the modal and resets the input values
-	const handleCloseModal = (): void => {
-		toggleOpen();
-		nameField.resetInputValue();
-	};
+	const { handleSubmit, error } = useFormSubmission(async () => {
+		await settingsCTX.editCategory(category.id, nameField.value);
+	});
 
 	useEffect(() => {
 		nameField.resetInputValue();
 	}, [isOpen]); // Re-run effect if defaultValue changes
-
-	const { handleSubmit, error } = useFormSubmission(async () => {});
 
 	return (
 		<>

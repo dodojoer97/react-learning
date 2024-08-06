@@ -26,6 +26,7 @@ export const SettingsContext: Context<ISettingsContext> = createContext<ISetting
 	addCategory: async () => {},
 	setCurrency: () => {},
 	fetchCategories: async () => {},
+	editCategory: async () => {},
 });
 
 const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -84,6 +85,23 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		}
 	};
 
+	const editCategory = async (categoryId: string, newName: string): Promise<void> => {
+		if (!user?.uid) throw new Error("User id is mandatory in editCategory");
+
+		try {
+			setLoading(true);
+
+			await settingsService.editCategory(user.uid, categoryId, newName);
+
+			// setCategories(fetchedCategories);
+		} catch (error) {
+			console.error("Failed to fetch categories:", error);
+			throw error;
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	// Values
 	const contextValue: ISettingsContext = {
 		currency,
@@ -94,6 +112,7 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		addCategory,
 		setCurrency,
 		fetchCategories,
+		editCategory,
 	};
 
 	return <SettingsContext.Provider value={contextValue}>{children}</SettingsContext.Provider>;

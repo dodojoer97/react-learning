@@ -31,6 +31,21 @@ class CategoryService {
 	async addDefaultCategoriesForUser(userId: string): Promise<void> {
 		await categoryRepository.addCategoriesForUser(initialCategories, userId);
 	}
+
+	async editCategoryForUser(
+		userId: string,
+		categoryId: string,
+		newData: Partial<Category>
+	): Promise<void> {
+		// Check if the category exists for the user
+		const exists = await categoryRepository.categoryExistsForUser(categoryId, userId);
+		if (!exists) {
+			throw new Error(`Category with ID ${categoryId} does not exist for user ${userId}`);
+		}
+
+		// Edit the category
+		await categoryRepository.editCategoryForUser(categoryId, userId, newData);
+	}
 }
 
 export default new CategoryService();

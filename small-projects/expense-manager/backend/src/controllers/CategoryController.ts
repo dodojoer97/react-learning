@@ -37,6 +37,17 @@ class CategoryController {
 			res.status(500).send(error.message);
 		}
 	}
+
+	async editCategory(req: Request, res: Response): Promise<void> {
+		try {
+			const { userId, categoryId } = req.params;
+			const { name } = req.body;
+			const categories = await categoryService.editCategoryForUser(userId, categoryId, name);
+			res.status(200).send(categories);
+		} catch (error: any) {
+			res.status(500).send(error.message);
+		}
+	}
 }
 
 export default new CategoryController();

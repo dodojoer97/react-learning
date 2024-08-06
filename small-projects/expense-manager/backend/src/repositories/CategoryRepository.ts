@@ -37,6 +37,24 @@ class CategoryRepository {
 			.get();
 		return !snapshot.empty;
 	}
+
+	// Edit a category for a specific user
+	async editCategoryForUser(
+		categoryId: string,
+		userId: string,
+		newData: Partial<Category>
+	): Promise<void> {
+		const categoryDoc = this.categoriesCollection.doc(categoryId);
+		const snapshot = await categoryDoc.get();
+
+		const data = snapshot.data();
+
+		if (snapshot.exists && data && data.userId === userId) {
+			await categoryDoc.update(newData);
+		} else {
+			throw new Error(`Category with ID ${categoryId} does not exist for user ${userId}`);
+		}
+	}
 }
 
 export default new CategoryRepository();

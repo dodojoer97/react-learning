@@ -30,7 +30,6 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 	const [iconName, setIconName] = useState<string | null>(null);
 
 	const settingsCTX = useContext(SettingsContext);
-	const authCTX = useContext(AuthContext);
 
 	const categoryNameField = useInput("", (value: string) => {
 		return hasMinLength(value, 4);
@@ -50,7 +49,7 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 
 	return (
 		<Form
-			className="mx-auto mb-0 mt-8 max-w-md space-y-4 bg-red-50 rounded p-4 flex flex-col justify-between h-[90%]"
+			className="mx-auto mb-0 mt-8 max-w-md space-y-4 rounded p-4 flex flex-col justify-between h-[90%]"
 			onSubmit={handleSubmit}
 		>
 			<div>

@@ -10,6 +10,7 @@ import { AuthContext } from "@/store/AuthContext";
 import Form from "@/components/UI/Form";
 import IconSelector from "./IconSelector";
 import Input from "@/components/UI/Input";
+import Select from "@/components/UI/Select";
 import Button from "@/components/UI/Button";
 import InputError from "@/components/UI/InputError";
 
@@ -32,6 +33,10 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 	const settingsCTX = useContext(SettingsContext);
 
 	const categoryNameField = useInput("", (value: string) => {
+		return hasMinLength(value, 4);
+	});
+
+	const typeField = useInput("", (value: string) => {
 		return hasMinLength(value, 4);
 	});
 
@@ -68,6 +73,8 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 				{categoryNameField.hasError && (
 					<InputError message={"some error of length"} className="text-red-600" />
 				)}
+
+				<Select id="type" label="Category type" options={[]} value={typeField.value} />
 			</div>
 
 			{error && <InputError message={error} className="text-red-600" />}

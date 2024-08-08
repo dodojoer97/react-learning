@@ -1,8 +1,13 @@
 // Interface
 import { ICurrency } from "./Currency.d";
 
-class Currency implements ICurrency {
-	constructor(public text: string, public value: string) {}
+// Base class
+import SelectFieldOption from "./SelectFieldOption";
+
+class Currency extends SelectFieldOption implements ICurrency {
+	constructor(public text: string, public value: string) {
+		super(text, value);
+	}
 }
 
 export default Currency;

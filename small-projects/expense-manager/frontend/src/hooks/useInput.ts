@@ -23,8 +23,9 @@ const useInput = (
 } => {
 	const [value, setValue] = useState<string>(defaultValue);
 	const [isTouched, setIsTouched] = useState<boolean>(false);
+	console.log("useInput: value: ", value);
 
-	const originalValue = useRef<string>(defaultValue);
+	// const originalValue = useRef<string>(defaultValue);
 
 	const valueIsValid: boolean = validationFn(value);
 
@@ -39,7 +40,7 @@ const useInput = (
 	};
 
 	const resetInputValue = (): void => {
-		setValue(originalValue.current);
+		// setValue(originalValue.current);
 	};
 
 	// useEffect(() => {

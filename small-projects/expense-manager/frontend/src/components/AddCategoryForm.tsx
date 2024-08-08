@@ -36,7 +36,7 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 		return hasMinLength(value, 4);
 	});
 
-	const typeField = useInput("", (value: string) => {
+	const typeField = useInput("expense", (value: string) => {
 		return hasMinLength(value, 4);
 	});
 
@@ -46,7 +46,7 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 
 	const { handleSubmit, error } = useFormSubmission(async () => {
 		if (!iconName) return;
-		const createdCategory = new Category(iconName, categoryNameField.value, "");
+		const createdCategory = new Category(iconName, categoryNameField.value, "", "expense");
 
 		await settingsCTX.addCategory(createdCategory);
 		onSave();
@@ -74,7 +74,12 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 					<InputError message={"some error of length"} className="text-red-600" />
 				)}
 
-				<Select id="type" label="Category type" options={[]} value={typeField.value} />
+				<Select
+					id="type"
+					label="Category type"
+					options={settingsCTX.availableCategoryTypes}
+					value={typeField.value}
+				/>
 			</div>
 
 			{error && <InputError message={error} className="text-red-600" />}

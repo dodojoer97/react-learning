@@ -5,13 +5,14 @@ import { createContext } from "react";
 
 // Interface
 import { ISettingsContext } from "./SettingsContext.d";
-import Currency from "@/models/Currency";
+import SelectFieldOption from "@/models/SelectFieldOption";
 
 // Models
 import { Category } from "@common";
 
 // Data
 import currencies from "@/data/currencies";
+import categoryTypes from "@/data/categoryTypes";
 
 // Service
 import SettingsService from "@/services/SettingsService";
@@ -20,6 +21,7 @@ import { AuthContext } from "./AuthContext";
 export const SettingsContext: Context<ISettingsContext> = createContext<ISettingsContext>({
 	currency: currencies[0],
 	availableCurrencies: currencies,
+	availableCategoryTypes: categoryTypes,
 	categories: [],
 	loading: false,
 	formatAmount: () => "",
@@ -34,8 +36,10 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	const settingsService = new SettingsService();
 
 	// State
-	const [currency, setCurrency] = useState<Currency>(currencies[0]);
-	const [availableCurrencies, setAvailableCurrencies] = useState<Currency[]>(currencies);
+	const [currency, setCurrency] = useState<SelectFieldOption>(currencies[0]);
+	const [availableCurrencies, setAvailableCurrencies] = useState<SelectFieldOption[]>(currencies);
+	const [availableCategoryTypes, setAvailableCategoryTypes] =
+		useState<SelectFieldOption[]>(categoryTypes);
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 
@@ -111,6 +115,7 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	const contextValue: ISettingsContext = {
 		currency,
 		availableCurrencies,
+		availableCategoryTypes,
 		categories,
 		loading,
 		formatAmount,

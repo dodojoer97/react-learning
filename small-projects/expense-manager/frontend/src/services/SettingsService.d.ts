@@ -1,5 +1,5 @@
 // Models
-import Category from "@/models/Category";
+import { Category } from "@common";
 import Currency from "@/models/Currency";
 
 export interface ISettingsService {

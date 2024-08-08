@@ -1,6 +1,6 @@
 // src/services/CategoryService.ts
 import categoryRepository from "../repositories/CategoryRepository";
-import { Category } from "../models/Category";
+import { Category } from "@common";
 
 import initialCategories from "../data/initialCategories";
 

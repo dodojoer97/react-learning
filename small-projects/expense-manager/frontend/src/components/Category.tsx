@@ -3,7 +3,7 @@ import { useEffect, useContext } from "react";
 import type { FC } from "react";
 
 // Models
-import Category from "@/models/Category";
+import { Category } from "@common";
 
 // FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

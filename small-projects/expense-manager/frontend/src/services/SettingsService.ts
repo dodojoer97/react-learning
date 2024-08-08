@@ -5,7 +5,7 @@ import { ISettingsService } from "./SettingsService.d";
 import BaseService from "./BaseService";
 
 // Models
-import Category from "@/models/Category";
+import { Category } from "@common";
 import Currency from "@/models/Currency";
 
 // DTO

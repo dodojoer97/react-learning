@@ -8,7 +8,7 @@ import { ISettingsContext } from "./SettingsContext.d";
 import Currency from "@/models/Currency";
 
 // Models
-import Category from "@/models/Category";
+import { Category } from "@common";
 
 // Data
 import currencies from "@/data/currencies";

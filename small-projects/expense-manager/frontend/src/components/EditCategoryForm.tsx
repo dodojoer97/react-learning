@@ -9,7 +9,7 @@ import Input from "@/components/UI/Input";
 import InputError from "@/components/UI/InputError";
 
 // Models
-import Category from "@/models/Category";
+import { Category } from "@common";
 
 import useInput from "@/hooks/useInput";
 import useFormSubmission from "@/hooks/useFormSubmission";

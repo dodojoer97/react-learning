@@ -19,7 +19,7 @@ import useFormSubmission from "@/hooks/useFormSubmission";
 
 // Util
 import { hasMinLength } from "@/utils/utils";
-import Category from "@/models/Category";
+import { Category } from "@common";
 
 interface IProps {
 	onSave(): void;

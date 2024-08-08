@@ -8,7 +8,7 @@ class CategoryService {
 	// Adds a single category for a specific user
 	async addCategoryForUser(category: Category, userId: string): Promise<Category[]> {
 		// Check if the category already exists for the user
-		const exists = await categoryRepository.categoryExistsForUser(category.name, userId);
+		const exists = await categoryRepository.categoryExistsByNameForUser(category.name, userId);
 		if (exists) {
 			throw new Error(
 				`Category with name ${category.name} already exists for user ${userId}`
@@ -38,13 +38,14 @@ class CategoryService {
 		newData: Partial<Category>
 	): Promise<void> {
 		// Check if the category exists for the user
-		const exists = await categoryRepository.categoryExistsForUser(categoryId, userId);
-		if (!exists) {
+		const snapshot = await categoryRepository.getCategorySnapshotForUser(categoryId, userId);
+		if (snapshot.empty) {
 			throw new Error(`Category with ID ${categoryId} does not exist for user ${userId}`);
 		}
 
 		// Edit the category
-		await categoryRepository.editCategoryForUser(categoryId, userId, newData);
+		// TODO, add an object here
+		await categoryRepository.editCategoryForUser(snapshot, newData);
 	}
 }
 

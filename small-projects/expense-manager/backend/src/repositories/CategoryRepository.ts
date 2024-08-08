@@ -1,4 +1,5 @@
 // src/repositories/CategoryRepository.ts
+import { QuerySnapshot, DocumentData } from "firebase-admin/firestore";
 import { adminDb } from "../config/firebase";
 import { Category } from "../models/Category";
 
@@ -29,8 +30,20 @@ class CategoryRepository {
 		return snapshot.docs.map((doc) => doc.data() as Category);
 	}
 
-	// Check if a category exists for a specific user
-	async categoryExistsForUser(categoryName: string, userId: string): Promise<boolean> {
+	// Get category snapshot for a specific user
+	async getCategorySnapshotForUser(
+		categoryId: string,
+		userId: string
+	): Promise<QuerySnapshot<DocumentData>> {
+		const snapshot = await this.categoriesCollection
+			.where("id", "==", categoryId)
+			.where("userId", "==", userId)
+			.get();
+		return snapshot;
+	}
+
+	// Check if a category exists by name and user ID
+	async categoryExistsByNameForUser(categoryName: string, userId: string): Promise<boolean> {
 		const snapshot = await this.categoriesCollection
 			.where("name", "==", categoryName)
 			.where("userId", "==", userId)
@@ -40,20 +53,16 @@ class CategoryRepository {
 
 	// Edit a category for a specific user
 	async editCategoryForUser(
-		categoryId: string,
-		userId: string,
+		snapshot: QuerySnapshot<DocumentData>, // Pass the snapshot directly
 		newData: Partial<Category>
 	): Promise<void> {
-		const categoryDoc = this.categoriesCollection.doc(categoryId);
-		const snapshot = await categoryDoc.get();
-
-		const data = snapshot.data();
-		console.log("data: ", data);
-		// if (snapshot.exists && data && data.userId === userId) {
-		// 	await categoryDoc.update(newData);
-		// } else {
-		// 	throw new Error(`Category with ID ${categoryId} does not exist for user ${userId}`);
-		// }
+		if (!snapshot.empty) {
+			// Assuming only one document is returned since id should be unique
+			const docRef = snapshot.docs[0].ref;
+			await docRef.update({ name: newData });
+		} else {
+			throw new Error(`Category does not exist for the provided user`);
+		}
 	}
 }
 

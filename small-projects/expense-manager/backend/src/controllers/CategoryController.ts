@@ -42,8 +42,8 @@ class CategoryController {
 		try {
 			const { userId, categoryId } = req.params;
 			const { name } = req.body;
-			const categories = await categoryService.editCategoryForUser(userId, categoryId, name);
-			res.status(200).send(categories);
+			await categoryService.editCategoryForUser(userId, categoryId, name);
+			res.status(200).send({ message: "updated" });
 		} catch (error: any) {
 			res.status(500).send(error.message);
 		}

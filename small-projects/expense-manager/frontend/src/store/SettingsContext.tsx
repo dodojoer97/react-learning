@@ -93,7 +93,12 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 			await settingsService.editCategory(user.uid, categoryId, newName);
 
-			// setCategories(fetchedCategories);
+			// Update the state with the new category name
+			setCategories((currentCategories) => {
+				return currentCategories.map((category) =>
+					category.id === categoryId ? { ...category, name: newName } : category
+				);
+			});
 		} catch (error) {
 			console.error("Failed to fetch categories:", error);
 			throw error;

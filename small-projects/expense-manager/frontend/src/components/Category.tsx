@@ -43,6 +43,7 @@ const CategoryComp: FC<ICategoryProps> = ({ category }) => {
 
 	const { handleSubmit, error } = useFormSubmission(async () => {
 		await settingsCTX.editCategory(category.id, nameField.value);
+		toggleOpen();
 	});
 
 	useEffect(() => {

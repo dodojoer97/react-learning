@@ -32,6 +32,7 @@ class CategoryService {
 		await categoryRepository.addCategoriesForUser(initialCategories, userId);
 	}
 
+	// TODO, add validation for duplicate name
 	async editCategoryForUser(
 		userId: string,
 		categoryId: string,
@@ -39,7 +40,7 @@ class CategoryService {
 	): Promise<void> {
 		// Check if the category exists for the user
 		const snapshot = await categoryRepository.getCategorySnapshotForUser(categoryId, userId);
-		if (snapshot.empty) {
+		if (snapshot.empty || snapshot) {
 			throw new Error(`Category with ID ${categoryId} does not exist for user ${userId}`);
 		}
 

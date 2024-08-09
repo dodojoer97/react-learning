@@ -1,7 +1,6 @@
 // src/repositories/ExpenseRepository.ts
 import { adminDb } from "../config/firebase";
-import { Expense } from "../models/Expense";
-
+import { Expense } from "@common";
 class ExpenseRepository {
 	private expensesCollection = adminDb.collection("expenses");
 

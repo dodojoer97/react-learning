@@ -1,7 +1,7 @@
 // src/repositories/CategoryRepository.ts
 import { QuerySnapshot, DocumentData } from "firebase-admin/firestore";
 import { adminDb } from "../config/firebase";
-import { Category } from "../models/Category";
+import { Category } from "@common";
 
 class CategoryRepository {
 	private categoriesCollection = adminDb.collection("categories");

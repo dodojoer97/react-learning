@@ -1,6 +1,6 @@
 // src/services/ExpenseService.ts
 import expenseRepository from "../repositories/ExpenseRepository";
-import { Expense } from "../models/Expense";
+import { Expense } from "@common";
 
 class ExpenseService {
 	async createExpense(expense: Expense): Promise<void> {

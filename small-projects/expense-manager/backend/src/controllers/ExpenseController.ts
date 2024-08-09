@@ -1,7 +1,7 @@
 // src/controllers/ExpenseController.ts
 import { Request, Response } from "express";
 import expenseService from "../services/ExpenseService";
-import { Expense } from "../models/Expense";
+import { Expense } from "@common";
 
 class ExpenseController {
 	async addExpense(req: Request, res: Response): Promise<void> {

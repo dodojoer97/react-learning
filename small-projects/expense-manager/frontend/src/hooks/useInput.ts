@@ -9,27 +9,24 @@ import type { ChangeEvent } from "react";
  * @param clearErrorFN The error cleaning function to fire
  * @returns Object containing input value, handlers for change and blur, and error state, function to reset the input.
  */
-const useInput = (
+const useInput = <T extends HTMLSelectElement | HTMLInputElement>(
 	defaultValue: string,
 	validationFn: (value: string) => boolean, // More explicit type
 	clearErrorFN?: () => void
 ): {
 	value: string;
-	handleInputChange(e: ChangeEvent<HTMLInputElement>): void;
+	handleInputChange(e: ChangeEvent<T>): void;
 	handleInputBlur(): void;
 	hasError: boolean;
 	isTouched: boolean;
-	resetInputValue(): void;
 } => {
 	const [value, setValue] = useState<string>(defaultValue);
 	const [isTouched, setIsTouched] = useState<boolean>(false);
-	console.log("useInput: value: ", value);
-
 	// const originalValue = useRef<string>(defaultValue);
 
 	const valueIsValid: boolean = validationFn(value);
 
-	const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
+	const handleInputChange = (e: ChangeEvent<T>): void => {
 		setValue(e.target.value);
 		setIsTouched(true);
 		clearErrorFN && clearErrorFN();
@@ -39,24 +36,12 @@ const useInput = (
 		setIsTouched(true);
 	};
 
-	const resetInputValue = (): void => {
-		// setValue(originalValue.current);
-	};
-
-	// useEffect(() => {
-	// 	return () => {
-	// 		// Any cleanup logic here
-	// 		resetInputValue(); // Call this function if you need to reset state when unmounting
-	// 	};
-	// }, []);
-
 	return {
 		value,
 		handleInputChange,
 		handleInputBlur,
 		hasError: isTouched && !valueIsValid,
 		isTouched,
-		resetInputValue,
 	};
 };
 

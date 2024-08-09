@@ -6,6 +6,7 @@ import {
 	faPlug,
 	faBeer,
 	faMugHot,
+	faCoins,
 } from "@fortawesome/free-solid-svg-icons";
 
 const categoryIcons: { [key: string]: IconDefinition } = {
@@ -15,6 +16,7 @@ const categoryIcons: { [key: string]: IconDefinition } = {
 	faPlug, // bills
 	faBeer, // bar
 	faMugHot, // coffee
+	faCoins,
 };
 
 const categoryIconNames: { [key: string]: string } = {
@@ -24,6 +26,7 @@ const categoryIconNames: { [key: string]: string } = {
 	bills: "faPlug",
 	bar: "faBeer",
 	coffee: "faMugHot",
+	income: "faCoins",
 };
 
 export { categoryIcons, categoryIconNames };

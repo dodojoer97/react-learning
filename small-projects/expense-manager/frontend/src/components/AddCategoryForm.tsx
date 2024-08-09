@@ -32,11 +32,11 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 
 	const settingsCTX = useContext(SettingsContext);
 
-	const categoryNameField = useInput("", (value: string) => {
+	const categoryNameField = useInput<HTMLInputElement>("", (value: string) => {
 		return hasMinLength(value, 4);
 	});
 
-	const typeField = useInput("expense", (value: string) => {
+	const typeField = useInput<HTMLSelectElement>("expense", (value: string) => {
 		return hasMinLength(value, 4);
 	});
 
@@ -84,6 +84,7 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 					label="Category type"
 					options={settingsCTX.availableCategoryTypes}
 					value={typeField.value}
+					onChange={typeField.handleInputChange}
 				/>
 			</div>
 

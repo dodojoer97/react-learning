@@ -7,12 +7,12 @@ import Auth from "./components/Auth";
 import UserProfile from "./components/UserProfile";
 
 function App() {
-	const isAutheticated = useSelector((state) => state.auth.isAutheticated);
+	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 	return (
 		<Fragment>
 			<Header />
-			{!isAutheticated && <Auth />}
-			{isAutheticated && <UserProfile />}
+			{!isAuthenticated && <Auth />}
+			{isAuthenticated && <UserProfile />}
 			<Counter />
 		</Fragment>
 	);

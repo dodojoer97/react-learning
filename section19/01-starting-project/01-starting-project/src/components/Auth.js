@@ -1,5 +1,5 @@
 // Redux
-import { useSelector, useDispatch, connect } from "react-redux";
+import { useDispatch, connect } from "react-redux";
 
 // Slice
 import { authActions } from "../store";

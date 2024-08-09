@@ -46,7 +46,12 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 
 	const { handleSubmit, error } = useFormSubmission(async () => {
 		if (!iconName) return;
-		const createdCategory = new Category(iconName, categoryNameField.value, "", "expense");
+		const createdCategory = new Category(
+			iconName,
+			categoryNameField.value,
+			"",
+			typeField.value
+		);
 
 		await settingsCTX.addCategory(createdCategory);
 		onSave();

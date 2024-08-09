@@ -1,33 +1,99 @@
-import * as redux from "redux"
+import * as redux from "redux";
+import { createSlice, configureStore } from "@reduxjs/toolkit";
 
-const defaultState = {
-    counter: 0
-}
+const initialState = {
+	counter: 0,
+	showCounter: false,
+};
 
-const counterReducer = (state = defaultState, action) => {
-    if(action.type === 'increment') {
-        return  {
-            counter: state.counter + 1
-        }
-    }
+// *** reducer ***
+// const counterReducer = (state = initialState, action) => {
+// 	if (action.type === "increment") {
+// 		return {
+// 			...state,
+// 			counter: state.counter + 1,
+// 		};
+// 	}
 
-    if(action.type === 'decrement') {
-        return  {
-            counter: state.counter - 1
-        }
-    }
-    
-    return state
-}
+// 	if (action.type === "increase") {
+// 		return {
+// 			...state,
+// 			counter: state.counter + action.amount,
+// 		};
+// 	}
 
+// 	if (action.type === "decrement") {
+// 		return {
+// 			...state,
+// 			counter: state.counter - 1,
+// 		};
+// 	}
 
-const store = redux.createStore(counterReducer)
+// 	if (action.type === "toggle") {
+// 		return {
+// 			...state,
+// 			showCounter: !state.showCounter,
+// 		};
+// 	}
 
-const counterSubscriber = () => {
-    const state = store.getState()
-    console.log("state: ", state)
-}
+// 	return state;
+// };
 
-store.subscribe(counterSubscriber)
+// *** With reducer ***
+// const store = redux.createStore(counterReducer);
 
-export default store
+// *** Slice ***
+const counterSlice = createSlice({
+	name: "counter",
+	initialState,
+	reducers: {
+		increment(state) {
+			state.counter++;
+		},
+		decrement(state) {
+			state.counter--;
+		},
+		increase(state, action) {
+			state.counter += action.payload;
+		},
+		toggleCounter(state) {
+			console.log("toggleCounter");
+			state.showCounter = !state.showCounter;
+		},
+	},
+});
+
+const initialAuthState = {
+	isAuthenticated: false,
+};
+
+const authSlice = createSlice({
+	name: "authentication",
+	initialState: initialAuthState,
+	reducers: {
+		login(state) {
+			state.isAuthenticated = true;
+		},
+		logout(state) {
+			state.isAuthenticated = false;
+		},
+	},
+});
+
+const store = configureStore({
+	reducer: {
+		counter: counterSlice.reducer,
+		auth: authSlice.reducer,
+	},
+});
+
+// *** subscribe ***
+// const counterSubscriber = () => {
+// 	const state = store.getState();
+// };
+
+// store.subscribe(counterSubscriber);
+
+export const counterActions = counterSlice.actions;
+export const authActions = authSlice.actions;
+export default store;

@@ -9,7 +9,6 @@ interface ICategory {
 	id: string;
 	type: string;
 }
-
 export class Category implements ICategory {
 	constructor(
 		public icon: string | IconDefinition,

@@ -2,6 +2,9 @@
 import type { FC } from "react";
 import { useState, useContext } from "react";
 
+// Types
+import type { CategoryType } from "@common";
+
 // Store
 import { SettingsContext } from "@/store/SettingsContext";
 import { AuthContext } from "@/store/AuthContext";
@@ -50,7 +53,7 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 			iconName,
 			categoryNameField.value,
 			"",
-			typeField.value
+			typeField.value as CategoryType
 		);
 
 		await settingsCTX.addCategory(createdCategory);

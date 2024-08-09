@@ -7,13 +7,13 @@ interface ICategory {
 	icon: string | IconDefinition;
 	name: string;
 	id: string;
-	type: string;
+	type: CategoryType;
 }
 export class Category implements ICategory {
 	constructor(
 		public icon: string | IconDefinition,
 		public name: string,
 		public id: string,
-		public type: string
+		public type: CategoryType
 	) {}
 }

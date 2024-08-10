@@ -4,13 +4,16 @@ import type { FC } from "react";
 // Types
 import { IGroupedItem, IGroupItem } from "@/utils/utils.d";
 
-interface IDropdownProps<T extends IGroupItem> {
-	data: IGroupedItem<IGroupItem>[];
-	Component: FC<any>; // Using React.ComponentType to define the component prop
+interface IDropdownProps {
+	items: string[],
+    onSelect(item: string): void
 }
 
-const Dropdown: FC<IDropdownProps<IGroupItem>> = ({ data, Component }) => {
-	return <></>;
+const Dropdown: FC<IDropdownProps> = ({ items, onSelect }) => {
+	return <div className="dropdown-menu">
+        {items.forEach(item) => }
+
+    </div>;- 
 };
 
 export default Dropdown;

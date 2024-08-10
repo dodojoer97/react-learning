@@ -53,7 +53,21 @@ const Tabs: FC<ITabsProps<IGroupItem>> = ({ data, Component }) => {
 					))}
 				</ul>
 			)}
-			{isMobile && <Dropdown items={["test", "test2"]} onSelect={() => {}} />}
+			{isMobile && (
+				<>
+					<Dropdown
+						items={groupedData.map((group) => group.type)}
+						onSelect={handleTabClick}
+					/>
+					{groupedData.map(
+						(group) =>
+							isActiveTab(group.type) &&
+							group.values.map((item, index) => (
+								<Component key={`${item.type}-${index}`} {...item} />
+							))
+					)}
+				</>
+			)}
 		</>
 	);
 };

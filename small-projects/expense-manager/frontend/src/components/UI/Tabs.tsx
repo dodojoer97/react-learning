@@ -54,24 +54,20 @@ const Tabs: FC<ITabsProps<ITabItem>> = ({ data, Component }) => {
 
 	return (
 		<>
-			{groupedData.length && (
-				<ul className="flex flex-wrap justify-evenly text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
-					{groupedData.map((group) => (
-						<>
-							<Tab
-								key={group.type}
-								name={group.type}
-								isActive={isActiveTab(group.type)}
-								onClick={() => handleTabClick(group.type)}
-							>
-								{group.values.map((item, index) => (
-									<Component key={index} {...item} />
-								))}
-							</Tab>
-						</>
-					))}
-				</ul>
-			)}
+			<ul className="flex flex-wrap justify-evenly text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
+				{groupedData.map((group, index) => (
+					<Tab
+						key={`${group.type}-${index}`}
+						name={group.type}
+						isActive={isActiveTab(group.type)}
+						onClick={() => handleTabClick(group.type)}
+					>
+						{group.values.map((item, index) => (
+							<Component key={`${item.type}-${index}`} {...item} />
+						))}
+					</Tab>
+				))}
+			</ul>
 		</>
 	);
 };

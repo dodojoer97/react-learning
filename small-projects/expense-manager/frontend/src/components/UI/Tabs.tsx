@@ -34,8 +34,6 @@ const Tabs: FC<ITabsProps<IGroupItem>> = ({ data, Component }) => {
 
 	return (
 		<>
-			<Dropdown items={["test", "test2"]} onSelect={() => {}} />
-
 			{!isMobile && (
 				<ul className="flex flex-wrap justify-evenly text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
 					{groupedData.map((group, index) => (
@@ -52,6 +50,7 @@ const Tabs: FC<ITabsProps<IGroupItem>> = ({ data, Component }) => {
 					))}
 				</ul>
 			)}
+			{isMobile && <Dropdown items={["test", "test2"]} onSelect={() => {}} />}
 		</>
 	);
 };

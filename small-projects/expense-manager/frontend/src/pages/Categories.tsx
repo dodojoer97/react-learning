@@ -54,6 +54,7 @@ const Categories: FC = () => {
 				<AddCategoryForm onSave={toggleOpen} />
 			</SlidingPanel>
 
+			{/* Change type of cateogries */}
 			{settingsCTX.categories.length && (
 				<Tabs Component={CategoryComp} data={settingsCTX.categories} />
 			)}

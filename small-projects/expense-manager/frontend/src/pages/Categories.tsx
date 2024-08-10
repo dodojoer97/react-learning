@@ -13,6 +13,7 @@ import SlidingPanel from "@/components/UI/SlidingPanel";
 // Components
 import CategoryComp from "@/components/Category";
 import AddCategoryForm from "@/components/AddCategoryForm";
+import Tabs from "@/components/UI/Tabs";
 
 // Store
 import { SettingsContext } from "@/store/SettingsContext";
@@ -53,11 +54,12 @@ const Categories: FC = () => {
 				<AddCategoryForm onSave={toggleOpen} />
 			</SlidingPanel>
 
-			<ul>
+			<Tabs Component={CategoryComp} data={settingsCTX.categories} />
+			{/* <ul>
 				{settingsCTX.categories.map((category: Category) => (
 					<CategoryComp key={category.id} category={category} />
 				))}
-			</ul>
+			</ul> */}
 		</Layout>
 	);
 };

@@ -18,10 +18,12 @@ import EditCategoryForm from "@/components/EditCategoryForm";
 import useIsOpen from "@/hooks/useIsOpen";
 
 interface ICategoryProps {
-	category: Category;
+	id: string;
+	name: string;
+	icon: IconDefinition;
 }
 
-const CategoryComp: FC<ICategoryProps> = ({ category }) => {
+const CategoryComp: FC<ICategoryProps> = ({ id, name, icon }) => {
 	// TODO ADD TRANSLATIONS
 
 	// Hooks
@@ -32,10 +34,10 @@ const CategoryComp: FC<ICategoryProps> = ({ category }) => {
 			<article className="flex justify-between items-center p-4 bg-white shadow-md rounded-lg hover:bg-gray-50 transition-colors my-2">
 				<div className="flex items-center">
 					<FontAwesomeIcon
-						icon={category.icon as IconDefinition}
+						icon={icon as IconDefinition}
 						className="text-blue-500 text-2xl mr-4"
 					/>
-					<p className="text-lg font-semibold text-gray-800">{category.name}</p>
+					<p className="text-lg font-semibold text-gray-800">{name}</p>
 				</div>
 				<Button onClick={toggleOpen}>
 					<FontAwesomeIcon icon={faPencil} />
@@ -43,7 +45,7 @@ const CategoryComp: FC<ICategoryProps> = ({ category }) => {
 			</article>
 
 			<SlidingPanel isOpen={isOpen} onClose={toggleOpen}>
-				<EditCategoryForm category={category} onSave={toggleOpen} />
+				<EditCategoryForm id={id} name={name} onSave={toggleOpen} />
 			</SlidingPanel>
 		</>
 	);

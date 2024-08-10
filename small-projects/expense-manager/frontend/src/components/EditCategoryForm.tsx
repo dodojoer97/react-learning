@@ -21,28 +21,29 @@ import { hasMinLength } from "@/utils/utils";
 import { SettingsContext } from "@/store/SettingsContext";
 
 interface IEditCategoryFormProps {
-	category: Category;
+	id: string;
+	name: string;
 	onSave(): void;
 }
 
-const EditCategoryForm: FC<IEditCategoryFormProps> = ({ category, onSave }) => {
+const EditCategoryForm: FC<IEditCategoryFormProps> = ({ id, name, onSave }) => {
 	// Store
 	const settingsCTX = useContext(SettingsContext);
 
 	// Hooks
-	const nameField = useInput(category.name, (value) => {
+	const nameField = useInput<HTMLInputElement>(name, (value) => {
 		return hasMinLength(value, 4);
 	});
 
 	const { handleSubmit, error } = useFormSubmission(async () => {
-		await settingsCTX.editCategory(category.id, nameField.value);
+		await settingsCTX.editCategory(id, nameField.value);
 		onSave();
 	});
 
 	return (
 		<Form
 			className="mx-auto px-7 mb-0 mt-8 max-w-md space-y-4 flex flex-col justify-between h-[90%]"
-			key={category.id}
+			key={id}
 			onSubmit={handleSubmit}
 		>
 			<div>

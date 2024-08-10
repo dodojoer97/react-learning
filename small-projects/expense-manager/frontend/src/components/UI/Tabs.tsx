@@ -9,12 +9,18 @@ import Dropdown from "@/components/UI/Dropdown";
 import { groupByType } from "@/utils/utils";
 import { IGroupedItem, IGroupItem } from "@/utils/utils.d";
 
+// Hooks
+import useIsMobile from "@/hooks/useIsMobile";
+
 interface ITabsProps<T extends IGroupItem> {
 	data: T[];
 	Component: FC<any>; // Using React.ComponentType to define the component prop
 }
 
 const Tabs: FC<ITabsProps<IGroupItem>> = ({ data, Component }) => {
+	// Hooks
+	const isMobile = useIsMobile();
+
 	// Data
 	const groupedData: IGroupedItem<IGroupItem>[] = groupByType(data);
 
@@ -28,9 +34,6 @@ const Tabs: FC<ITabsProps<IGroupItem>> = ({ data, Component }) => {
 	const handleTabClick = (type: string): void => {
 		setActiveTab(type);
 	};
-
-	// TOdo move to hook
-	const isMobile = false;
 
 	return (
 		<>

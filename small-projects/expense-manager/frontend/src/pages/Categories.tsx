@@ -20,7 +20,6 @@ import { SettingsContext } from "@/store/SettingsContext";
 import { AuthContext } from "@/store/AuthContext";
 
 // Hooks
-import { Category } from "@common";
 import useIsOpen from "@/hooks/useIsOpen";
 
 // FontAwesome

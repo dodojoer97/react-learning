@@ -1,4 +1,8 @@
+import { useState } from "react";
 import type { FC } from "react";
+
+// Components
+import Tab from "@/components/UI/Tab";
 
 interface ITabItem {
 	type: string;
@@ -34,22 +38,41 @@ const groupIntoTabs = <T extends ITabItem>(data: T[]): IGroupedTabItem<T>[] => {
 };
 
 const Tabs: FC<ITabsProps<ITabItem>> = ({ data, Component }) => {
+	// Data
 	const groupedData = groupIntoTabs(data);
 
-	console.log("groupedData: ", groupedData);
+	// Set the first active tab as the first group
+	const [activeTab, setActiveTab] = useState<string>(groupedData[0].type);
+
+	const isActiveTab = (type: string): boolean => {
+		return type === activeTab;
+	};
+
+	const handleTabClick = (type: string): void => {
+		setActiveTab(type);
+	};
+
 	return (
-		<div>
-			{groupedData.map((group, groupIndex) => (
-				<div key={groupIndex}>
-					<h2>{group.type}</h2> {/* Displaying the type as a header */}
-					{group.values.map((item, index) => (
-						<div key={index}>
-							<Component {...item} /> {/* Correct usage of the component prop */}
-						</div>
+		<>
+			{groupedData.length && (
+				<ul className="flex flex-wrap justify-evenly text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
+					{groupedData.map((group) => (
+						<>
+							<Tab
+								key={group.type}
+								name={group.type}
+								isActive={isActiveTab(group.type)}
+								onClick={() => handleTabClick(group.type)}
+							>
+								{group.values.map((item, index) => (
+									<Component key={index} {...item} />
+								))}
+							</Tab>
+						</>
 					))}
-				</div>
-			))}
-		</div>
+				</ul>
+			)}
+		</>
 	);
 };
 

@@ -54,12 +54,9 @@ const Categories: FC = () => {
 				<AddCategoryForm onSave={toggleOpen} />
 			</SlidingPanel>
 
-			<Tabs Component={CategoryComp} data={settingsCTX.categories} />
-			{/* <ul>
-				{settingsCTX.categories.map((category: Category) => (
-					<CategoryComp key={category.id} category={category} />
-				))}
-			</ul> */}
+			{settingsCTX.categories.length && (
+				<Tabs Component={CategoryComp} data={settingsCTX.categories} />
+			)}
 		</Layout>
 	);
 };

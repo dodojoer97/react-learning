@@ -88,8 +88,9 @@ class SettingsService extends BaseService implements ISettingsService {
 
 	/**
 	 * Edits an existing category for a user.
-	 * @param {Category} category - The category to edit.
 	 * @param {string} userId - The ID of the user.
+	 * @param {string} categoryId - The categoryId to edit.
+	 * @param {string} newName - The new name;
 	 * @returns {Promise<void>} A promise that resolves when the operation is complete.
 	 */
 	public async editCategory(userId: string, categoryId: string, newName: string): Promise<void> {

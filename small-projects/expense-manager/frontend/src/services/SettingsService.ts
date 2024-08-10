@@ -6,7 +6,7 @@ import BaseService from "./BaseService";
 
 // Models
 import { Category } from "@common";
-import Currency from "@/models/Currency";
+import SelectFieldOption from "@/models/SelectFieldOption";
 
 // DTO
 import GetCategoriesDTO from "@/DTO/response/GetCategories";
@@ -52,7 +52,13 @@ class SettingsService extends BaseService implements ISettingsService {
 
 	private buildCategories(dto: GetCategoriesDTO): Category[] {
 		const categories: Category[] = dto.map(
-			(category) => new Category(categoryIcons[category.icon], category.name, category.id)
+			(category) =>
+				new Category(
+					categoryIcons[category.icon as string],
+					category.name,
+					category.id,
+					category.type
+				)
 		);
 		return categories;
 	}
@@ -62,9 +68,9 @@ class SettingsService extends BaseService implements ISettingsService {
 	 * @param {string} userId - The ID of the user.
 	 * @returns {Promise<void>} A promise that resolves when the operation is complete.
 	 */
-	public async setCurrency(userId: string, currency: Currency): Promise<void> {
+	public async setCurrency(userId: string, currency: SelectFieldOption): Promise<void> {
 		const endpoint = `users/${userId}/currency`;
-		await this.put<Currency>(endpoint, currency);
+		await this.put<SelectFieldOption>(endpoint, currency);
 	}
 
 	/**

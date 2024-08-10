@@ -1,9 +1,4 @@
-export interface Category {
-	icon: string;
-	name: string;
-	id: string;
-}
-
+import { Category } from "@common";
 type GetCategoriesDTO = Category[];
 
 export default GetCategoriesDTO;

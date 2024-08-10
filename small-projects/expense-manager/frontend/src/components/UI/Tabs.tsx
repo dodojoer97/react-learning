@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import type { FC } from "react";
 
 interface ITabItem {
 	type: string;
@@ -36,6 +36,7 @@ const groupIntoTabs = <T extends ITabItem>(data: T[]): IGroupedTabItem<T>[] => {
 const Tabs: FC<ITabsProps<ITabItem>> = ({ data, Component }) => {
 	const groupedData = groupIntoTabs(data);
 
+	console.log("groupedData: ", groupedData);
 	return (
 		<div>
 			{groupedData.map((group, groupIndex) => (
@@ -43,8 +44,7 @@ const Tabs: FC<ITabsProps<ITabItem>> = ({ data, Component }) => {
 					<h2>{group.type}</h2> {/* Displaying the type as a header */}
 					{group.values.map((item, index) => (
 						<div key={index}>
-							{item.type} <Component {...item} />{" "}
-							{/* Correct usage of the component prop */}
+							<Component {...item} /> {/* Correct usage of the component prop */}
 						</div>
 					))}
 				</div>

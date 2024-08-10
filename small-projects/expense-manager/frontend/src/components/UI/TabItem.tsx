@@ -6,7 +6,7 @@ interface ITabProps extends PropsWithChildren {
 	onClick(): void;
 }
 
-const Tab: FC<ITabProps> = ({ name, children, isActive, onClick }) => {
+const TabItem: FC<ITabProps> = ({ name, children, isActive, onClick }) => {
 	return (
 		<li className="me-2 pb-2 ">
 			<h2
@@ -24,4 +24,4 @@ const Tab: FC<ITabProps> = ({ name, children, isActive, onClick }) => {
 	);
 };
 
-export default Tab;
+export default TabItem;

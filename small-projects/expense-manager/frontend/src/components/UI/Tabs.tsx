@@ -2,11 +2,11 @@ import { useState } from "react";
 import type { FC } from "react";
 
 // Components
-import Tab from "@/components/UI/Tab";
+import TabItem from "@/components/UI/TabItem";
 
 // Utils
 import { groupByType } from "@/utils/utils";
-import { IGroupItem } from "@/utils/utils.d";
+import { IGroupedItem, IGroupItem } from "@/utils/utils.d";
 
 interface ITabsProps<T extends IGroupItem> {
 	data: T[];
@@ -15,7 +15,7 @@ interface ITabsProps<T extends IGroupItem> {
 
 const Tabs: FC<ITabsProps<IGroupItem>> = ({ data, Component }) => {
 	// Data
-	const groupedData = groupByType(data);
+	const groupedData: IGroupedItem<IGroupItem>[] = groupByType(data);
 
 	// Set the first active tab as the first group
 	const [activeTab, setActiveTab] = useState<string>(groupedData[0].type);
@@ -36,7 +36,7 @@ const Tabs: FC<ITabsProps<IGroupItem>> = ({ data, Component }) => {
 			{!isMobile && (
 				<ul className="flex flex-wrap justify-evenly text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
 					{groupedData.map((group, index) => (
-						<Tab
+						<TabItem
 							key={`${group.type}-${index}`}
 							name={group.type}
 							isActive={isActiveTab(group.type)}
@@ -45,7 +45,7 @@ const Tabs: FC<ITabsProps<IGroupItem>> = ({ data, Component }) => {
 							{group.values.map((item, index) => (
 								<Component key={`${item.type}-${index}`} {...item} />
 							))}
-						</Tab>
+						</TabItem>
 					))}
 				</ul>
 			)}

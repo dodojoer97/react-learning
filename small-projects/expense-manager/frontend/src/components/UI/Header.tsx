@@ -127,6 +127,18 @@ const Header: FC = () => {
 										{t("categories")}
 									</NavLink>
 								</li>
+								<li>
+									<NavLink
+										to="/expenses"
+										className={({ isActive }) =>
+											`${baseNavClasses} ${isActive ? activeNavClasses : ""}`
+										}
+										end
+									>
+										{/* TODO add tranlsations */}
+										Expenes
+									</NavLink>
+								</li>
 							</>
 						)}
 					</ul>

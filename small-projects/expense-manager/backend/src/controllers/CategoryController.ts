@@ -16,7 +16,7 @@ class CategoryController {
 			const { category, userId } = dto;
 
 			// TODO move the creation Id to service or repo
-			const categoryModel = new Category(category.icon, category.name, v4(), "expense");
+			const categoryModel = new Category(category.icon, category.name, v4(), category.type);
 
 			const categories: Category[] = await categoryService.addCategoryForUser(
 				categoryModel,

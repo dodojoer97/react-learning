@@ -10,6 +10,7 @@ class CategoryRepository {
 	async addCategoryForUser(category: Category, userId: string): Promise<void> {
 		const categoryDoc = this.categoriesCollection.doc(category.name);
 		const userCategory = { ...category, userId }; // Add userId to the category object
+		console.log("userCategory: ", userCategory);
 		await categoryDoc.set(userCategory);
 	}
 

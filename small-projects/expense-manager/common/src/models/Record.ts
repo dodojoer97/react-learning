@@ -1,19 +1,21 @@
-export interface IExpense {
+import { Category } from "./Category";
+
+export interface IRecord {
 	id: string;
 	userId: string;
-	categoryId: string;
 	amount: number;
 	description: string;
 	date: Date;
+	category: Category;
 }
 
-export class Expense implements IExpense {
+export class Record implements IRecord {
 	constructor(
 		public id: string,
 		public userId: string,
-		public categoryId: string,
 		public amount: number,
 		public description: string,
-		public date: Date
+		public date: Date,
+		public category: Category
 	) {}
 }

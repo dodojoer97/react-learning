@@ -6,11 +6,11 @@ import Calendar from "@/components/UI/Calendar";
 import Layout from "@/components/UI/Layout";
 
 // TODO add translations
-const Expenses: FC = () => {
+const Records: FC = () => {
 	return (
 		<Layout>
 			<div className="mx-auto max-w-lg text-center">
-				<h1 className="text-2xl font-bold sm:text-3xl">Expenses</h1>
+				<h1 className="text-2xl font-bold sm:text-3xl">Records</h1>
 
 				<p className="mt-4 text-gray-500">Lorem, ipsum.</p>
 			</div>
@@ -20,4 +20,4 @@ const Expenses: FC = () => {
 	);
 };
 
-export default Expenses;
+export default Records;

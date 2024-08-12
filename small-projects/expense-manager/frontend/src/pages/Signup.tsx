@@ -48,7 +48,7 @@ const Signup: FC = () => {
 	const navigate = useNavigate();
 
 	// Email field
-	const emailField = useInput(
+	const emailField = useInput<HTMLInputElement>(
 		"",
 		(value: string) => {
 			return isEmail(value);
@@ -57,14 +57,14 @@ const Signup: FC = () => {
 	);
 
 	// Password fields
-	const password1Field = useInput(
+	const password1Field = useInput<HTMLInputElement>(
 		"",
 		(value: string) => {
 			return hasMinLength(value, 8);
 		},
 		authCTX.clearError
 	);
-	const password2Field = useInput(
+	const password2Field = useInput<HTMLInputElement>(
 		"",
 		(value: string) => {
 			return hasMinLength(value, 8);

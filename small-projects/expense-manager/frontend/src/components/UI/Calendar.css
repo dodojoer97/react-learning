@@ -1,0 +1,4 @@
+.rbc-day-bg,
+.rbc-button-link {
+	@apply cursor-pointer;
+}

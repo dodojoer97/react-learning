@@ -2,7 +2,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import userRoutes from "./routes/authRoutes";
-import expenseRoutes from "./routes/expenseRoutes";
+import recordRoutes from "./routes/recordRoutes";
 import categoryRoutes from "./routes/categoryRoutes";
 import cors from "cors";
 
@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(userRoutes);
-// app.use(expenseRoutes);
+app.use(recordRoutes);
 app.use(categoryRoutes);
 
 app.listen(PORT, () => {

@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(userRoutes);
-app.use(expenseRoutes);
+// app.use(expenseRoutes);
 app.use(categoryRoutes);
 
 app.listen(PORT, () => {

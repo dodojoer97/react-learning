@@ -31,7 +31,7 @@ const EditCategoryForm: FC<IEditCategoryFormProps> = ({ id, name, onSave }) => {
 	const settingsCTX = useContext(SettingsContext);
 
 	// Hooks
-	const nameField = useInput<HTMLInputElement>(name, (value) => {
+	const nameField = useInput<HTMLInputElement, string>(name, (value) => {
 		return hasMinLength(value, 4);
 	});
 

@@ -4,10 +4,10 @@ export interface IRecord {
 	id: string;
 	userId: string;
 	amount: number;
-	description: string;
 	date: Date;
 	categoryId: string;
 	type: CategoryType;
+	description?: string;
 }
 
 export class Record implements IRecord {
@@ -15,9 +15,9 @@ export class Record implements IRecord {
 		public id: string,
 		public userId: string,
 		public amount: number,
-		public description: string,
 		public date: Date,
 		public categoryId: string,
-		public type: CategoryType
+		public type: CategoryType,
+		public description?: string
 	) {}
 }

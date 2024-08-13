@@ -9,25 +9,36 @@ import type { ChangeEvent } from "react";
  * @param clearErrorFN The error cleaning function to fire
  * @returns Object containing input value, handlers for change and blur, and error state, function to reset the input.
  */
-const useInput = <T extends HTMLSelectElement | HTMLInputElement>(
-	defaultValue: string,
-	validationFn: (value: string) => boolean, // More explicit type
+const useInput = <
+	T extends HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement,
+	V = string | number
+>(
+	defaultValue: V,
+	validationFn: (value: V) => boolean,
 	clearErrorFN?: () => void
 ): {
-	value: string;
+	value: V;
 	handleInputChange(e: ChangeEvent<T>): void;
 	handleInputBlur(): void;
 	hasError: boolean;
 	isTouched: boolean;
 } => {
-	const [value, setValue] = useState<string>(defaultValue);
+	const [value, setValue] = useState<V>(defaultValue);
 	const [isTouched, setIsTouched] = useState<boolean>(false);
-	// const originalValue = useRef<string>(defaultValue);
 
 	const valueIsValid: boolean = validationFn(value);
 
 	const handleInputChange = (e: ChangeEvent<T>): void => {
-		setValue(e.target.value);
+		let inputValue: V;
+
+		if (e.target.type === "number") {
+			// Parse to number if the input type is number
+			inputValue = (e.target.value === "" ? 0 : parseFloat(e.target.value)) as V;
+		} else {
+			inputValue = e.target.value as unknown as V;
+		}
+
+		setValue(inputValue);
 		setIsTouched(true);
 		clearErrorFN && clearErrorFN();
 	};

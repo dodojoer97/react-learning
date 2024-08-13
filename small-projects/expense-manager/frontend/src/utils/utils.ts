@@ -23,6 +23,17 @@ export const hasMinLength = (value: string, minLength: number): boolean => {
 };
 
 /**
+ * Determines if the provided number meets a minimum value requirement.
+ *
+ * @param {number} value - The string to check the length of.
+ * @param {number} minValue - The minimum number of characters required.
+ * @returns {boolean} Returns true if the string's length is greater than or equal to the minValue.
+ */
+export const hasMinValue = (value: number, minValue: number): boolean => {
+	return value >= minValue;
+};
+
+/**
  * Converts a value to a Promise that resolves or rejects after a specified time.
  * This function is useful for simulating asynchronous operations in testing or development.
  *

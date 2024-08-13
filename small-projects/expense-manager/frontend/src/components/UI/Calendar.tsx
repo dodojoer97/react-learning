@@ -1,26 +1,42 @@
-import { Calendar, momentLocalizer, Views } from "react-big-calendar";
-import moment from "moment";
+// React
+import type { FC } from "react";
+import { useState } from "react";
 
-// Css
-import "react-big-calendar/lib/css/react-big-calendar.css"; // Import the CSS
-import "./Calendar.css";
+// Calendar
+import { Calendar, momentLocalizer, Views } from "react-big-calendar";
+
+// Components
+import SlidingPanel from "@/components/UI/SlidingPanel";
+
+// Moment
+import moment from "moment";
 
 const localizer = momentLocalizer(moment);
 
-const test = ({ range: { start, end } }: { [key: string]: any }) => {
-	console.log("start: ", start);
-	console.log("end: ", end);
-	return true;
-};
+// Hooks
+import useIsOpen from "@/hooks/useIsOpen";
 
-const MyCalendar = () => {
-	const handleDrillDown = (date: any, view: any) => {
-		console.log("date: ", date);
-		// Prevent the default day view opening behavior
-		if (view === Views.DAY) {
-			return false;
-		}
+// CSS
+import "react-big-calendar/lib/css/react-big-calendar.css"; // Import the CSS
+import "./Calendar.css";
+
+const MyCalendar: FC = () => {
+	// State
+	const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+	//Hooks
+	const { isOpen, toggleOpen } = useIsOpen(true);
+
+	const handleOpenPanel = (date: Date): void => {
+		toggleOpen();
+		setSelectedDate(date);
 	};
+
+	const handleClosePanel = (): void => {
+		toggleOpen();
+		setSelectedDate(null);
+	};
+
 	return (
 		<div>
 			<Calendar
@@ -29,12 +45,16 @@ const MyCalendar = () => {
 				endAccessor="end"
 				style={{ height: 500 }}
 				onSelectSlot={(slotInfo) => {
-					console.log(slotInfo);
+					handleOpenPanel(slotInfo.start);
 				}}
 				selectable
 				popup={true}
-				onDrillDown={handleDrillDown}
+				// onDrillDown={handleDrillDown}
 			/>
+
+			<SlidingPanel isOpen={isOpen} onClose={handleClosePanel}>
+				{selectedDate?.toDateString()}
+			</SlidingPanel>
 		</div>
 	);
 };

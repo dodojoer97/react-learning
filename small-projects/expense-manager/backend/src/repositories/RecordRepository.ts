@@ -2,15 +2,15 @@
 import { adminDb } from "../config/firebase";
 import { Record } from "@common";
 class RecordRepository {
-	private RecordsCollection = adminDb.collection("Records");
+	private recordsCollection = adminDb.collection("records");
 
-	async addRecord(Record: Record): Promise<void> {
-		const RecordDoc = this.RecordsCollection.doc(Record.id);
-		await RecordDoc.set(Record);
+	async addRecord(record: Record): Promise<void> {
+		const RecordDoc = this.recordsCollection.doc(record.id);
+		await RecordDoc.set(record);
 	}
 
 	async getRecordsByUser(userId: string): Promise<Record[]> {
-		const snapshot = await this.RecordsCollection.where("userId", "==", userId).get();
+		const snapshot = await this.recordsCollection.where("userId", "==", userId).get();
 		return snapshot.docs.map((doc: any) => doc.data() as Record);
 	}
 }

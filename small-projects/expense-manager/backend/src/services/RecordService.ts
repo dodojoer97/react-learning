@@ -3,8 +3,8 @@ import RecordRepository from "../repositories/RecordRepository";
 import { Record } from "@common";
 
 class RecordService {
-	async createRecord(Record: Record): Promise<void> {
-		await RecordRepository.addRecord(Record);
+	async createRecord(record: Record): Promise<void> {
+		await RecordRepository.addRecord(record);
 	}
 
 	async fetchRecordsByUser(userId: string): Promise<Record[]> {

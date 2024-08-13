@@ -1,4 +1,4 @@
-import { Category } from "./Category";
+import { CategoryType } from "./Category";
 
 export interface IRecord {
 	id: string;
@@ -6,7 +6,8 @@ export interface IRecord {
 	amount: number;
 	description: string;
 	date: Date;
-	category: Category;
+	categoryId: string;
+	type: CategoryType;
 }
 
 export class Record implements IRecord {
@@ -16,6 +17,7 @@ export class Record implements IRecord {
 		public amount: number,
 		public description: string,
 		public date: Date,
-		public category: Category
+		public categoryId: string,
+		public type: CategoryType
 	) {}
 }

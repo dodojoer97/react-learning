@@ -3,12 +3,30 @@ import { Request, Response } from "express";
 import RecordService from "../services/RecordService";
 import { Record } from "@common";
 
+// UUID
+import { v4 } from "uuid";
+
+// DTO
+import CreateRecordDTO from "@/DTO/request/CreateRecord";
+
 class RecordController {
 	async addRecord(req: Request, res: Response): Promise<void> {
 		try {
-			const Record: Record = req.body;
-			await RecordService.createRecord(Record);
-			res.status(201).send(Record);
+			const data: CreateRecordDTO = req.body;
+			const { record } = data;
+
+			const recordModel = new Record(
+				v4(),
+				record.userId,
+				record.amount,
+				record.description,
+				record.date,
+				record.categoryId,
+				record.type
+			);
+
+			await RecordService.createRecord(recordModel);
+			res.status(201).send(record);
 		} catch (error: any) {
 			res.status(500).send(error.message);
 		}

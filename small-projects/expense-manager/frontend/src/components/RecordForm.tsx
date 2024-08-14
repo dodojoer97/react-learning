@@ -1,6 +1,6 @@
 // React
 import type { FC } from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 // Types
 import type { CategoryType } from "@common";
@@ -20,17 +20,24 @@ import InputError from "@/components/UI/InputError";
 import useInput from "@/hooks/useInput";
 import useFormSubmission from "@/hooks/useFormSubmission";
 
+// Utils
+import { hasMinValue, hasMinLength } from "@/utils/utils";
+
 interface IProps {
+	amount: number;
+	description: string;
+	date: Date;
+	type: CategoryType;
 	onSave(): void;
 }
 
-const RecordForm: FC<IProps> = (...props) => {
+const RecordForm: FC<IProps> = ({ amount, description, date, type, onSave }) => {
 	// Store
 	const settingsCTX = useContext(SettingsContext);
 
 	// Hooks
-	const nameField = useInput<HTMLInputElement>(name, (value) => {
-		return hasMinLength(value, 4);
+	const amountField = useInput<HTMLInputElement, number>(amount || 0, (value) => {
+		return hasMinValue(value, 4);
 	});
 
 	const { handleSubmit, error } = useFormSubmission(async () => {

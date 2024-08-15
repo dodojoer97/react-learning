@@ -31,13 +31,27 @@ interface IProps {
 	onSave(): void;
 }
 
-const RecordForm: FC<IProps> = ({ amount, description, date, type, onSave }) => {
+const RecordForm: FC<IProps> = ({
+	amount,
+	description = "",
+	date = new Date(),
+	type = "expense",
+	onSave,
+}) => {
+	// TODO add translations
 	// Store
 	const settingsCTX = useContext(SettingsContext);
 
 	// Hooks
-	const amountField = useInput<HTMLInputElement, number>(amount || 0, (value) => {
+
+	// Form fields
+	const amountField = useInput<HTMLInputElement, number>(amount, (value) => {
 		return hasMinValue(value, 4);
+	});
+	const descriptionField = useInput<HTMLTextAreaElement, string>(description);
+	const dateField = useInput<HTMLInputElement, Date>(date);
+	const typeField = useInput<HTMLSelectElement, string>("expense", (value: string) => {
+		return hasMinLength(value, 4);
 	});
 
 	const { handleSubmit, error } = useFormSubmission(async () => {
@@ -48,7 +62,30 @@ const RecordForm: FC<IProps> = ({ amount, description, date, type, onSave }) => 
 		<Form
 			className="mx-auto px-7 mb-0 mt-8 max-w-md space-y-4 flex flex-col justify-between h-[90%]"
 			onSubmit={handleSubmit}
-		></Form>
+		>
+			<Input
+				id="amount"
+				label="amount"
+				placeholder="Amount"
+				required
+				value={amountField.value}
+				onChange={amountField.handleInputChange}
+				onBlur={amountField.handleInputBlur}
+				type="number"
+			/>
+
+			{amountField.hasError && (
+				<InputError message={"some error of number"} className="text-red-600" />
+			)}
+
+			<Select
+				id="type"
+				label="Category type"
+				options={settingsCTX.availableCategoryTypes}
+				value={typeField.value}
+				onChange={typeField.handleInputChange}
+			/>
+		</Form>
 	);
 };
 

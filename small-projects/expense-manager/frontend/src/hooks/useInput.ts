@@ -14,7 +14,7 @@ const useInput = <
 	V = string | number
 >(
 	defaultValue: V,
-	validationFn: (value: V) => boolean,
+	validationFn?: (value: V) => boolean,
 	clearErrorFN?: () => void
 ): {
 	value: V;
@@ -26,7 +26,7 @@ const useInput = <
 	const [value, setValue] = useState<V>(defaultValue);
 	const [isTouched, setIsTouched] = useState<boolean>(false);
 
-	const valueIsValid: boolean = validationFn(value);
+	const valueIsValid: boolean = validationFn ? validationFn(value) : true;
 
 	const handleInputChange = (e: ChangeEvent<T>): void => {
 		let inputValue: V;

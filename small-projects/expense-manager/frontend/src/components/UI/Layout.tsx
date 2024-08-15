@@ -14,16 +14,16 @@ import { SettingsContext } from "@/store/SettingsContext";
 import useLoading from "@/hooks/useLoading";
 
 const Layout: FC<PropsWithChildren> = ({ children }) => {
-	const authCTX = useContext(AuthContext)
-	const settingsContext = useContext(SettingsContext)
+	const authCTX = useContext(AuthContext);
+	const settingsContext = useContext(SettingsContext);
 
-	const loading: boolean = useLoading([authCTX, settingsContext])
-	
+	const loading: boolean = useLoading([authCTX, settingsContext]);
+
 	return (
 		<>
 			<div className="relative bg-slate-50">
 				<Header />
-				<div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+				<div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
 					<section className="bg-slate-50 h-svh">{children}</section>
 				</div>
 				{loading && (

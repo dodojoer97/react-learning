@@ -19,10 +19,10 @@ class RecordController {
 				v4(),
 				record.userId,
 				record.amount,
-				record.description,
 				record.date,
 				record.categoryId,
-				record.type
+				record.type,
+				record.description
 			);
 
 			await RecordService.createRecord(recordModel);

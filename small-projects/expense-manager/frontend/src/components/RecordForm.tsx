@@ -41,8 +41,8 @@ const RecordForm: FC<IProps> = ({ amount, description, date, type, onSave }) => 
 	});
 
 	const { handleSubmit, error } = useFormSubmission(async () => {
-		await settingsCTX.editCategory(id, nameField.value);
-		onSave();
+		// await settingsCTX.editCategory(id, nameField.value);
+		// onSave();
 	});
 	return (
 		<Form

@@ -7,7 +7,7 @@ import HomePage from "@/pages/Home";
 import SignUp from "@/pages/Signup";
 import Settings from "@/pages/Settings";
 import Categories from "@/pages/Categories";
-import Records from "@/pages/Records";
+import Dashboard from "@/pages/Dashboard";
 
 // Define the interface for a route configuration
 export interface RouteConfig {
@@ -44,8 +44,8 @@ export const routeConfig: RouteConfig[] = [
 		isProtected: true,
 	},
 	{
-		path: "/records",
-		component: <Records />,
+		path: "/dashboard",
+		component: <Dashboard />,
 		isProtected: true,
 	},
 ];

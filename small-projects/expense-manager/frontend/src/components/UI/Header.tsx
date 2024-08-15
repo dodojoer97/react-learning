@@ -129,14 +129,14 @@ const Header: FC = () => {
 								</li>
 								<li>
 									<NavLink
-										to="/records"
+										to="/dashboard"
 										className={({ isActive }) =>
 											`${baseNavClasses} ${isActive ? activeNavClasses : ""}`
 										}
 										end
 									>
 										{/* TODO add tranlsations */}
-										records
+										dashboard
 									</NavLink>
 								</li>
 							</>

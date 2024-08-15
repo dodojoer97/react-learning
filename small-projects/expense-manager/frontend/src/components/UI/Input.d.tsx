@@ -16,3 +16,9 @@ export interface SelectInputProps<T> extends HTMLProps<HTMLSelectElement> {
 	id: string;
 	hiddenLabel?: boolean;
 }
+
+export interface TextAreaProps extends HTMLProps<HTMLTextAreaElement> {
+	label: string;
+	id: string;
+	hiddenLabel?: boolean;
+}

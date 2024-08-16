@@ -2,15 +2,28 @@
 import { useState, useEffect } from "react";
 import type { FC, PropsWithChildren } from "react";
 
+// FontAwesome
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+
 type Operation = "+" | "-" | "*" | "/";
 
 interface ICalculatorProps extends PropsWithChildren {
 	amount: number;
 	onChange(value: number): void;
 	additionalClasses?: string;
+	displaySideButton?: boolean;
+	onSideButtonClick?(): void;
 }
 
-const Calculator: FC<ICalculatorProps> = ({ amount, onChange, additionalClasses, children }) => {
+const Calculator: FC<ICalculatorProps> = ({
+	amount,
+	onChange,
+	additionalClasses,
+	children,
+	displaySideButton,
+	onSideButtonClick,
+}) => {
 	const [currentInput, setCurrentInput] = useState<string>(amount.toString());
 	const [previousInput, setPreviousInput] = useState<string>("");
 	const [operation, setOperation] = useState<Operation | null>(null);
@@ -84,8 +97,19 @@ const Calculator: FC<ICalculatorProps> = ({ amount, onChange, additionalClasses,
 			}`}
 		>
 			<div className="mb-5 p-3 bg-white rounded text-right font-mono text-2xl flex-1">
-				{previousInput} {operation} <br />
-				{currentInput}
+				<div className="flex h-[100%]">
+					<div className="flex-1">
+						{previousInput} {operation} <br />
+						{currentInput}
+					</div>
+					{displaySideButton && (
+						<div className="px-3 border-l-2 flex align-center">
+							<button onClick={onSideButtonClick}>
+								<FontAwesomeIcon icon={faArrowRightFromBracket} />
+							</button>
+						</div>
+					)}
+				</div>
 			</div>
 			<div>{children}</div>
 			<div className="grid grid-cols-4 gap-2 h-[70%] flex-[2]">

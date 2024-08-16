@@ -18,10 +18,12 @@ import TextArea from "@/components/UI/TextArea";
 import InputError from "@/components/UI/InputError";
 import Calculator from "@/components/Calculator";
 import TypeTabs from "@/components/Record/TypeTabs";
+import SlidingPanel from "@/components/UI/SlidingPanel";
 
 // Hooks
 import useInput from "@/hooks/useInput";
 import useFormSubmission from "@/hooks/useFormSubmission";
+import useIsOpen from "@/hooks/useIsOpen";
 
 // Utils
 import { hasMinValue, hasMinLength } from "@/utils/utils";
@@ -45,19 +47,24 @@ const RecordForm: FC<IProps> = ({
 	// Store
 	const settingsCTX = useContext(SettingsContext);
 
+	// Hooks
+	const { isOpen, toggleOpen } = useIsOpen();
+
 	// State
 	const [selectedType, setSelectedType] = useState<CategoryType>(type);
 	const [currentAmount, setCurrentAmount] = useState<number>(amount);
 
-	// Hooks
-
 	// Methods
-	const handleTabClick = (value: string) => {
+	const handleTabClick = (value: string): void => {
 		setSelectedType(value as CategoryType);
 	};
 
-	const handleCalculatorChange = (amount: number) => {
+	const handleCalculatorChange = (amount: number): void => {
 		setCurrentAmount(amount);
+	};
+
+	const handleToggle = (): void => {
+		toggleOpen();
 	};
 
 	return (
@@ -72,7 +79,13 @@ const RecordForm: FC<IProps> = ({
 					amount={amount}
 					onChange={handleCalculatorChange}
 					additionalClasses=""
+					displaySideButton
+					onSideButtonClick={handleToggle}
 				/>
+
+				<SlidingPanel isOpen={isOpen} onClose={handleToggle} slideDirection="from-right">
+					<h1>test</h1>
+				</SlidingPanel>
 			</section>
 
 			{/* <Form

@@ -16,6 +16,7 @@ import Select from "@/components/UI/Select";
 import Button from "@/components/UI/Button";
 import TextArea from "@/components/UI/TextArea";
 import InputError from "@/components/UI/InputError";
+import Calculator from "@/components/Calculator";
 
 // Hooks
 import useInput from "@/hooks/useInput";
@@ -78,6 +79,8 @@ const RecordForm: FC<IProps> = ({
 			{amountField.hasError && (
 				<InputError message={"some error of number"} className="text-red-600" />
 			)}
+
+			<Calculator />
 
 			<Input
 				id="date"

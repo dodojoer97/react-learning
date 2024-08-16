@@ -1,14 +1,25 @@
 .sliding-panel {
-	transform: translateX(-100%); /* Start hidden off-screen */
 	transition: transform 0.3s ease; /* Smooth transition for the transform */
+}
+
+.sliding-panel.from-left {
+	transform: translateX(-100%); /* Start hidden off-screen */
+}
+
+.sliding-panel.from-right {
+	transform: translateX(100%); /* Start hidden off-screen */
 }
 
 .sliding-panel.open {
 	transform: translateX(0); /* Slide in */
 }
 
-.sliding-panel.closed {
+.sliding-panel.from-left.closed {
 	transform: translateX(-100%); /* Slide out */
+}
+
+.sliding-panel.from-right.closed {
+	transform: translateX(100%); /* Slide out */
 }
 .sliding-panel.fullscreen {
 	@apply w-[100vw] h-[100dvh];

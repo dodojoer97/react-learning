@@ -1,16 +1,18 @@
 // React
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { FC, PropsWithChildren } from "react";
 
 type Operation = "+" | "-" | "*" | "/";
 
 interface ICalculatorProps extends PropsWithChildren {
+	amount: number;
+	onChange(value: number): void;
 	additionalClasses?: string;
 }
 
-const Calculator: FC<ICalculatorProps> = ({ children, additionalClasses }) => {
-	const [currentInput, setCurrentInput] = useState("0");
-	const [previousInput, setPreviousInput] = useState("");
+const Calculator: FC<ICalculatorProps> = ({ amount, onChange, additionalClasses, children }) => {
+	const [currentInput, setCurrentInput] = useState<string>(amount.toString());
+	const [previousInput, setPreviousInput] = useState<string>("");
 	const [operation, setOperation] = useState<Operation | null>(null);
 
 	const handleNumberClick = (value: string) => {
@@ -69,6 +71,11 @@ const Calculator: FC<ICalculatorProps> = ({ children, additionalClasses }) => {
 		setPreviousInput("");
 		setOperation(null);
 	};
+
+	// Emit the value to other components
+	useEffect(() => {
+		onChange(parseFloat(currentInput));
+	}, [currentInput, onChange]);
 
 	return (
 		<div

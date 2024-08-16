@@ -47,12 +47,17 @@ const RecordForm: FC<IProps> = ({
 
 	// State
 	const [selectedType, setSelectedType] = useState<CategoryType>(type);
+	const [currentAmount, setCurrentAmount] = useState<number>(amount);
 
 	// Hooks
 
 	// Methods
 	const handleTabClick = (value: string) => {
 		setSelectedType(value as CategoryType);
+	};
+
+	const handleCalculatorChange = (amount: number) => {
+		setCurrentAmount(amount);
 	};
 
 	return (
@@ -63,7 +68,11 @@ const RecordForm: FC<IProps> = ({
 					activeTab={selectedType}
 					onSelect={handleTabClick}
 				/>
-				<Calculator additionalClasses="" />
+				<Calculator
+					amount={amount}
+					onChange={handleCalculatorChange}
+					additionalClasses=""
+				/>
 			</section>
 
 			{/* <Form

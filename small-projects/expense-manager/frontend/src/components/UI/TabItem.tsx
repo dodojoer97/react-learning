@@ -4,11 +4,20 @@ interface ITabProps extends PropsWithChildren {
 	name: string;
 	isActive: boolean;
 	onClick(): void;
+	className?: string;
+	displaySelected?: boolean;
 }
 
-const TabItem: FC<ITabProps> = ({ name, children, isActive, onClick }) => {
+const TabItem: FC<ITabProps> = ({
+	name,
+	children,
+	isActive,
+	onClick,
+	className,
+	displaySelected = true,
+}) => {
 	return (
-		<li className="me-2 pb-2 ">
+		<li className={`me-2 pb-2 ${className || ""}`}>
 			<h2
 				onClick={onClick}
 				className={`cursor-pointer  mb-2 border-b-2 capitalize ${
@@ -19,7 +28,9 @@ const TabItem: FC<ITabProps> = ({ name, children, isActive, onClick }) => {
 			>
 				{name}
 			</h2>
-			<div className={isActive ? "opacity-100" : "opacity-0"}>{children}</div>
+			{displaySelected && (
+				<div className={isActive ? "opacity-100" : "opacity-0"}>{children}</div>
+			)}
 		</li>
 	);
 };

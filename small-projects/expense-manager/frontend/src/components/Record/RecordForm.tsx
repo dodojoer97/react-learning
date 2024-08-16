@@ -17,6 +17,7 @@ import Button from "@/components/UI/Button";
 import TextArea from "@/components/UI/TextArea";
 import InputError from "@/components/UI/InputError";
 import Calculator from "@/components/Calculator";
+import TypeTabs from "@/components/Record/TypeTabs";
 
 // Hooks
 import useInput from "@/hooks/useInput";
@@ -44,28 +45,32 @@ const RecordForm: FC<IProps> = ({
 	// Store
 	const settingsCTX = useContext(SettingsContext);
 
+	// State
+	const [selectedType, setSelectedType] = useState<CategoryType>(type);
+
 	// Hooks
 
-	// Form fields
-	const amountField = useInput<HTMLInputElement, number>(amount, (value) => {
-		return hasMinValue(value, 4);
-	});
-	const descriptionField = useInput<HTMLTextAreaElement, string>(description);
-	const dateField = useInput<HTMLInputElement, Date>(date);
-	const typeField = useInput<HTMLSelectElement, string>("expense", (value: string) => {
-		return hasMinLength(value, 4);
-	});
+	// Methods
+	const handleTabClick = (value: string) => {
+		setSelectedType(value as CategoryType);
+	};
 
-	const { handleSubmit, error } = useFormSubmission(async () => {
-		// await settingsCTX.editCategory(id, nameField.value);
-		// onSave();
-	});
 	return (
-		<Form
+		<>
+			<section className="flex flex-col gap-0 h-[100%]">
+				<TypeTabs
+					items={settingsCTX.availableCategoryTypes}
+					activeTab={selectedType}
+					onSelect={handleTabClick}
+				/>
+				<Calculator additionalClasses="" />
+			</section>
+
+			{/* <Form
 			className="mx-auto px-7 mb-0 mt-8 max-w-md space-y-4 flex flex-col justify-between h-[90%]"
 			onSubmit={handleSubmit}
-		>
-			<Input
+		> */}
+			{/* <Input
 				id="amount"
 				label="amount"
 				placeholder="Amount"
@@ -78,10 +83,9 @@ const RecordForm: FC<IProps> = ({
 
 			{amountField.hasError && (
 				<InputError message={"some error of number"} className="text-red-600" />
-			)}
+			)} */}
 
-			<Calculator />
-
+			{/* 
 			<Input
 				id="date"
 				label="date"
@@ -111,8 +115,9 @@ const RecordForm: FC<IProps> = ({
 				value={descriptionField.value}
 				onChange={descriptionField.handleInputChange}
 				onBlur={descriptionField.handleInputBlur}
-			/>
-		</Form>
+			/> */}
+			{/* </Form> */}
+		</>
 	);
 };
 

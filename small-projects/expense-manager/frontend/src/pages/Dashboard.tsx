@@ -6,7 +6,7 @@ import Calendar from "@/components/UI/Calendar";
 import Layout from "@/components/UI/Layout";
 import Button from "@/components/UI/Button";
 import SlidingPanel from "@/components/UI/SlidingPanel";
-import RecordForm from "@/components/RecordForm";
+import RecordForm from "@/components/Record/RecordForm";
 
 // FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+// React
+import { useState } from "react";
+import type { FC, PropsWithChildren } from "react";
 
 type Operation = "+" | "-" | "*" | "/";
 
-const Calculator: React.FC = () => {
+interface ICalculatorProps extends PropsWithChildren {
+	additionalClasses?: string;
+}
+
+const Calculator: FC<ICalculatorProps> = ({ children, additionalClasses }) => {
 	const [currentInput, setCurrentInput] = useState("0");
 	const [previousInput, setPreviousInput] = useState("");
 	const [operation, setOperation] = useState<Operation | null>(null);
@@ -65,12 +71,17 @@ const Calculator: React.FC = () => {
 	};
 
 	return (
-		<div className="max-w-xs  mt-10 p-5 shadow-lg rounded-lg bg-gray-100">
-			<div className="mb-5 p-3 bg-white rounded text-right font-mono text-2xl">
+		<div
+			className={`p-5 h-[100%] shadow-lg rounded-lg bg-gray-100 flex flex-col ${
+				additionalClasses || ""
+			}`}
+		>
+			<div className="mb-5 p-3 bg-white rounded text-right font-mono text-2xl flex-1">
 				{previousInput} {operation} <br />
 				{currentInput}
 			</div>
-			<div className="grid grid-cols-4 gap-2">
+			<div>{children}</div>
+			<div className="grid grid-cols-4 gap-2 h-[70%] flex-[2]">
 				{["7", "8", "9", "+", "4", "5", "6", "*", "1", "2", "3", "-", "/"].map(
 					(digitOrOp) => (
 						<button

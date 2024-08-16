@@ -13,7 +13,7 @@ import SlidingPanel from "@/components/UI/SlidingPanel";
 // Components
 import CategoryComp from "@/components/Category";
 import AddCategoryForm from "@/components/AddCategoryForm";
-import Tabs from "@/components/UI/Tabs";
+import Tabs from "@/components/UI/PageTabs";
 
 // Store
 import { SettingsContext } from "@/store/SettingsContext";

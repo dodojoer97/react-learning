@@ -25,7 +25,7 @@ const SlidingPanel: FC<ISlidingPanelProps> = ({
 
 	return (
 		<div
-			className={`sliding-panel overflow-auto fullscreen bg-white fixed top-0 right-0 z-20 p-1 ${slideDirection} ${openClass} `}
+			className={`sliding-panel overflow-y-auto overflow-x-hidden fullscreen bg-white fixed top-0 right-0 z-20 p-1 ${slideDirection} ${openClass} `}
 		>
 			<div className="flex justify-end px-2 py-1">
 				<CloseButton onClose={onClose} />

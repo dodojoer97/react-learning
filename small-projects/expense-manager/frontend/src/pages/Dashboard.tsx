@@ -33,7 +33,7 @@ const Dashboard: FC = () => {
 
 				<p className="mt-4 text-gray-500">Lorem, ipsum.</p>
 			</div>
-			<Button className="fixed bottom-10 right-10 rounded-lg" onClick={handleOpenPanel}>
+			<Button className="fixed bottom-20 right-10 rounded-lg" onClick={handleOpenPanel}>
 				<FontAwesomeIcon
 					className="cursor-pointer w-10 h-10 text-blue-600"
 					icon={faPlusCircle}

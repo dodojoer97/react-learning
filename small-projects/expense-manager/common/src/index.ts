@@ -8,7 +8,7 @@ export { debounce } from "./utils/utils";
 // Models
 export { Category } from "./models/Category";
 
-export { Record } from "./models/Record";
+export { Transaction } from "./models/Transaction";
 
 // Types
 export type { CategoryType } from "./models/Category";

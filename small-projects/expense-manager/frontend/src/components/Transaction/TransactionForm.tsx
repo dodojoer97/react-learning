@@ -17,7 +17,7 @@ import Button from "@/components/UI/Button";
 import TextArea from "@/components/UI/TextArea";
 import InputError from "@/components/UI/InputError";
 import Calculator from "@/components/Calculator";
-import TypeTabs from "@/components/Record/TypeTabs";
+import TypeTabs from "@/components/Transaction/TypeTabs";
 import SlidingPanel from "@/components/UI/SlidingPanel";
 
 // Hooks
@@ -36,7 +36,7 @@ interface IProps {
 	type?: CategoryType;
 }
 
-const RecordForm: FC<IProps> = ({
+const TransactionForm: FC<IProps> = ({
 	amount = 0,
 	description = "",
 	date = new Date(),
@@ -143,4 +143,4 @@ const RecordForm: FC<IProps> = ({
 	);
 };
 
-export default RecordForm;
+export default TransactionForm;

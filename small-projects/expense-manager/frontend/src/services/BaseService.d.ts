@@ -2,8 +2,8 @@
  * Base RequestOptions interface to define common options for making HTTP requests.
  */
 export interface RequestOptions {
-	headers?: Record<string, string>;
-	params?: Record<string, string>;
+	headers?: Transaction<string, string>;
+	params?: Transaction<string, string>;
 }
 
 /**
@@ -14,9 +14,9 @@ export interface IBaseService {
 
 	/**
 	 * Get the default headers for HTTP requests.
-	 * @returns {Record<string, string>} Default headers.
+	 * @returns {Transaction<string, string>} Default headers.
 	 */
-	getDefaultHeaders(): Record<string, string>;
+	getDefaultHeaders(): Transaction<string, string>;
 
 	/**
 	 * Make a GET request to the specified endpoint.

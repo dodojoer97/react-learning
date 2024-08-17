@@ -1,6 +1,6 @@
 import { CategoryType } from "./Category";
 
-export interface IRecord {
+export interface ITransaction {
 	id: string;
 	userId: string;
 	amount: number;
@@ -10,7 +10,7 @@ export interface IRecord {
 	description?: string;
 }
 
-export class Record implements IRecord {
+export class Transaction implements ITransaction {
 	constructor(
 		public id: string,
 		public userId: string,

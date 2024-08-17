@@ -38,11 +38,7 @@ interface IProps {
 const TransactionForm: FC<IProps> = ({ onSave }) => {
 	// TODO add translations
 	// State
-
-	// Intermediary Transaction
-	const [transaction, setTransaction] = useState(
-		new Transaction("", "", 0, new Date(), "", "expense")
-	);
+	const [selectedType, setSelectedType] = useState<CategoryType>("expense");
 
 	// Store
 	const settingsCTX = useContext(SettingsContext);
@@ -52,12 +48,12 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 	const { isOpen, toggleOpen } = useIsOpen();
 
 	// Methods
-	const handleTabClick = (value: string): void => {
-		setSelectedType(value as CategoryType);
+	const handleTabClick = (type: CategoryType): void => {
+		transactionCTX.updateDraftTransaction({ type });
 	};
 
 	const handleCalculatorChange = (amount: number): void => {
-		setCurrentAmount(amount);
+		transactionCTX.updateDraftTransaction({ amount });
 	};
 
 	const handleToggle = (): void => {
@@ -73,7 +69,7 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 					onSelect={handleTabClick}
 				/>
 				<Calculator
-					amount={amount}
+					amount={transactionCTX.draftTransaction.amount}
 					onChange={handleCalculatorChange}
 					additionalClasses=""
 					displaySideButton

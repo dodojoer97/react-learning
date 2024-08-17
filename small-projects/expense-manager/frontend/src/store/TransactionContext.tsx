@@ -10,7 +10,7 @@ import { ITransactionContext } from "./TransactionContext.d";
 import { Transaction, CategoryType } from "@common";
 
 // Default transaction template for initializing new transactions
-const defaultTransaction: Transaction = {
+export const defaultTransaction: Transaction = {
 	id: "",
 	userId: "",
 	amount: 0,

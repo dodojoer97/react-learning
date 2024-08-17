@@ -20,7 +20,7 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import useIsOpen from "@/hooks/useIsOpen";
 
 // Store
-import { TransactionContext } from "@/store/TransactionContext";
+import { TransactionContext, defaultTransaction } from "@/store/TransactionContext";
 import { AuthContext } from "@/store/AuthContext";
 
 // TODO add translations
@@ -34,9 +34,7 @@ const Dashboard: FC = () => {
 
 	const handleOpenPanel = (): void => {
 		if (!authContext.user) throw new Error("user must be selected to open");
-		transactionCTX.selectTransaction(
-			new Transaction("", authContext.user.uid, 0, new Date(), "", "expense", "")
-		);
+		transactionCTX.selectTransaction(defaultTransaction);
 		toggleOpen();
 	};
 

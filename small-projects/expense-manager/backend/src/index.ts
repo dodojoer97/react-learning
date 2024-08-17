@@ -2,7 +2,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import userRoutes from "./routes/authRoutes";
-import recordRoutes from "./routes/recordRoutes";
+import recordRoutes from "./routes/transactionRoutes";
 import categoryRoutes from "./routes/categoryRoutes";
 import cors from "cors";
 

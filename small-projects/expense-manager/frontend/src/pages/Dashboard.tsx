@@ -1,5 +1,9 @@
 // React
 import type { FC } from "react";
+import { useContext } from "react";
+
+// Models
+import { Transaction } from "@common";
 
 // Components
 import Calendar from "@/components/UI/Calendar";
@@ -15,14 +19,24 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 // Hooks
 import useIsOpen from "@/hooks/useIsOpen";
 
+// Store
+import { TransactionContext } from "@/store/TransactionContext";
+import { AuthContext } from "@/store/AuthContext";
+
 // TODO add translations
 const Dashboard: FC = () => {
 	// Store
+	const transactionCTX = useContext(TransactionContext);
+	const authContext = useContext(AuthContext);
 
 	// Hooks
 	const { isOpen, toggleOpen } = useIsOpen(true);
 
 	const handleOpenPanel = (): void => {
+		if (!authContext.user) throw new Error("user must be selected to open");
+		transactionCTX.selectTransaction(
+			new Transaction("", authContext.user.uid, 0, new Date(), "", "expense", "")
+		);
 		toggleOpen();
 	};
 

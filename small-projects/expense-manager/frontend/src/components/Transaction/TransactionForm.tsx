@@ -7,7 +7,7 @@ import type { CategoryType } from "@common";
 
 // Store
 import { SettingsContext } from "@/store/SettingsContext";
-import { AuthContext } from "@/store/AuthContext";
+import { TransactionContext } from "@/store/TransactionContext";
 
 // Copmonents
 import Form from "@/components/UI/Form";
@@ -28,31 +28,28 @@ import useIsOpen from "@/hooks/useIsOpen";
 // Utils
 import { hasMinValue, hasMinLength } from "@/utils/utils";
 
+// Models
+import { Transaction } from "@common";
+
 interface IProps {
 	onSave(): void;
-	amount?: number;
-	description?: string;
-	date?: Date;
-	type?: CategoryType;
 }
 
-const TransactionForm: FC<IProps> = ({
-	amount = 0,
-	description = "",
-	date = new Date(),
-	type = "expense",
-	onSave,
-}) => {
+const TransactionForm: FC<IProps> = ({ onSave }) => {
 	// TODO add translations
+	// State
+
+	// Intermediary Transaction
+	const [transaction, setTransaction] = useState(
+		new Transaction("", "", 0, new Date(), "", "expense")
+	);
+
 	// Store
 	const settingsCTX = useContext(SettingsContext);
+	const transactionCTX = useContext(TransactionContext);
 
 	// Hooks
 	const { isOpen, toggleOpen } = useIsOpen();
-
-	// State
-	const [selectedType, setSelectedType] = useState<CategoryType>(type);
-	const [currentAmount, setCurrentAmount] = useState<number>(amount);
 
 	// Methods
 	const handleTabClick = (value: string): void => {

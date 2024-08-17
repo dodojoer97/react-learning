@@ -1,13 +1,14 @@
 // Types
 import { ILoadingContext } from "@/types/common/index";
-
-// Model
 import { Transaction } from "@/common";
 
 export interface ITransactionContext extends ILoadingContext {
 	selectedTransaction: Transaction | null;
 	transactions: Transaction[];
-	addTransaction(): Promise<void>;
-	editTransaction(): Promise<void>;
+	draftTransaction: Transaction | null; // Add this to handle draft transaction
+	addTransaction(transaction: Transaction): Promise<void>; // Specify the parameter
+	editTransaction(transaction: Transaction): Promise<void>; // Specify the parameter
 	selectTransaction(transaction: Transaction): void;
+	updateDraftTransaction(updates: Partial<Transaction>): void; // New method
+	saveDraftTransaction(): Promise<void>; // New method
 }

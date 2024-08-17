@@ -46,7 +46,7 @@ const Login: FC = () => {
 	// Clear all the erros on mount
 
 	// Form fields
-	const emailField = useInput<HTMLInputElement>(
+	const emailField = useInput<HTMLInputElement, string>(
 		"",
 		(value: string) => {
 			return isEmail(value);
@@ -54,7 +54,7 @@ const Login: FC = () => {
 		authCTX.clearError
 	);
 
-	const password1Field = useInput<HTMLInputElement>(
+	const password1Field = useInput<HTMLInputElement, string>(
 		"",
 		(value: string) => {
 			return hasMinLength(value, 8);

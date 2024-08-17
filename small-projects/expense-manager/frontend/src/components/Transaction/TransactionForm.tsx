@@ -30,15 +30,12 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 	// TODO add translations
 	// Store
 	const transactionCTX = useContext(TransactionContext);
-	const settingsCTX = useContext(SettingsContext);
 
 	if (!transactionCTX.draftTransaction) return <></>;
 
 	// Form fields
 	const dateField = useInput<HTMLInputElement, Date>(transactionCTX.draftTransaction?.date);
-	const typeField = useInput<HTMLSelectElement, CategoryType>(
-		transactionCTX.draftTransaction.type
-	);
+
 	const descriptionField = useInput<HTMLTextAreaElement, string>(
 		transactionCTX.draftTransaction.description || ""
 	);
@@ -51,14 +48,6 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 				onBlur={dateField.handleInputBlur}
 			/>
 
-			<Select
-				id="type"
-				label="Category type"
-				options={settingsCTX.availableCategoryTypes}
-				value={typeField.value}
-				onChange={(e) => typeField.handleInputChange(e as ChangeEvent<HTMLSelectElement>)}
-			/>
-
 			<TextArea
 				id="description"
 				label="Description"
@@ -68,6 +57,12 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 				}
 				onBlur={descriptionField.handleInputBlur}
 			/>
+			<Button
+				type="submit"
+				className="inline-block w-full rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white disabled:bg-slate-400"
+			>
+				Save
+			</Button>
 		</Form>
 	);
 };

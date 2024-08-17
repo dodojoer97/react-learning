@@ -2,6 +2,7 @@
 import React, { ReactNode } from "react";
 import AuthContextProvider from "@/store/AuthContext";
 import SettingsContextProvider from "@/store/SettingsContext";
+import TransactionContextProvider from "@/store/TransactionContext";
 
 interface RouteWrapperProps {
 	children: ReactNode;
@@ -9,7 +10,9 @@ interface RouteWrapperProps {
 
 const RouteWrapper: React.FC<RouteWrapperProps> = ({ children }) => (
 	<AuthContextProvider>
-		<SettingsContextProvider>{children}</SettingsContextProvider>
+		<TransactionContextProvider>
+			<SettingsContextProvider>{children}</SettingsContextProvider>
+		</TransactionContextProvider>
 	</AuthContextProvider>
 );
 

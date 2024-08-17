@@ -28,6 +28,7 @@ const DatePickerComp: FC<IProps> = ({ onChange, onBlur, date = new Date() }) => 
 			selected={startDate}
 			onChange={(date) => date && handleChange(date)}
 			onBlur={onBlur}
+			dateFormat="dd-MM-yyyy"
 		/>
 	);
 };

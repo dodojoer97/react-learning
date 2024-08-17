@@ -5,5 +5,9 @@ import { ILoadingContext } from "@/types/common/index";
 import { Transaction } from "@/common";
 
 export interface ITransactionContext extends ILoadingContext {
+	selectedTransaction: Transaction | null;
 	transactions: Transaction[];
+	addTransaction(): Promise<void>;
+	editTransaction(): Promise<void>;
+	selectTransaction(transaction: Transaction): void;
 }

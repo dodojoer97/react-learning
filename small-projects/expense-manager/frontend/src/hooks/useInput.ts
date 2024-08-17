@@ -11,14 +11,14 @@ import type { ChangeEvent } from "react";
  */
 const useInput = <
 	T extends HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement,
-	V = string | number
+	V = string | number | Date
 >(
 	defaultValue: V,
 	validationFn?: (value: V) => boolean,
 	clearErrorFN?: () => void
 ): {
 	value: V;
-	handleInputChange(e: ChangeEvent<T>): void;
+	handleInputChange(e: ChangeEvent<T> | Date): void;
 	handleInputBlur(): void;
 	hasError: boolean;
 	isTouched: boolean;
@@ -28,8 +28,12 @@ const useInput = <
 
 	const valueIsValid: boolean = validationFn ? validationFn(value) : true;
 
-	const handleInputChange = (e: ChangeEvent<T>): void => {
+	const handleInputChange = (e: ChangeEvent<T> | Date): void => {
 		let inputValue: V;
+
+		if (e instanceof Date) {
+			return;
+		}
 
 		if (e.target.type === "number") {
 			// Parse to number if the input type is number

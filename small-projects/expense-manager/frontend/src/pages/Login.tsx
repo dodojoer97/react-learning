@@ -1,5 +1,5 @@
 // React
-import type { FC } from "react";
+import type { ChangeEvent, FC } from "react";
 import { useContext, useEffect } from "react";
 
 // Translation
@@ -111,7 +111,9 @@ const Login: FC = () => {
 						required
 						disabled={isLoadingForm}
 						value={emailField.value}
-						onChange={emailField.handleInputChange}
+						onChange={(e) =>
+							emailField.handleInputChange(e as ChangeEvent<HTMLInputElement>)
+						}
 						onBlur={emailField.handleInputBlur}
 						inputIcon={emailIcon}
 					></Input>
@@ -130,7 +132,9 @@ const Login: FC = () => {
 						required
 						disabled={isLoadingForm}
 						value={password1Field.value}
-						onChange={password1Field.handleInputChange}
+						onChange={(e) =>
+							password1Field.handleInputChange(e as ChangeEvent<HTMLInputElement>)
+						}
 						onBlur={password1Field.handleInputBlur}
 						onClickIcon={toggleInputType}
 					></Input>

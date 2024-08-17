@@ -1,5 +1,5 @@
 // React
-import type { FC } from "react";
+import type { ChangeEvent, FC } from "react";
 import { useState, useContext } from "react";
 
 // Types
@@ -16,9 +16,7 @@ import Select from "@/components/UI/Select";
 import Button from "@/components/UI/Button";
 import TextArea from "@/components/UI/TextArea";
 import InputError from "@/components/UI/InputError";
-import Calculator from "@/components/Calculator";
-import TypeTabs from "@/components/Transaction/TypeTabs";
-import SlidingPanel from "@/components/UI/SlidingPanel";
+import DatePicker from "@/components/UI/Datepicker";
 
 // Hooks
 import useInput from "@/hooks/useInput";
@@ -47,34 +45,27 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 
 	return (
 		<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4" onSubmit={onSave}>
-			<Input
-				id="date"
-				label="date"
-				placeholder="date"
-				required
-				value={dateField.value.toISOString()}
+			<DatePicker
+				date={dateField.value}
 				onChange={dateField.handleInputChange}
 				onBlur={dateField.handleInputBlur}
-				type="date"
 			/>
-
-			{dateField.hasError && (
-				<InputError message={"some error of date"} className="text-red-600" />
-			)}
 
 			<Select
 				id="type"
 				label="Category type"
 				options={settingsCTX.availableCategoryTypes}
 				value={typeField.value}
-				onChange={typeField.handleInputChange}
+				onChange={(e) => typeField.handleInputChange(e as ChangeEvent<HTMLSelectElement>)}
 			/>
 
 			<TextArea
 				id="description"
 				label="Description"
 				value={descriptionField.value}
-				onChange={descriptionField.handleInputChange}
+				onChange={(e) =>
+					descriptionField.handleInputChange(e as ChangeEvent<HTMLTextAreaElement>)
+				}
 				onBlur={descriptionField.handleInputBlur}
 			/>
 		</Form>

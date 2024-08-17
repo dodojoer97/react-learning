@@ -1,6 +1,6 @@
 // React
 import { useContext, useEffect } from "react";
-import type { FC } from "react";
+import type { ChangeEvent, FC } from "react";
 
 // Translation
 import { useTranslation } from "react-i18next";
@@ -48,7 +48,7 @@ const Signup: FC = () => {
 	const navigate = useNavigate();
 
 	// Email field
-	const emailField = useInput<HTMLInputElement>(
+	const emailField = useInput<HTMLInputElement, string>(
 		"",
 		(value: string) => {
 			return isEmail(value);
@@ -57,14 +57,14 @@ const Signup: FC = () => {
 	);
 
 	// Password fields
-	const password1Field = useInput<HTMLInputElement>(
+	const password1Field = useInput<HTMLInputElement, string>(
 		"",
 		(value: string) => {
 			return hasMinLength(value, 8);
 		},
 		authCTX.clearError
 	);
-	const password2Field = useInput<HTMLInputElement>(
+	const password2Field = useInput<HTMLInputElement, string>(
 		"",
 		(value: string) => {
 			return hasMinLength(value, 8);
@@ -130,7 +130,9 @@ const Signup: FC = () => {
 						placeholder={t("forms:enterEmail")}
 						required
 						value={emailField.value}
-						onChange={emailField.handleInputChange}
+						onChange={(e) =>
+							emailField.handleInputChange(e as ChangeEvent<HTMLInputElement>)
+						}
 						onBlur={emailField.handleInputBlur}
 						inputIcon={emailIcon}
 					></Input>
@@ -149,7 +151,9 @@ const Signup: FC = () => {
 						clickableIcon
 						required
 						value={password1Field.value}
-						onChange={password1Field.handleInputChange}
+						onChange={(e) =>
+							password1Field.handleInputChange(e as ChangeEvent<HTMLInputElement>)
+						}
 						onBlur={password1Field.handleInputBlur}
 						onClickIcon={togglePassword1Type}
 					></Input>
@@ -169,7 +173,9 @@ const Signup: FC = () => {
 						clickableIcon
 						required
 						value={password2Field.value}
-						onChange={password2Field.handleInputChange}
+						onChange={(e) =>
+							password2Field.handleInputChange(e as ChangeEvent<HTMLInputElement>)
+						}
 						onBlur={password2Field.handleInputBlur}
 						onClickIcon={togglePassword2Type}
 					></Input>

@@ -10,7 +10,7 @@ import Calendar from "@/components/UI/Calendar";
 import Layout from "@/components/UI/Layout";
 import Button from "@/components/UI/Button";
 import SlidingPanel from "@/components/UI/SlidingPanel";
-import TransactionForm from "@/components/Transaction/TransactionForm";
+import TransactionPanel from "@/components/Transaction/TransactionPanel";
 
 // FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -33,7 +33,6 @@ const Dashboard: FC = () => {
 	const { isOpen, toggleOpen } = useIsOpen(true);
 
 	const handleOpenPanel = (): void => {
-		if (!authContext.user) throw new Error("user must be selected to open");
 		transactionCTX.selectTransaction(defaultTransaction);
 		toggleOpen();
 	};
@@ -54,7 +53,7 @@ const Dashboard: FC = () => {
 
 			{/* ADD RECORD */}
 			<SlidingPanel isOpen={isOpen} onClose={toggleOpen} slideDirection="from-right">
-				<TransactionForm onSave={() => {}} />
+				<TransactionPanel onSave={() => {}} />
 			</SlidingPanel>
 		</Layout>
 	);

@@ -35,14 +35,16 @@ interface IProps {
 	onSave(): void;
 }
 
-const TransactionForm: FC<IProps> = ({ onSave }) => {
+const TransactionPanel: FC<IProps> = ({ onSave }) => {
 	// TODO add translations
-	// State
-	const [selectedType, setSelectedType] = useState<CategoryType>("expense");
-
 	// Store
 	const settingsCTX = useContext(SettingsContext);
 	const transactionCTX = useContext(TransactionContext);
+
+	// State
+	const [selectedType, setSelectedType] = useState<CategoryType>(
+		transactionCTX.selectedTransaction?.type || "expense"
+	);
 
 	// Hooks
 	const { isOpen, toggleOpen } = useIsOpen();
@@ -50,6 +52,7 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 	// Methods
 	const handleTabClick = (type: CategoryType): void => {
 		transactionCTX.updateDraftTransaction({ type });
+		setSelectedType(type);
 	};
 
 	const handleCalculatorChange = (amount: number): void => {
@@ -69,7 +72,7 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 					onSelect={handleTabClick}
 				/>
 				<Calculator
-					amount={transactionCTX.draftTransaction.amount}
+					amount={transactionCTX.draftTransaction?.amount || 0}
 					onChange={handleCalculatorChange}
 					additionalClasses=""
 					displaySideButton
@@ -136,4 +139,4 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 	);
 };
 
-export default TransactionForm;
+export default TransactionPanel;

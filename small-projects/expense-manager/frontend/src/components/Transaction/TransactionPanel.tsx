@@ -10,14 +10,9 @@ import { SettingsContext } from "@/store/SettingsContext";
 import { TransactionContext } from "@/store/TransactionContext";
 
 // Copmonents
-import Form from "@/components/UI/Form";
-import Input from "@/components/UI/Input";
-import Select from "@/components/UI/Select";
-import Button from "@/components/UI/Button";
-import TextArea from "@/components/UI/TextArea";
-import InputError from "@/components/UI/InputError";
 import Calculator from "@/components/Calculator";
 import TypeTabs from "@/components/Transaction/TypeTabs";
+import TransactionForm from "@/components/Transaction/TransactionForm";
 import SlidingPanel from "@/components/UI/SlidingPanel";
 
 // Hooks
@@ -80,61 +75,9 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 				/>
 
 				<SlidingPanel isOpen={isOpen} onClose={handleToggle} slideDirection="from-right">
-					<h1>test</h1>
+					<TransactionForm onSave={handleToggle} />
 				</SlidingPanel>
 			</section>
-
-			{/* <Form
-			className="mx-auto px-7 mb-0 mt-8 max-w-md space-y-4 flex flex-col justify-between h-[90%]"
-			onSubmit={handleSubmit}
-		> */}
-			{/* <Input
-				id="amount"
-				label="amount"
-				placeholder="Amount"
-				required
-				value={amountField.value}
-				onChange={amountField.handleInputChange}
-				onBlur={amountField.handleInputBlur}
-				type="number"
-			/>
-
-			{amountField.hasError && (
-				<InputError message={"some error of number"} className="text-red-600" />
-			)} */}
-
-			{/* 
-			<Input
-				id="date"
-				label="date"
-				placeholder="date"
-				required
-				value={dateField.value.toISOString()}
-				onChange={dateField.handleInputChange}
-				onBlur={dateField.handleInputBlur}
-				type="date"
-			/>
-
-			{amountField.hasError && (
-				<InputError message={"some error of number"} className="text-red-600" />
-			)}
-
-			<Select
-				id="type"
-				label="Category type"
-				options={settingsCTX.availableCategoryTypes}
-				value={typeField.value}
-				onChange={typeField.handleInputChange}
-			/>
-
-			<TextArea
-				id="description"
-				label="Description"
-				value={descriptionField.value}
-				onChange={descriptionField.handleInputChange}
-				onBlur={descriptionField.handleInputBlur}
-			/> */}
-			{/* </Form> */}
 		</>
 	);
 };

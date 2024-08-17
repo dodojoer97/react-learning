@@ -29,7 +29,9 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const editTransaction = async (): Promise<void> => {};
 
-	const selectTransaction = (transaction: Transaction): void => {};
+	const selectTransaction = (transaction: Transaction): void => {
+		setSelectedTransaction(transaction);
+	};
 
 	const contextValue = {
 		loading,
@@ -44,3 +46,5 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		<TransactionContext.Provider value={contextValue}>{children}</TransactionContext.Provider>
 	);
 };
+
+export default TransactionContextProvider;

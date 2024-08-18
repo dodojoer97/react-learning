@@ -39,6 +39,7 @@ const useInput = <
 		let inputValue: V;
 
 		if (e instanceof Date) {
+			changeFn && changeFn(e as V);
 			return;
 		}
 

@@ -7,16 +7,23 @@ import type { ChangeEvent } from "react";
  * @param defaultValue The default value of the input.
  * @param validationFn The validation function to fire, should return `true` if valid.
  * @param clearErrorFN The error cleaning function to fire
+ * @param changeFn The function to fire when the value changes
  * @returns Object containing input value, handlers for change and blur, and error state, function to reset the input.
  */
 const useInput = <
 	T extends HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement,
 	V = string | number | Date
->(
-	defaultValue: V,
-	validationFn?: (value: V) => boolean,
-	clearErrorFN?: () => void
-): {
+>({
+	defaultValue,
+	validationFn,
+	clearErrorFN,
+	changeFn,
+}: {
+	defaultValue: V;
+	validationFn?: (value: V) => boolean;
+	clearErrorFN?: () => void;
+	changeFn?: (value: V) => void;
+}): {
 	value: V;
 	handleInputChange(e: ChangeEvent<T> | Date): void;
 	handleInputBlur(): void;
@@ -44,6 +51,7 @@ const useInput = <
 
 		setValue(inputValue);
 		setIsTouched(true);
+		changeFn && changeFn(inputValue);
 		clearErrorFN && clearErrorFN();
 	};
 

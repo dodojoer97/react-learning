@@ -37,7 +37,10 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 	const dateField = useInput<HTMLInputElement, Date>(transactionCTX.draftTransaction?.date);
 
 	const descriptionField = useInput<HTMLTextAreaElement, string>(
-		transactionCTX.draftTransaction.description || ""
+		transactionCTX.draftTransaction.description || "",
+		undefined,
+		undefined,
+		(value) => transactionCTX.updateDraftTransaction({ description: value })
 	);
 
 	return (

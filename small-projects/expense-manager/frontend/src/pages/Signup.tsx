@@ -48,29 +48,30 @@ const Signup: FC = () => {
 	const navigate = useNavigate();
 
 	// Email field
-	const emailField = useInput<HTMLInputElement, string>(
-		"",
-		(value: string) => {
+	const emailField = useInput<HTMLInputElement, string>({
+		defaultValue: "",
+		validationFn: (value: string) => {
 			return isEmail(value);
 		},
-		authCTX.clearError
-	);
+		clearErrorFN: authCTX.clearError,
+	});
 
 	// Password fields
-	const password1Field = useInput<HTMLInputElement, string>(
-		"",
-		(value: string) => {
+	const password1Field = useInput<HTMLInputElement, string>({
+		defaultValue: "",
+		validationFn: (value: string) => {
 			return hasMinLength(value, 8);
 		},
-		authCTX.clearError
-	);
-	const password2Field = useInput<HTMLInputElement, string>(
-		"",
-		(value: string) => {
+		clearErrorFN: authCTX.clearError,
+	});
+
+	const password2Field = useInput<HTMLInputElement, string>({
+		defaultValue: "",
+		validationFn: (value: string) => {
 			return hasMinLength(value, 8);
 		},
-		authCTX.clearError
-	);
+		clearErrorFN: authCTX.clearError,
+	});
 
 	// Input type togglers
 	const { type: password1InputType, toggleInputType: togglePassword1Type } = useToggleInputType();

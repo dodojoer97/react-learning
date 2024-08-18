@@ -46,21 +46,21 @@ const Login: FC = () => {
 	// Clear all the erros on mount
 
 	// Form fields
-	const emailField = useInput<HTMLInputElement, string>(
-		"",
-		(value: string) => {
+	const emailField = useInput<HTMLInputElement, string>({
+		defaultValue: "",
+		validationFn: (value: string) => {
 			return isEmail(value);
 		},
-		authCTX.clearError
-	);
+		clearErrorFN: authCTX.clearError,
+	});
 
-	const password1Field = useInput<HTMLInputElement, string>(
-		"",
-		(value: string) => {
+	const password1Field = useInput<HTMLInputElement, string>({
+		defaultValue: "",
+		validationFn: (value: string) => {
 			return hasMinLength(value, 8);
 		},
-		authCTX.clearError
-	);
+		clearErrorFN: authCTX.clearError,
+	});
 
 	// Toggle input type
 	const { type: passwordInputType, toggleInputType } = useToggleInputType();

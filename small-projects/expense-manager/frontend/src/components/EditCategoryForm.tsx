@@ -1,6 +1,6 @@
 // React
 import { useEffect, useContext } from "react";
-import type { FC } from "react";
+import type { ChangeEvent, FC } from "react";
 
 // UI Components
 import Button from "@/components/UI/Button";
@@ -31,8 +31,11 @@ const EditCategoryForm: FC<IEditCategoryFormProps> = ({ id, name, onSave }) => {
 	const settingsCTX = useContext(SettingsContext);
 
 	// Hooks
-	const nameField = useInput<HTMLInputElement, string>(name, (value) => {
-		return hasMinLength(value, 4);
+	const nameField = useInput<HTMLInputElement, string>({
+		defaultValue: name,
+		validationFn: (value) => {
+			return hasMinLength(value, 4);
+		},
 	});
 
 	const { handleSubmit, error } = useFormSubmission(async () => {
@@ -52,7 +55,9 @@ const EditCategoryForm: FC<IEditCategoryFormProps> = ({ id, name, onSave }) => {
 					label="name"
 					className="w-12"
 					value={nameField.value}
-					onChange={nameField.handleInputChange}
+					onChange={(e) =>
+						nameField.handleInputChange(e as ChangeEvent<HTMLInputElement>)
+					}
 					onBlur={nameField.handleInputBlur}
 				/>
 				{nameField.hasError && (

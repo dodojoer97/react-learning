@@ -34,14 +34,13 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 	if (!transactionCTX.draftTransaction) return <></>;
 
 	// Form fields
-	const dateField = useInput<HTMLInputElement, Date>(transactionCTX.draftTransaction?.date);
-
-	const descriptionField = useInput<HTMLTextAreaElement, string>(
-		transactionCTX.draftTransaction.description || "",
-		undefined,
-		undefined,
-		(value) => transactionCTX.updateDraftTransaction({ description: value })
-	);
+	const dateField = useInput<HTMLInputElement, Date>({
+		defaultValue: transactionCTX.draftTransaction?.date,
+	});
+	const descriptionField = useInput<HTMLTextAreaElement, string>({
+		defaultValue: transactionCTX.draftTransaction.description || "",
+		changeFn: (value) => transactionCTX.updateDraftTransaction({ description: value }),
+	});
 
 	return (
 		<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4" onSubmit={onSave}>

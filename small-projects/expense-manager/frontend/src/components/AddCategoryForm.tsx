@@ -35,12 +35,18 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 
 	const settingsCTX = useContext(SettingsContext);
 
-	const categoryNameField = useInput<HTMLInputElement, string>("", (value: string) => {
-		return hasMinLength(value, 4);
+	const categoryNameField = useInput<HTMLInputElement, string>({
+		defaultValue: "",
+		validationFn: (value: string) => {
+			return hasMinLength(value, 4);
+		},
 	});
 
-	const typeField = useInput<HTMLSelectElement, string>("expense", (value: string) => {
-		return hasMinLength(value, 4);
+	const typeField = useInput<HTMLSelectElement, string>({
+		defaultValue: "expense",
+		validationFn: (value: string) => {
+			return hasMinLength(value, 4);
+		},
 	});
 
 	const handleSelectIcon = (iconName: string): void => {

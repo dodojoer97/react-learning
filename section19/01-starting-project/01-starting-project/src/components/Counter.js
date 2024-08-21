@@ -8,7 +8,7 @@ import classes from "./Counter.module.css";
 // import store from "../store";
 
 // Slice
-import { counterActions } from "../store";
+import { counterActions } from "../store/counter";
 
 const Counter = () => {
 	// Sets up a subscription to the store

@@ -6,6 +6,7 @@ const useIsOpen = (
 	isOpen: boolean;
 	toggleOpen(): void;
 } => {
+	console.log("disableScroll: ", disableScroll);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	const toggleOpen = useCallback(() => {
@@ -13,9 +14,9 @@ const useIsOpen = (
 	}, []);
 
 	useEffect(() => {
-		if (!disableScroll) return;
-		document.body.style.overflow = isOpen ? "hidden" : "visible";
-	}, [isOpen, disableScroll]);
+		const overflow = document.body.style.overflow;
+		document.body.style.overflow = overflow === "visible" ? "hidden" : "hidden";
+	}, [isOpen]);
 
 	return {
 		isOpen,

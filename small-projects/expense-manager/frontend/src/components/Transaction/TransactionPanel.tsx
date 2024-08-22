@@ -14,6 +14,7 @@ import Calculator from "@/components/Calculator";
 import TypeTabs from "@/components/Transaction/TypeTabs";
 import TransactionForm from "@/components/Transaction/TransactionForm";
 import SlidingPanel from "@/components/UI/SlidingPanel";
+import Tabs from "@/components/Category/CategoryTabs";
 
 // Hooks
 import useInput from "@/hooks/useInput";
@@ -25,6 +26,7 @@ import { hasMinValue, hasMinLength } from "@/utils/utils";
 
 // Models
 import { Transaction } from "@common";
+import Button from "../UI/Button";
 
 interface IProps {
 	onSave(): void;
@@ -42,7 +44,10 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 	);
 
 	// Hooks
-	const { isOpen, toggleOpen } = useIsOpen();
+	const { isOpen: isTransactionFormOpen, toggleOpen: toggleTransactionFormOpen } =
+		useIsOpen(true);
+	const { isOpen: isCategorySelectorOpen, toggleOpen: toggleCategorySelectorOpen } =
+		useIsOpen(true);
 
 	// Methods
 	const handleTabClick = (type: CategoryType): void => {
@@ -52,10 +57,6 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 
 	const handleCalculatorChange = (amount: number): void => {
 		transactionCTX.updateDraftTransaction({ amount });
-	};
-
-	const handleToggle = (): void => {
-		toggleOpen();
 	};
 
 	return (
@@ -71,13 +72,28 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 					onChange={handleCalculatorChange}
 					additionalClasses=""
 					displaySideButton
-					onSideButtonClick={handleToggle}
-				/>
+					onSideButtonClick={toggleTransactionFormOpen}
+				>
+					<div className="bg-white">
+						<Button onClick={toggleCategorySelectorOpen}>Category</Button>
+					</div>
+				</Calculator>
 
-				<SlidingPanel isOpen={isOpen} onClose={handleToggle} slideDirection="from-right">
-					<TransactionForm onSave={handleToggle} />
+				<SlidingPanel
+					isOpen={isTransactionFormOpen}
+					onClose={toggleTransactionFormOpen}
+					slideDirection="from-right"
+				>
+					<TransactionForm onSave={toggleTransactionFormOpen} />
 				</SlidingPanel>
 			</section>
+			<SlidingPanel
+				isOpen={isCategorySelectorOpen}
+				onClose={toggleCategorySelectorOpen}
+				slideDirection="from-right"
+			>
+				<Tabs />
+			</SlidingPanel>
 		</>
 	);
 };

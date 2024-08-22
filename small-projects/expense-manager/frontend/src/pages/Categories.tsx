@@ -11,9 +11,8 @@ import Layout from "@/components/UI/Layout";
 import SlidingPanel from "@/components/UI/SlidingPanel";
 
 // Components
-import CategoryComp from "@/components/Category";
 import AddCategoryForm from "@/components/AddCategoryForm";
-import Tabs from "@/components/UI/PageTabs";
+import Tabs from "@/components/Category/CategoryTabs";
 
 // Store
 import { SettingsContext } from "@/store/SettingsContext";
@@ -54,9 +53,7 @@ const Categories: FC = () => {
 			</SlidingPanel>
 
 			{/* Change type of cateogries */}
-			{settingsCTX.categories.length && (
-				<Tabs Component={CategoryComp} data={settingsCTX.categories} />
-			)}
+			<Tabs />
 		</Layout>
 	);
 };

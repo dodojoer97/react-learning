@@ -21,13 +21,16 @@ interface ICategoryProps {
 	id: string;
 	name: string;
 	icon: IconDefinition;
+	mode?: "page" | "panel";
 }
 
-const CategoryComp: FC<ICategoryProps> = ({ id, name, icon }) => {
+const CategoryComp: FC<ICategoryProps> = ({ id, name, icon, mode = "page" }) => {
 	// TODO ADD TRANSLATIONS
 
 	// Hooks
 	const { isOpen, toggleOpen } = useIsOpen(true);
+
+	const isPageMode: boolean = mode === "page";
 
 	return (
 		<>
@@ -39,14 +42,18 @@ const CategoryComp: FC<ICategoryProps> = ({ id, name, icon }) => {
 					/>
 					<p className="text-lg font-semibold text-gray-800">{name}</p>
 				</div>
-				<Button onClick={toggleOpen}>
-					<FontAwesomeIcon icon={faPencil} />
-				</Button>
+				{isPageMode && (
+					<Button onClick={toggleOpen}>
+						<FontAwesomeIcon icon={faPencil} />
+					</Button>
+				)}
 			</article>
 
-			<SlidingPanel isOpen={isOpen} onClose={toggleOpen}>
-				<EditCategoryForm id={id} name={name} onSave={toggleOpen} />
-			</SlidingPanel>
+			{isPageMode && (
+				<SlidingPanel isOpen={isOpen} onClose={toggleOpen}>
+					<EditCategoryForm id={id} name={name} onSave={toggleOpen} />
+				</SlidingPanel>
+			)}
 		</>
 	);
 };

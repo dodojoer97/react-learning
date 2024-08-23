@@ -2,7 +2,7 @@
 import { useDispatch, connect } from "react-redux";
 
 // Slice
-import { authActions } from "../store";
+import { authActions } from "../store/auth";
 
 import classes from "./Auth.module.css";
 

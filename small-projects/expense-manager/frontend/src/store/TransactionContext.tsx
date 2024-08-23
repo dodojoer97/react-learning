@@ -7,10 +7,11 @@ import { createContext } from "react";
 import { ITransactionContext } from "./TransactionContext.d";
 
 // Models
-import { Transaction, CategoryType, isError } from "@common";
+import { Transaction, CategoryType, isError, Category } from "@common";
 
 // Store
 import { AuthContext } from "./AuthContext";
+import { SettingsContext } from "./SettingsContext";
 
 // Service
 import TransactionService from "@/services/TransactionService";
@@ -25,6 +26,24 @@ export const defaultTransaction: Transaction = {
 	type: "expense" as CategoryType,
 	description: "",
 };
+
+function getCategoryByTransaction(
+	transaction: Transaction,
+	categories: Category[]
+): Category | undefined {
+	return categories.find((category) => category.id === transaction.categoryId);
+}
+
+// Function to map transactions to their categories
+function mapTransactionsToCategories(
+	transactions: Transaction[],
+	categories: Category[]
+): Array<{ transaction: Transaction; category: Category | undefined }> {
+	return transactions.map((transaction) => ({
+		transaction,
+		category: getCategoryByTransaction(transaction, categories),
+	}));
+}
 
 // Creating the context with a default value, including new methods
 export const TransactionContext: Context<ITransactionContext> = createContext<ITransactionContext>({
@@ -45,8 +64,9 @@ export const TransactionContext: Context<ITransactionContext> = createContext<IT
 const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	const transactionService = new TransactionService();
 
-	// Auth store
+	// Store
 	const { user } = useContext(AuthContext);
+	const settingsCTX = useContext(SettingsContext);
 
 	// State hooks for managing transactions and loading status
 	const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
@@ -129,8 +149,14 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 			const fetchedTransaction: Transaction[] =
 				await transactionService.getTransactionsByUser(user.uid);
 
+			const mappedTransactions = mapTransactionsToCategories(
+				fetchedTransaction,
+				settingsCTX.categories
+			);
 			setLoading(false);
-			setTransactions((prev) => [...fetchedTransaction]);
+
+			// @ts-ignore
+			setTransactions((prev) => [...mappedTransactions]);
 		} catch (error) {
 			console.error("Failed to edit fetchTransactions:", error);
 			if (isError(error)) {

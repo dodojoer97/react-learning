@@ -15,7 +15,7 @@ class BaseService implements IBaseService {
 	 * Get the default headers for HTTP requests.
 	 * @returns {Transaction<string, string>} Default headers.
 	 */
-	getDefaultHeaders(): Transaction<string, string> {
+	getDefaultHeaders(): Record<string, string> {
 		return {
 			"Content-Type": "application/json",
 		};

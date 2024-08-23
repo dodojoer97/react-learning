@@ -1,5 +1,6 @@
 // React
 import type { FC, PropsWithChildren } from "react";
+import { createPortal } from "react-dom";
 
 // UI components
 import CloseButton from "./CloseButton";
@@ -23,7 +24,7 @@ const SlidingPanel: FC<ISlidingPanelProps> = ({
 }) => {
 	const openClass = isOpen ? "open" : "closed";
 
-	return (
+	return createPortal(
 		<div
 			className={`sliding-panel overflow-y-auto overflow-x-hidden fullscreen bg-white fixed top-0 right-0 z-20 p-1 ${slideDirection} ${openClass} `}
 		>
@@ -31,7 +32,8 @@ const SlidingPanel: FC<ISlidingPanelProps> = ({
 				<CloseButton onClose={onClose} />
 			</div>
 			{isOpen && children}
-		</div>
+		</div>,
+		document.querySelector("#sliding-panel") as HTMLDivElement
 	);
 };
 

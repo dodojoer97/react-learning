@@ -38,6 +38,7 @@ export const TransactionContext: Context<ITransactionContext> = createContext<IT
 	selectTransaction: () => {},
 	updateDraftTransaction: () => {}, // Default for updating draft transaction
 	saveDraftTransaction: async () => {}, // Default for saving draft transaction
+	fetchTransactions: async () => {},
 });
 
 // Provider component for the Transaction Context
@@ -56,6 +57,7 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	// Method to add a new transaction to the transactions list
 	const addTransaction = async (transaction: Transaction): Promise<void> => {
+		setError(null);
 		if (!user?.uid) throw new Error("User id is mandatory in editTransaction");
 		try {
 			console.log("addTransaction");
@@ -117,6 +119,28 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		}
 	};
 
+	const fetchTransactions = async (): Promise<void> => {
+		setError(null);
+		if (!user?.uid) throw new Error("User id is mandatory in fetchTransactions");
+		try {
+			console.log("addTransaction");
+			setLoading(true);
+
+			const fetchedTransaction: Transaction[] =
+				await transactionService.getTransactionsByUser(user.uid);
+
+			setLoading(false);
+			setTransactions((prev) => [...fetchedTransaction]);
+		} catch (error) {
+			console.error("Failed to edit fetchTransactions:", error);
+			if (isError(error)) {
+				setError(error.message || "");
+			}
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	// The context value that will be provided to the consuming components
 	const contextValue = {
 		loading,
@@ -129,6 +153,7 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		selectTransaction,
 		updateDraftTransaction,
 		saveDraftTransaction,
+		fetchTransactions,
 	};
 
 	return (

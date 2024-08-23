@@ -11,5 +11,6 @@ export interface ITransactionContext extends ILoadingContext {
 	editTransaction(transaction: Transaction): Promise<void>; // Specify the parameter
 	selectTransaction(transaction: Transaction): void;
 	updateDraftTransaction(updates: Partial<Transaction>): void; // New method
-	saveDraftTransaction(): Promise<void>; // New method
+	saveDraftTransaction(): Promise<void>;
+	fetchTransactions(): Promise<void>;
 }

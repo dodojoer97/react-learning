@@ -1,6 +1,6 @@
 // React
 import type { FC } from "react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 // Models
 import { Transaction } from "@common";
@@ -22,12 +22,13 @@ import useIsOpen from "@/hooks/useIsOpen";
 // Store
 import { TransactionContext, defaultTransaction } from "@/store/TransactionContext";
 import { AuthContext } from "@/store/AuthContext";
+import { SettingsContext } from "@/store/SettingsContext";
 
 // TODO add translations
 const Dashboard: FC = () => {
 	// Store
 	const transactionCTX = useContext(TransactionContext);
-	const authContext = useContext(AuthContext);
+	const settingsCTX = useContext(SettingsContext);
 
 	// Hooks
 	const { isOpen, toggleOpen } = useIsOpen(true);
@@ -36,6 +37,14 @@ const Dashboard: FC = () => {
 		transactionCTX.selectTransaction(defaultTransaction);
 		toggleOpen();
 	};
+
+	useEffect(() => {
+		transactionCTX.fetchTransactions();
+		// If we did not load any categories, request them
+		if (!settingsCTX.categories.length) {
+			settingsCTX.fetchCategories();
+		}
+	}, []);
 
 	return (
 		<Layout>
@@ -55,6 +64,14 @@ const Dashboard: FC = () => {
 			<SlidingPanel isOpen={isOpen} onClose={toggleOpen} slideDirection="from-right">
 				<TransactionPanel onSave={() => {}} />
 			</SlidingPanel>
+
+			<ul>
+				{transactionCTX.transactions.map((transaction) => (
+					<li key={transaction.id}>
+						{transaction.amount} {transaction.categoryId}
+					</li>
+				))}
+			</ul>
 		</Layout>
 	);
 };

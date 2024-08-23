@@ -33,7 +33,7 @@ const CategoryList: FC = () => {
 	}, []);
 
 	return (
-		<ul>
+		<ul className="px-4 text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
 			{categoryList.map((category) => (
 				<li className="me-2 pb-2 cursor-pointer">
 					<CategoryComp

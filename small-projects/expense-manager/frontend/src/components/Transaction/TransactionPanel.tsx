@@ -95,7 +95,7 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 				onClose={toggleCategorySelectorOpen}
 				slideDirection="from-right"
 			>
-				<CategoryList />
+				<CategoryList onSelect={toggleCategorySelectorOpen} />
 			</SlidingPanel>
 		</>
 	);

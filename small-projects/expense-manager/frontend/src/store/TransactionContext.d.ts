@@ -6,6 +6,7 @@ export interface ITransactionContext extends ILoadingContext {
 	selectedTransaction: Transaction | null;
 	transactions: Transaction[];
 	draftTransaction: Transaction | null;
+	error: string | null;
 	addTransaction(transaction: Transaction): Promise<void>; // Specify the parameter
 	editTransaction(transaction: Transaction): Promise<void>; // Specify the parameter
 	selectTransaction(transaction: Transaction): void;

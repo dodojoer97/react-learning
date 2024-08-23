@@ -7,7 +7,7 @@ import { createContext } from "react";
 import { ITransactionContext } from "./TransactionContext.d";
 
 // Models
-import { Transaction, CategoryType } from "@common";
+import { Transaction, CategoryType, isError } from "@common";
 
 // Store
 import { AuthContext } from "./AuthContext";
@@ -31,7 +31,8 @@ export const TransactionContext: Context<ITransactionContext> = createContext<IT
 	loading: false,
 	selectedTransaction: null,
 	transactions: [],
-	draftTransaction: null, // Default state for draft transaction
+	draftTransaction: null, // Default state for draft transaction,
+	error: null,
 	addTransaction: async () => {},
 	editTransaction: async () => {},
 	selectTransaction: () => {},
@@ -51,20 +52,24 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	const [transactions, setTransactions] = useState<Transaction[]>([]);
 	const [draftTransaction, setDraftTransaction] = useState<Transaction | null>(null);
 	const [loading, setLoading] = useState<boolean>(false);
+	const [error, setError] = useState<string | null>(null);
 
 	// Method to add a new transaction to the transactions list
 	const addTransaction = async (transaction: Transaction): Promise<void> => {
-		setTransactions((prev) => [...prev, transaction]);
 		if (!user?.uid) throw new Error("User id is mandatory in editTransaction");
 		try {
+			console.log("addTransaction");
 			setLoading(true);
 
 			await transactionService.addTransaction({ ...transaction, userId: user.uid });
 
 			setLoading(false);
+			setTransactions((prev) => [...prev, transaction]);
 		} catch (error) {
 			console.error("Failed to edit transaction:", error);
-			throw error;
+			if (isError(error)) {
+				setError(error.message || "");
+			}
 		} finally {
 			setLoading(false);
 		}
@@ -118,6 +123,7 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		selectedTransaction,
 		transactions,
 		draftTransaction,
+		error,
 		addTransaction,
 		editTransaction,
 		selectTransaction,

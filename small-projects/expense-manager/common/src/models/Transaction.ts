@@ -10,6 +10,8 @@ export interface ITransaction {
 	description?: string;
 }
 
+export type MandatoryTransactionFields = keyof Omit<ITransaction, "description">;
+
 export class Transaction implements ITransaction {
 	constructor(
 		public id: string,

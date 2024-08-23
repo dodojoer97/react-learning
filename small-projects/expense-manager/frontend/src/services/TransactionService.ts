@@ -1,10 +1,12 @@
 // Interface
 import { ITransactionService } from "./TransactionService.d";
-import { Transaction } from "@common";
+import { MandatoryTransactionFields, Transaction } from "@common";
 
 // Classes
 import BaseService from "./BaseService";
 
+// Utils
+import { isError } from "@common";
 /**
  * TransactionService class for handling transactions.
  * Extends BaseService to use common service functionalities.
@@ -26,7 +28,15 @@ class TransactionService extends BaseService implements ITransactionService {
 	 * @returns {Promise<void>} - A promise that resolves when the transaction is added.
 	 */
 	async addTransaction(transaction: Transaction): Promise<void> {
-		await this.post<{ transaction: Transaction }>("transactions", { transaction });
+		try {
+			console.log(transaction);
+			this.validateTransaction(transaction);
+			await this.post<{ transaction: Transaction }>("transactions", { transaction });
+		} catch (error) {
+			if (isError(error)) {
+				throw error;
+			}
+		}
 	}
 
 	/**
@@ -37,6 +47,29 @@ class TransactionService extends BaseService implements ITransactionService {
 	 */
 	async getTransactionsByUser(userId: string): Promise<Transaction[]> {
 		return await this.get(`users/${userId}/transactions`);
+	}
+
+	/**
+	 * Validates that all mandatory fields in a transaction are present and not null or undefined.
+	 * Throws an error if any mandatory field is missing.
+	 *
+	 * @param {Transaction} transaction - The transaction object to validate.
+	 * @throws {Error} Throws an error if any mandatory field is missing or invalid.
+	 */
+	private validateTransaction(transaction: Transaction): void {
+		const mandatoryFields: MandatoryTransactionFields[] = [
+			"userId",
+			"date",
+			"categoryId",
+			"type",
+		];
+		// Loop over each mandatory field and check if it's present and not null
+		for (const field of mandatoryFields) {
+			if (!transaction[field]) {
+				// This checks for both undefined and null
+				throw new Error(`Field ${field} is mandatory and must not be null or undefined.`);
+			}
+		}
 	}
 }
 

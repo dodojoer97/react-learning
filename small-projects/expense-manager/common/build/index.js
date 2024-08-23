@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Expense = exports.Category = exports.isFirebaseError = exports.isError = exports.Logger = void 0;
+exports.Transaction = exports.Category = exports.debounce = exports.isFirebaseError = exports.isError = exports.Logger = void 0;
 // Classes
 var Logger_1 = require("./classes/Logger");
 Object.defineProperty(exports, "Logger", { enumerable: true, get: function () { return Logger_1.Logger; } });
@@ -8,9 +8,11 @@ Object.defineProperty(exports, "Logger", { enumerable: true, get: function () { 
 var isError_1 = require("./utils/isError");
 Object.defineProperty(exports, "isError", { enumerable: true, get: function () { return isError_1.isError; } });
 Object.defineProperty(exports, "isFirebaseError", { enumerable: true, get: function () { return isError_1.isFirebaseError; } });
+var utils_1 = require("./utils/utils");
+Object.defineProperty(exports, "debounce", { enumerable: true, get: function () { return utils_1.debounce; } });
 // Models
 var Category_1 = require("./models/Category");
 Object.defineProperty(exports, "Category", { enumerable: true, get: function () { return Category_1.Category; } });
-var Expense_1 = require("./models/Expense");
-Object.defineProperty(exports, "Expense", { enumerable: true, get: function () { return Expense_1.Expense; } });
+var Transaction_1 = require("./models/Transaction");
+Object.defineProperty(exports, "Transaction", { enumerable: true, get: function () { return Transaction_1.Transaction; } });
 //# sourceMappingURL=index.js.map

@@ -9,6 +9,7 @@ export { debounce } from "./utils/utils";
 export { Category } from "./models/Category";
 
 export { Transaction } from "./models/Transaction";
+export { type MandatoryTransactionFields } from "./models/Transaction";
 
 // Types
 export type { CategoryType } from "./models/Category";

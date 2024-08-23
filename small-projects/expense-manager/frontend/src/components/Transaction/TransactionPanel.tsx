@@ -16,6 +16,7 @@ import TransactionForm from "@/components/Transaction/TransactionForm";
 import SlidingPanel from "@/components/UI/SlidingPanel";
 import CategoryList from "@/components/Transaction/CategoryList";
 import Button from "@/components/UI/Button";
+import InputError from "@/components/UI/InputError";
 
 // Hooks
 import useIsOpen from "@/hooks/useIsOpen";
@@ -44,6 +45,9 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 	// Methods
 	const handleTabClick = (type: CategoryType): void => {
 		transactionCTX.updateDraftTransaction({ type });
+
+		// If the type changes, clear the current cateogy
+		transactionCTX.updateDraftTransaction({ categoryId: "" });
 		setSelectedType(type);
 	};
 
@@ -94,6 +98,10 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 				>
 					<CategoryList onSelect={toggleCategorySelectorOpen} />
 				</SlidingPanel>
+
+				{transactionCTX.error && (
+					<InputError message={transactionCTX.error} className="text-red-600" />
+				)}
 
 				<Button
 					className="inline-block rounded-lg w-full bg-blue-500 px-5 py-3 text-sm font-medium text-white disabled:bg-slate-400"

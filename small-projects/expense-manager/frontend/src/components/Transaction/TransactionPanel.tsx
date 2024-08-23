@@ -1,6 +1,6 @@
 // React
 import type { FC } from "react";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 
 // Types
 import type { CategoryType } from "@common";
@@ -15,18 +15,10 @@ import TypeTabs from "@/components/Transaction/TypeTabs";
 import TransactionForm from "@/components/Transaction/TransactionForm";
 import SlidingPanel from "@/components/UI/SlidingPanel";
 import CategoryList from "@/components/Transaction/CategoryList";
+import Button from "@/components/UI/Button";
 
 // Hooks
-import useInput from "@/hooks/useInput";
-import useFormSubmission from "@/hooks/useFormSubmission";
 import useIsOpen from "@/hooks/useIsOpen";
-
-// Utils
-import { hasMinValue, hasMinLength } from "@/utils/utils";
-
-// Models
-import { Transaction } from "@common";
-import Button from "../UI/Button";
 
 interface IProps {
 	onSave(): void;
@@ -59,8 +51,14 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 		transactionCTX.updateDraftTransaction({ amount });
 	};
 
-	// Change the display mode for the category
-	settingsCTX.setCategoryMode("panel");
+	const handleSave = async (): Promise<void> => {
+		await transactionCTX.saveDraftTransaction();
+	};
+
+	useEffect(() => {
+		// Change the display mode for the category
+		settingsCTX.setCategoryMode("panel");
+	}, []);
 
 	return (
 		<>
@@ -89,14 +87,21 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 				>
 					<TransactionForm onSave={toggleTransactionFormOpen} />
 				</SlidingPanel>
+				<SlidingPanel
+					isOpen={isCategorySelectorOpen}
+					onClose={toggleCategorySelectorOpen}
+					slideDirection="from-right"
+				>
+					<CategoryList onSelect={toggleCategorySelectorOpen} />
+				</SlidingPanel>
+
+				<Button
+					className="inline-block rounded-lg w-full bg-blue-500 px-5 py-3 text-sm font-medium text-white disabled:bg-slate-400"
+					onClick={handleSave}
+				>
+					Save
+				</Button>
 			</section>
-			<SlidingPanel
-				isOpen={isCategorySelectorOpen}
-				onClose={toggleCategorySelectorOpen}
-				slideDirection="from-right"
-			>
-				<CategoryList onSelect={toggleCategorySelectorOpen} />
-			</SlidingPanel>
 		</>
 	);
 };

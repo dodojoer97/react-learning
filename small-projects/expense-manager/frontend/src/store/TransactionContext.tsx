@@ -65,6 +65,7 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 				return { ...defaultTransaction, ...updates };
 			}
 			// Merge updates into the current draft, ensuring no values become undefined
+			// TODO, check if the type of category changed, if so set the category id to null
 			return {
 				id: updates.id ?? prev.id,
 				userId: updates.userId ?? prev.userId,

@@ -1,10 +1,18 @@
 // React
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import type { FC, PropsWithChildren } from "react";
 
 // FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import {
+	faArrowRightFromBracket,
+	faPlus,
+	faMinus,
+	IconDefinition,
+} from "@fortawesome/free-solid-svg-icons";
+
+// Store
+import { TransactionContext } from "@/store/TransactionContext";
 
 type Operation = "+" | "-" | "*" | "/";
 
@@ -24,10 +32,18 @@ const Calculator: FC<ICalculatorProps> = ({
 	displaySideButton,
 	onSideButtonClick,
 }) => {
+	// Store
+	const transactionCTX = useContext(TransactionContext);
+
+	// State
 	const [currentInput, setCurrentInput] = useState<string>(amount.toString());
 	const [previousInput, setPreviousInput] = useState<string>("");
 	const [operation, setOperation] = useState<Operation | null>(null);
 
+	// Computed
+	const icon: IconDefinition =
+		transactionCTX.draftTransaction?.type === "expense" ? faMinus : faPlus;
+	// Methods
 	const handleNumberClick = (value: string) => {
 		// Prevent multiple decimal points in the same number
 		if (value === "." && currentInput.includes(".")) {
@@ -98,9 +114,14 @@ const Calculator: FC<ICalculatorProps> = ({
 		>
 			<div className="mb-5 p-3 bg-white rounded text-right font-mono text-2xl flex-1">
 				<div className="flex h-[100%]">
-					<div className="flex-1">
-						{previousInput} {operation} <br />
-						{currentInput}
+					<div className="flex flex-1 items-center">
+						<div>
+							<FontAwesomeIcon icon={icon} />
+						</div>
+						<div className="flex-1 items-center">
+							{previousInput} {operation} <br />
+							{currentInput}
+						</div>
 					</div>
 					{displaySideButton && (
 						<div className="px-3 border-l-2 flex align-center">

@@ -4,7 +4,7 @@ import { Transaction } from "@common";
 
 class TransactionService {
 	async createTransaction(transaction: Transaction): Promise<void> {
-		await TransactionRepository.addTransaction(transaction);
+		await TransactionRepository.addTransaction({ ...transaction });
 	}
 
 	async fetchTransactionsByUser(userId: string): Promise<Transaction[]> {

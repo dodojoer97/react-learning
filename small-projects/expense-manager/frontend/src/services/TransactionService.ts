@@ -26,7 +26,7 @@ class TransactionService extends BaseService implements ITransactionService {
 	 * @returns {Promise<void>} - A promise that resolves when the transaction is added.
 	 */
 	async addTransaction(transaction: Transaction): Promise<void> {
-		await this.post<Transaction>("transactions", transaction);
+		await this.post<{ transaction: Transaction }>("transactions", { transaction });
 	}
 
 	/**

@@ -55,12 +55,12 @@ class CategoryRepository {
 	// Edit a category for a specific user
 	async editCategoryForUser(
 		snapshot: QuerySnapshot<DocumentData>, // Pass the snapshot directly
-		newData: Partial<Category>
+		newName: string
 	): Promise<void> {
 		if (!snapshot.empty) {
 			// Assuming only one document is returned since id should be unique
 			const docRef = snapshot.docs[0].ref;
-			await docRef.update({ name: newData });
+			await docRef.update({ name: newName });
 		} else {
 			throw new Error(`Category does not exist for the provided user`);
 		}

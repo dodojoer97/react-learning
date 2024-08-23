@@ -33,14 +33,15 @@ class CategoryService {
 	}
 
 	// TODO, add validation for duplicate name
-	async editCategoryForUser(
-		userId: string,
-		categoryId: string,
-		newData: Partial<Category>
-	): Promise<void> {
+	async editCategoryForUser(userId: string, categoryId: string, newData: string): Promise<void> {
+		const exists = await categoryRepository.categoryExistsByNameForUser(newData, userId);
+		if (exists) {
+			throw new Error(`Category with name ${newData} already exists for user ${userId}`);
+		}
+
 		// Check if the category exists for the user
 		const snapshot = await categoryRepository.getCategorySnapshotForUser(categoryId, userId);
-		if (snapshot.empty || snapshot) {
+		if (snapshot.empty || !snapshot) {
 			throw new Error(`Category with ID ${categoryId} does not exist for user ${userId}`);
 		}
 

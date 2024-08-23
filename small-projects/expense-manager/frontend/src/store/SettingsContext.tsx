@@ -4,7 +4,7 @@ import type { FC, PropsWithChildren, Context } from "react";
 import { createContext } from "react";
 
 // Interface
-import { ISettingsContext } from "./SettingsContext.d";
+import { CategoryMode, ISettingsContext } from "./SettingsContext.d";
 import SelectFieldOption from "@/models/SelectFieldOption";
 
 // Models
@@ -23,12 +23,14 @@ export const SettingsContext: Context<ISettingsContext> = createContext<ISetting
 	availableCurrencies: currencies,
 	availableCategoryTypes: categoryTypes,
 	categories: [],
+	categoryMode: "page",
 	loading: false,
 	formatAmount: () => "",
 	addCategory: async () => {},
 	setCurrency: () => {},
 	fetchCategories: async () => {},
 	editCategory: async () => {},
+	setCategoryMode: (mode: CategoryMode) => {},
 });
 
 const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -42,6 +44,7 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		useState<SelectFieldOption[]>(categoryTypes);
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
+	const [categoryMode, setCategoryMode] = useState<CategoryMode>("page");
 
 	// Methods
 	const formatAmount = (amount: number): string => {
@@ -118,11 +121,13 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		availableCategoryTypes,
 		categories,
 		loading,
+		categoryMode,
 		formatAmount,
 		addCategory,
 		setCurrency,
 		fetchCategories,
 		editCategory,
+		setCategoryMode,
 	};
 
 	return <SettingsContext.Provider value={contextValue}>{children}</SettingsContext.Provider>;

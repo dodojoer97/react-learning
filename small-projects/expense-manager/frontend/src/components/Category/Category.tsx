@@ -17,24 +17,33 @@ import EditCategoryForm from "@/components/EditCategoryForm";
 // Hooks
 import useIsOpen from "@/hooks/useIsOpen";
 
+// Store
+import { SettingsContext } from "@/store/SettingsContext";
+
 interface ICategoryProps {
 	id: string;
 	name: string;
 	icon: IconDefinition;
-	mode?: "page" | "panel";
 }
 
-const CategoryComp: FC<ICategoryProps> = ({ id, name, icon, mode = "page" }) => {
+const CategoryComp: FC<ICategoryProps> = ({ id, name, icon }) => {
 	// TODO ADD TRANSLATIONS
+	// Store
+	const settingsCTX = useContext(SettingsContext);
 
 	// Hooks
 	const { isOpen, toggleOpen } = useIsOpen(true);
 
-	const isPageMode: boolean = mode === "page";
+	// Check if in panel mode to set differnet displays, functions
+	const isPanelMode: boolean = settingsCTX.categoryMode === "panel";
 
 	return (
 		<>
-			<article className="flex justify-between items-center p-4 bg-white shadow-md rounded-lg hover:bg-gray-50 transition-colors my-2">
+			<article
+				className={`flex justify-between items-center p-4 bg-white shadow-md rounded-lg hover:bg-gray-50 transition-colors my-2 ${
+					isPanelMode ? "cursor-pointer" : ""
+				}`}
+			>
 				<div className="flex items-center">
 					<FontAwesomeIcon
 						icon={icon as IconDefinition}
@@ -42,14 +51,14 @@ const CategoryComp: FC<ICategoryProps> = ({ id, name, icon, mode = "page" }) => 
 					/>
 					<p className="text-lg font-semibold text-gray-800">{name}</p>
 				</div>
-				{isPageMode && (
+				{!isPanelMode && (
 					<Button onClick={toggleOpen}>
 						<FontAwesomeIcon icon={faPencil} />
 					</Button>
 				)}
 			</article>
 
-			{isPageMode && (
+			{!isPanelMode && (
 				<SlidingPanel isOpen={isOpen} onClose={toggleOpen}>
 					<EditCategoryForm id={id} name={name} onSave={toggleOpen} />
 				</SlidingPanel>

@@ -16,7 +16,6 @@ import Tabs from "@/components/Category/CategoryTabs";
 
 // Store
 import { SettingsContext } from "@/store/SettingsContext";
-import { AuthContext } from "@/store/AuthContext";
 
 // Hooks
 import useIsOpen from "@/hooks/useIsOpen";
@@ -29,6 +28,7 @@ const Categories: FC = () => {
 	const settingsCTX = useContext(SettingsContext);
 	const { t } = useTranslation("settings");
 	const { isOpen, toggleOpen } = useIsOpen(true);
+	settingsCTX.setCategoryMode("page");
 
 	useEffect(() => {
 		settingsCTX.fetchCategories();

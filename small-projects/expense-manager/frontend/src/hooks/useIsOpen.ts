@@ -6,7 +6,6 @@ const useIsOpen = (
 	isOpen: boolean;
 	toggleOpen(): void;
 } => {
-	console.log("disableScroll: ", disableScroll);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	const toggleOpen = useCallback(() => {

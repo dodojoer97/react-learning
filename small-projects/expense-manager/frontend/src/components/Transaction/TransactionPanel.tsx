@@ -14,7 +14,7 @@ import Calculator from "@/components/Calculator";
 import TypeTabs from "@/components/Transaction/TypeTabs";
 import TransactionForm from "@/components/Transaction/TransactionForm";
 import SlidingPanel from "@/components/UI/SlidingPanel";
-import Tabs from "@/components/Category/CategoryTabs";
+import CategoryList from "@/components/Transaction/CategoryList";
 
 // Hooks
 import useInput from "@/hooks/useInput";
@@ -59,6 +59,9 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 		transactionCTX.updateDraftTransaction({ amount });
 	};
 
+	// Change the display mode for the category
+	settingsCTX.setCategoryMode("panel");
+
 	return (
 		<>
 			<section className="flex flex-col gap-0 h-[100%]">
@@ -92,7 +95,7 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 				onClose={toggleCategorySelectorOpen}
 				slideDirection="from-right"
 			>
-				<Tabs />
+				<CategoryList />
 			</SlidingPanel>
 		</>
 	);

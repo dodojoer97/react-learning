@@ -16,6 +16,12 @@ import { SettingsContext } from "./SettingsContext";
 // Service
 import TransactionService from "@/services/TransactionService";
 
+// Mappers
+import {
+	TransactionWithCategory,
+	TransactionCategoryAssigner,
+} from "@/mappers/TransactionCategoryAssigner";
+
 // Default transaction template for initializing new transactions
 export const defaultTransaction: Transaction = {
 	id: "",
@@ -58,6 +64,7 @@ export const TransactionContext: Context<ITransactionContext> = createContext<IT
 	updateDraftTransaction: () => {}, // Default for updating draft transaction
 	saveDraftTransaction: async () => {}, // Default for saving draft transaction
 	fetchTransactions: async () => {},
+	getMappedTransactions: () => [],
 });
 
 // Provider component for the Transaction Context
@@ -167,6 +174,20 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		}
 	};
 
+	const getMappedTransactions = (): TransactionWithCategory[] => {
+		const mapper = new TransactionCategoryAssigner(settingsCTX.categories);
+		try {
+			const mappedTransactions = mapper.assignCategoriesToTransactions(transactions);
+			return mappedTransactions;
+		} catch (error) {
+			if (isError(error)) {
+				throw new Error(error.message || "Something went wrong in getMappedTransactions");
+			}
+
+			return [];
+		}
+	};
+
 	// The context value that will be provided to the consuming components
 	const contextValue = {
 		loading,
@@ -180,6 +201,7 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		updateDraftTransaction,
 		saveDraftTransaction,
 		fetchTransactions,
+		getMappedTransactions,
 	};
 
 	return (

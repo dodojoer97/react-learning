@@ -1,6 +1,7 @@
 // Types
 import { ILoadingContext } from "@/types/common/index";
 import { Transaction } from "@common";
+import { TransactionWithCategory } from "@/mappers/TransactionCategoryAssigner";
 
 export interface ITransactionContext extends ILoadingContext {
 	selectedTransaction: Transaction | null;
@@ -13,4 +14,5 @@ export interface ITransactionContext extends ILoadingContext {
 	updateDraftTransaction(updates: Partial<Transaction>): void; // New method
 	saveDraftTransaction(): Promise<void>;
 	fetchTransactions(): Promise<void>;
+	getMappedTransactions(): TransactionWithCategory[];
 }

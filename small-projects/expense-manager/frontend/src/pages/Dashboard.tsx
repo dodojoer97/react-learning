@@ -38,9 +38,15 @@ const Dashboard: FC = () => {
 	};
 
 	useEffect(() => {
-		transactionCTX.fetchTransactions();
 		// If we did not load any categories, request them
-		settingsCTX.fetchCategories();
+		const handleFetch = async () => {
+			if (!settingsCTX.categories.length) {
+				await settingsCTX.fetchCategories();
+			}
+			transactionCTX.fetchTransactions();
+		};
+
+		handleFetch();
 	}, []);
 
 	return (

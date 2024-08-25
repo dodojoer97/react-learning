@@ -156,14 +156,9 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 			const fetchedTransaction: Transaction[] =
 				await transactionService.getTransactionsByUser(user.uid);
 
-			const mappedTransactions = mapTransactionsToCategories(
-				fetchedTransaction,
-				settingsCTX.categories
-			);
 			setLoading(false);
 
-			// @ts-ignore
-			setTransactions((prev) => [...mappedTransactions]);
+			setTransactions((prev) => [...fetchedTransaction]);
 		} catch (error) {
 			console.error("Failed to edit fetchTransactions:", error);
 			if (isError(error)) {

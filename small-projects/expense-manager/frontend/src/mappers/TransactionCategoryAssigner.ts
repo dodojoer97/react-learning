@@ -44,13 +44,12 @@ export class TransactionCategoryAssigner {
 	public assignCategoriesToTransactions(
 		transactions: Transaction[]
 	): Array<{ transaction: Transaction; category: Category | undefined }> {
-		return transactions.map((transaction) => ({
-			transaction,
-			category: this.findCategoryForTransaction(transaction),
-		}));
+		console.log("categories: ", this.categories);
+		return transactions.map((transaction) => {
+			return {
+				transaction,
+				category: this.findCategoryForTransaction(transaction),
+			};
+		});
 	}
 }
-
-// Usage example:
-// const assigner = new TransactionCategoryAssigner(categories);
-// const transactionsWithCategories = assigner.assignCategoriesToTransactions(transactions);

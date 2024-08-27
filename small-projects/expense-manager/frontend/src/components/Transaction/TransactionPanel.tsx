@@ -14,7 +14,7 @@ import Calculator from "@/components/Calculator";
 import TypeTabs from "@/components/Transaction/TypeTabs";
 import TransactionForm from "@/components/Transaction/TransactionForm";
 import SlidingPanel from "@/components/UI/SlidingPanel";
-import CategoryList from "@/components/Transaction/CategoryList";
+import CategoryList from "@/components/Category/CategoryList";
 import Button from "@/components/UI/Button";
 import InputError from "@/components/UI/InputError";
 

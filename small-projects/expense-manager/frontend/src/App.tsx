@@ -8,7 +8,6 @@ import { RouterProvider } from "react-router-dom";
 import router from "./Router";
 
 const App: FC = () => {
-	console.log("app render");
 	return (
 		<>
 			<RouterProvider

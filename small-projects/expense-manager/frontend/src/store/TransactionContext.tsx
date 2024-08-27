@@ -87,7 +87,6 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		setError(null);
 		if (!user?.uid) throw new Error("User id is mandatory in editTransaction");
 		try {
-			console.log("addTransaction");
 			setLoading(true);
 
 			await transactionService.addTransaction({ ...transaction, userId: user.uid });
@@ -150,7 +149,6 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		setError(null);
 		if (!user?.uid) throw new Error("User id is mandatory in fetchTransactions");
 		try {
-			console.log("addTransaction");
 			setLoading(true);
 
 			const fetchedTransaction: Transaction[] =

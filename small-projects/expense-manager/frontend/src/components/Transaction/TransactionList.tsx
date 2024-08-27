@@ -11,7 +11,6 @@ const TransactionList: FC = () => {
 
 	// Data
 	const mappedTransactions = transactionCTX.getMappedTransactions();
-	console.log(mappedTransactions);
 	return (
 		<ul>
 			{mappedTransactions.map(({ transaction, category }) => (

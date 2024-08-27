@@ -33,7 +33,6 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 
 	if (!transactionCTX.draftTransaction) return <></>;
 
-	console.log("transactionCTX.draftTransaction: ", transactionCTX.draftTransaction);
 	// Form fields
 	const dateField = useInput<HTMLInputElement, Date>({
 		defaultValue: transactionCTX.draftTransaction?.date,

@@ -10,9 +10,9 @@ interface RouteWrapperProps {
 
 const RouteWrapper: React.FC<RouteWrapperProps> = ({ children }) => (
 	<AuthContextProvider>
-		<TransactionContextProvider>
-			<SettingsContextProvider>{children}</SettingsContextProvider>
-		</TransactionContextProvider>
+		<SettingsContextProvider>
+			<TransactionContextProvider>{children}</TransactionContextProvider>
+		</SettingsContextProvider>
 	</AuthContextProvider>
 );
 

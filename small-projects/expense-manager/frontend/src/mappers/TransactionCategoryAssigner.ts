@@ -44,7 +44,6 @@ export class TransactionCategoryAssigner {
 	public assignCategoriesToTransactions(
 		transactions: Transaction[]
 	): Array<{ transaction: Transaction; category: Category | undefined }> {
-		console.log("categories: ", this.categories);
 		return transactions.map((transaction) => {
 			return {
 				transaction,

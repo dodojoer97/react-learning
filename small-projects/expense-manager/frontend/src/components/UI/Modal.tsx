@@ -37,8 +37,6 @@ const Modal: FC<IModalProps> = ({ isOpen, children, onClose, isFullScreen }) => 
 		}
 	}, []);
 
-	console.log("isOpen: ", isOpen);
-
 	return createPortal(
 		<div
 			ref={modalRef}

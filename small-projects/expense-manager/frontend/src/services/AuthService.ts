@@ -128,7 +128,6 @@ class AuthService extends BaseService implements IAuthService {
 	 * @param {string} token - The authentication token to be stored.
 	 */
 	private storeToken(token: string): void {
-		console.log("storeToken: ");
 		localStorage.setItem("token", token);
 	}
 

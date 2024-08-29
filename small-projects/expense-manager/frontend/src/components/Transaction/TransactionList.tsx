@@ -1,9 +1,11 @@
-// React
 import type { FC } from "react";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 
 // Store
 import { TransactionContext } from "@/store/TransactionContext";
+
+// Components
+import Transaction from "@/components/Transaction/Transaction";
 
 const TransactionList: FC = () => {
 	// Store
@@ -12,14 +14,16 @@ const TransactionList: FC = () => {
 	// Data
 	const mappedTransactions = transactionCTX.getMappedTransactions();
 	return (
-		<ul>
-			{mappedTransactions.map(({ transaction, category }) => (
-				<li key={transaction.id}>
-					{transaction.amount} {transaction.categoryId}
-					{category?.name}
-				</li>
-			))}
-		</ul>
+		<section>
+			<ul>
+				{mappedTransactions.map((transactionWithCategory) => (
+					<Transaction
+						key={transactionWithCategory.transaction.id}
+						transactionWithCategory={transactionWithCategory}
+					/>
+				))}
+			</ul>
+		</section>
 	);
 };
 

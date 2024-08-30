@@ -3,7 +3,7 @@ import type { FC } from "react";
 // Types
 import { TransactionWithCategory } from "@/mappers/TransactionCategoryAssigner";
 
-// FontAwesome
+// FontAwesome Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
@@ -17,28 +17,46 @@ interface Props {
 const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, category } }) => {
 	const { i18n } = useTranslation();
 
+	// Formats the date based on the current i18n language
 	const formatDate = (date: Date) => {
 		console.log("i18n.language: ", i18n.language);
-		return new Intl.DateTimeFormat("en-GB").format(date);
+		return new Intl.DateTimeFormat(i18n.language, {
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		}).format(date);
 	};
+
 	return (
-		<li className="flex justify-between  p-4 hover:bg-gray-50 rounded-lg transition-colors my-2 border-b-2 cursor-pointer">
-			<div className="icon" aria-label="Transaction Icon">
-				<FontAwesomeIcon
-					icon={category?.icon as IconDefinition}
-					className="text-blue-500 text-2xl mr-4"
-				/>
+		<li className="p-4 hover:bg-gray-100 rounded-lg transition-colors my-2 border-b border-gray-300 cursor-pointer">
+			<div className="flex justify-between">
+				<div className="flex">
+					<FontAwesomeIcon
+						icon={category?.icon as IconDefinition}
+						className="text-blue-500 text-2xl mr-3"
+					/>
+					<div className="font-semibold text-gray-700" aria-label="Transaction Category">
+						{category?.name}
+					</div>
+				</div>
+				<div className="text-right">
+					<time
+						dateTime={transaction.date.toString()}
+						className="text-sm text-gray-600 block font-medium"
+					>
+						{formatDate(transaction.date)}
+					</time>
+					<div
+						className="text-lg text-gray-800 font-semibold"
+						aria-label="Transaction Amount"
+					>
+						{transaction.amount.toFixed(2)}
+					</div>
+				</div>
 			</div>
-			<div className="title" aria-label="Transaction Category">
-				{category?.name}
-			</div>
-			<div className="amount-date text-right">
-				<time dateTime={transaction.date.toString()} className="block">
-					{/* TODO map to date earlier */}
-					{formatDate(transaction.date)}
-				</time>
-				<div aria-label="Transaction Amount">{transaction.amount}</div>
-			</div>
+			{transaction.description && (
+				<p className="mt-1 text-gray-600">{transaction.description}</p>
+			)}
 		</li>
 	);
 };

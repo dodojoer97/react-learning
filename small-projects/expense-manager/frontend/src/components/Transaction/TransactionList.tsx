@@ -6,6 +6,8 @@ import { TransactionContext } from "@/store/TransactionContext";
 
 // Components
 import Transaction from "@/components/Transaction/Transaction";
+import SlidingPanel from "@/components/UI/SlidingPanel";
+import TransactionPanel from "@/components/Transaction/TransactionPanel";
 
 const TransactionList: FC = () => {
 	// Store
@@ -25,6 +27,10 @@ const TransactionList: FC = () => {
 					))}
 				</ul>
 			)}
+
+			<SlidingPanel isOpen={isOpen} onClose={toggleOpen} slideDirection="from-right">
+				<TransactionPanel onSave={toggleOpen} />
+			</SlidingPanel>
 		</section>
 	);
 };

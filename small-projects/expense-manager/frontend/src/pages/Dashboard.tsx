@@ -8,8 +8,7 @@ import { Transaction } from "@common";
 // Components
 import Layout from "@/components/UI/Layout";
 import Button from "@/components/UI/Button";
-import SlidingPanel from "@/components/UI/SlidingPanel";
-import TransactionPanel from "@/components/Transaction/TransactionPanel";
+
 import TransactionList from "@/components/Transaction/TransactionList";
 
 // FontAwesome
@@ -30,7 +29,7 @@ const Dashboard: FC = () => {
 	const settingsCTX = useContext(SettingsContext);
 
 	// Hooks
-	const { isOpen, toggleOpen } = useIsOpen("calculator");
+	const { isOpen, toggleOpen } = useIsOpen("transactionPanel");
 
 	const handleOpenPanel = (): void => {
 		transactionCTX.selectTransaction(defaultTransaction);
@@ -62,10 +61,6 @@ const Dashboard: FC = () => {
 					icon={faPlusCircle}
 				/>
 			</Button>
-
-			<SlidingPanel isOpen={isOpen} onClose={toggleOpen} slideDirection="from-right">
-				<TransactionPanel onSave={toggleOpen} />
-			</SlidingPanel>
 
 			<TransactionList />
 		</Layout>

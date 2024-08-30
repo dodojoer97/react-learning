@@ -45,7 +45,10 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 	};
 
 	return (
-		<li className="p-4 hover:bg-gray-100 rounded-lg transition-colors my-2 border-b border-gray-300 cursor-pointer">
+		<li
+			className="p-4 hover:bg-gray-100 rounded-lg transition-colors my-2 border-b border-gray-300 cursor-pointer"
+			onClick={handleClick}
+		>
 			<div className="flex justify-between">
 				<div className="flex">
 					<FontAwesomeIcon

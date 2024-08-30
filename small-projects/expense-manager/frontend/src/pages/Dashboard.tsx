@@ -41,6 +41,7 @@ const Dashboard: FC = () => {
 		const handleFetch = async () => {
 			if (!settingsCTX.categories.length) {
 				await settingsCTX.fetchCategories();
+				s;
 			}
 			transactionCTX.fetchTransactions();
 		};

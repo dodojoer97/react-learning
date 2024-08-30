@@ -1,7 +1,12 @@
+// React
 import type { FC } from "react";
+import { useContext } from "react";
 
 // Types
 import { TransactionWithCategory } from "@/mappers/TransactionCategoryAssigner";
+
+// Store
+import { SettingsContext } from "@/store/SettingsContext";
 
 // FontAwesome Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,6 +20,10 @@ interface Props {
 }
 
 const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, category } }) => {
+	// Store
+	const settingsCTX = useContext(SettingsContext);
+
+	// Translation
 	const { i18n } = useTranslation();
 
 	// Formats the date based on the current i18n language
@@ -50,7 +59,7 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 						className="text-lg text-gray-800 font-semibold"
 						aria-label="Transaction Amount"
 					>
-						{transaction.amount.toFixed(2)}
+						{settingsCTX.currency.value} {transaction.amount.toFixed(2)}
 					</div>
 				</div>
 			</div>

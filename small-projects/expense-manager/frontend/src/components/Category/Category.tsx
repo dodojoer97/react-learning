@@ -32,7 +32,7 @@ const CategoryComp: FC<ICategoryProps> = ({ id, name, icon }) => {
 	const settingsCTX = useContext(SettingsContext);
 
 	// Hooks
-	const { isOpen, toggleOpen } = useIsOpen(true);
+	const { isOpen, toggleOpen } = useIsOpen("category");
 
 	// Check if in panel mode to set differnet displays, functions
 	const isPanelMode: boolean = settingsCTX.categoryMode === "panel";

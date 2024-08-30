@@ -27,7 +27,7 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 const Categories: FC = () => {
 	const settingsCTX = useContext(SettingsContext);
 	const { t } = useTranslation("settings");
-	const { isOpen, toggleOpen } = useIsOpen(true);
+	const { isOpen, toggleOpen } = useIsOpen("categories");
 	settingsCTX.setCategoryMode("page");
 
 	useEffect(() => {

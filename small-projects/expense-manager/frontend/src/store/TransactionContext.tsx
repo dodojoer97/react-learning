@@ -7,7 +7,7 @@ import { createContext } from "react";
 import { ITransactionContext } from "./TransactionContext.d";
 
 // Models
-import { Transaction, CategoryType, isError, Category } from "@common";
+import { Transaction, CategoryType, isError, OperationStatus } from "@common";
 
 // Store
 import { AuthContext } from "./AuthContext";
@@ -33,24 +33,6 @@ export const defaultTransaction: Transaction = {
 	description: "",
 };
 
-function getCategoryByTransaction(
-	transaction: Transaction,
-	categories: Category[]
-): Category | undefined {
-	return categories.find((category) => category.id === transaction.categoryId);
-}
-
-// Function to map transactions to their categories
-function mapTransactionsToCategories(
-	transactions: Transaction[],
-	categories: Category[]
-): Array<{ transaction: Transaction; category: Category | undefined }> {
-	return transactions.map((transaction) => ({
-		transaction,
-		category: getCategoryByTransaction(transaction, categories),
-	}));
-}
-
 // Creating the context with a default value, including new methods
 export const TransactionContext: Context<ITransactionContext> = createContext<ITransactionContext>({
 	loading: false,
@@ -58,11 +40,11 @@ export const TransactionContext: Context<ITransactionContext> = createContext<IT
 	transactions: [],
 	draftTransaction: null, // Default state for draft transaction,
 	error: null,
-	addTransaction: async () => {},
-	editTransaction: async () => {},
+	addTransaction: async () => new OperationStatus(),
+	editTransaction: async () => new OperationStatus(),
 	selectTransaction: () => {},
 	updateDraftTransaction: () => {}, // Default for updating draft transaction
-	saveDraftTransaction: async () => {}, // Default for saving draft transaction
+	saveDraftTransaction: async () => new OperationStatus(), // Default for saving draft transaction
 	fetchTransactions: async () => {},
 	getMappedTransactions: () => [],
 });
@@ -83,7 +65,8 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	const [error, setError] = useState<string | null>(null);
 
 	// Method to add a new transaction to the transactions list
-	const addTransaction = async (transaction: Transaction): Promise<void> => {
+	const addTransaction = async (transaction: Transaction): Promise<OperationStatus> => {
+		const operationStatus = new OperationStatus();
 		setError(null);
 		if (!user?.uid) throw new Error("User id is mandatory in editTransaction");
 		try {
@@ -93,19 +76,26 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 			setLoading(false);
 			setTransactions((prev) => [...prev, transaction]);
+			operationStatus.ok = true;
 		} catch (error) {
 			console.error("Failed to edit transaction:", error);
 			if (isError(error)) {
 				setError(error.message || "");
 			}
+
+			operationStatus.ok = false;
 		} finally {
 			setLoading(false);
+			return operationStatus;
 		}
 	};
 
 	// Method to update an existing transaction in the transactions list
-	const editTransaction = async (transaction: Transaction): Promise<void> => {
+	const editTransaction = async (transaction: Transaction): Promise<OperationStatus> => {
+		const operationStatus = new OperationStatus();
 		setTransactions((prev) => prev.map((t) => (t.id === transaction.id ? transaction : t)));
+
+		return operationStatus;
 	};
 
 	// Method to select a transaction and initialize the draft for editing
@@ -136,13 +126,15 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	};
 
 	// Method to save the draft transaction to the transactions list
-	const saveDraftTransaction = async (): Promise<void> => {
-		if (draftTransaction) {
-			// Check if the draft has an id to determine if it's an edit or a new addition
-			draftTransaction.id
-				? await editTransaction(draftTransaction)
-				: await addTransaction(draftTransaction);
-		}
+	const saveDraftTransaction = async (): Promise<OperationStatus> => {
+		if (!draftTransaction) return new OperationStatus();
+
+		// Check if the draft has an id to determine if it's an edit or a new addition
+		const status: OperationStatus = draftTransaction.id
+			? await editTransaction(draftTransaction)
+			: await addTransaction(draftTransaction);
+
+		return status;
 	};
 
 	const fetchTransactions = async (): Promise<void> => {

@@ -30,7 +30,7 @@ const Dashboard: FC = () => {
 	const settingsCTX = useContext(SettingsContext);
 
 	// Hooks
-	const { isOpen, toggleOpen } = useIsOpen(true);
+	const { isOpen, toggleOpen } = useIsOpen("calculator");
 
 	const handleOpenPanel = (): void => {
 		transactionCTX.selectTransaction(defaultTransaction);
@@ -65,7 +65,7 @@ const Dashboard: FC = () => {
 
 			{/* ADD RECORD */}
 			<SlidingPanel isOpen={isOpen} onClose={toggleOpen} slideDirection="from-right">
-				<TransactionPanel onSave={() => {}} />
+				<TransactionPanel onSave={toggleOpen} />
 			</SlidingPanel>
 
 			<TransactionList />

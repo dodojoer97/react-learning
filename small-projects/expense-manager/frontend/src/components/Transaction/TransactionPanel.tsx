@@ -3,7 +3,7 @@ import type { FC } from "react";
 import { useState, useContext, useEffect } from "react";
 
 // Types
-import type { CategoryType } from "@common";
+import type { CategoryType, OperationStatus } from "@common";
 
 // Store
 import { SettingsContext } from "@/store/SettingsContext";
@@ -37,10 +37,13 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 	);
 
 	// Hooks
-	const { isOpen: isTransactionFormOpen, toggleOpen: toggleTransactionFormOpen } =
-		useIsOpen(true);
+	const {
+		isOpen: isTransactionFormOpen,
+		toggleOpen: toggleTransactionFormOpen,
+		close,
+	} = useIsOpen("transactionForm");
 	const { isOpen: isCategorySelectorOpen, toggleOpen: toggleCategorySelectorOpen } =
-		useIsOpen(true);
+		useIsOpen("categorySelector");
 
 	// Methods
 	const handleTabClick = (type: CategoryType): void => {
@@ -56,7 +59,12 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 	};
 
 	const handleSave = async (): Promise<void> => {
-		await transactionCTX.saveDraftTransaction();
+		const status: OperationStatus = await transactionCTX.saveDraftTransaction();
+
+		// If no errors, fire the function
+		if (status.ok) {
+			onSave();
+		}
 	};
 
 	useEffect(() => {

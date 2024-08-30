@@ -63,7 +63,6 @@ const Dashboard: FC = () => {
 				/>
 			</Button>
 
-			{/* ADD RECORD */}
 			<SlidingPanel isOpen={isOpen} onClose={toggleOpen} slideDirection="from-right">
 				<TransactionPanel onSave={toggleOpen} />
 			</SlidingPanel>

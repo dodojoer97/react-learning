@@ -7,6 +7,7 @@ import { TransactionWithCategory } from "@/mappers/TransactionCategoryAssigner";
 
 // Store
 import { SettingsContext } from "@/store/SettingsContext";
+import { TransactionContext } from "@/store/TransactionContext";
 
 // FontAwesome Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,11 +23,13 @@ interface Props {
 const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, category } }) => {
 	// Store
 	const settingsCTX = useContext(SettingsContext);
+	const transactionCTX = useContext(TransactionContext);
 
 	// Translation
 	const { i18n } = useTranslation();
 
-	// Formats the date based on the current i18n language
+	// TODO move to context
+	// Formats the date based on the current i18n language,
 	const formatDate = (date: Date) => {
 		console.log("i18n.language: ", i18n.language);
 		return new Intl.DateTimeFormat(i18n.language, {
@@ -34,6 +37,11 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 			month: "long",
 			day: "numeric",
 		}).format(date);
+	};
+
+	// Methods
+	const handleClick = (): void => {
+		transactionCTX.selectTransaction(transaction);
 	};
 
 	return (

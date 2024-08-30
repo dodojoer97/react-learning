@@ -19,6 +19,7 @@ import useIsOpen from "@/hooks/useIsOpen";
 
 // Store
 import { SettingsContext } from "@/store/SettingsContext";
+import { TransactionContext } from "@/store/TransactionContext";
 
 interface ICategoryProps {
 	id: string;
@@ -30,6 +31,7 @@ const CategoryComp: FC<ICategoryProps> = ({ id, name, icon }) => {
 	// TODO ADD TRANSLATIONS
 	// Store
 	const settingsCTX = useContext(SettingsContext);
+	const transactionCTX = useContext(TransactionContext);
 
 	// Hooks
 	const { isOpen, toggleOpen } = useIsOpen("category");
@@ -37,12 +39,17 @@ const CategoryComp: FC<ICategoryProps> = ({ id, name, icon }) => {
 	// Check if in panel mode to set differnet displays, functions
 	const isPanelMode: boolean = settingsCTX.categoryMode === "panel";
 
+	const isSelected = transactionCTX.draftTransaction?.categoryId === id;
+
 	return (
 		<>
 			<article
 				className={`flex justify-between items-center p-4 bg-white shadow-md rounded-lg hover:bg-gray-50 transition-colors my-2 ${
 					isPanelMode ? "cursor-pointer" : ""
-				}`}
+				}
+				${isPanelMode && isSelected ? "selected-item" : ""}
+				
+				`}
 			>
 				<div className="flex items-center">
 					<FontAwesomeIcon

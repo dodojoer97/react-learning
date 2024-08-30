@@ -15,8 +15,6 @@ interface IIconSelectorProps {
 const IconSelector: FC<IIconSelectorProps> = ({ onSelect, selectedIcon }) => {
 	const baseIconClasses =
 		"flex justify-center items-center p-4 bg-white shadow-md rounded-lg hover:bg-gray-50 transition-colors my-2 cursor-pointer";
-	const selectedIconClasses =
-		"shadow-lg shadow-blue-600 bg-blue-100 border-2 border-blue-500 scale-105 transform transition-all duration-300";
 
 	return (
 		<>
@@ -26,7 +24,7 @@ const IconSelector: FC<IIconSelectorProps> = ({ onSelect, selectedIcon }) => {
 					<article
 						key={iconName}
 						className={`${baseIconClasses} ${
-							selectedIcon === iconName ? selectedIconClasses : ""
+							selectedIcon === iconName ? "selected-item" : ""
 						}`}
 						onClick={() => onSelect(iconName)}
 					>

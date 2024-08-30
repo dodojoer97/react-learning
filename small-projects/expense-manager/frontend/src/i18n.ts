@@ -1,9 +1,9 @@
 // i18n
-import i18n from "i18next"
-import { initReactI18next } from "react-i18next"
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
 
 // Types
-import { ILocaleTranslations } from "@/locales/translation.d"
+import { ILocaleTranslations } from "@/locales/translation.d";
 
 // Translation objects
 import {
@@ -13,7 +13,7 @@ import {
 	formsTranslations,
 	headerTranslations,
 	settingsTranslations,
-} from "./locales/en/translations"
+} from "./locales/en/translations";
 
 const resources: ILocaleTranslations = {
 	en: {
@@ -24,10 +24,9 @@ const resources: ILocaleTranslations = {
 		header: headerTranslations,
 		settings: settingsTranslations,
 	},
-}
+};
 
-i18n
-	.use(initReactI18next) // passes i18n instance to react-i18next
+i18n.use(initReactI18next) // passes i18n instance to react-i18next
 	.init({
 		resources,
 		lng: "en", // language to use
@@ -36,6 +35,6 @@ i18n
 		interpolation: {
 			escapeValue: false, // react already safes from xss
 		},
-	})
+	});
 
-export default i18n
+export default i18n;

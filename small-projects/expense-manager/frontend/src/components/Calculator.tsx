@@ -108,7 +108,7 @@ const Calculator: FC<ICalculatorProps> = ({
 
 	return (
 		<div
-			className={`p-5 h-[100%] shadow-lg rounded-lg bg-gray-100 flex flex-col ${
+			className={`p-5 h-[90%] shadow-lg rounded-lg bg-gray-100 flex flex-col ${
 				additionalClasses || ""
 			}`}
 		>

@@ -14,7 +14,8 @@ const useIsOpen = (
 
 	useEffect(() => {
 		const overflow = document.body.style.overflow;
-		document.body.style.overflow = overflow === "visible" ? "hidden" : "hidden";
+		document.body.style.overflow = isOpen ? "hidden" : "";
+		console.log("isOpen: ", isOpen);
 	}, [isOpen]);
 
 	return {

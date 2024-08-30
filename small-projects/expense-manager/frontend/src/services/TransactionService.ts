@@ -45,7 +45,24 @@ class TransactionService extends BaseService implements ITransactionService {
 	 * @returns {Promise<Transaction[]>} - A promise that resolves with an array of transactions.
 	 */
 	async getTransactionsByUser(userId: string): Promise<Transaction[]> {
-		return await this.get(`transactions/${userId}`);
+		const fetchedTransactions: Transaction[] = await this.get(`transactions/${userId}`);
+		return this.buildTransactions(fetchedTransactions);
+	}
+
+	private buildTransactions(fetchedTransactions: Transaction[]): Transaction[] {
+		const categories: Transaction[] = fetchedTransactions.map(
+			(transaction) =>
+				new Transaction(
+					transaction.id,
+					transaction.userId,
+					transaction.amount,
+					new Date(transaction.date),
+					transaction.categoryId,
+					transaction.type,
+					transaction.description
+				)
+		);
+		return categories;
 	}
 
 	/**

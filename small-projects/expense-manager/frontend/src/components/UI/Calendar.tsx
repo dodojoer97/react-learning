@@ -1,6 +1,6 @@
 // React
 import type { FC } from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 // Calendar
 import { Calendar, momentLocalizer, Views } from "react-big-calendar";
@@ -11,29 +11,29 @@ import SlidingPanel from "@/components/UI/SlidingPanel";
 // Moment
 import moment from "moment";
 
-const localizer = momentLocalizer(moment);
-
-// Hooks
-import useIsOpen from "@/hooks/useIsOpen";
+// Store
+import { OpenContext } from "@/store/OpenContext";
 
 // CSS
 import "react-big-calendar/lib/css/react-big-calendar.css"; // Import the CSS
 import "./Calendar.css";
 
+const localizer = momentLocalizer(moment);
+
 const MyCalendar: FC = () => {
 	// State
 	const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-	//Hooks
-	const { isOpen, toggleOpen } = useIsOpen(true);
+	// Context
+	const { isOpen, toggleOpen } = useContext(OpenContext);
 
 	const handleOpenPanel = (date: Date): void => {
-		toggleOpen();
+		toggleOpen("calendarPanel");
 		setSelectedDate(date);
 	};
 
 	const handleClosePanel = (): void => {
-		toggleOpen();
+		toggleOpen("calendarPanel");
 		setSelectedDate(null);
 	};
 
@@ -49,13 +49,11 @@ const MyCalendar: FC = () => {
 				}}
 				selectable
 				popup={true}
-				// onDrillDown={handleDrillDown}
 			/>
 
-			<SlidingPanel isOpen={isOpen} onClose={handleClosePanel}>
+			<SlidingPanel isOpen={isOpen("calendarPanel")} onClose={handleClosePanel}>
 				{selectedDate?.toDateString()}
 			</SlidingPanel>
 		</div>
 	);
 };
-export default MyCalendar;

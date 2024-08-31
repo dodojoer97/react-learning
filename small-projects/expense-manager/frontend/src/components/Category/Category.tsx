@@ -1,9 +1,6 @@
 // React
-import { useEffect, useContext } from "react";
 import type { FC } from "react";
-
-// Models
-import { Category } from "@common";
+import { useContext } from "react";
 
 // FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,12 +11,10 @@ import Button from "@/components/UI/Button";
 import SlidingPanel from "@/components/UI/SlidingPanel";
 import EditCategoryForm from "@/components/EditCategoryForm";
 
-// Hooks
-import useIsOpen from "@/hooks/useIsOpen";
-
 // Store
 import { SettingsContext } from "@/store/SettingsContext";
 import { TransactionContext } from "@/store/TransactionContext";
+import { OpenContext } from "@/store/OpenContext";
 
 interface ICategoryProps {
 	id: string;
@@ -28,15 +23,12 @@ interface ICategoryProps {
 }
 
 const CategoryComp: FC<ICategoryProps> = ({ id, name, icon }) => {
-	// TODO ADD TRANSLATIONS
 	// Store
 	const settingsCTX = useContext(SettingsContext);
 	const transactionCTX = useContext(TransactionContext);
+	const { isOpen, toggleOpen } = useContext(OpenContext);
 
-	// Hooks
-	const { isOpen, toggleOpen } = useIsOpen("category");
-
-	// Check if in panel mode to set differnet displays, functions
+	// Check if in panel mode to set different displays, functions
 	const isPanelMode: boolean = settingsCTX.categoryMode === "panel";
 
 	const isSelected = transactionCTX.draftTransaction?.categoryId === id;
@@ -48,7 +40,6 @@ const CategoryComp: FC<ICategoryProps> = ({ id, name, icon }) => {
 					isPanelMode ? "cursor-pointer" : ""
 				}
 				${isPanelMode && isSelected ? "selected-item" : ""}
-				
 				`}
 			>
 				<div className="flex items-center">
@@ -59,15 +50,15 @@ const CategoryComp: FC<ICategoryProps> = ({ id, name, icon }) => {
 					<p className="text-lg font-semibold text-gray-800">{name}</p>
 				</div>
 				{!isPanelMode && (
-					<Button onClick={toggleOpen}>
+					<Button onClick={() => toggleOpen("category")}>
 						<FontAwesomeIcon icon={faPencil} />
 					</Button>
 				)}
 			</article>
 
 			{!isPanelMode && (
-				<SlidingPanel isOpen={isOpen} onClose={toggleOpen}>
-					<EditCategoryForm id={id} name={name} onSave={toggleOpen} />
+				<SlidingPanel isOpen={isOpen("category")} onClose={() => toggleOpen("category")}>
+					<EditCategoryForm id={id} name={name} onSave={() => toggleOpen("category")} />
 				</SlidingPanel>
 			)}
 		</>

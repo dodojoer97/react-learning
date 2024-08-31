@@ -8,8 +8,9 @@ import type { CategoryType, OperationStatus } from "@common";
 // Store
 import { SettingsContext } from "@/store/SettingsContext";
 import { TransactionContext } from "@/store/TransactionContext";
+import { OpenContext } from "@/store/OpenContext";
 
-// Copmonents
+// Components
 import Calculator from "@/components/Calculator";
 import TypeTabs from "@/components/Transaction/TypeTabs";
 import TransactionForm from "@/components/Transaction/TransactionForm";
@@ -18,38 +19,26 @@ import CategoryList from "@/components/Category/CategoryList";
 import Button from "@/components/UI/Button";
 import InputError from "@/components/UI/InputError";
 
-// Hooks
-import useIsOpen from "@/hooks/useIsOpen";
-
 interface IProps {
 	onSave(): void;
 }
 
 const TransactionPanel: FC<IProps> = ({ onSave }) => {
-	// TODO add translations
 	// Store
 	const settingsCTX = useContext(SettingsContext);
 	const transactionCTX = useContext(TransactionContext);
+	const { isOpen, toggleOpen, close } = useContext(OpenContext);
 
 	// State
 	const [selectedType, setSelectedType] = useState<CategoryType>(
 		transactionCTX.selectedTransaction?.type || "expense"
 	);
 
-	// Hooks
-	const {
-		isOpen: isTransactionFormOpen,
-		toggleOpen: toggleTransactionFormOpen,
-		close,
-	} = useIsOpen("transactionForm");
-	const { isOpen: isCategorySelectorOpen, toggleOpen: toggleCategorySelectorOpen } =
-		useIsOpen("categorySelector");
-
 	// Methods
 	const handleTabClick = (type: CategoryType): void => {
 		transactionCTX.updateDraftTransaction({ type });
 
-		// If the type changes, clear the current cateogy
+		// If the type changes, clear the current category
 		transactionCTX.updateDraftTransaction({ categoryId: "" });
 		setSelectedType(type);
 	};
@@ -85,26 +74,26 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 					onChange={handleCalculatorChange}
 					additionalClasses=""
 					displaySideButton
-					onSideButtonClick={toggleTransactionFormOpen}
+					onSideButtonClick={() => toggleOpen("transactionForm")}
 				>
 					<div className="bg-white">
-						<Button onClick={toggleCategorySelectorOpen}>Category</Button>
+						<Button onClick={() => toggleOpen("categorySelector")}>Category</Button>
 					</div>
 				</Calculator>
 
 				<SlidingPanel
-					isOpen={isTransactionFormOpen}
-					onClose={toggleTransactionFormOpen}
+					isOpen={isOpen("transactionForm")}
+					onClose={() => toggleOpen("transactionForm")}
 					slideDirection="from-right"
 				>
-					<TransactionForm onSave={toggleTransactionFormOpen} />
+					<TransactionForm onSave={() => toggleOpen("transactionForm")} />
 				</SlidingPanel>
 				<SlidingPanel
-					isOpen={isCategorySelectorOpen}
-					onClose={toggleCategorySelectorOpen}
+					isOpen={isOpen("categorySelector")}
+					onClose={() => toggleOpen("categorySelector")}
 					slideDirection="from-right"
 				>
-					<CategoryList onSelect={toggleCategorySelectorOpen} />
+					<CategoryList onSelect={() => toggleOpen("categorySelector")} />
 				</SlidingPanel>
 
 				{transactionCTX.error && (

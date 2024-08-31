@@ -3,6 +3,7 @@ import React, { ReactNode } from "react";
 import AuthContextProvider from "@/store/AuthContext";
 import SettingsContextProvider from "@/store/SettingsContext";
 import TransactionContextProvider from "@/store/TransactionContext";
+import OpenContextProvider from "@/store/OpenContext";
 
 interface RouteWrapperProps {
 	children: ReactNode;
@@ -11,7 +12,9 @@ interface RouteWrapperProps {
 const RouteWrapper: React.FC<RouteWrapperProps> = ({ children }) => (
 	<AuthContextProvider>
 		<SettingsContextProvider>
-			<TransactionContextProvider>{children}</TransactionContextProvider>
+			<TransactionContextProvider>
+				<OpenContextProvider>{children}</OpenContextProvider>
+			</TransactionContextProvider>
 		</SettingsContextProvider>
 	</AuthContextProvider>
 );

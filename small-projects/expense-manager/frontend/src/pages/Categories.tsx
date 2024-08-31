@@ -1,6 +1,5 @@
 // React
 import type { FC } from "react";
-
 import { useContext, useEffect } from "react";
 
 // Translation
@@ -16,9 +15,7 @@ import Tabs from "@/components/Category/CategoryTabs";
 
 // Store
 import { SettingsContext } from "@/store/SettingsContext";
-
-// Hooks
-import useIsOpen from "@/hooks/useIsOpen";
+import { OpenContext } from "@/store/OpenContext";
 
 // FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,7 +24,8 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 const Categories: FC = () => {
 	const settingsCTX = useContext(SettingsContext);
 	const { t } = useTranslation("settings");
-	const { isOpen, toggleOpen } = useIsOpen("categories");
+	const { isOpen, toggleOpen } = useContext(OpenContext);
+
 	settingsCTX.setCategoryMode("page");
 
 	useEffect(() => {
@@ -44,15 +42,14 @@ const Categories: FC = () => {
 				<FontAwesomeIcon
 					className="cursor-pointer w-10 h-10 text-blue-600"
 					icon={faPlusCircle}
-					onClick={toggleOpen}
+					onClick={() => toggleOpen("categories")}
 				/>
 			</div>
 
-			<SlidingPanel isOpen={isOpen} onClose={toggleOpen}>
-				<AddCategoryForm onSave={toggleOpen} />
+			<SlidingPanel isOpen={isOpen("categories")} onClose={() => toggleOpen("categories")}>
+				<AddCategoryForm onSave={() => toggleOpen("categories")} />
 			</SlidingPanel>
 
-			{/* Change type of cateogries */}
 			<Tabs />
 		</Layout>
 	);

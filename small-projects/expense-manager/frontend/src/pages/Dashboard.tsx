@@ -15,8 +15,8 @@ import TransactionList from "@/components/Transaction/TransactionList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
-// Hooks
-import useIsOpen from "@/hooks/useIsOpen";
+// Context
+import { OpenContext } from "@/store/OpenContext";
 
 // Store
 import { TransactionContext, defaultTransaction } from "@/store/TransactionContext";
@@ -28,12 +28,13 @@ const Dashboard: FC = () => {
 	const transactionCTX = useContext(TransactionContext);
 	const settingsCTX = useContext(SettingsContext);
 
-	// Hooks
-	const { isOpen, toggleOpen } = useIsOpen("transactionPanel");
+	// Context
+	const { open } = useContext(OpenContext);
+	const panelId = "transactionPanel";
 
 	const handleOpenPanel = (): void => {
 		transactionCTX.selectTransaction(defaultTransaction);
-		toggleOpen();
+		open(panelId);
 	};
 
 	useEffect(() => {
@@ -41,7 +42,6 @@ const Dashboard: FC = () => {
 		const handleFetch = async () => {
 			if (!settingsCTX.categories.length) {
 				await settingsCTX.fetchCategories();
-				s;
 			}
 			transactionCTX.fetchTransactions();
 		};

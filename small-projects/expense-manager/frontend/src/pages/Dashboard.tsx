@@ -15,21 +15,20 @@ import TransactionList from "@/components/Transaction/TransactionList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
-// Context
-import { OpenContext } from "@/store/OpenContext";
+//
 
 // Store
 import { TransactionContext, defaultTransaction } from "@/store/TransactionContext";
 import { SettingsContext } from "@/store/SettingsContext";
+import { OpenContext } from "@/store/OpenContext";
 
 // TODO add translations
 const Dashboard: FC = () => {
 	// Store
 	const transactionCTX = useContext(TransactionContext);
 	const settingsCTX = useContext(SettingsContext);
-
-	// Context
 	const { open } = useContext(OpenContext);
+
 	const panelId = "transactionPanel";
 
 	const handleOpenPanel = (): void => {

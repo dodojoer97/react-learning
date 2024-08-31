@@ -1,17 +1,45 @@
 // src/repositories/TransactionRepository.ts
 import { adminDb } from "../config/firebase";
+import { QuerySnapshot, DocumentData } from "firebase-admin/firestore";
 import { Transaction } from "@common";
+
 class TransactionRepository {
 	private recordsCollection = adminDb.collection("records");
 
 	async addTransaction(record: Transaction): Promise<void> {
-		const TransactionDoc = this.recordsCollection.doc(record.id);
-		await TransactionDoc.set(record);
+		const transactionDoc = this.recordsCollection.doc(record.id);
+		await transactionDoc.set(record);
 	}
 
 	async getTransactionsByUser(userId: string): Promise<Transaction[]> {
 		const snapshot = await this.recordsCollection.where("userId", "==", userId).get();
-		return snapshot.docs.map((doc: any) => doc.data() as Transaction);
+		return snapshot.docs.map((doc) => doc.data() as Transaction);
+	}
+
+	// Get transaction snapshot for a specific user
+	async getTransactionSnapshotForUser(
+		transactionId: string,
+		userId: string
+	): Promise<QuerySnapshot<DocumentData>> {
+		const snapshot = await this.recordsCollection
+			.where("id", "==", transactionId)
+			.where("userId", "==", userId)
+			.get();
+		return snapshot;
+	}
+
+	// Edit a transaction for a specific user
+	async editTransactionForUser(
+		snapshot: QuerySnapshot<DocumentData>, // Pass the snapshot directly
+		newTransactionData: Partial<Transaction>
+	): Promise<void> {
+		if (!snapshot.empty) {
+			// Assuming only one document is returned since id should be unique
+			const docRef = snapshot.docs[0].ref;
+			await docRef.update(newTransactionData);
+		} else {
+			throw new Error(`Transaction does not exist for the provided user`);
+		}
 	}
 }
 

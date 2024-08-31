@@ -41,6 +41,17 @@ class TransactionController {
 			res.status(500).send(error.message);
 		}
 	}
+
+	async updateTransaction(req: Request, res: Response): Promise<void> {
+		try {
+			const { transactionId, userId } = req.params;
+			const data: Partial<Transaction> = req.body;
+			await TransactionService.updateTransactionForUser(userId, transactionId, data);
+			res.status(200).send({ message: "Transaction updated successfully" });
+		} catch (error: any) {
+			res.status(500).send(error.message);
+		}
+	}
 }
 
 export default new TransactionController();

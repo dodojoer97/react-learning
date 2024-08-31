@@ -10,6 +10,24 @@ class TransactionService {
 	async fetchTransactionsByUser(userId: string): Promise<Transaction[]> {
 		return await TransactionRepository.getTransactionsByUser(userId);
 	}
+
+	// Update a transaction for a specific user
+	async updateTransactionForUser(
+		userId: string,
+		transactionId: string,
+		newData: Partial<Transaction>
+	): Promise<void> {
+		const snapshot = await TransactionRepository.getTransactionSnapshotForUser(
+			transactionId,
+			userId
+		);
+		if (snapshot.empty) {
+			throw new Error(
+				`Transaction with ID ${transactionId} does not exist for user ${userId}`
+			);
+		}
+		await TransactionRepository.editTransactionForUser(snapshot, newData);
+	}
 }
 
 export default new TransactionService();

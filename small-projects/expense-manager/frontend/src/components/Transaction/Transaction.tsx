@@ -8,6 +8,7 @@ import { TransactionWithCategory } from "@/mappers/TransactionCategoryAssigner";
 // Store
 import { SettingsContext } from "@/store/SettingsContext";
 import { TransactionContext } from "@/store/TransactionContext";
+import { OpenContext } from "@/store/OpenContext";
 
 // FontAwesome Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -24,6 +25,9 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 	// Store
 	const settingsCTX = useContext(SettingsContext);
 	const transactionCTX = useContext(TransactionContext);
+	const { open } = useContext(OpenContext);
+
+	const panelId = "transactionPanel";
 
 	// Translation
 	const { i18n } = useTranslation();
@@ -42,6 +46,7 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 	// Methods
 	const handleClick = (): void => {
 		transactionCTX.selectTransaction(transaction);
+		open(panelId);
 	};
 
 	return (

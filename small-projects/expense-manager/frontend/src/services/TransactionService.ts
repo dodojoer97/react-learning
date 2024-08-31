@@ -49,6 +49,31 @@ class TransactionService extends BaseService implements ITransactionService {
 		return this.buildTransactions(fetchedTransactions);
 	}
 
+	/**
+	 * Edits an existing transaction using a PUT request.
+	 *
+	 * @param {string} transactionId - The ID of the transaction to be updated.
+	 * @param {Transaction} updatedTransaction - The complete transaction data to replace the old one.
+	 * @returns {Promise<void>} - A promise that resolves when the transaction is fully updated.
+	 */
+	async editTransaction(
+		userId: string,
+		transactionId: string,
+		updatedTransaction: Transaction
+	): Promise<void> {
+		try {
+			this.validateTransaction(updatedTransaction);
+			await this.put<Transaction>(
+				`transactions/${userId}/${transactionId}`,
+				updatedTransaction
+			);
+		} catch (error) {
+			if (isError(error)) {
+				throw error;
+			}
+		}
+	}
+
 	private buildTransactions(fetchedTransactions: Transaction[]): Transaction[] {
 		const categories: Transaction[] = fetchedTransactions.map(
 			(transaction) =>

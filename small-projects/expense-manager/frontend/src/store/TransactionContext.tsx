@@ -91,13 +91,31 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	};
 
 	// Method to update an existing transaction in the transactions list
-	const editTransaction = async (transaction: Transaction): Promise<OperationStatus> => {
+	const editTransaction = async (updatedTransaction: Transaction): Promise<OperationStatus> => {
 		const operationStatus = new OperationStatus();
-		setTransactions((prev) => prev.map((t) => (t.id === transaction.id ? transaction : t)));
-
-		return operationStatus;
+		try {
+			if (!user?.uid) throw new Error("User id is mandatory in fetchTransactions");
+			setLoading(true);
+			await transactionService.editTransaction(
+				user.uid,
+				updatedTransaction.id,
+				updatedTransaction
+			);
+			setTransactions((prev) =>
+				prev.map((t) => (t.id === updatedTransaction.id ? updatedTransaction : t))
+			);
+			operationStatus.ok = true;
+		} catch (error) {
+			console.error("Failed to update transaction:", error);
+			if (isError(error)) {
+				setError(error.message || "");
+			}
+			operationStatus.ok = false;
+		} finally {
+			setLoading(false);
+			return operationStatus;
+		}
 	};
-
 	// Method to select a transaction and initialize the draft for editing
 	const selectTransaction = (transaction: Transaction): void => {
 		setSelectedTransaction(transaction);

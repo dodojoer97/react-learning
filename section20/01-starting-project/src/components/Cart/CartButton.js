@@ -1,11 +1,12 @@
 import classes from './CartButton.module.css';
 
+// Store
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleCart } from '../../store/index'; // Adjust the path as needed
+import { toggleCart } from '../../store/index'; 
 
 const CartButton = (props) => {
 
-  const dispatch = useDispatch(); // Make sure this line is included
+  const dispatch = useDispatch();
 
     // Access the number of items in the cart from the Redux state
     const cartItemCount = useSelector((state) => {

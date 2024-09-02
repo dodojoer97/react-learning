@@ -12,7 +12,7 @@ import { OpenContext } from "@/store/OpenContext";
 
 // FontAwesome Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { IconDefinition, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 
 // Translation
 import { useTranslation } from "react-i18next";
@@ -31,6 +31,10 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 
 	// Translation
 	const { i18n } = useTranslation();
+
+	// Computed
+	// TODO make global, to use in othe places
+	const icon: IconDefinition = transaction.type === "expense" ? faMinus : faPlus;
 
 	// TODO move to context
 	// Formats the date based on the current i18n language,
@@ -75,7 +79,10 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 						className="text-lg text-gray-800 font-semibold"
 						aria-label="Transaction Amount"
 					>
-						{settingsCTX.currency.value} {transaction.amount.toFixed(2)}
+						<div>
+							<FontAwesomeIcon icon={icon} className="text-xs" />
+							{settingsCTX.currency.value} {transaction.amount.toFixed(2)}
+						</div>
 					</div>
 				</div>
 			</div>

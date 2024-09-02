@@ -11,8 +11,22 @@ class TransactionRepository {
 		await transactionDoc.set(record);
 	}
 
-	async getTransactionsByUser(userId: string): Promise<Transaction[]> {
-		const snapshot = await this.recordsCollection.where("userId", "==", userId).get();
+	async getTransactionsByUser(
+		userId: string,
+		startDate?: Date,
+		endDate?: Date
+	): Promise<Transaction[]> {
+		let query = this.recordsCollection.where("userId", "==", userId);
+
+		if (startDate) {
+			query = query.where("date", ">=", startDate);
+		}
+
+		if (endDate) {
+			query = query.where("date", "<=", endDate);
+		}
+
+		const snapshot = await query.get();
 		return snapshot.docs.map((doc) => doc.data() as Transaction);
 	}
 

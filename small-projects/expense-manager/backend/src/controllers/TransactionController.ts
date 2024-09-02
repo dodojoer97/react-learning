@@ -35,8 +35,17 @@ class TransactionController {
 	async getTransactionsByUser(req: Request, res: Response): Promise<void> {
 		try {
 			const { userId } = req.params;
-			const Transactions = await TransactionService.fetchTransactionsByUser(userId);
-			res.status(200).send(Transactions);
+			const { startDate, endDate } = req.query;
+
+			const parsedStartDate = startDate ? new Date(startDate as string) : undefined;
+			const parsedEndDate = endDate ? new Date(endDate as string) : undefined;
+
+			const transactions = await TransactionService.fetchTransactionsByUser(
+				userId,
+				parsedStartDate,
+				parsedEndDate
+			);
+			res.status(200).send(transactions);
 		} catch (error: any) {
 			res.status(500).send(error.message);
 		}

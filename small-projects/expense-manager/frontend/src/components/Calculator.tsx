@@ -41,6 +41,7 @@ const Calculator: FC<ICalculatorProps> = ({
 	const [operation, setOperation] = useState<Operation | null>(null);
 
 	// Computed
+	// TODO make global, to use in othe places
 	const icon: IconDefinition =
 		transactionCTX.draftTransaction?.type === "expense" ? faMinus : faPlus;
 	// Methods

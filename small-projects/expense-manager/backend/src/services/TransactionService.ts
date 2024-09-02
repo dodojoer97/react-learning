@@ -7,10 +7,13 @@ class TransactionService {
 		await TransactionRepository.addTransaction({ ...transaction });
 	}
 
-	async fetchTransactionsByUser(userId: string): Promise<Transaction[]> {
-		return await TransactionRepository.getTransactionsByUser(userId);
+	async fetchTransactionsByUser(
+		userId: string,
+		startDate?: Date,
+		endDate?: Date
+	): Promise<Transaction[]> {
+		return TransactionRepository.getTransactionsByUser(userId, startDate, endDate);
 	}
-
 	// Update a transaction for a specific user
 	async updateTransactionForUser(
 		userId: string,

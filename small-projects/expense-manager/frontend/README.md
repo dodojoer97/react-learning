@@ -11,28 +11,33 @@ This section outlines the application's routing and page layout, providing detai
 ### Routes
 
 1. **Home Page (`/`)**
-   - **Components**: Header
-   - **Description**: Presents a welcoming title and brief description of the application, serving as an entry point to other features.
 
-2. **Expenses (`/expenses`)**
-   - **Components**: Header, Expense List, Expense Form, Category Filter, Date Range Picker
-   - **Description**: This page is dedicated to expense management, allowing users to add new expenses, edit existing ones, and filter through expenses by category or date.
+    - **Components**: Header
+    - **Description**: Presents a welcoming title and brief description of the application, serving as an entry point to other features.
 
-3. **Analytics (`/analytics`)**
-   - **Components**: Header, Chart Components (Pie Chart, Bar Graph), Date Range Picker
-   - **Description**: Provides visual analytics of financial data, enabling users to gain insights through charts and graphs based on selected date ranges.
+2. **Dashboard (`/dashboard`)**
+
+    - **Components**: Header, 5 last records(expenses or incomes), pie chart of last period(month, week, year), time period seletor(last 30D, last week, last year), a button to add transactions
+    - **Description**: Provides visual analytics of financial data, enabling users to gain insights through charts and graphs based on selected date ranges.
+
+3. **Records (`/records`)**
+
+    - **Components**: Header, List of all records, filtered by type(dropdown or tabs), autocomplete to find a speciic transaction
+    - **Description**: Provides visual analytics of financial data, enabling users to gain insights through charts and graphs based on selected date ranges.
 
 4. **Login Page (`/login`)**
-   - **Components**: Header, Login Component
-   - **Description**: Facilitates user authentication with a form for entering credentials. This page provides access to registered users to manage their expenses.
+
+    - **Components**: Header, Login Component
+    - **Description**: Facilitates user authentication with a form for entering credentials. This page provides access to registered users to manage their expenses.
 
 5. **Signup Page (`/signup`)**
-   - **Components**: Header, Signup Component
-   - **Description**: Allows new users to create an account, enabling them to use the application's features to manage personal finances.
+
+    - **Components**: Header, Signup Component
+    - **Description**: Allows new users to create an account, enabling them to use the application's features to manage personal finances.
 
 6. **Settings Page (`/settings`)**
-   - **Components**: Header, Settings Component
-   - **Description**: Enables users to customize application settings such as currency or theme preferences. Provides tools to manage account details and configuration.
+    - **Components**: Header, Settings Component
+    - **Description**: Enables users to customize application settings such as currency or theme preferences. Provides tools to manage account details and configuration.
 
 ## Key Components
 
@@ -55,11 +60,6 @@ This section outlines the application's routing and page layout, providing detai
 
 -   **Purpose**: Enables expenses to be filtered based on categories.
 -   **Features**: Utilizes a dropdown or button group for category selection.
-
-### 5. Date Range Picker Component
-
--   **Purpose**: Filters expenses over a selected date range.
--   **Features**: Integrates a date range picker tool for defining specific start and end dates.
 
 ### 6. Summary Component
 

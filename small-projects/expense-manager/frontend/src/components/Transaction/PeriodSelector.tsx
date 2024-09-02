@@ -21,6 +21,7 @@ const PeriodSelector: FC = () => {
 			<Button className="left-arrow">
 				<FontAwesomeIcon icon={faChevronLeft} />
 			</Button>
+			<div className=""></div>
 			<Button className="right-arrow">
 				<FontAwesomeIcon icon={faChevronRight} />
 			</Button>

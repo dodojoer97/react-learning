@@ -8,8 +8,8 @@ import { Transaction } from "@common";
 // Components
 import Layout from "@/components/UI/Layout";
 import Button from "@/components/UI/Button";
-
 import TransactionList from "@/components/Transaction/TransactionList";
+import PeriodSelector from "@/components/Transaction/PeriodSelector";
 
 // FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -55,14 +55,17 @@ const Dashboard: FC = () => {
 
 				<p className="mt-4 text-gray-500">Lorem, ipsum.</p>
 			</div>
+
+			<TransactionList />
+
+			<PeriodSelector />
+
 			<Button className="fixed bottom-20 right-10 rounded-lg" onClick={handleOpenPanel}>
 				<FontAwesomeIcon
 					className="cursor-pointer w-10 h-10 text-blue-600"
 					icon={faPlusCircle}
 				/>
 			</Button>
-
-			<TransactionList />
 		</Layout>
 	);
 };

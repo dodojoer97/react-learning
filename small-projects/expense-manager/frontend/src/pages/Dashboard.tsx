@@ -21,6 +21,7 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { TransactionContext, defaultTransaction } from "@/store/TransactionContext";
 import { SettingsContext } from "@/store/SettingsContext";
 import { OpenContext } from "@/store/OpenContext";
+import TransactionPie from "@/components/Analytics/TransactionPie";
 
 // TODO add translations
 const Dashboard: FC = () => {
@@ -58,7 +59,9 @@ const Dashboard: FC = () => {
 
 			<TransactionList />
 
-			<PeriodSelector />
+			{/* <PeriodSelector /> */}
+
+			<TransactionPie transactions={transactionCTX.getMappedTransactions("expense")} />
 
 			<Button className="fixed bottom-20 right-10 rounded-lg" onClick={handleOpenPanel}>
 				<FontAwesomeIcon

@@ -1,6 +1,6 @@
 // Types
 import { ILoadingContext } from "@/types/common/index";
-import { Transaction, OperationStatus } from "@common";
+import { Transaction, OperationStatus, CategoryType } from "@common";
 import { TransactionWithCategory } from "@/mappers/TransactionCategoryAssigner";
 
 export interface ITransactionContext extends ILoadingContext {
@@ -14,5 +14,5 @@ export interface ITransactionContext extends ILoadingContext {
 	updateDraftTransaction(updates: Partial<Transaction>): void; // New method
 	saveDraftTransaction(): Promise<OperationStatus>;
 	fetchTransactions(): Promise<void>;
-	getMappedTransactions(): TransactionWithCategory[];
+	getMappedTransactions(type?: CategoryType): TransactionWithCategory[];
 }

@@ -177,10 +177,21 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		}
 	};
 
-	const getMappedTransactions = (): TransactionWithCategory[] => {
+	const getMappedTransactions = (type?: CategoryType): TransactionWithCategory[] => {
 		const mapper = new TransactionCategoryAssigner(settingsCTX.categories);
 		try {
-			const mappedTransactions = mapper.assignCategoriesToTransactions(transactions);
+			let mappedTransactions = mapper.assignCategoriesToTransactions(transactions);
+
+			if (type === "expense") {
+				mappedTransactions = mappedTransactions.filter(
+					({ transaction }) => transaction.type === "expense"
+				);
+			} else if (type === "income") {
+				mappedTransactions = mappedTransactions.filter(
+					({ transaction }) => transaction.type === "income"
+				);
+			}
+
 			return mappedTransactions;
 		} catch (error) {
 			if (isError(error)) {
@@ -190,7 +201,6 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 			return [];
 		}
 	};
-
 	// The context value that will be provided to the consuming components
 	const contextValue = {
 		loading,

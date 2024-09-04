@@ -9,6 +9,10 @@ export default defineConfig({
 		alias: {
 			"@/": `${path.resolve(__dirname, "src")}/`,
 			"@common": `${path.resolve(__dirname, "../common")}/`,
+			"@tailwindConfig": path.resolve(__dirname, "tailwind.config.js"),
 		},
+	},
+	optimizeDeps: {
+		include: ["@tailwindConfig"],
 	},
 });

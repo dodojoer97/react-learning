@@ -1,0 +1,38 @@
+{
+	"compilerOptions": {
+		/* Language and Environment */
+		"target": "ESNext" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+		"lib": [
+			"DOM",
+			"DOM.Iterable",
+			"ESNext"
+		] /* Include library declarations for browser and ESNext features. */,
+		"jsx": "react-jsx" /* Specify what JSX code is generated (React 17+ JSX transformation). */,
+
+		/* Modules */
+		"module": "ESNext" /* Use ESNext modules for compatibility with modern tooling like Vite. */,
+		"moduleResolution": "Node" /* Use Node's module resolution algorithm. */,
+		"esModuleInterop": true /* Enable compatibility with CommonJS modules. */,
+		"allowSyntheticDefaultImports": true /* Allow default imports from modules without a default export. */,
+		"resolveJsonModule": true /* Enable importing JSON modules. */,
+		"isolatedModules": true /* Ensure each file can be transpiled independently (important for Vite). */,
+
+		/* Output */
+		"outDir": "./dist" /* Specify the output directory for compiled files. */,
+		"removeComments": true /* Disable emitting comments in compiled output. */,
+		"noEmit": false /* Allow TypeScript to emit compiled output. */,
+
+		/* Type Checking */
+		"strict": true /* Enable all strict type-checking options. */,
+		"forceConsistentCasingInFileNames": true /* Ensure consistent casing in file names. */,
+		"skipLibCheck": true /* Skip type checking of all declaration files. */,
+
+		/* Paths */
+		"baseUrl": "." /* Base directory to resolve non-relative imports. */,
+		"paths": {
+			"@/*": ["src/*"] /* Define a shortcut for the 'src' folder. */
+		}
+	},
+	"include": ["src"] /* Include all source files in the 'src' folder. */,
+	"exclude": ["node_modules", "dist"] /* Exclude unnecessary folders from compilation. */
+}

@@ -16,7 +16,7 @@
 		"allowSyntheticDefaultImports": true /* Allow default imports from modules without a default export. */,
 		"resolveJsonModule": true /* Enable importing JSON modules. */,
 		"isolatedModules": true /* Ensure each file can be transpiled independently (important for Vite). */,
-
+		"allowJs": true,
 		/* Output */
 		"outDir": "./dist" /* Specify the output directory for compiled files. */,
 		"removeComments": true /* Disable emitting comments in compiled output. */,
@@ -30,7 +30,8 @@
 		/* Paths */
 		"baseUrl": "." /* Base directory to resolve non-relative imports. */,
 		"paths": {
-			"@/*": ["src/*"] /* Define a shortcut for the 'src' folder. */
+			"@/*": ["src/*"] /* Define a shortcut for the 'src' folder. */,
+			"@tailwindConfig": ["tailwind.config.ts"]
 		}
 	},
 	"include": ["src"] /* Include all source files in the 'src' folder. */,

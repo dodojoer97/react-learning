@@ -18,9 +18,6 @@ const Header: React.FC<HeaderProps> = ({ sidebarOpen, setSidebarOpen, variant = 
 	// State
 	const [searchModalOpen, setSearchModalOpen] = useState<boolean>(false);
 
-	// Store
-	const { user, logout } = useContext(AuthContext);
-
 	return (
 		<header
 			className={`sticky top-0 before:absolute before:inset-0 before:backdrop-blur-md max-lg:before:bg-white/90 dark:max-lg:before:bg-gray-800/90 before:-z-10 z-30 ${
@@ -101,7 +98,7 @@ const Header: React.FC<HeaderProps> = ({ sidebarOpen, setSidebarOpen, variant = 
 						<ThemeToggle />
 						{/*  Divider */}
 						<hr className="w-px h-6 bg-gray-200 dark:bg-gray-700/60 border-none" />
-						{user && <UserMenu align="right" />}
+						<UserMenu align="right" />
 					</div>
 				</div>
 			</div>

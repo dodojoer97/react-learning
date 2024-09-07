@@ -1,12 +1,16 @@
-import React, { useState, useRef, useEffect, FC } from "react";
+import React, { useState, useRef, useEffect, FC, useContext } from "react";
 import { Link } from "react-router-dom";
 import Transition from "../utils/Transition";
 
 // Translation
 import { useTranslation } from "react-i18next";
 
+// Store
+import { AuthContext } from "@/store/AuthContext";
+
 import UserAvatar from "../images/user-avatar-32.png";
 
+// Store
 interface DropdownProfileProps {
 	align?: "left" | "right";
 }
@@ -15,6 +19,10 @@ const DropdownProfile: FC<DropdownProfileProps> = ({ align = "left" }) => {
 	// TODO add translation
 	const { t } = useTranslation("header");
 
+	// Store
+	const { logout, user } = useContext(AuthContext);
+
+	// State
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 
 	const trigger = useRef<HTMLButtonElement>(null);
@@ -46,6 +54,11 @@ const DropdownProfile: FC<DropdownProfileProps> = ({ align = "left" }) => {
 		document.addEventListener("keydown", keyHandler);
 		return () => document.removeEventListener("keydown", keyHandler);
 	}, [dropdownOpen]);
+
+	// Methods
+	const handleSignout = (): void => {
+		logout();
+	};
 
 	return (
 		<div className="relative inline-flex">
@@ -98,28 +111,55 @@ const DropdownProfile: FC<DropdownProfileProps> = ({ align = "left" }) => {
 							Acme Inc.
 						</div>
 						<div className="text-xs text-gray-500 dark:text-gray-400 italic">
+							{/* TODO, add a field for username in signup */}
 							Administrator
 						</div>
 					</div>
 					<ul>
-						<li>
-							<Link
-								className="font-medium text-sm text-violet-500 hover:text-violet-600 dark:hover:text-violet-400 flex items-center py-1 px-3"
-								to="/settings"
-								onClick={() => setDropdownOpen(!dropdownOpen)}
-							>
-								Settings
-							</Link>
-						</li>
-						<li>
-							<Link
-								className="font-medium text-sm text-violet-500 hover:text-violet-600 dark:hover:text-violet-400 flex items-center py-1 px-3"
-								to="/signin"
-								onClick={() => setDropdownOpen(!dropdownOpen)}
-							>
-								Sign Out
-							</Link>
-						</li>
+						{user && (
+							<>
+								<li>
+									<Link
+										className="font-medium text-sm text-violet-500 hover:text-violet-600 dark:hover:text-violet-400 flex items-center py-1 px-3"
+										to="/settings"
+										onClick={() => setDropdownOpen(!dropdownOpen)}
+									>
+										Settings
+									</Link>
+								</li>
+								<li>
+									<Link
+										className="font-medium text-sm text-violet-500 hover:text-violet-600 dark:hover:text-violet-400 flex items-center py-1 px-3"
+										to="/login"
+										onClick={handleSignout}
+									>
+										Sign Out
+									</Link>
+								</li>
+							</>
+						)}
+						{!user && (
+							<>
+								<li>
+									<Link
+										className="font-medium text-sm text-violet-500 hover:text-violet-600 dark:hover:text-violet-400 flex items-center py-1 px-3"
+										to="/login"
+										onClick={() => setDropdownOpen(!dropdownOpen)}
+									>
+										Login
+									</Link>
+								</li>
+								<li>
+									<Link
+										className="font-medium text-sm text-violet-500 hover:text-violet-600 dark:hover:text-violet-400 flex items-center py-1 px-3"
+										to="/signup"
+										onClick={handleSignout}
+									>
+										Sign up
+									</Link>
+								</li>
+							</>
+						)}
 					</ul>
 				</div>
 			</Transition>

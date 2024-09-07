@@ -11,27 +11,25 @@ import Dashboard from "@/pages/Dashboard";
 
 export interface RouteConfig {
 	title: string;
-	path: string;
-	component: ReactNode;
-	isProtected: boolean;
+	path?: string;
+	component?: ReactNode;
+	isProtected?: boolean;
+	sidebarDisplay?: boolean;
+	children?: RouteConfig[];
 }
 
-export interface RouteGroup {
-	title: string;
-	subRoutes: RouteConfig[];
-	sidebarDisplay: boolean;
-}
-
-export const routeConfig: RouteGroup[] = [
+export const routeConfig: RouteConfig[] = [
 	{
 		title: "Home",
-		sidebarDisplay: false,
-		subRoutes: [{ title: "home", path: "/", component: <Home />, isProtected: false }],
+		sidebarDisplay: true,
+		path: "/",
+		component: <Home />,
+		isProtected: false,
 	},
 	{
 		title: "Dashboard",
 		sidebarDisplay: false,
-		subRoutes: [
+		children: [
 			{
 				title: "Main",
 				path: "/dashboard",
@@ -49,7 +47,7 @@ export const routeConfig: RouteGroup[] = [
 	{
 		title: "Settings",
 		sidebarDisplay: true,
-		subRoutes: [
+		children: [
 			{
 				title: "Preferences",
 				path: "/settings",
@@ -67,7 +65,7 @@ export const routeConfig: RouteGroup[] = [
 	{
 		title: "Auth",
 		sidebarDisplay: false,
-		subRoutes: [
+		children: [
 			{
 				title: "login",
 				path: "/login",

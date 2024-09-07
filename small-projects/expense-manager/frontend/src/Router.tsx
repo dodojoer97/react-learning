@@ -2,11 +2,11 @@
 import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
 import RouteWrapper from "./components/RouteWrapper";
 import PrivateRoute from "./components/PrivateRoute";
-import { routeConfig, RouteConfig, RouteGroup } from "@/config/routes";
+import { routeConfig, RouteConfig } from "@/config/routes";
 
 // routes without grouping
-const routes: RouteConfig[] = routeConfig.flatMap((group: RouteGroup) => {
-	return group.subRoutes;
+const routes: RouteConfig[] = routeConfig.flatMap((config: RouteConfig) => {
+	return config.children ? config.children : config;
 });
 const router = createBrowserRouter(
 	createRoutesFromElements(

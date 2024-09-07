@@ -97,7 +97,7 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen, variant = "def
 						</svg>
 					</button>
 					{/* Logo */}
-					<NavLink end to="/" className="block">
+					<NavLink end to="/dashboard" className="block">
 						<svg
 							className="fill-violet-500"
 							xmlns="http://www.w3.org/2000/svg"

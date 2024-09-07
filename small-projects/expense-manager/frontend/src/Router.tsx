@@ -2,12 +2,16 @@
 import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
 import RouteWrapper from "./components/RouteWrapper";
 import PrivateRoute from "./components/PrivateRoute";
-import { routeConfig } from "@/config/routes";
+import { routeConfig, RouteConfig, RouteGroup } from "@/config/routes";
 
+// routes without grouping
+const routes: RouteConfig[] = routeConfig.flatMap((group: RouteGroup) => {
+	return group.subRoutes;
+});
 const router = createBrowserRouter(
 	createRoutesFromElements(
 		<>
-			{routeConfig.map(({ path, component: Component, isProtected }) => (
+			{routes.map(({ path, component: Component, isProtected }) => (
 				<Route
 					key={path}
 					path={path}

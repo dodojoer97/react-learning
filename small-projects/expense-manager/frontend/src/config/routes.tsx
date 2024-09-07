@@ -2,50 +2,84 @@
 import { ReactNode } from "react";
 
 // Routes
+import Home from "@/pages/Home";
 import LoginPage from "@/pages/Login";
-import HomePage from "@/pages/Home";
 import SignUp from "@/pages/Signup";
 import Settings from "@/pages/Settings";
 import Categories from "@/pages/Categories";
 import Dashboard from "@/pages/Dashboard";
 
-// Define the interface for a route configuration
 export interface RouteConfig {
+	title: string;
 	path: string;
 	component: ReactNode;
 	isProtected: boolean;
 }
 
-// Create the route configuration array
-export const routeConfig: RouteConfig[] = [
+export interface RouteGroup {
+	title: string;
+	subRoutes: RouteConfig[];
+	sidebarDisplay: boolean;
+}
+
+export const routeConfig: RouteGroup[] = [
 	{
-		path: "/login",
-		component: <LoginPage />,
-		isProtected: false,
+		title: "Home",
+		sidebarDisplay: false,
+		subRoutes: [{ title: "home", path: "/", component: <Home />, isProtected: false }],
 	},
 	{
-		path: "/",
-		component: <HomePage />,
-		isProtected: false,
+		title: "Dashboard",
+		sidebarDisplay: false,
+		subRoutes: [
+			{
+				title: "Main",
+				path: "/dashboard",
+				component: <Dashboard />,
+				isProtected: true,
+			},
+			{
+				title: "Analytics",
+				path: "/dashboard/analytics",
+				component: <> </>,
+				isProtected: true,
+			},
+		],
 	},
 	{
-		path: "/signup",
-		component: <SignUp />,
-		isProtected: false,
+		title: "Settings",
+		sidebarDisplay: true,
+		subRoutes: [
+			{
+				title: "Preferences",
+				path: "/settings",
+				component: <Settings />,
+				isProtected: true,
+			},
+			{
+				title: "Categories",
+				path: "/settings/categories",
+				component: <Categories />,
+				isProtected: true,
+			},
+		],
 	},
 	{
-		path: "/settings",
-		component: <Settings />,
-		isProtected: true,
-	},
-	{
-		path: "/settings/categories",
-		component: <Categories />,
-		isProtected: true,
-	},
-	{
-		path: "/dashboard",
-		component: <Dashboard />,
-		isProtected: true,
+		title: "Auth",
+		sidebarDisplay: false,
+		subRoutes: [
+			{
+				title: "login",
+				path: "/login",
+				component: <LoginPage />,
+				isProtected: false,
+			},
+			{
+				title: "signup",
+				path: "/signup",
+				component: <SignUp />,
+				isProtected: false,
+			},
+		],
 	},
 ];

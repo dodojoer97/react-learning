@@ -50,13 +50,7 @@ const Dashboard: FC = () => {
 	}, []);
 
 	return (
-		<Layout>
-			<div className="mx-auto max-w-lg text-center relative">
-				<h1 className="text-2xl font-bold sm:text-3xl">Dashboard</h1>
-
-				<p className="mt-4 text-gray-500">Lorem, ipsum.</p>
-			</div>
-
+		<Layout title="Dashboard">
 			<TransactionList />
 
 			{/* <PeriodSelector /> */}

@@ -27,8 +27,25 @@ export const routeConfig: RouteConfig[] = [
 		isProtected: false,
 	},
 	{
+		title: "Records",
+		children: [
+			{
+				title: "Main",
+				path: "/dashboard",
+				component: <Dashboard />,
+				isProtected: true,
+			},
+			{
+				title: "Analytics",
+				path: "/dashboard/analytics",
+				component: <> </>,
+				isProtected: true,
+			},
+		],
+	},
+	{
 		title: "Dashboard",
-		sidebarDisplay: false,
+		sidebarDisplay: true,
 		children: [
 			{
 				title: "Main",

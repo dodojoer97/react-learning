@@ -69,12 +69,12 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen, variant = "def
 	const sidebarLinks: RouteConfig[] = routeConfig.filter((group) => group.sidebarDisplay);
 
 	// Render the links
-	const links = sidebarLinks.map((config: RouteConfig): ReactNode => {
+	const links = sidebarLinks.map((config: RouteConfig, index: number): ReactNode => {
 		const activecondition: boolean = pathname.includes(config.title.toLowerCase());
 		return (
-			<>
+			<span key={`${config.path}-${index}`}>
 				{config.children && (
-					<SidebarLinkGroup activecondition={activecondition} key={config.path}>
+					<SidebarLinkGroup activecondition={activecondition}>
 						{(handleClick, open) => {
 							return (
 								<>
@@ -159,7 +159,6 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen, variant = "def
 
 				{!config.children && (
 					<li
-						key={config.path}
 						className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${
 							activecondition &&
 							"from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"
@@ -195,7 +194,7 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen, variant = "def
 						</NavLink>
 					</li>
 				)}
-			</>
+			</span>
 		);
 	});
 

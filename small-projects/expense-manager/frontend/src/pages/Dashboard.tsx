@@ -11,6 +11,7 @@ import Button from "@/components/UI/Button";
 import TransactionList from "@/components/Transaction/TransactionList";
 import PeriodSelector from "@/components/Transaction/PeriodSelector";
 import RightActions from "@/components/Dashboard/RightActions";
+import ModalBasic from "@/templates/mosaic/components/ModalBasic";
 
 // FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -29,14 +30,9 @@ const Dashboard: FC = () => {
 	// Store
 	const transactionCTX = useContext(TransactionContext);
 	const settingsCTX = useContext(SettingsContext);
-	const { open } = useContext(OpenContext);
+	const { isOpen, close } = useContext(OpenContext);
 
-	const panelId = "transactionPanel";
-
-	const handleOpenPanel = (): void => {
-		transactionCTX.selectTransaction(defaultTransaction);
-		open(panelId);
-	};
+	const dashboardModalId = "dashboard-modal";
 
 	useEffect(() => {
 		// If we did not load any categories, request them
@@ -51,20 +47,26 @@ const Dashboard: FC = () => {
 	}, []);
 
 	return (
-		<Layout title="Dashboard" rightComponent={<RightActions />}>
-			<TransactionList />
+		<>
+			<Layout title="Dashboard" rightComponent={<RightActions />}>
+				<TransactionList />
 
-			{/* <PeriodSelector /> */}
+				{/* <PeriodSelector /> */}
 
-			<TransactionPie transactions={transactionCTX.getMappedTransactions("expense")} />
-
-			{/* <Button className="fixed bottom-20 right-10 rounded-lg" onClick={handleOpenPanel}>
+				{/* <Button className="fixed bottom-20 right-10 rounded-lg" onClick={handleOpenPanel}>
 				<FontAwesomeIcon
 					className="cursor-pointer w-10 h-10 text-blue-600"
 					icon={faPlusCircle}
 				/>
 			</Button> */}
-		</Layout>
+			</Layout>
+			<ModalBasic
+				id="basic-modal"
+				modalOpen={isOpen(dashboardModalId)}
+				title="hey"
+				setModalOpen={() => close(dashboardModalId)}
+			></ModalBasic>
+		</>
 	);
 };
 

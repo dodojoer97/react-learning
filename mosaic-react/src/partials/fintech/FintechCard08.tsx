@@ -5,7 +5,7 @@ import LineChart from "../../charts/LineChart07";
 // Import utilities
 import { tailwindConfig, hexToRGB } from "../../utils/Utils";
 
-const FintechCard09: React.FC = () => {
+const FintechCard08: React.FC = () => {
 	const chartData = {
 		labels: ["2010", "Age 65"],
 		datasets: [

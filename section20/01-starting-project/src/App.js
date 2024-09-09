@@ -9,6 +9,8 @@ import Notification from "./components/UI/Notification"
 // Store
 import { uiActions } from "./store/ui-slice"
 
+let isInitial = true
+
 function App() {
 	const dispatch = useDispatch()
 	const showCart = useSelector((state) => state.ui.cartIsVisible)
@@ -46,6 +48,11 @@ function App() {
 			)
 		}
 
+    if(isInitial) {
+      isInitial = false
+      return
+    }
+    
 		sendCartData().catch((err) => {
 			dispatch(
 				uiActions.showNotification({

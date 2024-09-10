@@ -9,26 +9,26 @@ interface ModalBasicProps {
 	setModalOpen: (open: boolean) => void;
 }
 
-let isInitial = true;
-
 function ModalBasic({ children, id, title, modalOpen, setModalOpen }: ModalBasicProps) {
 	const modalContent = useRef<HTMLDivElement>(null);
 
-	// close on click outside
+	// Close on click outside by targeting the backdrop specifically
 	useEffect(() => {
-		const clickHandler = ({ target }: MouseEvent) => {
-			if (!modalOpen || modalContent.current?.contains(target as Node)) return;
-			console.log("fired");
-			setModalOpen(false);
+		const clickHandler = (event: MouseEvent) => {
+			if (!modalOpen) return;
+			if (event.target === event.currentTarget) {
+				// Checks if the click is directly on the backdrop, not bubbled from children
+				setModalOpen(false);
+			}
 		};
 		document.addEventListener("click", clickHandler);
 		return () => document.removeEventListener("click", clickHandler);
 	}, [modalOpen, setModalOpen]);
 
-	// close if the esc key is pressed
+	// Close if the ESC key is pressed
 	useEffect(() => {
 		const keyHandler = ({ keyCode }: KeyboardEvent) => {
-			if (!modalOpen || keyCode !== 27) return;
+			if (keyCode !== 27) return;
 			setModalOpen(false);
 		};
 		document.addEventListener("keydown", keyHandler);
@@ -48,6 +48,7 @@ function ModalBasic({ children, id, title, modalOpen, setModalOpen }: ModalBasic
 				leaveStart="opacity-100"
 				leaveEnd="opacity-0"
 				aria-hidden="true"
+				onClick={() => setModalOpen(false)}
 			/>
 			{/* Modal dialog */}
 			<Transition

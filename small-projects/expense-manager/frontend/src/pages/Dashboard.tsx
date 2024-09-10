@@ -12,6 +12,7 @@ import TransactionList from "@/components/Transaction/TransactionList";
 import PeriodSelector from "@/components/Transaction/PeriodSelector";
 import RightActions from "@/components/Dashboard/RightActions";
 import ModalBasic from "@/templates/mosaic/components/ModalBasic";
+import TransactionPanel from "@/components/Transaction/TransactionPanel";
 
 // FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,7 +24,6 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { TransactionContext, defaultTransaction } from "@/store/TransactionContext";
 import { SettingsContext } from "@/store/SettingsContext";
 import { OpenContext } from "@/store/OpenContext";
-import TransactionPie from "@/components/Analytics/TransactionPie";
 
 // TODO add translations
 const Dashboard: FC = () => {
@@ -65,7 +65,9 @@ const Dashboard: FC = () => {
 				modalOpen={isOpen(dashboardModalId)}
 				title="hey"
 				setModalOpen={() => close(dashboardModalId)}
-			></ModalBasic>
+			>
+				<TransactionPanel onSave={() => close(dashboardModalId)} />
+			</ModalBasic>
 		</>
 	);
 };

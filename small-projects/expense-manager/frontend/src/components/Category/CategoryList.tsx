@@ -1,4 +1,3 @@
-// React
 import type { FC } from "react";
 import { useContext, useEffect } from "react";
 
@@ -43,11 +42,11 @@ const CategoryList: FC<Props> = ({ onSelect }) => {
 	}, []);
 
 	return (
-		<ul className="px-4 text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
+		<ul className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 space-y-2">
 			{categoryList.map((category) => (
 				<li
 					key={category.id}
-					className="me-2 pb-2 cursor-pointer"
+					className="flex items-center p-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg cursor-pointer transition-colors"
 					onClick={() => handleSelect(category)}
 				>
 					<CategoryComp

@@ -1,12 +1,8 @@
-// React
 import type { FC, PropsWithChildren } from "react";
 import { createPortal } from "react-dom";
 
 // UI components
 import CloseButton from "./CloseButton";
-
-// CSS
-import "./SlidingPanel.css";
 
 type slideDirection = "from-left" | "from-right";
 
@@ -22,16 +18,21 @@ const SlidingPanel: FC<ISlidingPanelProps> = ({
 	slideDirection = "from-left",
 	children,
 }) => {
-	const openClass = isOpen ? "open" : "closed";
+	const openClass = isOpen
+		? "translate-x-0"
+		: slideDirection === "from-right"
+		? "translate-x-full"
+		: "-translate-x-full";
+	const panelDirection = slideDirection === "from-right" ? "right-0" : "left-0";
 
 	return createPortal(
 		<div
-			className={`sliding-panel overflow-y-auto overflow-x-hidden fullscreen bg-white fixed top-0 right-0 z-20 p-1 ${slideDirection} ${openClass} `}
+			className={`fixed inset-y-0 ${panelDirection} z-50 bg-white dark:bg-gray-800 shadow-lg w-full max-w-lg transform ${openClass} transition-transform duration-300 ease-in-out`}
 		>
-			<div className="flex justify-end px-2 py-1">
+			<div className="flex justify-end p-4">
 				<CloseButton onClose={onClose} />
 			</div>
-			{isOpen && children}
+			<div className="p-4 overflow-y-auto">{children}</div>
 		</div>,
 		document.querySelector("#sliding-panel") as HTMLDivElement
 	);

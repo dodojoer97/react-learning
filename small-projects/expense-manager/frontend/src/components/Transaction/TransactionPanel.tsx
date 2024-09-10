@@ -88,13 +88,6 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 				>
 					<TransactionForm onSave={() => toggleOpen("transactionForm")} />
 				</SlidingPanel>
-				<SlidingPanel
-					isOpen={isOpen("categorySelector")}
-					onClose={() => toggleOpen("categorySelector")}
-					slideDirection="from-right"
-				>
-					<CategoryList onSelect={() => toggleOpen("categorySelector")} />
-				</SlidingPanel>
 
 				{transactionCTX.error && (
 					<InputError message={transactionCTX.error} className="text-red-600" />

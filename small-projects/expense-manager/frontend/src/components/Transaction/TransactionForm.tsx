@@ -17,6 +17,7 @@ import Button from "@/components/UI/Button";
 import TextArea from "@/components/UI/TextArea";
 import InputError from "@/components/UI/InputError";
 import DatePicker from "@/components/UI/Datepicker";
+import CategoryList from "@/components/Category/CategoryList";
 
 // Hooks
 import useInput from "@/hooks/useInput";
@@ -45,6 +46,8 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 
 	return (
 		<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4" onSubmit={onSave}>
+			<CategoryList onSelect={() => {}} />
+
 			<DatePicker
 				date={dateField.value}
 				onChange={dateField.handleInputChange}

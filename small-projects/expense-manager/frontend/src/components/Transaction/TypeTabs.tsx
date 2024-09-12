@@ -26,7 +26,6 @@ const TypeTabs: FC<ITypeSelectProps> = ({ items, activeTab, onSelect }) => {
 						name={item.value}
 						isActive={activeTab === item.value}
 						onClick={() => onSelect(item.value as CategoryType)}
-						className="bg-blue-400 p-3 text-white flex-1 border-b-0"
 						displaySelected={false}
 					>
 						{item.value}

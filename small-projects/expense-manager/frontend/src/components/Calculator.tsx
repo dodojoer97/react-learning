@@ -1,4 +1,3 @@
-// React
 import { useState, useEffect, useContext } from "react";
 import type { FC, PropsWithChildren } from "react";
 
@@ -36,12 +35,11 @@ const Calculator: FC<ICalculatorProps> = ({
 	const [operation, setOperation] = useState<Operation | null>(null);
 
 	// Computed
-	// TODO make global, to use in othe places
 	const icon: IconDefinition =
 		transactionCTX.draftTransaction?.type === "expense" ? faMinus : faPlus;
+
 	// Methods
 	const handleNumberClick = (value: string) => {
-		// Prevent multiple decimal points in the same number
 		if (value === "." && currentInput.includes(".")) {
 			return;
 		}
@@ -97,6 +95,10 @@ const Calculator: FC<ICalculatorProps> = ({
 		setOperation(null);
 	};
 
+	const handleBackspace = () => {
+		setCurrentInput(currentInput.slice(0, -1) || "0");
+	};
+
 	// Emit the value to other components
 	useEffect(() => {
 		onChange(parseFloat(currentInput));
@@ -104,12 +106,12 @@ const Calculator: FC<ICalculatorProps> = ({
 
 	return (
 		<div
-			className={`p-6 h-[90%] shadow-lg rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col ${
+			className={`p-6 h-[90%] shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col ${
 				additionalClasses || ""
 			}`}
 		>
 			{/* Display */}
-			<div className="mb-5 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg text-right font-mono text-3xl flex-1 text-gray-900 dark:text-gray-100">
+			<div className="mb-5 p-4 bg-gray-100 dark:bg-gray-900 text-right font-mono text-3xl flex-1 text-gray-900 dark:text-gray-100">
 				<div className="flex h-full">
 					<div className="flex flex-1 items-center space-x-2">
 						<FontAwesomeIcon icon={icon} />
@@ -133,48 +135,125 @@ const Calculator: FC<ICalculatorProps> = ({
 
 			{/* Buttons */}
 			<div className="grid grid-cols-4 gap-2 h-full">
-				{["7", "8", "9", "+", "4", "5", "6", "*", "1", "2", "3", "-", "/"].map(
-					(digitOrOp) => (
-						<button
-							key={digitOrOp}
-							onClick={() =>
-								digitOrOp in { "+": 1, "-": 1, "*": 1, "/": 1 }
-									? handleOperationClick(digitOrOp as Operation)
-									: handleNumberClick(digitOrOp)
-							}
-							className={`p-4 ${
-								digitOrOp in { "+": 1, "-": 1, "*": 1, "/": 1 }
-									? "bg-green-600 dark:bg-green-500"
-									: "bg-blue-600 dark:bg-blue-500"
-							} text-white font-semibold rounded-lg shadow-lg hover:bg-opacity-90`}
-						>
-							{digitOrOp}
-						</button>
-					)
-				)}
+				{/* First row */}
+				<button className="p-4 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-sm shadow-lg">
+					%
+				</button>
+				<button
+					onClick={handleClear}
+					className="p-4 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-sm shadow-lg"
+				>
+					C
+				</button>
+				<button
+					onClick={handleBackspace}
+					className="p-4 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-sm shadow-lg"
+				>
+					⌫
+				</button>
+				<button
+					onClick={() => handleOperationClick("/")}
+					className="p-4 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-sm shadow-lg"
+				>
+					÷
+				</button>
+
+				{/* Second row */}
+				<button
+					onClick={() => handleNumberClick("7")}
+					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg"
+				>
+					7
+				</button>
+				<button
+					onClick={() => handleNumberClick("8")}
+					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg"
+				>
+					8
+				</button>
+				<button
+					onClick={() => handleNumberClick("9")}
+					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg"
+				>
+					9
+				</button>
+				<button
+					onClick={() => handleOperationClick("*")}
+					className="p-4 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-sm shadow-lg"
+				>
+					×
+				</button>
+
+				{/* Third row */}
+				<button
+					onClick={() => handleNumberClick("4")}
+					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg"
+				>
+					4
+				</button>
+				<button
+					onClick={() => handleNumberClick("5")}
+					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg"
+				>
+					5
+				</button>
+				<button
+					onClick={() => handleNumberClick("6")}
+					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg"
+				>
+					6
+				</button>
+				<button
+					onClick={() => handleOperationClick("-")}
+					className="p-4 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-sm shadow-lg"
+				>
+					−
+				</button>
+
+				{/* Fourth row */}
+				<button
+					onClick={() => handleNumberClick("1")}
+					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg"
+				>
+					1
+				</button>
+				<button
+					onClick={() => handleNumberClick("2")}
+					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg"
+				>
+					2
+				</button>
+				<button
+					onClick={() => handleNumberClick("3")}
+					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg"
+				>
+					3
+				</button>
+				<button
+					onClick={() => handleOperationClick("+")}
+					className="p-4 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-sm shadow-lg"
+				>
+					+
+				</button>
+
+				{/* Fifth row */}
 				<button
 					onClick={() => handleNumberClick("0")}
-					className="col-span-1 p-4 bg-blue-600 dark:bg-blue-500 text-white font-semibold rounded-lg shadow-lg hover:bg-opacity-90"
+					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg col-span-2"
 				>
 					0
 				</button>
 				<button
 					onClick={() => handleNumberClick(".")}
-					className="col-span-1 p-4 bg-blue-600 dark:bg-blue-500 text-white font-semibold rounded-lg shadow-lg hover:bg-opacity-90"
+					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg"
 				>
 					.
 				</button>
 				<button
 					onClick={calculateResult}
-					className="col-span-1 p-4 bg-red-600 dark:bg-red-500 text-white font-semibold rounded-lg shadow-lg hover:bg-opacity-90"
+					className="p-4 bg-blue-500 dark:bg-blue-600 text-white font-semibold rounded-sm shadow-lg"
 				>
 					=
-				</button>
-				<button
-					onClick={handleClear}
-					className="col-span-1 p-4 bg-yellow-500 dark:bg-yellow-400 text-white font-semibold rounded-lg shadow-lg hover:bg-opacity-90"
-				>
-					C
 				</button>
 			</div>
 		</div>

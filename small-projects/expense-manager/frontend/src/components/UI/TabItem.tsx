@@ -17,13 +17,13 @@ const TabItem: FC<ITabProps> = ({
 	displaySelected = true,
 }) => {
 	return (
-		<li className={`me-2 pb-2 ${className || ""}`}>
+		<li className={`mr-6 last:mr-0 ${className || ""}`}>
 			<h2
 				onClick={onClick}
-				className={`cursor-pointer  mb-2 border-b-2 capitalize ${
+				className={`cursor-pointer block pb-3 whitespace-nowrap border-b-2 font-medium ${
 					isActive
-						? "border-blue-500 text-blue-600"
-						: "border-transparent hover:text-gray-700 hover:border-gray-300"
+						? "text-violet-500 border-violet-500"
+						: "text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 border-transparent"
 				}`}
 			>
 				{name}

@@ -1,4 +1,3 @@
-// React
 import type { FC } from "react";
 import { useContext } from "react";
 
@@ -33,13 +32,12 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 	const { i18n } = useTranslation();
 
 	// Computed
-	// TODO make global, to use in othe places
 	const icon: IconDefinition = transaction.type === "expense" ? faMinus : faPlus;
+	const bgColor = transaction.type === "expense" ? "bg-red-500" : "bg-green-500";
+	const textColor = transaction.type === "expense" ? "text-red-600" : "text-green-600";
 
-	// TODO move to context
 	// Formats the date based on the current i18n language,
 	const formatDate = (date: Date) => {
-		console.log("i18n.language: ", i18n.language);
 		return new Intl.DateTimeFormat(i18n.language, {
 			year: "numeric",
 			month: "long",
@@ -55,40 +53,40 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 
 	return (
 		<li
-			className="p-4 hover:bg-gray-100 rounded-lg transition-colors my-2 border-b border-gray-300 cursor-pointer"
+			className="flex px-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
 			onClick={handleClick}
 		>
-			<div className="flex justify-between">
-				<div className="flex">
-					<FontAwesomeIcon
-						icon={category?.icon as IconDefinition}
-						className="text-blue-500 text-2xl mr-3"
-					/>
-					<div className="font-semibold text-gray-700" aria-label="Transaction Category">
-						{category?.name}
-					</div>
-				</div>
-				<div className="text-right">
-					<time
-						dateTime={transaction.date.toString()}
-						className="text-sm text-gray-600 block font-medium"
-					>
-						{formatDate(transaction.date)}
-					</time>
-					<div
-						className="text-lg text-gray-800 font-semibold"
-						aria-label="Transaction Amount"
-					>
-						<div>
-							<FontAwesomeIcon icon={icon} className="text-xs" />
-							{settingsCTX.currency.value} {transaction.amount.toFixed(2)}
+			<div
+				className={`w-9 h-9 rounded-full shrink-0 ${bgColor} my-2 mr-3 flex items-center justify-center`}
+			>
+				<FontAwesomeIcon icon={icon} className="text-white" />
+			</div>
+			<div className="grow flex items-center border-b border-gray-100 dark:border-gray-700/60 text-sm py-2">
+				<div className="grow flex justify-between">
+					<div className="self-center flex items-center space-x-2">
+						{category?.icon && (
+							<FontAwesomeIcon
+								icon={category.icon as IconDefinition}
+								className="text-blue-500 text-lg"
+							/>
+						)}
+						<div className="font-medium text-gray-800 dark:text-gray-100 hover:text-gray-900 dark:hover:text-white">
+							{category?.name || "Uncategorized"}
 						</div>
+					</div>
+					<div className="shrink-0 self-start ml-2">
+						<time
+							dateTime={transaction.date.toString()}
+							className="text-xs text-gray-600 dark:text-gray-400 block"
+						>
+							{formatDate(transaction.date)}
+						</time>
+						<span className={`font-medium ${textColor}`}>
+							{settingsCTX.currency.value} {transaction.amount.toFixed(2)}
+						</span>
 					</div>
 				</div>
 			</div>
-			{transaction.description && (
-				<p className="mt-1 text-gray-600">{transaction.description}</p>
-			)}
 		</li>
 	);
 };

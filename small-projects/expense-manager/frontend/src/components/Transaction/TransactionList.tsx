@@ -8,6 +8,7 @@ import { TransactionContext } from "@/store/TransactionContext";
 import Transaction from "@/components/Transaction/Transaction";
 import SlidingPanel from "@/components/UI/SlidingPanel";
 import TransactionPanel from "@/components/Transaction/TransactionPanel";
+import Card from "@/components/UI/Card"; // Import the new Card component
 
 // Context
 import { OpenContext } from "@/store/OpenContext";
@@ -22,10 +23,11 @@ const TransactionList: FC = () => {
 
 	// Data
 	const mappedTransactions = transactionCTX.getMappedTransactions();
+
 	return (
-		<section>
+		<Card title="Transactions">
 			{!!mappedTransactions.length && (
-				<ul className="p-4 bg-white shadow-md rounded-lg transition-colors">
+				<ul>
 					{mappedTransactions.map((transactionWithCategory) => (
 						<Transaction
 							key={transactionWithCategory.transaction.id}
@@ -42,7 +44,7 @@ const TransactionList: FC = () => {
 			>
 				<TransactionPanel onSave={() => toggleOpen(panelId)} />
 			</SlidingPanel>
-		</section>
+		</Card>
 	);
 };
 

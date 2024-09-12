@@ -4,7 +4,7 @@ import PolarChart from "../../charts/PolarChart";
 // Import utilities
 import { tailwindConfig, hexToRGB } from "../../utils/Utils";
 
-const AnalyticsCard11: React.FC = () => {
+const AnalyticsCard10: React.FC = () => {
 	const chartData = {
 		labels: ["Males", "Females", "Unknown"],
 		datasets: [

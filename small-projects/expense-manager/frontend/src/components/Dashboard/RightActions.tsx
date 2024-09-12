@@ -11,11 +11,11 @@ const RightActions: FC = () => {
 	const { open } = useContext(OpenContext);
 	const { selectTransaction } = useContext(TransactionContext);
 	// TODO maybe add to config
-	const dashboardModalId = "dashboard-modal";
+	const dashboardPanelId = "dashboard-panel";
 
 	const handleOpen = (): void => {
 		selectTransaction(defaultTransaction);
-		open(dashboardModalId);
+		open(dashboardPanelId);
 	};
 
 	return (

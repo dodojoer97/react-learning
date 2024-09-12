@@ -15,7 +15,6 @@ import Calculator from "@/components/Calculator";
 import TypeTabs from "@/components/Transaction/TypeTabs";
 import TransactionForm from "@/components/Transaction/TransactionForm";
 import SlidingPanel from "@/components/UI/SlidingPanel";
-import CategoryList from "@/components/Category/CategoryList";
 import Button from "@/components/UI/Button";
 import InputError from "@/components/UI/InputError";
 
@@ -81,14 +80,6 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 					</div>
 				</Calculator>
 
-				<SlidingPanel
-					isOpen={isOpen("transactionForm")}
-					onClose={() => toggleOpen("transactionForm")}
-					slideDirection="from-right"
-				>
-					<TransactionForm onSave={() => toggleOpen("transactionForm")} />
-				</SlidingPanel>
-
 				{transactionCTX.error && (
 					<InputError message={transactionCTX.error} className="text-red-600" />
 				)}
@@ -100,6 +91,13 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 					Save
 				</Button>
 			</section>
+			<SlidingPanel
+				isOpen={isOpen("transactionForm")}
+				onClose={() => toggleOpen("transactionForm")}
+				slideDirection="from-right"
+			>
+				<TransactionForm onSave={() => toggleOpen("transactionForm")} />
+			</SlidingPanel>
 		</>
 	);
 };

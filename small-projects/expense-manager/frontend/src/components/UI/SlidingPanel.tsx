@@ -32,7 +32,7 @@ const SlidingPanel: FC<ISlidingPanelProps> = ({
 			<div className="flex justify-end p-4">
 				<CloseButton onClose={onClose} />
 			</div>
-			<div className="p-4 overflow-y-auto">{children}</div>
+			<div className="p-4 overflow-y-auto">{isOpen && children}</div>
 		</div>,
 		document.querySelector("#sliding-panel") as HTMLDivElement
 	);

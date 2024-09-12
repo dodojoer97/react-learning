@@ -44,8 +44,13 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 		changeFn: (value) => transactionCTX.updateDraftTransaction({ description: value }),
 	});
 
+	const handleSave = (e: React.FormEvent) => {
+		e.preventDefault(); // Prevent the default form submission
+		onSave(); // Your custom save logic
+	};
+
 	return (
-		<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4" onSubmit={onSave}>
+		<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4" onSubmit={(e) => handleSave(e)}>
 			<CategoryList onSelect={() => {}} />
 
 			<DatePicker

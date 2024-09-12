@@ -13,6 +13,7 @@ import PeriodSelector from "@/components/Transaction/PeriodSelector";
 import RightActions from "@/components/Dashboard/RightActions";
 import ModalBasic from "@/templates/mosaic/components/ModalBasic";
 import TransactionPanel from "@/components/Transaction/TransactionPanel";
+import SlidingPanel from "@/components/UI/SlidingPanel";
 
 // FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,9 +31,10 @@ const Dashboard: FC = () => {
 	// Store
 	const transactionCTX = useContext(TransactionContext);
 	const settingsCTX = useContext(SettingsContext);
-	const { isOpen, close } = useContext(OpenContext);
+	const { isOpen, close, toggleOpen } = useContext(OpenContext);
 
-	const dashboardModalId = "dashboard-modal";
+	// TODO maybe add to config
+	const dashboardPanelId = "dashboard-panel";
 
 	useEffect(() => {
 		// If we did not load any categories, request them
@@ -60,14 +62,13 @@ const Dashboard: FC = () => {
 				/>
 			</Button> */}
 			</Layout>
-			<ModalBasic
-				id="basic-modal"
-				modalOpen={isOpen(dashboardModalId)}
-				title="hey"
-				setModalOpen={() => close(dashboardModalId)}
+			<SlidingPanel
+				isOpen={isOpen(dashboardPanelId)}
+				onClose={() => toggleOpen(dashboardPanelId)}
+				slideDirection="from-right"
 			>
-				<TransactionPanel onSave={() => close(dashboardModalId)} />
-			</ModalBasic>
+				<TransactionPanel onSave={() => close(dashboardPanelId)} />
+			</SlidingPanel>
 		</>
 	);
 };

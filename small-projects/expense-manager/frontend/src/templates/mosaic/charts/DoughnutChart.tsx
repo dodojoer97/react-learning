@@ -97,6 +97,7 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ data, width, height }) =>
 		}
 	};
 
+	console.log("legendItems: ", legendItems);
 	return (
 		<div className="grow flex flex-col justify-center">
 			<div>

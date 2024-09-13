@@ -25,6 +25,7 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { TransactionContext, defaultTransaction } from "@/store/TransactionContext";
 import { SettingsContext } from "@/store/SettingsContext";
 import { OpenContext } from "@/store/OpenContext";
+import TransactionDoughnut from "@/components/Transaction/TransactionDoughnut";
 
 // TODO add translations
 const Dashboard: FC = () => {
@@ -51,16 +52,8 @@ const Dashboard: FC = () => {
 	return (
 		<>
 			<Layout title="Dashboard" rightComponent={<RightActions />}>
+				<TransactionDoughnut />
 				<TransactionList />
-
-				{/* <PeriodSelector /> */}
-
-				{/* <Button className="fixed bottom-20 right-10 rounded-lg" onClick={handleOpenPanel}>
-				<FontAwesomeIcon
-					className="cursor-pointer w-10 h-10 text-blue-600"
-					icon={faPlusCircle}
-				/>
-			</Button> */}
 			</Layout>
 			<SlidingPanel
 				isOpen={isOpen(dashboardPanelId)}

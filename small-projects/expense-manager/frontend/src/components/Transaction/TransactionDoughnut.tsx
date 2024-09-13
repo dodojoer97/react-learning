@@ -6,8 +6,6 @@ import { TransactionContext } from "@/store/TransactionContext";
 // Import the DoughnutChart component
 import DoughnutChart from "@/templates/mosaic/charts/DoughnutChart";
 
-// Import utilities
-
 // Chart.js Data type
 import { ChartData } from "chart.js";
 
@@ -46,16 +44,22 @@ const mapTransactionsToChartData = (
 		totalAmount += transaction.amount; // Track the total amount across all categories
 	});
 
-	// Calculate percentage for each category
+	// Calculate percentage for each category and round to 1 decimal place
 	const labels = Object.keys(categoryMap);
-	const data = Object.values(categoryMap).map((amount) => (amount / totalAmount) * 100);
+	const data = Object.values(categoryMap).map((amount) => {
+		const percentage = (amount / totalAmount) * 100;
+		return Math.round(percentage * 10) / 10; // Round to 1 decimal place
+	});
+
+	// Add percentage sign to labels
+	const labelsWithPercentages = labels.map((label, index) => `${label} (${data[index]}%)`);
 
 	// Dynamically generate colors for each category
 	const backgroundColors = labels.map(() => generateRandomColor());
 	const hoverColors = labels.map(() => generateRandomColor());
 
 	return {
-		labels,
+		labels: labelsWithPercentages,
 		datasets: [
 			{
 				label: "Transaction Percentages",
@@ -72,19 +76,20 @@ const TransactionDoughnut: FC = () => {
 	// Get transactions and categories from the context
 	const { getMappedTransactions } = useContext(TransactionContext);
 
-	const transactionsWithCategory = getMappedTransactions();
+	const transactionsWithCategory = getMappedTransactions("expense");
 
 	// Map transactions to chart data format
 	const chartData = mapTransactionsToChartData(transactionsWithCategory);
-
 	return (
 		<div className="flex flex-col bg-white dark:bg-gray-800 shadow-sm rounded-xl">
 			<header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
 				<h2 className="font-semibold text-gray-800 dark:text-gray-100">
-					Transactions by Category
+					Expense structure
 				</h2>
 			</header>
-			<DoughnutChart data={chartData} width={389} height={260} />
+			{!!chartData.labels?.length && (
+				<DoughnutChart data={chartData} width={389} height={260} />
+			)}
 		</div>
 	);
 };

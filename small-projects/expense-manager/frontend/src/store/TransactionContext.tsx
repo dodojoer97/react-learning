@@ -166,7 +166,7 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 			setLoading(false);
 
-			setTransactions((prev) => [...fetchedTransaction]);
+			setTransactions(() => [...fetchedTransaction]);
 		} catch (error) {
 			console.error("Failed to edit fetchTransactions:", error);
 			if (isError(error)) {

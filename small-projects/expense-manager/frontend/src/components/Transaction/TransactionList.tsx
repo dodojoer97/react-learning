@@ -17,8 +17,9 @@ import { OpenContext } from "@/store/OpenContext";
 const TransactionList: FC = () => {
 	console.log("Re render TransactionList");
 	// Store
-	const transactionCTX = useContext(TransactionContext);
-	const settingsCTX = useContext(SettingsContext);
+	const { transactions, getMappedTransactions, fetchTransactions } =
+		useContext(TransactionContext);
+	const { categories, fetchCategories } = useContext(SettingsContext);
 
 	// Context
 	const { isOpen, toggleOpen } = useContext(OpenContext);
@@ -27,19 +28,19 @@ const TransactionList: FC = () => {
 	useEffect(() => {
 		// If we did not load any categories, request them
 		const handleFetch = async () => {
-			if (!settingsCTX.categories.length) {
-				await settingsCTX.fetchCategories();
+			if (!categories.length) {
+				await fetchCategories();
 			}
 
-			if (!transactionCTX.transactions.length) {
-				await transactionCTX.fetchTransactions();
+			if (!transactions.length) {
+				await fetchTransactions();
 			}
 		};
 		handleFetch();
 	}, []);
 
 	// Data
-	const mappedTransactions = transactionCTX.getMappedTransactions();
+	const mappedTransactions = getMappedTransactions();
 
 	return (
 		<Card title="Transactions">

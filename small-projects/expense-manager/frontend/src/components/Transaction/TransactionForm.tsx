@@ -21,7 +21,7 @@ import CategoryList from "@/components/Category/CategoryList";
 
 // Hooks
 import useInput from "@/hooks/useInput";
-import useFormSubmission from "@/hooks/useFormSubmission";
+import useIsMobile from "@/hooks/useIsMobile";
 
 interface IProps {
 	onSave(): void;
@@ -33,6 +33,9 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 	const transactionCTX = useContext(TransactionContext);
 
 	if (!transactionCTX.draftTransaction) return <></>;
+
+	// hooks
+	const isMobile: boolean = useIsMobile();
 
 	// Form fields
 	const dateField = useInput<HTMLInputElement, Date>({
@@ -51,7 +54,7 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 
 	return (
 		<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4" onSubmit={(e) => handleSave(e)}>
-			<CategoryList onSelect={() => {}} />
+			<CategoryList mode={isMobile ? "grid" : "list"} onSelect={() => {}} />
 
 			<DatePicker
 				date={dateField.value}

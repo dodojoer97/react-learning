@@ -22,6 +22,20 @@ interface LegendItem {
 	hidden: boolean;
 }
 
+/**
+ * Function to generate legend items from the chart data
+ */
+const generateLegendItems = (data: Chart.ChartData): LegendItem[] => {
+	// Guard clause if data or labels are missing
+	if (!data.labels || !data.datasets[0]?.backgroundColor) return [];
+
+	return data.labels.map((label: string, index: number) => ({
+		text: label,
+		fillStyle: data.datasets[0].backgroundColor[index] as string,
+		hidden: false,
+	}));
+};
+
 const DoughnutChart: React.FC<DoughnutChartProps> = ({ data, width, height }) => {
 	const chartInstance = useRef<Chart | null>(null);
 	const canvas = useRef<HTMLCanvasElement | null>(null);
@@ -29,14 +43,10 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ data, width, height }) =>
 	const darkMode = currentTheme === "dark";
 	const { tooltipTitleColor, tooltipBodyColor, tooltipBgColor, tooltipBorderColor } = chartColors;
 
-	const [legendItems, setLegendItems] = useState<LegendItem[]>(
-		data.labels?.map((label, index) => ({
-			text: label as string,
-			fillStyle: data.datasets[0].backgroundColor[index] as string,
-			hidden: false,
-		})) || []
-	);
+	// State to hold the legend items
+	const [legendItems, setLegendItems] = useState<LegendItem[]>([]);
 
+	// Effect to update the chart and the legend items when `data` changes
 	useEffect(() => {
 		if (!canvas.current) return;
 		const ctx = canvas.current.getContext("2d");
@@ -78,6 +88,10 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ data, width, height }) =>
 			},
 		});
 
+		// Generate legend items whenever the chart data changes
+		setLegendItems(generateLegendItems(data));
+
+		// Cleanup the chart instance on component unmount
 		return () => {
 			if (chartInstance.current) {
 				chartInstance.current.destroy();
@@ -97,7 +111,6 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ data, width, height }) =>
 		}
 	};
 
-	console.log("legendItems: ", legendItems);
 	return (
 		<div className="grow flex flex-col justify-center">
 			<div>

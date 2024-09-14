@@ -1,4 +1,4 @@
-import { FC, useContext } from "react";
+import { FC, useContext, useMemo } from "react";
 
 // Store
 import { TransactionContext } from "@/store/TransactionContext";
@@ -12,6 +12,7 @@ import { ChartData } from "chart.js";
 
 // Mappers
 import { TransactionWithCategory } from "@/mappers/TransactionCategoryAssigner";
+import { SettingsContext } from "@/store/SettingsContext";
 
 /**
  * Function to generate random colors
@@ -74,19 +75,22 @@ const mapTransactionsToChartData = (
 };
 
 const TransactionDoughnut: FC = () => {
-	console.log("TransactionDoughnut render");
 	// Get transactions and categories from the context
-	const { transactions } = useContext(TransactionContext);
-
-	// const transactionsWithCategory = getMappedTransactions("expense");
+	const { getMappedTransactions, transactions } = useContext(TransactionContext);
+	const { categories } = useContext(SettingsContext);
 
 	// // Map transactions to chart data format
-	// const chartData = mapTransactionsToChartData(transactionsWithCategory);
+	const chartData = useMemo(() => {
+		if (!transactions.length) return null;
+		const transactionsWithCategory = getMappedTransactions(categories, "expense");
+		return mapTransactionsToChartData(transactionsWithCategory);
+	}, [transactions]);
+
+	console.log("chartData: ", chartData);
+
 	return (
 		<Card title="Expense structure">
-			{/* {!!chartData.labels?.length && (
-				<DoughnutChart data={chartData} width={389} height={260} />
-			)} */}
+			{!!chartData && <DoughnutChart data={chartData} width={389} height={260} />}
 		</Card>
 	);
 };

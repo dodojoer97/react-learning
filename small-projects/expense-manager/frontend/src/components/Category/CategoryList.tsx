@@ -16,9 +16,10 @@ import { Category } from "@common";
 
 interface Props {
 	onSelect(): void;
+	mode?: "list" | "grid";
 }
 
-const CategoryList: FC<Props> = ({ onSelect }) => {
+const CategoryList: FC<Props> = ({ onSelect, mode = "list" }) => {
 	// Store
 	const settingsCTX = useContext(SettingsContext);
 	const transactionCTX = useContext(TransactionContext);
@@ -42,7 +43,11 @@ const CategoryList: FC<Props> = ({ onSelect }) => {
 	}, []);
 
 	return (
-		<ul className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 space-y-2">
+		<ul
+			className={`px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 space-y-2 ${
+				mode === "grid" ? "grid grid-cols-3" : ""
+			}`}
+		>
 			{categoryList.map((category) => (
 				<li
 					key={category.id}

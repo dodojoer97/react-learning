@@ -1,8 +1,9 @@
 import type { FC } from "react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 // Store
 import { TransactionContext } from "@/store/TransactionContext";
+import { SettingsContext } from "@/store/SettingsContext";
 
 // Components
 import Transaction from "@/components/Transaction/Transaction";
@@ -16,10 +17,25 @@ import { OpenContext } from "@/store/OpenContext";
 const TransactionList: FC = () => {
 	// Store
 	const transactionCTX = useContext(TransactionContext);
+	const settingsCTX = useContext(SettingsContext);
 
 	// Context
 	const { isOpen, toggleOpen } = useContext(OpenContext);
 	const panelId = "transactionPanel";
+
+	useEffect(() => {
+		// If we did not load any categories, request them
+		const handleFetch = async () => {
+			if (!settingsCTX.categories.length) {
+				await settingsCTX.fetchCategories();
+			}
+
+			if (!transactionCTX.transactions.length) {
+				await transactionCTX.fetchTransactions();
+			}
+		};
+		handleFetch();
+	}, [settingsCTX.categories, transactionCTX.transactions]);
 
 	// Data
 	const mappedTransactions = transactionCTX.getMappedTransactions();

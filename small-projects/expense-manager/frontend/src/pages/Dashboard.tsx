@@ -23,45 +23,33 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 // Store
 import { TransactionContext, defaultTransaction } from "@/store/TransactionContext";
-import { SettingsContext } from "@/store/SettingsContext";
 import { OpenContext } from "@/store/OpenContext";
 import TransactionDoughnut from "@/components/Transaction/TransactionDoughnut";
 
 // TODO add translations
 const Dashboard: FC = () => {
+	console.log("re render Dashboard");
 	// Store
-	const transactionCTX = useContext(TransactionContext);
-	const settingsCTX = useContext(SettingsContext);
 	const { isOpen, close, toggleOpen } = useContext(OpenContext);
 
 	// TODO maybe add to config
 	const dashboardPanelId = "dashboard-panel";
 
-	useEffect(() => {
-		// If we did not load any categories, request them
-		const handleFetch = async () => {
-			if (!settingsCTX.categories.length) {
-				await settingsCTX.fetchCategories();
-			}
-			transactionCTX.fetchTransactions();
-		};
-
-		handleFetch();
-	}, []);
-
 	return (
 		<>
 			<Layout title="Dashboard" rightComponent={<RightActions />}>
-				<TransactionDoughnut />
-				<TransactionList />
+				<div className="grid grid-cols-12 gap-6">
+					<TransactionDoughnut />
+					<TransactionList />
+				</div>
+				<SlidingPanel
+					isOpen={isOpen(dashboardPanelId)}
+					onClose={() => toggleOpen(dashboardPanelId)}
+					slideDirection="from-right"
+				>
+					<TransactionPanel onSave={() => close(dashboardPanelId)} />
+				</SlidingPanel>
 			</Layout>
-			<SlidingPanel
-				isOpen={isOpen(dashboardPanelId)}
-				onClose={() => toggleOpen(dashboardPanelId)}
-				slideDirection="from-right"
-			>
-				<TransactionPanel onSave={() => close(dashboardPanelId)} />
-			</SlidingPanel>
 		</>
 	);
 };

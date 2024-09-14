@@ -5,6 +5,7 @@ import { TransactionContext } from "@/store/TransactionContext";
 
 // Import the DoughnutChart component
 import DoughnutChart from "@/templates/mosaic/charts/DoughnutChart";
+import Card from "@/components/UI/Card";
 
 // Chart.js Data type
 import { ChartData } from "chart.js";
@@ -81,16 +82,11 @@ const TransactionDoughnut: FC = () => {
 	// Map transactions to chart data format
 	const chartData = mapTransactionsToChartData(transactionsWithCategory);
 	return (
-		<div className="flex flex-col bg-white dark:bg-gray-800 shadow-sm rounded-xl">
-			<header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
-				<h2 className="font-semibold text-gray-800 dark:text-gray-100">
-					Expense structure
-				</h2>
-			</header>
+		<Card title="Expense structure">
 			{!!chartData.labels?.length && (
 				<DoughnutChart data={chartData} width={389} height={260} />
 			)}
-		</div>
+		</Card>
 	);
 };
 

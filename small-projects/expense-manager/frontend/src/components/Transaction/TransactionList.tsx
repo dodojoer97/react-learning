@@ -15,6 +15,7 @@ import Card from "@/components/UI/Card"; // Import the new Card component
 import { OpenContext } from "@/store/OpenContext";
 
 const TransactionList: FC = () => {
+	console.log("Re render TransactionList");
 	// Store
 	const transactionCTX = useContext(TransactionContext);
 	const settingsCTX = useContext(SettingsContext);

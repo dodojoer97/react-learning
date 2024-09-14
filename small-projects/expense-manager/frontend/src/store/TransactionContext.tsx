@@ -1,5 +1,5 @@
 // React
-import { useState, useContext } from "react";
+import { useState, useContext, useCallback } from "react";
 import type { FC, PropsWithChildren, Context } from "react";
 import { createContext } from "react";
 
@@ -63,65 +63,68 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	const [error, setError] = useState<string | null>(null);
 
 	// Method to add a new transaction to the transactions list
-	const addTransaction = async (transaction: Transaction): Promise<OperationStatus> => {
-		const operationStatus = new OperationStatus();
-		setError(null);
-		if (!user?.uid) throw new Error("User id is mandatory in editTransaction");
-		try {
-			setLoading(true);
-
-			await transactionService.addTransaction({ ...transaction, userId: user.uid });
-
-			setLoading(false);
-			setTransactions((prev) => [...prev, transaction]);
-			operationStatus.ok = true;
-		} catch (error) {
-			console.error("Failed to edit transaction:", error);
-			if (isError(error)) {
-				setError(error.message || "");
+	const addTransaction = useCallback(
+		async (transaction: Transaction): Promise<OperationStatus> => {
+			const operationStatus = new OperationStatus();
+			setError(null);
+			if (!user?.uid) throw new Error("User id is mandatory in addTransaction");
+			try {
+				setLoading(true);
+				await transactionService.addTransaction({ ...transaction, userId: user.uid });
+				setTransactions((prev) => [...prev, transaction]);
+				operationStatus.ok = true;
+			} catch (error) {
+				console.error("Failed to add transaction:", error);
+				if (isError(error)) {
+					setError(error.message || "");
+				}
+				operationStatus.ok = false;
+			} finally {
+				setLoading(false);
 			}
-
-			operationStatus.ok = false;
-		} finally {
-			setLoading(false);
 			return operationStatus;
-		}
-	};
+		},
+		[user?.uid, transactionService]
+	);
 
 	// Method to update an existing transaction in the transactions list
-	const editTransaction = async (updatedTransaction: Transaction): Promise<OperationStatus> => {
-		const operationStatus = new OperationStatus();
-		try {
-			if (!user?.uid) throw new Error("User id is mandatory in fetchTransactions");
-			setLoading(true);
-			await transactionService.editTransaction(
-				user.uid,
-				updatedTransaction.id,
-				updatedTransaction
-			);
-			setTransactions((prev) =>
-				prev.map((t) => (t.id === updatedTransaction.id ? updatedTransaction : t))
-			);
-			operationStatus.ok = true;
-		} catch (error) {
-			console.error("Failed to update transaction:", error);
-			if (isError(error)) {
-				setError(error.message || "");
+	const editTransaction = useCallback(
+		async (updatedTransaction: Transaction): Promise<OperationStatus> => {
+			const operationStatus = new OperationStatus();
+			if (!user?.uid) throw new Error("User id is mandatory in editTransaction");
+			try {
+				setLoading(true);
+				await transactionService.editTransaction(
+					user.uid,
+					updatedTransaction.id,
+					updatedTransaction
+				);
+				setTransactions((prev) =>
+					prev.map((t) => (t.id === updatedTransaction.id ? updatedTransaction : t))
+				);
+				operationStatus.ok = true;
+			} catch (error) {
+				console.error("Failed to update transaction:", error);
+				if (isError(error)) {
+					setError(error.message || "");
+				}
+				operationStatus.ok = false;
+			} finally {
+				setLoading(false);
 			}
-			operationStatus.ok = false;
-		} finally {
-			setLoading(false);
 			return operationStatus;
-		}
-	};
+		},
+		[user?.uid, transactionService]
+	);
+
 	// Method to select a transaction and initialize the draft for editing
-	const selectTransaction = (transaction: Transaction): void => {
+	const selectTransaction = useCallback((transaction: Transaction): void => {
 		setSelectedTransaction(transaction);
-		setDraftTransaction({ ...transaction }); // Initialize draft with selected transaction
-	};
+		setDraftTransaction({ ...transaction });
+	}, []);
 
 	// Method to update the draft transaction based on user input
-	const updateDraftTransaction = (updates: Partial<Transaction>): void => {
+	const updateDraftTransaction = useCallback((updates: Partial<Transaction>): void => {
 		setDraftTransaction((prev) => {
 			if (!prev) {
 				// If there's no draft, initialize with default values and apply updates
@@ -139,69 +142,60 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 				description: updates.description ?? prev.description,
 			};
 		});
-	};
+	}, []);
 
 	// Method to save the draft transaction to the transactions list
-	const saveDraftTransaction = async (): Promise<OperationStatus> => {
+	const saveDraftTransaction = useCallback(async (): Promise<OperationStatus> => {
 		if (!draftTransaction) return new OperationStatus();
-
-		// Check if the draft has an id to determine if it's an edit or a new addition
 		const status: OperationStatus = draftTransaction.id
 			? await editTransaction(draftTransaction)
 			: await addTransaction(draftTransaction);
-
 		return status;
-	};
+	}, [draftTransaction, addTransaction, editTransaction]);
 
-	const fetchTransactions = async (): Promise<void> => {
+	// Method to fetch transactions
+	const fetchTransactions = useCallback(async (): Promise<void> => {
 		setError(null);
 		if (!user?.uid) throw new Error("User id is mandatory in fetchTransactions");
 		try {
 			setLoading(true);
-
-			const fetchedTransaction: Transaction[] =
+			const fetchedTransactions: Transaction[] =
 				await transactionService.getTransactionsByUser(user.uid);
-
-			setLoading(false);
-
-			setTransactions(() => [...fetchedTransaction]);
+			setTransactions(fetchedTransactions);
 		} catch (error) {
-			console.error("Failed to edit fetchTransactions:", error);
+			console.error("Failed to fetch transactions:", error);
 			if (isError(error)) {
 				setError(error.message || "");
 			}
 		} finally {
 			setLoading(false);
 		}
-	};
+	}, [user?.uid, transactionService]);
 
-	const getMappedTransactions = (
-		categories: Category[],
-		type?: CategoryType
-	): TransactionWithCategory[] => {
-		const mapper = new TransactionCategoryAssigner(categories);
-		try {
-			let mappedTransactions = mapper.assignCategoriesToTransactions(transactions);
-
-			if (type === "expense") {
-				mappedTransactions = mappedTransactions.filter(
-					({ transaction }) => transaction.type === "expense"
-				);
-			} else if (type === "income") {
-				mappedTransactions = mappedTransactions.filter(
-					({ transaction }) => transaction.type === "income"
-				);
+	// Method to get mapped transactions
+	const getMappedTransactions = useCallback(
+		(categories: Category[], type?: CategoryType): TransactionWithCategory[] => {
+			const mapper = new TransactionCategoryAssigner(categories);
+			try {
+				let mappedTransactions = mapper.assignCategoriesToTransactions(transactions);
+				if (type) {
+					mappedTransactions = mappedTransactions.filter(
+						({ transaction }) => transaction.type === type
+					);
+				}
+				return mappedTransactions;
+			} catch (error) {
+				console.error("Failed to get mapped transactions:", error);
+				if (isError(error)) {
+					throw new Error(
+						error.message || "Something went wrong in getMappedTransactions"
+					);
+				}
+				return [];
 			}
-
-			return mappedTransactions;
-		} catch (error) {
-			if (isError(error)) {
-				throw new Error(error.message || "Something went wrong in getMappedTransactions");
-			}
-
-			return [];
-		}
-	};
+		},
+		[transactions]
+	);
 	// The context value that will be provided to the consuming components
 	const contextValue = {
 		loading,

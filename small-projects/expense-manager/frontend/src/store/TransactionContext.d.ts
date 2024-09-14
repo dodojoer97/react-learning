@@ -14,5 +14,5 @@ export interface ITransactionContext extends ILoadingContext {
 	updateDraftTransaction(updates: Partial<Transaction>): void; // New method
 	saveDraftTransaction(): Promise<OperationStatus>;
 	fetchTransactions(): Promise<void>;
-	getMappedTransactions(categories: categories[], type?: CategoryType): TransactionWithCategory[];
+	getMappedTransactions(type?: CategoryType): TransactionWithCategory[];
 }

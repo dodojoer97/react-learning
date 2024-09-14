@@ -11,6 +11,7 @@ import { Transaction, CategoryType, isError, OperationStatus, Category } from "@
 
 // Store
 import { AuthContext } from "./AuthContext";
+import { SettingsContext } from "./SettingsContext";
 
 // Service
 import TransactionService from "@/services/TransactionService";
@@ -54,6 +55,7 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	// Store
 	const { user } = useContext(AuthContext);
+	const { categories } = useContext(SettingsContext);
 
 	// State hooks for managing transactions and loading status
 	const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
@@ -174,7 +176,7 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	// Method to get mapped transactions
 	const getMappedTransactions = useCallback(
-		(categories: Category[], type?: CategoryType): TransactionWithCategory[] => {
+		(type?: CategoryType): TransactionWithCategory[] => {
 			const mapper = new TransactionCategoryAssigner(categories);
 			try {
 				let mappedTransactions = mapper.assignCategoriesToTransactions(transactions);

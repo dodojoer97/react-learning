@@ -39,7 +39,7 @@ const TransactionList: FC = () => {
 	}, []);
 
 	// Data
-	const mappedTransactions = transactionCTX.getMappedTransactions(settingsCTX.categories);
+	const mappedTransactions = transactionCTX.getMappedTransactions();
 
 	return (
 		<Card title="Transactions">

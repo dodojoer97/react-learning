@@ -77,12 +77,11 @@ const mapTransactionsToChartData = (
 const TransactionDoughnut: FC = () => {
 	// Get transactions and categories from the context
 	const { getMappedTransactions, transactions } = useContext(TransactionContext);
-	const { categories } = useContext(SettingsContext);
 
 	// // Map transactions to chart data format
 	const chartData = useMemo(() => {
 		if (!transactions.length) return null;
-		const transactionsWithCategory = getMappedTransactions(categories, "expense");
+		const transactionsWithCategory = getMappedTransactions("expense");
 		return mapTransactionsToChartData(transactionsWithCategory);
 	}, [transactions]);
 

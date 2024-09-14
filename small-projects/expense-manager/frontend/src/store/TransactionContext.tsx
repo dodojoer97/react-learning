@@ -7,11 +7,10 @@ import { createContext } from "react";
 import { ITransactionContext } from "./TransactionContext.d";
 
 // Models
-import { Transaction, CategoryType, isError, OperationStatus } from "@common";
+import { Transaction, CategoryType, isError, OperationStatus, Category } from "@common";
 
 // Store
 import { AuthContext } from "./AuthContext";
-import { SettingsContext } from "./SettingsContext";
 
 // Service
 import TransactionService from "@/services/TransactionService";
@@ -55,7 +54,6 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	// Store
 	const { user } = useContext(AuthContext);
-	const settingsCTX = useContext(SettingsContext);
 
 	// State hooks for managing transactions and loading status
 	const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
@@ -177,8 +175,11 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		}
 	};
 
-	const getMappedTransactions = (type?: CategoryType): TransactionWithCategory[] => {
-		const mapper = new TransactionCategoryAssigner(settingsCTX.categories);
+	const getMappedTransactions = (
+		categories: Category[],
+		type?: CategoryType
+	): TransactionWithCategory[] => {
+		const mapper = new TransactionCategoryAssigner(categories);
 		try {
 			let mappedTransactions = mapper.assignCategoriesToTransactions(transactions);
 

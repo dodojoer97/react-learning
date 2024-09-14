@@ -74,18 +74,19 @@ const mapTransactionsToChartData = (
 };
 
 const TransactionDoughnut: FC = () => {
+	console.log("TransactionDoughnut render");
 	// Get transactions and categories from the context
-	const { getMappedTransactions } = useContext(TransactionContext);
+	const { transactions } = useContext(TransactionContext);
 
-	const transactionsWithCategory = getMappedTransactions("expense");
+	// const transactionsWithCategory = getMappedTransactions("expense");
 
-	// Map transactions to chart data format
-	const chartData = mapTransactionsToChartData(transactionsWithCategory);
+	// // Map transactions to chart data format
+	// const chartData = mapTransactionsToChartData(transactionsWithCategory);
 	return (
 		<Card title="Expense structure">
-			{!!chartData.labels?.length && (
+			{/* {!!chartData.labels?.length && (
 				<DoughnutChart data={chartData} width={389} height={260} />
-			)}
+			)} */}
 		</Card>
 	);
 };

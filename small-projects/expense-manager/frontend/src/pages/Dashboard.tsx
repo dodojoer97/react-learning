@@ -15,8 +15,7 @@ import TransactionDoughnut from "@/components/Transaction/TransactionDoughnut";
 
 // TODO add translations
 const Dashboard: FC = () => {
-	console.log("re render Dashboard");
-
+	console.log("re render");
 	return (
 		<>
 			<Layout title="Dashboard" rightComponent={<RightActions />}>

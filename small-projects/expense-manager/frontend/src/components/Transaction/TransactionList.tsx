@@ -35,10 +35,10 @@ const TransactionList: FC = () => {
 			}
 		};
 		handleFetch();
-	}, [settingsCTX.categories, transactionCTX.transactions]);
+	}, []);
 
 	// Data
-	const mappedTransactions = transactionCTX.getMappedTransactions();
+	const mappedTransactions = transactionCTX.getMappedTransactions(settingsCTX.categories);
 
 	return (
 		<Card title="Transactions">

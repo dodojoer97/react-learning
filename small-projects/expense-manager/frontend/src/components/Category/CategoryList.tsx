@@ -20,6 +20,7 @@ interface Props {
 }
 
 const CategoryList: FC<Props> = ({ onSelect, mode = "list" }) => {
+	console.log("re render CategoryList");
 	// Store
 	const settingsCTX = useContext(SettingsContext);
 	const transactionCTX = useContext(TransactionContext);

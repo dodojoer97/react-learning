@@ -86,8 +86,6 @@ const TransactionDoughnut: FC = () => {
 		return mapTransactionsToChartData(transactionsWithCategory);
 	}, [transactions]);
 
-	console.log("chartData: ", chartData);
-
 	return (
 		<Card title="Expense structure">
 			{!!chartData && <DoughnutChart data={chartData} width={389} height={260} />}

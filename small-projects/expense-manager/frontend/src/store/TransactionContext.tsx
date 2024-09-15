@@ -127,23 +127,23 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	// Method to update the draft transaction based on user input
 	const updateDraftTransaction = useCallback((updates: Partial<Transaction>): void => {
-		setDraftTransaction((prev) => {
-			if (!prev) {
-				// If there's no draft, initialize with default values and apply updates
-				return { ...defaultTransaction, ...updates };
-			}
-			// Merge updates into the current draft, ensuring no values become undefined
-			// TODO, check if the type of category changed, if so set the category id to null
-			return {
-				id: updates.id ?? prev.id,
-				userId: updates.userId ?? prev.userId,
-				amount: updates.amount ?? prev.amount,
-				date: updates.date ?? prev.date,
-				categoryId: updates.categoryId ?? prev.categoryId,
-				type: updates.type ?? prev.type,
-				description: updates.description ?? prev.description,
-			};
-		});
+		// setDraftTransaction((prev) => {
+		// 	if (!prev) {
+		// 		// If there's no draft, initialize with default values and apply updates
+		// 		return { ...defaultTransaction, ...updates };
+		// 	}
+		// 	// Merge updates into the current draft, ensuring no values become undefined
+		// 	// TODO, check if the type of category changed, if so set the category id to null
+		// 	return {
+		// 		id: updates.id ?? prev.id,
+		// 		userId: updates.userId ?? prev.userId,
+		// 		amount: updates.amount ?? prev.amount,
+		// 		date: updates.date ?? prev.date,
+		// 		categoryId: updates.categoryId ?? prev.categoryId,
+		// 		type: updates.type ?? prev.type,
+		// 		description: updates.description ?? prev.description,
+		// 	};
+		// });
 	}, []);
 
 	// Method to save the draft transaction to the transactions list

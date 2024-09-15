@@ -121,7 +121,7 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	);
 
 	// Memoize context value to avoid unnecessary re-renders
-	const contextValue = useMemo<ISettingsContext>(
+	const contextValue = useMemo(
 		() => ({
 			currency,
 			availableCurrencies,
@@ -140,7 +140,7 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 			currency,
 			availableCurrencies,
 			availableCategoryTypes,
-			categories,
+			categories, // Ensure this is memoized correctly
 			loading,
 			categoryMode,
 			formatAmount,

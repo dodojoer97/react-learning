@@ -25,58 +25,58 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 	console.log("re render TransactionPanel");
 
 	// Store
-	const settingsCTX = useContext(SettingsContext);
-	const transactionCTX = useContext(TransactionContext);
+	const { setCategoryMode, availableCategoryTypes } = useContext(SettingsContext);
+	const {
+		selectedTransaction,
+		draftTransaction,
+		error,
+		updateDraftTransaction,
+		saveDraftTransaction,
+	} = useContext(TransactionContext);
 	const { isOpen, toggleOpen } = useContext(OpenContext);
 
 	// State
 	const [selectedType, setSelectedType] = useState<CategoryType>(
-		transactionCTX.selectedTransaction?.type || "expense"
+		selectedTransaction?.type || "expense"
 	);
 
 	// Methods
-	const handleTabClick = useCallback(
-		(type: CategoryType): void => {
-			transactionCTX.updateDraftTransaction({ type });
+	const handleTabClick = useCallback((type: CategoryType): void => {
+		updateDraftTransaction({ type });
 
-			// If the type changes, clear the current category
-			transactionCTX.updateDraftTransaction({ categoryId: "" });
-			setSelectedType(type);
-		},
-		[transactionCTX, setSelectedType]
-	);
+		// If the type changes, clear the current category
+		updateDraftTransaction({ categoryId: "" });
+		setSelectedType(type);
+	}, []);
 
-	const handleCalculatorChange = useCallback(
-		(amount: number): void => {
-			transactionCTX.updateDraftTransaction({ amount });
-		},
-		[transactionCTX]
-	);
+	const handleCalculatorChange = useCallback((amount: number): void => {
+		updateDraftTransaction({ amount });
+	}, []);
 
 	const handleSave = useCallback(async (): Promise<void> => {
-		const status: OperationStatus = await transactionCTX.saveDraftTransaction();
+		const status: OperationStatus = await saveDraftTransaction();
 
 		// If no errors, fire the function
 		if (status.ok) {
 			onSave();
 		}
-	}, [transactionCTX, onSave]);
+	}, []);
 
 	useEffect(() => {
 		// Change the display mode for the category
-		settingsCTX.setCategoryMode("panel");
-	}, [settingsCTX]);
+		setCategoryMode("panel");
+	}, []);
 
 	return (
 		<>
 			<section className="flex flex-col gap-0 h-[100%]">
 				<TypeTabs
-					items={settingsCTX.availableCategoryTypes}
+					items={availableCategoryTypes}
 					activeTab={selectedType}
 					onSelect={handleTabClick}
 				/>
 				<Calculator
-					amount={transactionCTX.draftTransaction?.amount || 0}
+					amount={draftTransaction?.amount || 0}
 					onChange={handleCalculatorChange}
 					additionalClasses=""
 					displaySideButton
@@ -87,9 +87,7 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 					</div>
 				</Calculator>
 
-				{transactionCTX.error && (
-					<InputError message={transactionCTX.error} className="text-red-600" />
-				)}
+				{error && <InputError message={error} className="text-red-600" />}
 
 				<Button
 					className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white"

@@ -1,5 +1,5 @@
 // React
-import { useState, useContext, useCallback } from "react";
+import { useState, useContext, useCallback, useMemo } from "react";
 import type { FC, PropsWithChildren, Context } from "react";
 import { createContext } from "react";
 
@@ -199,21 +199,36 @@ const TransactionContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		[transactions]
 	);
 	// The context value that will be provided to the consuming components
-	const contextValue = {
-		loading,
-		selectedTransaction,
-		transactions,
-		draftTransaction,
-		error,
-		addTransaction,
-		editTransaction,
-		selectTransaction,
-		updateDraftTransaction,
-		saveDraftTransaction,
-		fetchTransactions,
-		getMappedTransactions,
-	};
-
+	const contextValue = useMemo(
+		() => ({
+			loading,
+			selectedTransaction,
+			transactions,
+			draftTransaction,
+			error,
+			addTransaction,
+			editTransaction,
+			selectTransaction,
+			updateDraftTransaction,
+			saveDraftTransaction,
+			fetchTransactions,
+			getMappedTransactions,
+		}),
+		[
+			loading,
+			selectedTransaction,
+			transactions,
+			draftTransaction,
+			error,
+			addTransaction,
+			editTransaction,
+			selectTransaction,
+			updateDraftTransaction,
+			saveDraftTransaction,
+			fetchTransactions,
+			getMappedTransactions,
+		]
+	);
 	return (
 		<TransactionContext.Provider value={contextValue}>{children}</TransactionContext.Provider>
 	);

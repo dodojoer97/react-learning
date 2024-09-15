@@ -28,23 +28,24 @@ interface IProps {
 }
 
 const TransactionForm: FC<IProps> = ({ onSave }) => {
+	console.log("TransactionForm re render");
 	// TODO add translations
 	// Store
-	const transactionCTX = useContext(TransactionContext);
+	// const transactionCTX = useContext(TransactionContext);
 
-	if (!transactionCTX.draftTransaction) return <></>;
+	// if (!transactionCTX.draftTransaction) return <></>;
 
 	// hooks
 	const isMobile: boolean = useIsMobile();
 
 	// Form fields
 	const dateField = useInput<HTMLInputElement, Date>({
-		defaultValue: transactionCTX.draftTransaction?.date,
-		changeFn: (value) => transactionCTX.updateDraftTransaction({ date: value }),
+		defaultValue: new Date(),
+		changeFn: (value) => {},
 	});
 	const descriptionField = useInput<HTMLTextAreaElement, string>({
-		defaultValue: transactionCTX.draftTransaction.description || "",
-		changeFn: (value) => transactionCTX.updateDraftTransaction({ description: value }),
+		defaultValue: "",
+		changeFn: (value) => {},
 	});
 
 	const handleSave = (e: React.FormEvent) => {
@@ -54,7 +55,7 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 
 	return (
 		<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4" onSubmit={(e) => handleSave(e)}>
-			<CategoryList mode={isMobile ? "grid" : "list"} onSelect={() => {}} />
+			<CategoryList mode={isMobile ? "grid" : "list"} />
 
 			<DatePicker
 				date={dateField.value}

@@ -101,7 +101,7 @@ const Calculator: FC<ICalculatorProps> = ({
 
 	// Emit the value to other components
 	useEffect(() => {
-		onChange(parseFloat(currentInput));
+		// onChange(parseFloat(currentInput));
 	}, [currentInput]);
 
 	return (

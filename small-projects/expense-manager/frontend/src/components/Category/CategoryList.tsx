@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useMemo, useCallback, memo } from "react";
 
 // Types
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
@@ -15,31 +15,30 @@ import { TransactionContext } from "@/store/TransactionContext";
 import { Category } from "@common";
 
 interface Props {
-	onSelect(): void;
+	onSelect?: () => void;
 	mode?: "list" | "grid";
 }
-
 const CategoryList: FC<Props> = ({ onSelect, mode = "list" }) => {
 	console.log("re render CategoryList");
 	// Store
-	const settingsCTX = useContext(SettingsContext);
-	const transactionCTX = useContext(TransactionContext);
+	const { categories, fetchCategories } = useContext(SettingsContext);
+	const { updateDraftTransaction, draftTransaction } = useContext(TransactionContext);
 
-	// Filtered Category list by transaction type
-	const categoryList: Category[] = settingsCTX.categories.filter(
-		(category) => category.type === transactionCTX.draftTransaction?.type
-	);
+	// Memoized filtered category list by transaction type
+	const categoryList: Category[] = useMemo(() => {
+		return categories.filter((category) => category.type === draftTransaction?.type);
+	}, [categories, draftTransaction?.type]);
 
-	// Methods
-	const handleSelect = (category: Category): void => {
-		transactionCTX.updateDraftTransaction({ categoryId: category.id });
-		onSelect();
-	};
+	// Memoized handleSelect method to avoid re-creation on each render
+	const handleSelect = useCallback((category: Category): void => {
+		updateDraftTransaction({ categoryId: category.id });
+		onSelect && onSelect();
+	}, []);
 
 	useEffect(() => {
 		// If we did not load any categories, request them
-		if (!settingsCTX.categories.length) {
-			settingsCTX.fetchCategories();
+		if (!categories.length) {
+			fetchCategories();
 		}
 	}, []);
 
@@ -66,4 +65,4 @@ const CategoryList: FC<Props> = ({ onSelect, mode = "list" }) => {
 	);
 };
 
-export default CategoryList;
+export default memo(CategoryList);

@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useMemo } from "react";
 
 // Store
 import { TransactionContext } from "@/store/TransactionContext";
@@ -40,7 +40,7 @@ const TransactionList: FC = () => {
 	}, []);
 
 	// Data
-	const mappedTransactions = getMappedTransactions();
+	const mappedTransactions = useMemo(() => getMappedTransactions(), [transactions, categories]);
 
 	return (
 		<Card title="Transactions">

@@ -1,5 +1,5 @@
 // React
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useMemo, useCallback } from "react";
 import type { FC, PropsWithChildren, Context } from "react";
 import { createContext } from "react";
 
@@ -47,88 +47,109 @@ const SettingsContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	const [categoryMode, setCategoryMode] = useState<CategoryMode>("page");
 
 	// Methods
-	const formatAmount = (amount: number): string => {
-		return new Intl.NumberFormat("en-US", {
-			style: "currency",
-			currency: currency.value,
-		}).format(amount);
-	};
+	const formatAmount = useCallback(
+		(amount: number): string => {
+			return new Intl.NumberFormat("en-US", {
+				style: "currency",
+				currency: currency.value,
+			}).format(amount);
+		},
+		[currency]
+	);
 
-	const addCategory = async (category: Category): Promise<void> => {
-		if (!user?.uid) throw new Error("User id is mandatory in addCategory");
-		try {
-			setLoading(true);
+	const addCategory = useCallback(
+		async (category: Category): Promise<void> => {
+			if (!user?.uid) throw new Error("User id is mandatory in addCategory");
+			try {
+				setLoading(true);
 
-			const fetchedCategories: Category[] = await settingsService.createCategory(
-				category,
-				user.uid
-			);
+				const fetchedCategories: Category[] = await settingsService.createCategory(
+					category,
+					user.uid
+				);
 
-			setCategories(fetchedCategories);
+				setCategories(fetchedCategories);
+				setLoading(false);
+			} catch (error) {
+				console.error("Failed to fetch categories:", error);
+				throw error;
+			} finally {
+				setLoading(false);
+			}
+		},
+		[user?.uid, settingsService]
+	);
 
-			setLoading(false);
-		} catch (error) {
-			console.error("Failed to fetch categories:", error);
-			throw error;
-		} finally {
-			setLoading(false);
-		}
-	};
-
-	const fetchCategories = async (): Promise<void> => {
+	const fetchCategories = useCallback(async (): Promise<void> => {
 		if (!user?.uid) throw new Error("User id is mandatory in fetchCategories");
 
 		try {
 			setLoading(true);
-			const fetchedCategories: Category[] =
-				(await settingsService.getCategories(user.uid)) || [];
-
-			setCategories(fetchedCategories);
+			const fetchedCategories: Category[] = await settingsService.getCategories(user.uid);
+			setCategories(fetchedCategories || []);
 		} catch (error) {
 			console.error("Failed to fetch categories:", error);
 			throw error;
 		} finally {
 			setLoading(false);
 		}
-	};
+	}, [user?.uid, settingsService]);
 
-	const editCategory = async (categoryId: string, newName: string): Promise<void> => {
-		if (!user?.uid) throw new Error("User id is mandatory in editCategory");
+	const editCategory = useCallback(
+		async (categoryId: string, newName: string): Promise<void> => {
+			if (!user?.uid) throw new Error("User id is mandatory in editCategory");
 
-		try {
-			setLoading(true);
+			try {
+				setLoading(true);
 
-			await settingsService.editCategory(user.uid, categoryId, newName);
+				await settingsService.editCategory(user.uid, categoryId, newName);
 
-			// Update the state with the new category name
-			setCategories((currentCategories) => {
-				return currentCategories.map((category) =>
-					category.id === categoryId ? { ...category, name: newName } : category
+				// Update the state with the new category name
+				setCategories((currentCategories) =>
+					currentCategories.map((category) =>
+						category.id === categoryId ? { ...category, name: newName } : category
+					)
 				);
-			});
-		} catch (error) {
-			console.error("Failed to fetch categories:", error);
-			throw error;
-		} finally {
-			setLoading(false);
-		}
-	};
+			} catch (error) {
+				console.error("Failed to fetch categories:", error);
+				throw error;
+			} finally {
+				setLoading(false);
+			}
+		},
+		[user?.uid, settingsService]
+	);
 
-	// Values
-	const contextValue: ISettingsContext = {
-		currency,
-		availableCurrencies,
-		availableCategoryTypes,
-		categories,
-		loading,
-		categoryMode,
-		formatAmount,
-		addCategory,
-		setCurrency,
-		fetchCategories,
-		editCategory,
-		setCategoryMode,
-	};
+	// Memoize context value to avoid unnecessary re-renders
+	const contextValue = useMemo<ISettingsContext>(
+		() => ({
+			currency,
+			availableCurrencies,
+			availableCategoryTypes,
+			categories,
+			loading,
+			categoryMode,
+			formatAmount,
+			addCategory,
+			setCurrency,
+			fetchCategories,
+			editCategory,
+			setCategoryMode,
+		}),
+		[
+			currency,
+			availableCurrencies,
+			availableCategoryTypes,
+			categories,
+			loading,
+			categoryMode,
+			formatAmount,
+			addCategory,
+			setCurrency,
+			fetchCategories,
+			editCategory,
+		]
+	);
 
 	return <SettingsContext.Provider value={contextValue}>{children}</SettingsContext.Provider>;
 };

@@ -1,6 +1,5 @@
-// React
 import type { FC } from "react";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useCallback } from "react";
 
 // Types
 import type { CategoryType, OperationStatus } from "@common";
@@ -23,10 +22,12 @@ interface IProps {
 }
 
 const TransactionPanel: FC<IProps> = ({ onSave }) => {
+	console.log("re render TransactionPanel");
+
 	// Store
 	const settingsCTX = useContext(SettingsContext);
 	const transactionCTX = useContext(TransactionContext);
-	const { isOpen, toggleOpen, close } = useContext(OpenContext);
+	const { isOpen, toggleOpen } = useContext(OpenContext);
 
 	// State
 	const [selectedType, setSelectedType] = useState<CategoryType>(
@@ -34,31 +35,37 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 	);
 
 	// Methods
-	const handleTabClick = (type: CategoryType): void => {
-		transactionCTX.updateDraftTransaction({ type });
+	const handleTabClick = useCallback(
+		(type: CategoryType): void => {
+			transactionCTX.updateDraftTransaction({ type });
 
-		// If the type changes, clear the current category
-		transactionCTX.updateDraftTransaction({ categoryId: "" });
-		setSelectedType(type);
-	};
+			// If the type changes, clear the current category
+			transactionCTX.updateDraftTransaction({ categoryId: "" });
+			setSelectedType(type);
+		},
+		[transactionCTX, setSelectedType]
+	);
 
-	const handleCalculatorChange = (amount: number): void => {
-		transactionCTX.updateDraftTransaction({ amount });
-	};
+	const handleCalculatorChange = useCallback(
+		(amount: number): void => {
+			transactionCTX.updateDraftTransaction({ amount });
+		},
+		[transactionCTX]
+	);
 
-	const handleSave = async (): Promise<void> => {
+	const handleSave = useCallback(async (): Promise<void> => {
 		const status: OperationStatus = await transactionCTX.saveDraftTransaction();
 
 		// If no errors, fire the function
 		if (status.ok) {
 			onSave();
 		}
-	};
+	}, [transactionCTX, onSave]);
 
 	useEffect(() => {
 		// Change the display mode for the category
 		settingsCTX.setCategoryMode("panel");
-	}, []);
+	}, [settingsCTX]);
 
 	return (
 		<>

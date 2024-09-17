@@ -1,6 +1,6 @@
-// React
 import type { ChangeEvent, FC } from "react";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 // Translation
 import { useTranslation } from "react-i18next";
@@ -28,7 +28,8 @@ import useFormSubmission from "@/hooks/useFormSubmission";
 import { isEmail, hasMinLength } from "@/utils/utils";
 
 // Store
-import { AuthContext } from "@/store/AuthContext";
+import { login, clearError } from "@/store/authSlice";
+import { RootState, AppDispatch } from "@/store/store";
 
 // DTO
 import LoginDTO from "@/DTO/request/Login";
@@ -37,13 +38,11 @@ import Loader from "@/components/UI/Loader";
 const Login: FC = () => {
 	const { t } = useTranslation(["login", "forms"]);
 
-	// Navigation
+	// Redux
+	const dispatch = useDispatch<AppDispatch>();
 	const navigate = useNavigate();
 
-	// Store
-	const authCTX = useContext(AuthContext);
-
-	// Clear all the erros on mount
+	const { error, isAuthenticated, loading } = useSelector((state: RootState) => state.auth);
 
 	// Form fields
 	const emailField = useInput<HTMLInputElement, string>({
@@ -51,7 +50,7 @@ const Login: FC = () => {
 		validationFn: (value: string) => {
 			return isEmail(value);
 		},
-		clearErrorFN: authCTX.clearError,
+		clearErrorFN: () => dispatch(clearError()),
 	});
 
 	const password1Field = useInput<HTMLInputElement, string>({
@@ -59,7 +58,7 @@ const Login: FC = () => {
 		validationFn: (value: string) => {
 			return hasMinLength(value, 8);
 		},
-		clearErrorFN: authCTX.clearError,
+		clearErrorFN: () => dispatch(clearError()),
 	});
 
 	// Toggle input type
@@ -79,18 +78,18 @@ const Login: FC = () => {
 
 		const dto = new LoginDTO(emailField.value, password1Field.value);
 
-		await authCTX.login(dto);
+		await dispatch(login(dto));
 	});
 
 	useEffect(() => {
-		if (!authCTX.error && isSubmitted) {
+		if (!error && isSubmitted && isAuthenticated) {
 			navigate("/settings");
 		}
 
 		return () => {
 			setIsSubmitted(false);
 		};
-	}, [isSubmitted, navigate]);
+	}, [isSubmitted, isAuthenticated, navigate, error]);
 
 	return (
 		<Layout>
@@ -144,7 +143,7 @@ const Login: FC = () => {
 					)}
 				</div>
 
-				{authCTX.error && <InputError message={authCTX.error} className="text-red-600" />}
+				{error && <InputError message={error} className="text-red-600" />}
 
 				<div className="flex items-center justify-between">
 					<p className="text-sm text-gray-500">
@@ -156,7 +155,7 @@ const Login: FC = () => {
 
 					<Button
 						type="submit"
-						disabled={hasErrors}
+						disabled={hasErrors || isLoadingForm}
 						className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white disabled:bg-slate-400"
 					>
 						{isLoadingForm ? <Loader /> : t("signin")}

@@ -1,37 +1,55 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// Define the initial state interface
-export interface OpenState {
-	openSet: Set<string>;
+// Define the OpenState interface with openSet as an array
+interface OpenState {
+	openSet: string[]; // Store as an array
 }
 
-// Initial state
 const initialState: OpenState = {
-	openSet: new Set(),
+	openSet: [], // Initialize as an empty array
 };
 
-// Slice definition
+// Helper functions to manage the array as a set
+const addToSet = (arr: string[], id: string) => {
+	const set = new Set(arr);
+	set.add(id);
+	return Array.from(set);
+};
+
+const removeFromSet = (arr: string[], id: string) => {
+	const set = new Set(arr);
+	set.delete(id);
+	return Array.from(set);
+};
+
+// Create the slice
 const openSlice = createSlice({
 	name: "open",
 	initialState,
 	reducers: {
-		toggleOpen: (state, action: PayloadAction<string>) => {
-			const id = action.payload;
-			if (state.openSet.has(id)) {
-				state.openSet.delete(id);
-			} else {
-				state.openSet.add(id);
-			}
-		},
 		open: (state, action: PayloadAction<string>) => {
-			state.openSet.add(action.payload);
+			state.openSet = addToSet(state.openSet, action.payload);
 		},
 		close: (state, action: PayloadAction<string>) => {
-			state.openSet.delete(action.payload);
+			state.openSet = removeFromSet(state.openSet, action.payload);
+		},
+		toggleOpen: (state, action: PayloadAction<string>) => {
+			if (state.openSet.includes(action.payload)) {
+				state.openSet = removeFromSet(state.openSet, action.payload);
+			} else {
+				state.openSet = addToSet(state.openSet, action.payload);
+			}
 		},
 	},
 });
 
+// Selector to check if a particular ID is open
+export const isOpen = (id: string) => (state: { open: OpenState }) => {
+	const openSetArray = state.open.openSet;
+	const openSet = new Set(openSetArray);
+	return openSet.has(id);
+};
+
 // Export actions and reducer
-export const { toggleOpen, open, close } = openSlice.actions;
+export const { open, close, toggleOpen } = openSlice.actions;
 export default openSlice.reducer;

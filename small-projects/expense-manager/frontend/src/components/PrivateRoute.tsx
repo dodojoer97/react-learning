@@ -15,6 +15,7 @@ const PrivateRoute: FC<PropsWithChildren> = ({ children }) => {
 	// Get authentication state from Redux store
 	const { isAuthenticated, loading } = useSelector((state: RootState) => state.auth);
 
+	console.log("isAuthenticated: ", isAuthenticated);
 	if (loading) {
 		return <Layout />; // You can add a loading spinner here if needed
 	}

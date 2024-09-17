@@ -1,13 +1,13 @@
 import type { FC } from "react";
-import { useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 // Types
 import { TransactionWithCategory } from "@/mappers/TransactionCategoryAssigner";
+import { RootState, AppDispatch } from "@/store/store"; // Redux store types
 
-// Store
-import { SettingsContext } from "@/store/SettingsContext";
-import { TransactionContext } from "@/store/TransactionContext";
-import { OpenContext } from "@/store/OpenContext";
+// Store actions
+import { selectTransaction } from "@/store/transactionSlice";
+import { toggleOpen } from "@/store/openSlice";
 
 // FontAwesome Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,10 +21,10 @@ interface Props {
 }
 
 const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, category } }) => {
-	// Store
-	const settingsCTX = useContext(SettingsContext);
-	const transactionCTX = useContext(TransactionContext);
-	const { open } = useContext(OpenContext);
+	// Redux hooks
+	const dispatch = useDispatch<AppDispatch>();
+	const currency = useSelector((state: RootState) => state.settings.currency); // Fetch currency from Redux
+	const userId = useSelector((state: RootState) => state.auth.user?.uid);
 
 	const panelId = "transactionPanel";
 
@@ -47,8 +47,8 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 
 	// Methods
 	const handleClick = (): void => {
-		transactionCTX.selectTransaction(transaction);
-		open(panelId);
+		dispatch(selectTransaction(transaction)); // Dispatch the action to select the transaction
+		dispatch(toggleOpen(panelId)); // Dispatch the action to open the sliding panel
 	};
 
 	return (
@@ -82,7 +82,7 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 							{formatDate(transaction.date)}
 						</time>
 						<span className={`font-medium ${textColor}`}>
-							{settingsCTX.currency.value} {transaction.amount.toFixed(2)}
+							{currency.value} {transaction.amount.toFixed(2)}
 						</span>
 					</div>
 				</div>

@@ -1,12 +1,14 @@
-import { useState, useEffect, useContext } from "react";
+// React
+import { useState, useEffect } from "react";
 import type { FC, PropsWithChildren } from "react";
 
 // FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSliders, faPlus, faMinus, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
-// Store
-import { TransactionContext } from "@/store/TransactionContext";
+// Redux
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store"; // Import from Redux store
 
 type Operation = "+" | "-" | "*" | "/";
 
@@ -26,8 +28,8 @@ const Calculator: FC<ICalculatorProps> = ({
 	displaySideButton,
 	onSideButtonClick,
 }) => {
-	// Store
-	const transactionCTX = useContext(TransactionContext);
+	// Redux store
+	const { draftTransaction } = useSelector((state: RootState) => state.transaction); // Access draftTransaction from Redux
 
 	// State
 	const [currentInput, setCurrentInput] = useState<string>(amount.toString());
@@ -35,8 +37,7 @@ const Calculator: FC<ICalculatorProps> = ({
 	const [operation, setOperation] = useState<Operation | null>(null);
 
 	// Computed
-	const icon: IconDefinition =
-		transactionCTX.draftTransaction?.type === "expense" ? faMinus : faPlus;
+	const icon: IconDefinition = draftTransaction?.type === "expense" ? faMinus : faPlus;
 
 	// Methods
 	const handleNumberClick = (value: string) => {
@@ -101,8 +102,9 @@ const Calculator: FC<ICalculatorProps> = ({
 
 	// Emit the value to other components
 	useEffect(() => {
-		// onChange(parseFloat(currentInput));
-	}, [currentInput]);
+		// Emit the current input as a number to the parent component
+		onChange(parseFloat(currentInput));
+	}, [currentInput, onChange]);
 
 	return (
 		<div

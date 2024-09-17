@@ -1,6 +1,10 @@
 // React
-import { useEffect, useContext } from "react";
 import type { ChangeEvent, FC } from "react";
+
+// Redux
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "@/store/store"; // Correct store import path
+import { editCategory } from "@/store/settingsSlice"; // Import the editCategory action
 
 // UI Components
 import Button from "@/components/UI/Button";
@@ -8,17 +12,15 @@ import Form from "@/components/UI/Form";
 import Input from "@/components/UI/Input";
 import InputError from "@/components/UI/InputError";
 
-// Models
-import { Category } from "@common";
-
+// Hooks
 import useInput from "@/hooks/useInput";
 import useFormSubmission from "@/hooks/useFormSubmission";
 
 // Util
 import { hasMinLength } from "@/utils/utils";
 
-// Store
-import { SettingsContext } from "@/store/SettingsContext";
+// Models
+import { Category } from "@common";
 
 interface IEditCategoryFormProps {
 	id: string;
@@ -27,20 +29,22 @@ interface IEditCategoryFormProps {
 }
 
 const EditCategoryForm: FC<IEditCategoryFormProps> = ({ id, name, onSave }) => {
-	// Store
-	const settingsCTX = useContext(SettingsContext);
+	// Redux store
+	const dispatch = useDispatch<AppDispatch>();
+	const { loading, error } = useSelector((state: RootState) => state.settings); // Access loading and error state from settings slice
+	const userId = useSelector((state: RootState) => state.auth.user?.uid);
 
 	// Hooks
 	const nameField = useInput<HTMLInputElement, string>({
 		defaultValue: name,
-		validationFn: (value) => {
-			return hasMinLength(value, 4);
-		},
+		validationFn: (value) => hasMinLength(value, 4),
 	});
 
-	const { handleSubmit, error } = useFormSubmission(async () => {
-		await settingsCTX.editCategory(id, nameField.value);
-		onSave();
+	// Handle form submission
+	const { handleSubmit } = useFormSubmission(async () => {
+		if (!userId) return;
+		await dispatch(editCategory({ categoryId: id, newName: nameField.value, userId })); // Dispatch the editCategory action with required parameters
+		onSave(); // Callback after save
 	});
 
 	return (
@@ -52,7 +56,7 @@ const EditCategoryForm: FC<IEditCategoryFormProps> = ({ id, name, onSave }) => {
 			<div>
 				<Input
 					id="name"
-					label="name"
+					label="Category Name"
 					className="w-12"
 					value={nameField.value}
 					onChange={(e) =>
@@ -61,18 +65,20 @@ const EditCategoryForm: FC<IEditCategoryFormProps> = ({ id, name, onSave }) => {
 					onBlur={nameField.handleInputBlur}
 				/>
 				{nameField.hasError && (
-					<InputError message={"some error of length"} className="text-red-600" />
+					<InputError
+						message="Category name must be at least 4 characters long"
+						className="text-red-600"
+					/>
 				)}
 			</div>
-
-			{error && <InputError message={error} className="text-red-600" />}
-
+			{error && <InputError message={error} className="text-red-600" />}{" "}
+			{/* Show error from Redux */}
 			<Button
 				type="submit"
-				disabled={nameField.hasError}
+				disabled={nameField.hasError || loading} // Disable if there's an error or if the form is loading
 				className="inline-block rounded-lg w-full bg-blue-500 px-5 py-3 text-sm font-medium text-white disabled:bg-slate-400"
 			>
-				SAVE
+				{loading ? "Saving..." : "SAVE"} {/* Show loading state */}
 			</Button>
 		</Form>
 	);

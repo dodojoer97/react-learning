@@ -13,6 +13,7 @@ export interface SettingsState {
 	categories: Category[];
 	categoryMode: "page" | "panel";
 	loading: boolean;
+	error: string | null; // Add error property to track errors
 }
 
 const initialState: SettingsState = {
@@ -22,6 +23,7 @@ const initialState: SettingsState = {
 	categories: [],
 	categoryMode: "page",
 	loading: false,
+	error: null, // Initialize error as null
 };
 
 // Async actions (thunks)
@@ -81,28 +83,38 @@ const settingsSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
+			// Fetch categories
 			.addCase(fetchCategories.pending, (state) => {
 				state.loading = true;
+				state.error = null; // Reset error on new request
 			})
 			.addCase(fetchCategories.fulfilled, (state, action) => {
 				state.categories = action.payload;
 				state.loading = false;
 			})
-			.addCase(fetchCategories.rejected, (state) => {
+			.addCase(fetchCategories.rejected, (state, action) => {
 				state.loading = false;
+				state.error = action.payload as string; // Set error message on failure
 			})
+
+			// Add category
 			.addCase(addCategory.pending, (state) => {
 				state.loading = true;
+				state.error = null; // Reset error on new request
 			})
 			.addCase(addCategory.fulfilled, (state, action) => {
 				state.categories = action.payload;
 				state.loading = false;
 			})
-			.addCase(addCategory.rejected, (state) => {
+			.addCase(addCategory.rejected, (state, action) => {
 				state.loading = false;
+				state.error = action.payload as string; // Set error message on failure
 			})
+
+			// Edit category
 			.addCase(editCategory.pending, (state) => {
 				state.loading = true;
+				state.error = null; // Reset error on new request
 			})
 			.addCase(editCategory.fulfilled, (state, action) => {
 				const { categoryId, newName } = action.payload;
@@ -111,8 +123,9 @@ const settingsSlice = createSlice({
 				);
 				state.loading = false;
 			})
-			.addCase(editCategory.rejected, (state) => {
+			.addCase(editCategory.rejected, (state, action) => {
 				state.loading = false;
+				state.error = action.payload as string; // Set error message on failure
 			});
 	},
 });

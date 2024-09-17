@@ -1,7 +1,9 @@
-import { FC, useContext, useMemo } from "react";
+import { FC, useMemo } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 // Store
-import { TransactionContext } from "@/store/TransactionContext";
+import { RootState } from "@/store/store"; // Import the store types
+import { getMappedTransactions } from "@/store/transactionSlice"; // Redux function to map transactions
 
 // Import the DoughnutChart component
 import DoughnutChart from "@/templates/mosaic/charts/DoughnutChart";
@@ -12,7 +14,6 @@ import { ChartData } from "chart.js";
 
 // Mappers
 import { TransactionWithCategory } from "@/mappers/TransactionCategoryAssigner";
-import { SettingsContext } from "@/store/SettingsContext";
 
 /**
  * Function to generate random colors
@@ -75,15 +76,16 @@ const mapTransactionsToChartData = (
 };
 
 const TransactionDoughnut: FC = () => {
-	// Get transactions and categories from the context
-	const { getMappedTransactions, transactions } = useContext(TransactionContext);
+	// Get transactions and categories from the Redux store
+	const transactions = useSelector((state: RootState) => state.transaction.transactions);
+	const categories = useSelector((state: RootState) => state.settings.categories);
 
-	// // Map transactions to chart data format
+	// Memoized chart data based on transactions and categories
 	const chartData = useMemo(() => {
-		if (!transactions.length) return null;
-		const transactionsWithCategory = getMappedTransactions("expense");
+		if (!transactions.length || !categories.length) return null;
+		const transactionsWithCategory = getMappedTransactions(transactions, categories, "expense");
 		return mapTransactionsToChartData(transactionsWithCategory);
-	}, [transactions]);
+	}, [transactions, categories]);
 
 	return (
 		<Card title="Expense structure">

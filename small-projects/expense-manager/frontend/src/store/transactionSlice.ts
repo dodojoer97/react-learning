@@ -6,6 +6,7 @@ import {
 	TransactionCategoryAssigner,
 } from "@/mappers/TransactionCategoryAssigner";
 import User from "@/models/User";
+import { RootState } from "./store";
 
 // Define the state interface
 export interface TransactionState {
@@ -80,22 +81,34 @@ export const editTransaction = createAsyncThunk<
 	}
 });
 
+// Create a thunk for saving draft transactions
 export const saveDraftTransaction = createAsyncThunk<
-	OperationStatus,
-	void,
-	{ state: { transaction: TransactionState; auth: { user: User } }; rejectValue: string }
->("transactions/saveDraftTransaction", async (_, { getState, rejectWithValue }) => {
+	OperationStatus, // Return type
+	void, // Argument type
+	{ state: RootState; rejectValue: string } // ThunkAPI context type
+>("transaction/saveDraftTransaction", async (_, { getState, rejectWithValue }) => {
 	const { draftTransaction } = getState().transaction;
 	const { user } = getState().auth;
+
 	if (!draftTransaction || !user?.uid) {
-		return rejectWithValue("No draft or user ID available");
+		return rejectWithValue("No draft transaction or user ID available");
 	}
 
-	const status: OperationStatus = draftTransaction.id
-		? await transactionService.editTransaction(user.uid, draftTransaction.id, draftTransaction)
-		: await transactionService.addTransaction({ ...draftTransaction, userId: user.uid });
+	const service = new TransactionService();
 
-	return status;
+	try {
+		let status: OperationStatus;
+
+		if (draftTransaction.id) {
+			status = await service.editTransaction(user.uid, draftTransaction.id, draftTransaction);
+		} else {
+			status = await service.addTransaction({ ...draftTransaction, userId: user.uid });
+		}
+
+		return status;
+	} catch (error) {
+		return rejectWithValue("Failed to save transaction");
+	}
 });
 
 // Create the slice

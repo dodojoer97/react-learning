@@ -1,5 +1,6 @@
 import type { FC } from "react";
-import { useContext, useEffect, useMemo, useCallback, memo } from "react";
+import { useEffect, useMemo, useCallback, memo } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 // Types
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
@@ -8,8 +9,9 @@ import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import CategoryComp from "@/components/Category/Category";
 
 // Store
-import { SettingsContext } from "@/store/SettingsContext";
-import { TransactionContext } from "@/store/TransactionContext";
+import { RootState, AppDispatch } from "@/store/store"; // Redux store types
+import { fetchCategories } from "@/store/settingsSlice"; // Action to fetch categories
+import { updateDraftTransaction } from "@/store/transactionSlice"; // Action to update draft transaction
 
 // Models
 import { Category } from "@common";
@@ -18,11 +20,15 @@ interface Props {
 	onSelect?: () => void;
 	mode?: "list" | "grid";
 }
+
 const CategoryList: FC<Props> = ({ onSelect, mode = "list" }) => {
-	console.log("re render CategoryList");
-	// Store
-	const { categories, fetchCategories } = useContext(SettingsContext);
-	const { updateDraftTransaction, draftTransaction } = useContext(TransactionContext);
+	console.log("re-render CategoryList");
+
+	// Redux hooks
+	const dispatch = useDispatch<AppDispatch>();
+	const categories = useSelector((state: RootState) => state.settings.categories);
+	const draftTransaction = useSelector((state: RootState) => state.transaction.draftTransaction);
+	const userId = useSelector((state: RootState) => state.auth.user?.uid);
 
 	// Memoized filtered category list by transaction type
 	const categoryList: Category[] = useMemo(() => {
@@ -30,17 +36,20 @@ const CategoryList: FC<Props> = ({ onSelect, mode = "list" }) => {
 	}, [categories, draftTransaction?.type]);
 
 	// Memoized handleSelect method to avoid re-creation on each render
-	const handleSelect = useCallback((category: Category): void => {
-		updateDraftTransaction({ categoryId: category.id });
-		onSelect && onSelect();
-	}, []);
+	const handleSelect = useCallback(
+		(category: Category): void => {
+			dispatch(updateDraftTransaction({ categoryId: category.id }));
+			onSelect && onSelect();
+		},
+		[dispatch, onSelect]
+	);
 
 	useEffect(() => {
 		// If we did not load any categories, request them
-		if (!categories.length) {
-			fetchCategories();
+		if (!categories.length && userId) {
+			dispatch(fetchCategories(userId)); // Pass userId when fetching categories
 		}
-	}, []);
+	}, [categories.length, userId, dispatch]);
 
 	return (
 		<ul

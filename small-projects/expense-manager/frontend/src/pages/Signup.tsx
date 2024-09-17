@@ -1,6 +1,11 @@
 // React
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import type { ChangeEvent, FC } from "react";
+
+// Redux
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "@/store/store";
+import { signup, clearError } from "@/store/authSlice";
 
 // Translation
 import { useTranslation } from "react-i18next";
@@ -20,17 +25,13 @@ import Loader from "@/components/UI/Loader";
 import emailIcon from "@/assets/email.svg";
 import eyeIcon from "@/assets/eye.svg";
 
-// Hookss
+// Hooks
 import useToggleInputType from "@/hooks/useToggleInputType";
 import useInput from "@/hooks/useInput";
 import useFormSubmission from "@/hooks/useFormSubmission";
 
 // Util
 import { isEmail, hasMinLength, checkValuesEqual } from "@/utils/utils";
-
-// Store
-import { AuthContext } from "@/store/AuthContext";
-import { SettingsContext } from "@/store/SettingsContext";
 
 // DTO
 import RegisterDTO from "@/DTO/request/Register";
@@ -40,9 +41,10 @@ const Signup: FC = () => {
 	if (!ready) {
 		return <div>Loading...</div>; // Or some loading spinner
 	}
-	// Store
-	const authCTX = useContext(AuthContext);
-	const settingsCTX = useContext(SettingsContext);
+
+	// Redux Store
+	const dispatch = useDispatch<AppDispatch>();
+	const { error, loading } = useSelector((state: RootState) => state.auth); // Fetch auth state from Redux
 
 	// Navigation
 	const navigate = useNavigate();
@@ -50,34 +52,28 @@ const Signup: FC = () => {
 	// Email field
 	const emailField = useInput<HTMLInputElement, string>({
 		defaultValue: "",
-		validationFn: (value: string) => {
-			return isEmail(value);
-		},
-		clearErrorFN: authCTX.clearError,
+		validationFn: (value: string) => isEmail(value),
+		clearErrorFN: () => dispatch(clearError()), // Dispatch clear error action
 	});
 
 	// Password fields
 	const password1Field = useInput<HTMLInputElement, string>({
 		defaultValue: "",
-		validationFn: (value: string) => {
-			return hasMinLength(value, 8);
-		},
-		clearErrorFN: authCTX.clearError,
+		validationFn: (value: string) => hasMinLength(value, 8),
+		clearErrorFN: () => dispatch(clearError()), // Dispatch clear error action
 	});
 
 	const password2Field = useInput<HTMLInputElement, string>({
 		defaultValue: "",
-		validationFn: (value: string) => {
-			return hasMinLength(value, 8);
-		},
-		clearErrorFN: authCTX.clearError,
+		validationFn: (value: string) => hasMinLength(value, 8),
+		clearErrorFN: () => dispatch(clearError()), // Dispatch clear error action
 	});
 
 	// Input type togglers
 	const { type: password1InputType, toggleInputType: togglePassword1Type } = useToggleInputType();
 	const { type: password2InputType, toggleInputType: togglePassword2Type } = useToggleInputType();
 
-	// Check if the passowrds are equal
+	// Check if the passwords are equal
 	const arePasswordsEqual: boolean = checkValuesEqual(password1Field.value, password2Field.value);
 
 	// Check if the passwords are not equal, and they both been edited
@@ -93,13 +89,12 @@ const Signup: FC = () => {
 		if (hasErrors) return;
 
 		const dto = new RegisterDTO(emailField.value, password1Field.value);
-
-		await authCTX.signup(dto);
+		await dispatch(signup(dto)); // Dispatch the signup action
 	});
 
 	// Handle post-signup logic
 	useEffect(() => {
-		if (!authCTX.error && isSubmitted) {
+		if (!error && isSubmitted) {
 			// Show a success message or redirect to a success page
 			alert("Signup successful! Please log in to continue.");
 			navigate("/login"); // Redirect to login page
@@ -108,7 +103,7 @@ const Signup: FC = () => {
 		return () => {
 			setIsSubmitted(false);
 		};
-	}, [isSubmitted, navigate]);
+	}, [isSubmitted, navigate, error]);
 
 	return (
 		<Layout>
@@ -189,15 +184,15 @@ const Signup: FC = () => {
 					<InputError message={t("forms:notMatchingPasswords")} />
 				)}
 
-				{authCTX.error && <InputError message={authCTX.error} className="text-red-600" />}
+				{error && <InputError message={error} className="text-red-600" />}
 
 				<div>
 					<Button
 						type="submit"
-						disabled={hasErrors || isLoading}
+						disabled={hasErrors || isLoading || loading}
 						className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white w-full disabled:bg-slate-400"
 					>
-						{isLoading ? <Loader /> : t("signup:createAccount")}
+						{isLoading || loading ? <Loader /> : t("signup:createAccount")}
 					</Button>
 				</div>
 			</Form>

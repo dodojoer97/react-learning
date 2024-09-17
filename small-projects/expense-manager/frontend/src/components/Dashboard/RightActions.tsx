@@ -1,34 +1,32 @@
-// React
 import type { FC } from "react";
-import { useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 // Store
-import { OpenContext } from "@/store/OpenContext";
-import { TransactionContext, defaultTransaction } from "@/store/TransactionContext";
+import { toggleOpen, close } from "@/store/openSlice"; // Actions for managing open/close panels
+import { selectTransaction } from "@/store/transactionSlice"; // Action for selecting the transaction
+import { RootState, AppDispatch } from "@/store/store"; // Redux store types
+import { defaultTransaction } from "@/store/TransactionContext"; // Default transaction structure
 
 // Components
 import TransactionPanel from "@/components/Transaction/TransactionPanel";
 import SlidingPanel from "@/components/UI/SlidingPanel";
 
 const RightActions: FC = () => {
-	// Store
-	const { open, isOpen, toggleOpen, close } = useContext(OpenContext);
-	const { selectTransaction } = useContext(TransactionContext);
-	// TODO maybe add to config
-	const dashboardPanelId = "dashboard-panel";
+	// Redux hooks
+	const dispatch = useDispatch<AppDispatch>();
+	const isPanelOpen = useSelector((state: RootState) =>
+		state.open.openSet.has("dashboard-panel")
+	); // Check if the dashboard panel is open
 
+	// Handle open logic
 	const handleOpen = (): void => {
-		selectTransaction(defaultTransaction);
-		open(dashboardPanelId);
+		dispatch(selectTransaction(defaultTransaction)); // Select the default transaction
+		dispatch(toggleOpen("dashboard-panel")); // Open the sliding panel
 	};
 
 	return (
 		<>
 			<div className="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-				{/* Filter button */}
-				{/* <FilterButton align="right" /> */}
-				{/* Datepicker built with flatpickr */}
-				{/* <Datepicker align="right" /> */}
 				<button
 					className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white"
 					onClick={(e) => {
@@ -47,12 +45,15 @@ const RightActions: FC = () => {
 					<span className="max-xs:sr-only">Add Transaction</span>
 				</button>
 			</div>
+
+			{/* Sliding Panel for Transaction Form */}
 			<SlidingPanel
-				isOpen={isOpen(dashboardPanelId)}
-				onClose={() => toggleOpen(dashboardPanelId)}
+				isOpen={isPanelOpen} // Use Redux selector to check if the panel is open
+				onClose={() => dispatch(toggleOpen("dashboard-panel"))} // Use Redux action to toggle the panel
 				slideDirection="from-right"
 			>
-				<TransactionPanel onSave={() => close(dashboardPanelId)} />
+				<TransactionPanel onSave={() => dispatch(close("dashboard-panel"))} />{" "}
+				{/* Close the panel when saved */}
 			</SlidingPanel>
 		</>
 	);

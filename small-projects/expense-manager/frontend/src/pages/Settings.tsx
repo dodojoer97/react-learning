@@ -1,7 +1,11 @@
 // React
 import type { FC } from "react";
 
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
+
+// Redux
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store"; // Import the store using the new preferred path
 
 // Translation
 import { useTranslation } from "react-i18next";
@@ -9,19 +13,13 @@ import { useTranslation } from "react-i18next";
 // Components
 import Layout from "@/components/UI/Layout";
 import Form from "@/components/UI/Form";
-import Input from "@/components/UI/Input";
 import Select from "@/components/UI/Select";
-import Button from "@/components/UI/Button";
-import InputError from "@/components/UI/InputError";
-
-// Store
-import { SettingsContext } from "@/store/SettingsContext";
 
 const Settings: FC = () => {
 	const { t } = useTranslation("settings");
 
-	// Store
-	const settingsContext = useContext(SettingsContext);
+	// Redux: Select available currencies from the settings slice
+	const { availableCurrencies } = useSelector((state: RootState) => state.settings);
 
 	return (
 		<Layout>
@@ -29,11 +27,7 @@ const Settings: FC = () => {
 				<h1 className="text-2xl font-bold sm:text-3xl">{t("settingsTitle")}</h1>
 			</div>
 			<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4">
-				<Select
-					id="currency"
-					label="Currency"
-					options={settingsContext.availableCurrencies}
-				/>
+				<Select id="currency" label="Currency" options={availableCurrencies} />
 			</Form>
 		</Layout>
 	);

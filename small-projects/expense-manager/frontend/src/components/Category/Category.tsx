@@ -1,6 +1,5 @@
-// React
 import type { FC } from "react";
-import { useContext } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 // FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,9 +11,9 @@ import SlidingPanel from "@/components/UI/SlidingPanel";
 import EditCategoryForm from "@/components/EditCategoryForm";
 
 // Store
-import { SettingsContext } from "@/store/SettingsContext";
-import { TransactionContext } from "@/store/TransactionContext";
-import { OpenContext } from "@/store/OpenContext";
+import { RootState, AppDispatch } from "@/store/store"; // Redux store types
+import { toggleOpen } from "@/store/openSlice"; // Action to toggle sliding panel
+import { selectTransaction } from "@/store/transactionSlice"; // Action to manage draft transaction
 
 interface ICategoryProps {
 	id: string;
@@ -23,15 +22,22 @@ interface ICategoryProps {
 }
 
 const CategoryComp: FC<ICategoryProps> = ({ id, name, icon }) => {
-	// Store
-	const settingsCTX = useContext(SettingsContext);
-	const transactionCTX = useContext(TransactionContext);
-	const { isOpen, toggleOpen } = useContext(OpenContext);
+	// Redux hooks
+	const dispatch = useDispatch<AppDispatch>();
+	const categoryMode = useSelector((state: RootState) => state.settings.categoryMode);
+	const draftTransaction = useSelector((state: RootState) => state.transaction.draftTransaction);
+	const isPanelOpen = useSelector((state: RootState) => state.open.openSet.has("category")); // Check if the panel is open
 
 	// Check if in panel mode to set different displays, functions
-	const isPanelMode: boolean = settingsCTX.categoryMode === "panel";
+	const isPanelMode: boolean = categoryMode === "panel";
 
-	const isSelected = transactionCTX.draftTransaction?.categoryId === id;
+	// Check if this category is selected
+	const isSelected = draftTransaction?.categoryId === id;
+
+	// Handle opening the sliding panel
+	const handleOpen = () => {
+		dispatch(toggleOpen("category"));
+	};
 
 	return (
 		<>
@@ -50,15 +56,15 @@ const CategoryComp: FC<ICategoryProps> = ({ id, name, icon }) => {
 					<p className="text-lg font-semibold text-gray-800">{name}</p>
 				</div>
 				{!isPanelMode && (
-					<Button onClick={() => toggleOpen("category")}>
+					<Button onClick={handleOpen}>
 						<FontAwesomeIcon icon={faPencil} />
 					</Button>
 				)}
 			</article>
 
 			{!isPanelMode && (
-				<SlidingPanel isOpen={isOpen("category")} onClose={() => toggleOpen("category")}>
-					<EditCategoryForm id={id} name={name} onSave={() => toggleOpen("category")} />
+				<SlidingPanel isOpen={isPanelOpen} onClose={handleOpen}>
+					<EditCategoryForm id={id} name={name} onSave={handleOpen} />
 				</SlidingPanel>
 			)}
 		</>

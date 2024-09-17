@@ -1,15 +1,16 @@
 // React
 import type { FC } from "react";
-import { useState, useContext } from "react";
+import { useState } from "react";
 
 // Types
 import type { CategoryType } from "@common";
 
-// Store
-import { SettingsContext } from "@/store/SettingsContext";
-import { AuthContext } from "@/store/AuthContext";
+// Redux
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "@/store/store"; // Correct store import
+import { addCategory } from "@/store/settingsSlice"; // Import addCategory action
 
-// Copmonents
+// Components
 import Form from "@/components/UI/Form";
 import IconSelector from "./IconSelector";
 import Input from "@/components/UI/Input";
@@ -33,7 +34,9 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 	// TODO ADD TRANSLATIONS
 	const [iconName, setIconName] = useState<string | null>(null);
 
-	const settingsCTX = useContext(SettingsContext);
+	// Redux store
+	const dispatch = useDispatch<AppDispatch>();
+	const { availableCategoryTypes, loading } = useSelector((state: RootState) => state.settings); // Access availableCategoryTypes from Redux
 
 	const categoryNameField = useInput<HTMLInputElement, string>({
 		defaultValue: "",
@@ -62,7 +65,8 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 			typeField.value as CategoryType
 		);
 
-		await settingsCTX.addCategory(createdCategory);
+		// Dispatch addCategory action with the created category
+		await dispatch(addCategory({ category: createdCategory, userId: "user-id-placeholder" })); // Replace with actual user ID
 		onSave();
 	});
 
@@ -91,7 +95,7 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 				<Select
 					id="type"
 					label="Category type"
-					options={settingsCTX.availableCategoryTypes}
+					options={availableCategoryTypes} // Access available category types from Redux
 					value={typeField.value}
 					onChange={typeField.handleInputChange}
 				/>
@@ -101,10 +105,10 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 
 			<Button
 				type="submit"
-				disabled={categoryNameField.hasError || !iconName}
+				disabled={categoryNameField.hasError || !iconName || loading} // Disable if there are errors or the form is loading
 				className="inline-block rounded-lg w-full bg-blue-500 px-5 py-3 text-sm font-medium text-white disabled:bg-slate-400"
 			>
-				SAVE
+				{loading ? "Saving..." : "SAVE"} {/* Show loading state */}
 			</Button>
 		</Form>
 	);

@@ -1,24 +1,18 @@
-// React
 import type { FC } from "react";
-import { useContext } from "react";
+import { useSelector } from "react-redux";
 
 // Store
-import { SettingsContext } from "@/store/SettingsContext";
+import { RootState } from "@/store/store"; // Redux store types
 
 // Components
 import Tabs from "@/components/UI/PageTabs";
 import CategoryComp from "@/components/Category/Category";
 
 const CategoryTabs: FC = () => {
-	const settingsCTX = useContext(SettingsContext);
+	// Use `useSelector` to get categories from the Redux store
+	const categories = useSelector((state: RootState) => state.settings.categories);
 
-	return (
-		<>
-			{settingsCTX.categories.length && (
-				<Tabs Component={CategoryComp} data={settingsCTX.categories} />
-			)}
-		</>
-	);
+	return <>{categories.length > 0 && <Tabs Component={CategoryComp} data={categories} />}</>;
 };
 
 export default CategoryTabs;

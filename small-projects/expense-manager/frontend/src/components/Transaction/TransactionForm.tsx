@@ -1,15 +1,11 @@
-// React
 import type { ChangeEvent, FC } from "react";
-import { useState, useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-// Types
-import type { CategoryType } from "@common";
+// Redux
+import { RootState, AppDispatch } from "@/store/store"; // Correct store imports
+import { updateDraftTransaction } from "@/store/transactionSlice"; // Action to update the draft transaction
 
-// Store
-import { SettingsContext } from "@/store/SettingsContext";
-import { TransactionContext } from "@/store/TransactionContext";
-
-// Copmonents
+// Components
 import Form from "@/components/UI/Form";
 import Input from "@/components/UI/Input";
 import Select from "@/components/UI/Select";
@@ -28,29 +24,30 @@ interface IProps {
 }
 
 const TransactionForm: FC<IProps> = ({ onSave }) => {
-	console.log("TransactionForm re render");
-	// TODO add translations
-	// Store
-	const { draftTransaction, updateDraftTransaction } = useContext(TransactionContext);
+	console.log("TransactionForm re-render");
+
+	// Redux hooks
+	const dispatch = useDispatch<AppDispatch>();
+	const draftTransaction = useSelector((state: RootState) => state.transaction.draftTransaction);
 
 	if (!draftTransaction) return <></>;
 
-	// hooks
-	const isMobile: boolean = true;
+	// Hooks
+	const isMobile: boolean = useIsMobile();
 
 	// Form fields
 	const dateField = useInput<HTMLInputElement, Date>({
-		defaultValue: draftTransaction?.date,
-		changeFn: (value) => updateDraftTransaction({ date: value }),
+		defaultValue: draftTransaction.date,
+		changeFn: (value) => dispatch(updateDraftTransaction({ date: value })), // Dispatch the update to the draft transaction
 	});
 	const descriptionField = useInput<HTMLTextAreaElement, string>({
 		defaultValue: draftTransaction.description || "",
-		changeFn: (value) => updateDraftTransaction({ description: value }),
+		changeFn: (value) => dispatch(updateDraftTransaction({ description: value })), // Dispatch the update to the draft transaction
 	});
 
 	const handleSave = (e: React.FormEvent) => {
 		e.preventDefault(); // Prevent the default form submission
-		onSave(); // Your custom save logic
+		onSave(); // Custom save logic, likely to call another Redux action to save the draft
 	};
 
 	return (
@@ -72,6 +69,7 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 				}
 				onBlur={descriptionField.handleInputBlur}
 			/>
+
 			<Button
 				type="submit"
 				className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white"

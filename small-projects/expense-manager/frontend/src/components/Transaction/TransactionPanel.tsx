@@ -1,13 +1,15 @@
 import type { FC } from "react";
-import { useState, useContext, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 // Types
 import type { CategoryType, OperationStatus } from "@common";
 
-// Store
-import { SettingsContext } from "@/store/SettingsContext";
-import { TransactionContext } from "@/store/TransactionContext";
-import { OpenContext } from "@/store/OpenContext";
+// Redux
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "@/store/store"; // Correct store import
+import { setCategoryMode } from "@/store/settingsSlice"; // Action from settings slice
+import { updateDraftTransaction, saveDraftTransaction } from "@/store/transactionSlice"; // Actions from transaction slice
+import { toggleOpen } from "@/store/openSlice"; // Action from open slice
 
 // Components
 import Calculator from "@/components/Calculator";
@@ -22,18 +24,15 @@ interface IProps {
 }
 
 const TransactionPanel: FC<IProps> = ({ onSave }) => {
-	console.log("re render TransactionPanel");
+	console.log("re-render TransactionPanel");
 
-	// Store
-	const { setCategoryMode, availableCategoryTypes } = useContext(SettingsContext);
-	const {
-		selectedTransaction,
-		draftTransaction,
-		error,
-		updateDraftTransaction,
-		saveDraftTransaction,
-	} = useContext(TransactionContext);
-	const { isOpen, toggleOpen } = useContext(OpenContext);
+	// Redux
+	const dispatch = useDispatch<AppDispatch>();
+	const { availableCategoryTypes } = useSelector((state: RootState) => state.settings);
+	const { selectedTransaction, draftTransaction, error } = useSelector(
+		(state: RootState) => state.transaction
+	);
+	const { openSet } = useSelector((state: RootState) => state.open);
 
 	// State
 	const [selectedType, setSelectedType] = useState<CategoryType>(
@@ -41,31 +40,41 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 	);
 
 	// Methods
-	const handleTabClick = useCallback((type: CategoryType): void => {
-		updateDraftTransaction({ type });
+	const handleTabClick = useCallback(
+		(type: CategoryType): void => {
+			dispatch(updateDraftTransaction({ type }));
 
-		// If the type changes, clear the current category
-		updateDraftTransaction({ categoryId: "" });
-		setSelectedType(type);
-	}, []);
+			// If the type changes, clear the current category
+			dispatch(updateDraftTransaction({ categoryId: "" }));
+			setSelectedType(type);
+		},
+		[dispatch]
+	);
 
-	const handleCalculatorChange = useCallback((amount: number): void => {
-		updateDraftTransaction({ amount });
-	}, []);
+	const handleCalculatorChange = useCallback(
+		(amount: number): void => {
+			dispatch(updateDraftTransaction({ amount }));
+		},
+		[dispatch]
+	);
 
 	const handleSave = useCallback(async (): Promise<void> => {
-		const status: OperationStatus = await saveDraftTransaction();
+		try {
+			const status: OperationStatus = await dispatch(saveDraftTransaction()).unwrap();
 
-		// If no errors, fire the function
-		if (status.ok) {
-			onSave();
+			// If no errors, trigger the onSave callback
+			if (status.ok) {
+				onSave();
+			}
+		} catch (err) {
+			console.error("Failed to save the draft transaction:", err);
 		}
-	}, []);
+	}, [dispatch, onSave]);
 
 	useEffect(() => {
 		// Change the display mode for the category
-		setCategoryMode("panel");
-	}, []);
+		dispatch(setCategoryMode("panel"));
+	}, [dispatch]);
 
 	return (
 		<>
@@ -80,10 +89,12 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 					onChange={handleCalculatorChange}
 					additionalClasses=""
 					displaySideButton
-					onSideButtonClick={() => toggleOpen("transactionForm")}
+					onSideButtonClick={() => dispatch(toggleOpen("transactionForm"))}
 				>
 					<div className="bg-white">
-						<Button onClick={() => toggleOpen("categorySelector")}>Category</Button>
+						<Button onClick={() => dispatch(toggleOpen("categorySelector"))}>
+							Category
+						</Button>
 					</div>
 				</Calculator>
 
@@ -97,11 +108,11 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 				</Button>
 			</section>
 			<SlidingPanel
-				isOpen={isOpen("transactionForm")}
-				onClose={() => toggleOpen("transactionForm")}
+				isOpen={openSet.has("transactionForm")} // Use openSet from Redux to check if the panel is open
+				onClose={() => dispatch(toggleOpen("transactionForm"))}
 				slideDirection="from-right"
 			>
-				<TransactionForm onSave={() => toggleOpen("transactionForm")} />
+				<TransactionForm onSave={() => dispatch(toggleOpen("transactionForm"))} />
 			</SlidingPanel>
 		</>
 	);

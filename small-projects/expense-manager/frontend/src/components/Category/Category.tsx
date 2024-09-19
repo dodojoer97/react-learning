@@ -26,7 +26,7 @@ const CategoryComp: FC<ICategoryProps> = ({ id, name, icon }) => {
 	const dispatch = useDispatch<AppDispatch>();
 	const categoryMode = useSelector((state: RootState) => state.settings.categoryMode);
 	const draftTransaction = useSelector((state: RootState) => state.transaction.draftTransaction);
-	const isPanelOpen = useSelector((state: RootState) => state.open.openSet.has("category")); // Check if the panel is open
+	const isPanelOpen = useSelector((state: RootState) => state.open.openSet.includes("category")); // Check if the panel is open
 
 	// Check if in panel mode to set different displays, functions
 	const isPanelMode: boolean = categoryMode === "panel";

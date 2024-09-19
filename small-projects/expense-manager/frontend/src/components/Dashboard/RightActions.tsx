@@ -15,7 +15,7 @@ const RightActions: FC = () => {
 	// Redux hooks
 	const dispatch = useDispatch<AppDispatch>();
 	const isPanelOpen = useSelector((state: RootState) =>
-		state.open.openSet.has("dashboard-panel")
+		state.open.openSet.includes("dashboard-panel")
 	); // Check if the dashboard panel is open
 
 	// Handle open logic

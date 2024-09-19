@@ -61,7 +61,7 @@ const TransactionList: FC = () => {
 			)}
 
 			<SlidingPanel
-				isOpen={openSet.has(panelId)} // Check if the panel is open using the openSet from Redux
+				isOpen={openSet.includes(panelId)} // Check if the panel is open using the openSet from Redux
 				onClose={() => dispatch(toggleOpen(panelId))} // Close the panel using Redux
 				slideDirection="from-right"
 			>

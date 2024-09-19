@@ -29,7 +29,7 @@ const Categories: FC = () => {
 
 	// Get the open state for categories panel from Redux
 	const isCategoriesOpen = useSelector((state: RootState) =>
-		state.open.openSet.has("categories")
+		state.open.openSet.includes("categories")
 	); // Check if 'categories' panel is open
 
 	const userId = useSelector((state: RootState) => state.auth.user?.uid);

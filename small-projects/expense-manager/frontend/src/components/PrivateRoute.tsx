@@ -1,26 +1,25 @@
-// React
-import type { FC, PropsWithChildren } from "react";
-
-// Redux
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store"; // Import the store
-
-// Router
+import { FC, PropsWithChildren, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
-
-// Components
-import Layout from "@/components/UI/Layout";
+import { RootState, AppDispatch } from "@/store/store";
+import { initializeAuth } from "@/store/authSlice";
 
 const PrivateRoute: FC<PropsWithChildren> = ({ children }) => {
-	// Get authentication state from Redux store
-	const { isAuthenticated, loading } = useSelector((state: RootState) => state.auth);
+	const dispatch = useDispatch<AppDispatch>();
+	const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+	const loading = useSelector((state: RootState) => state.auth.loading);
 
-	console.log("isAuthenticated: ", isAuthenticated);
-	if (loading) {
-		return <Layout />; // You can add a loading spinner here if needed
-	}
+	// Dispatch initializeAuth on component mount
+	if (loading) return <div>Loading...</div>;
 
-	// If the user is authenticated, render the children; otherwise, redirect to login
+	useEffect(() => {
+		dispatch(initializeAuth());
+		console.log("isAuthenticated: ", isAuthenticated);
+	}, [dispatch]);
+
+	// Show a loading screen while checking auth status
+
+	// Only render children if authenticated, otherwise redirect
 	return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
 };
 

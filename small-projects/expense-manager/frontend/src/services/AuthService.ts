@@ -103,6 +103,8 @@ class AuthService extends BaseService implements IAuthService {
 	public async verifyToken(): Promise<User | undefined> {
 		try {
 			const token = this.getToken();
+
+			console.log("token: ", token);
 			if (!token) return undefined;
 
 			const response = await this.get("auth/verify-token", {

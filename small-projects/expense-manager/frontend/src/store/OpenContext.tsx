@@ -18,7 +18,7 @@ const OpenContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const isOpen = useCallback(
 		(id: string): boolean => {
-			return openSet.has(id);
+			return openSet.includes(id);
 		},
 		[openSet]
 	);

@@ -10,14 +10,15 @@ const PrivateRoute: FC<PropsWithChildren> = ({ children }) => {
 	const loading = useSelector((state: RootState) => state.auth.loading);
 
 	// Dispatch initializeAuth on component mount
-	if (loading) return <div>Loading...</div>;
-
 	useEffect(() => {
 		dispatch(initializeAuth());
 		console.log("isAuthenticated: ", isAuthenticated);
 	}, [dispatch]);
 
 	// Show a loading screen while checking auth status
+	if (loading) {
+		return <div>Loading...</div>;
+	}
 
 	// Only render children if authenticated, otherwise redirect
 	return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;

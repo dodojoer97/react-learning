@@ -15,7 +15,7 @@ export interface AuthState {
 const initialState: AuthState = {
 	user: undefined,
 	loading: false,
-	isAuthenticated: false,
+	isAuthenticated: true,
 	error: null,
 };
 
@@ -89,6 +89,9 @@ const authSlice = createSlice({
 	extraReducers: (builder) => {
 		// Handle signup lifecycle
 		builder.addCase(signup.pending, (state) => {
+			state.loading = true;
+		});
+		builder.addCase(initializeAuth.pending, (state) => {
 			state.loading = true;
 		});
 		builder.addCase(signup.fulfilled, (state, action: PayloadAction<User | undefined>) => {

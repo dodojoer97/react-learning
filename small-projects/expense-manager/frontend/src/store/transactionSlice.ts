@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import TransactionService from "@/services/TransactionService";
 import { Transaction, CategoryType, OperationStatus, Category } from "@common";
+import { RootState } from "./store";
+
 import {
 	TransactionWithCategory,
 	TransactionCategoryAssigner,
 } from "@/mappers/TransactionCategoryAssigner";
 import User from "@/models/User";
-import { RootState } from "./store";
 
 // Define the state interface
 export interface TransactionState {
@@ -33,7 +34,7 @@ const updateTransactionFields = (
 	updates: Partial<Transaction>
 ): Transaction => ({
 	id: updates.id ?? transaction.id,
-	userId: updates.userId ?? transaction.userId, // Ensure it's a string
+	userId: updates.userId ?? transaction.userId,
 	amount: updates.amount ?? transaction.amount,
 	date: updates.date ?? transaction.date,
 	categoryId: updates.categoryId ?? transaction.categoryId,
@@ -56,36 +57,33 @@ export const fetchTransactions = createAsyncThunk<Transaction[], string, { rejec
 );
 
 export const addTransaction = createAsyncThunk<
-	OperationStatus,
+	void,
 	{ transaction: Transaction; userId: string },
 	{ rejectValue: string }
 >("transactions/addTransaction", async ({ transaction, userId }, { rejectWithValue }) => {
 	try {
 		await transactionService.addTransaction({ ...transaction, userId });
-		return { ok: true };
 	} catch (error: any) {
 		return rejectWithValue(error.message || "Failed to add transaction");
 	}
 });
 
 export const editTransaction = createAsyncThunk<
-	OperationStatus,
+	void,
 	{ transaction: Transaction; userId: string },
 	{ rejectValue: string }
 >("transactions/editTransaction", async ({ transaction, userId }, { rejectWithValue }) => {
 	try {
 		await transactionService.editTransaction(userId, transaction.id, transaction);
-		return { ok: true };
 	} catch (error: any) {
 		return rejectWithValue(error.message || "Failed to update transaction");
 	}
 });
 
-// Create a thunk for saving draft transactions
 export const saveDraftTransaction = createAsyncThunk<
-	OperationStatus, // Return type
-	void, // Argument type
-	{ state: RootState; rejectValue: string } // ThunkAPI context type
+	void,
+	void,
+	{ state: RootState; rejectValue: string }
 >("transaction/saveDraftTransaction", async (_, { getState, rejectWithValue }) => {
 	const { draftTransaction } = getState().transaction;
 	const { user } = getState().auth;
@@ -94,19 +92,17 @@ export const saveDraftTransaction = createAsyncThunk<
 		return rejectWithValue("No draft transaction or user ID available");
 	}
 
-	const service = new TransactionService();
-
 	try {
-		let status: OperationStatus;
-
 		if (draftTransaction.id) {
-			status = await service.editTransaction(user.uid, draftTransaction.id, draftTransaction);
+			await transactionService.editTransaction(
+				user.uid,
+				draftTransaction.id,
+				draftTransaction
+			);
 		} else {
-			status = await service.addTransaction({ ...draftTransaction, userId: user.uid });
+			await transactionService.addTransaction({ ...draftTransaction, userId: user.uid });
 		}
-
-		return status;
-	} catch (error) {
+	} catch (error: any) {
 		return rejectWithValue("Failed to save transaction");
 	}
 });
@@ -156,8 +152,12 @@ const transactionSlice = createSlice({
 			.addCase(addTransaction.pending, (state) => {
 				state.loading = true;
 			})
-			.addCase(addTransaction.fulfilled, (state, action: PayloadAction<OperationStatus>) => {
+			.addCase(addTransaction.fulfilled, (state) => {
+				if (state.draftTransaction) {
+					state.transactions.push(state.draftTransaction); // Add the draft to transactions
+				}
 				state.loading = false;
+				state.draftTransaction = null; // Clear the draft after saving
 				state.error = null;
 			})
 			.addCase(addTransaction.rejected, (state, action) => {
@@ -168,8 +168,17 @@ const transactionSlice = createSlice({
 			.addCase(editTransaction.pending, (state) => {
 				state.loading = true;
 			})
-			.addCase(editTransaction.fulfilled, (state, action: PayloadAction<OperationStatus>) => {
+			.addCase(editTransaction.fulfilled, (state) => {
+				if (state.draftTransaction) {
+					const index = state.transactions.findIndex(
+						(transaction) => transaction.id === state.draftTransaction!.id
+					);
+					if (index !== -1) {
+						state.transactions[index] = state.draftTransaction; // Update the existing transaction
+					}
+				}
 				state.loading = false;
+				state.draftTransaction = null; // Clear the draft after saving
 				state.error = null;
 			})
 			.addCase(editTransaction.rejected, (state, action) => {
@@ -180,20 +189,17 @@ const transactionSlice = createSlice({
 			.addCase(saveDraftTransaction.pending, (state) => {
 				state.loading = true;
 			})
-			.addCase(
-				saveDraftTransaction.fulfilled,
-				(state, action: PayloadAction<OperationStatus>) => {
-					state.loading = false;
-					state.error = null;
-				}
-			)
+			.addCase(saveDraftTransaction.fulfilled, (state) => {
+				state.loading = false;
+				state.draftTransaction = null; // Clear draft after save
+				state.error = null;
+			})
 			.addCase(saveDraftTransaction.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload || "Failed to save draft transaction";
 			});
 	},
 });
-
 // Mapped Transactions function
 export const getMappedTransactions = (
 	transactions: Transaction[],
@@ -209,7 +215,6 @@ export const getMappedTransactions = (
 	}
 	return mappedTransactions;
 };
-
 // Export the actions and reducer
 export const { selectTransaction, updateDraftTransaction, clearError } = transactionSlice.actions;
 export default transactionSlice.reducer;

@@ -37,12 +37,12 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 	const textColor = transaction.type === "expense" ? "text-red-600" : "text-green-600";
 
 	// Formats the date based on the current i18n language,
-	const formatDate = (date: Date) => {
+	const formatDate = (date: string) => {
 		return new Intl.DateTimeFormat(i18n.language, {
 			year: "numeric",
 			month: "long",
 			day: "numeric",
-		}).format(date);
+		}).format(new Date(date));
 	};
 
 	// Methods

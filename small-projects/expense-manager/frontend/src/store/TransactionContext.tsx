@@ -27,7 +27,7 @@ export const defaultTransaction: Transaction = {
 	id: "",
 	userId: "",
 	amount: 0,
-	date: new Date(),
+	date: new Date().toISOString(),
 	categoryId: "",
 	type: "expense" as CategoryType,
 	description: "",

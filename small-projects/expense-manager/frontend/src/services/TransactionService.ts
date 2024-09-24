@@ -81,7 +81,7 @@ class TransactionService extends BaseService implements ITransactionService {
 					transaction.id,
 					transaction.userId,
 					transaction.amount,
-					new Date(transaction.date),
+					transaction.date,
 					transaction.categoryId,
 					transaction.type,
 					transaction.description

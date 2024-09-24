@@ -51,15 +51,14 @@ class SettingsService extends BaseService implements ISettingsService {
 	}
 
 	private buildCategories(dto: GetCategoriesDTO): Category[] {
-		const categories: Category[] = dto.map(
-			(category) =>
-				new Category(
-					categoryIcons[category.icon as string],
-					category.name,
-					category.id,
-					category.type
-				)
-		);
+		const categories: Category[] = dto.map((category) => {
+			return {
+				icon: categoryIcons[category.icon as string],
+				name: category.name,
+				id: category.id,
+				type: category.type,
+			};
+		});
 		return categories;
 	}
 	/**

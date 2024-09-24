@@ -60,12 +60,9 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 
 	const handleSave = useCallback(async (): Promise<void> => {
 		try {
-			const status: OperationStatus = await dispatch(saveDraftTransaction()).unwrap();
+			dispatch(saveDraftTransaction());
 
-			// If no errors, trigger the onSave callback
-			if (status.ok) {
-				onSave();
-			}
+			onSave();
 		} catch (err) {
 			console.error("Failed to save the draft transaction:", err);
 		}

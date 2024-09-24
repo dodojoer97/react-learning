@@ -4,7 +4,7 @@ export interface ITransaction {
 	id: string;
 	userId: string;
 	amount: number;
-	date: Date;
+	date: string;
 	categoryId: string;
 	type: CategoryType;
 	description?: string;
@@ -17,7 +17,7 @@ export class Transaction implements ITransaction {
 		public id: string,
 		public userId: string,
 		public amount: number,
-		public date: Date,
+		public date: string,
 		public categoryId: string,
 		public type: CategoryType,
 		public description?: string

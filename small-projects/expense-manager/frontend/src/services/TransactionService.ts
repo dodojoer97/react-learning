@@ -44,7 +44,7 @@ class TransactionService extends BaseService implements ITransactionService {
 	 * @param {string} userId - The ID of the user whose transactions are to be retrieved.
 	 * @returns {Promise<Transaction[]>} - A promise that resolves with an array of transactions.
 	 */
-	async getTransactionsByUser(userId: string): Promise<Transaction[]> {
+	async getTransactionsByUser(userId: string): Promise<Partial<Transaction>[]> {
 		const fetchedTransactions: Transaction[] = await this.get(`transactions/${userId}`);
 		return this.buildTransactions(fetchedTransactions);
 	}
@@ -74,8 +74,8 @@ class TransactionService extends BaseService implements ITransactionService {
 		}
 	}
 
-	private buildTransactions(fetchedTransactions: Transaction[]): Transaction[] {
-		const categories: Transaction[] = fetchedTransactions.map((transaction) => {
+	private buildTransactions(fetchedTransactions: Transaction[]): Partial<Transaction>[] {
+		const transactions: Partial<Transaction>[] = fetchedTransactions.map((transaction) => {
 			return {
 				id: transaction.id,
 				userId: transaction.userId,
@@ -86,7 +86,7 @@ class TransactionService extends BaseService implements ITransactionService {
 				description: transaction.description,
 			};
 		});
-		return categories;
+		return transactions;
 	}
 
 	/**

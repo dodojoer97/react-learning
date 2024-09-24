@@ -32,7 +32,7 @@ const transactionService = new TransactionService();
 const updateTransactionFields = (
 	transaction: Transaction,
 	updates: Partial<Transaction>
-): Transaction => ({
+): Partial<Transaction> => ({
 	id: updates.id ?? transaction.id,
 	userId: updates.userId ?? transaction.userId,
 	amount: updates.amount ?? transaction.amount,
@@ -44,17 +44,18 @@ const updateTransactionFields = (
 
 // Thunks for async operations
 
-export const fetchTransactions = createAsyncThunk<Transaction[], string, { rejectValue: string }>(
-	"transactions/fetchTransactions",
-	async (userId: string, { rejectWithValue }) => {
-		try {
-			const transactions = await transactionService.getTransactionsByUser(userId);
-			return transactions;
-		} catch (error: any) {
-			return rejectWithValue(error.message || "Failed to fetch transactions");
-		}
+export const fetchTransactions = createAsyncThunk<
+	Partial<Transaction>[],
+	string,
+	{ rejectValue: string }
+>("transactions/fetchTransactions", async (userId: string, { rejectWithValue }) => {
+	try {
+		const transactions = await transactionService.getTransactionsByUser(userId);
+		return transactions;
+	} catch (error: any) {
+		return rejectWithValue(error.message || "Failed to fetch transactions");
 	}
-);
+});
 
 export const addTransaction = createAsyncThunk<
 	void,

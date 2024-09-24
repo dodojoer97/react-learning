@@ -14,7 +14,11 @@ import SlidingPanel from "@/components/UI/SlidingPanel";
 import TransactionPanel from "@/components/Transaction/TransactionPanel";
 import Card from "@/components/UI/Card"; // Import the new Card component
 
-const TransactionList: FC = () => {
+interface TransactionListProps {
+	limit?: number; // Optional prop to limit the number of transactions displayed
+}
+
+const TransactionList: FC<TransactionListProps> = ({ limit }) => {
 	// Redux hooks
 	const dispatch = useDispatch<AppDispatch>();
 	const transactions = useSelector((state: RootState) => state.transaction.transactions);
@@ -45,11 +49,17 @@ const TransactionList: FC = () => {
 		[transactions, categories]
 	);
 
+	// Limiting the number of transactions displayed if 'limit' prop is passed
+	const displayedTransactions = useMemo(
+		() => (limit ? mappedTransactions.slice(0, limit) : mappedTransactions),
+		[mappedTransactions, limit]
+	);
+
 	return (
-		<Card title="Transactions">
+		<Card title="Latest Transactions">
 			{!!mappedTransactions.length && (
 				<ul>
-					{mappedTransactions.map((transactionWithCategory) => (
+					{displayedTransactions.map((transactionWithCategory) => (
 						<Transaction
 							key={transactionWithCategory.transaction.id}
 							transactionWithCategory={transactionWithCategory}

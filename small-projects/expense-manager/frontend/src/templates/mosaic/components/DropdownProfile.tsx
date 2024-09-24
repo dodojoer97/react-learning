@@ -1,4 +1,10 @@
 import React, { useState, useRef, useEffect, FC, useContext } from "react";
+
+// Redux
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "@/store/store";
+import { logout } from "@/store/authSlice";
+
 import { Link } from "react-router-dom";
 import Transition from "../utils/Transition";
 
@@ -6,7 +12,6 @@ import Transition from "../utils/Transition";
 import { useTranslation } from "react-i18next";
 
 // Store
-import { AuthContext } from "@/store/AuthContext";
 
 import UserAvatar from "../images/user-avatar-32.png";
 
@@ -18,9 +23,10 @@ interface DropdownProfileProps {
 const DropdownProfile: FC<DropdownProfileProps> = ({ align = "left" }) => {
 	// TODO add translation
 	const { t } = useTranslation("header");
+	const dispatch = useDispatch<AppDispatch>();
+	const { user } = useSelector((state: RootState) => state.auth);
 
 	// Store
-	const { logout, user } = useContext(AuthContext);
 
 	// State
 	const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -57,7 +63,7 @@ const DropdownProfile: FC<DropdownProfileProps> = ({ align = "left" }) => {
 
 	// Methods
 	const handleSignout = (): void => {
-		logout();
+		dispatch(logout());
 	};
 
 	return (

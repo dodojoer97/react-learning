@@ -12,7 +12,6 @@ const PrivateRoute: FC<PropsWithChildren> = ({ children }) => {
 	// Dispatch initializeAuth on component mount
 	useEffect(() => {
 		dispatch(initializeAuth());
-		console.log("isAuthenticated: ", isAuthenticated);
 	}, [dispatch]);
 
 	// Show a loading screen while checking auth status

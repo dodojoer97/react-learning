@@ -75,18 +75,17 @@ class TransactionService extends BaseService implements ITransactionService {
 	}
 
 	private buildTransactions(fetchedTransactions: Transaction[]): Transaction[] {
-		const categories: Transaction[] = fetchedTransactions.map(
-			(transaction) =>
-				new Transaction(
-					transaction.id,
-					transaction.userId,
-					transaction.amount,
-					transaction.date,
-					transaction.categoryId,
-					transaction.type,
-					transaction.description
-				)
-		);
+		const categories: Transaction[] = fetchedTransactions.map((transaction) => {
+			return {
+				id: transaction.id,
+				userId: transaction.userId,
+				amount: transaction.amount,
+				date: transaction.date,
+				categoryId: transaction.categoryId,
+				type: transaction.type,
+				description: transaction.description,
+			};
+		});
 		return categories;
 	}
 

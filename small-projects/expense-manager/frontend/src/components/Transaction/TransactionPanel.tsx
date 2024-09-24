@@ -24,8 +24,6 @@ interface IProps {
 }
 
 const TransactionPanel: FC<IProps> = ({ onSave }) => {
-	console.log("re-render TransactionPanel");
-
 	// Redux
 	const dispatch = useDispatch<AppDispatch>();
 	const { availableCategoryTypes } = useSelector((state: RootState) => state.settings);
@@ -60,8 +58,9 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 
 	const handleSave = useCallback(async (): Promise<void> => {
 		try {
-			dispatch(saveDraftTransaction());
+			await dispatch(saveDraftTransaction()).unwrap();
 
+			// If no errors, trigger the onSave callback
 			onSave();
 		} catch (err) {
 			console.error("Failed to save the draft transaction:", err);

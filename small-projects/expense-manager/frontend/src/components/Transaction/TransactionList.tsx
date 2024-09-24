@@ -15,8 +15,6 @@ import TransactionPanel from "@/components/Transaction/TransactionPanel";
 import Card from "@/components/UI/Card"; // Import the new Card component
 
 const TransactionList: FC = () => {
-	console.log("Re-render TransactionList");
-
 	// Redux hooks
 	const dispatch = useDispatch<AppDispatch>();
 	const transactions = useSelector((state: RootState) => state.transaction.transactions);

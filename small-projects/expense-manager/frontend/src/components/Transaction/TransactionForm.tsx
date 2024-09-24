@@ -24,8 +24,6 @@ interface IProps {
 }
 
 const TransactionForm: FC<IProps> = ({ onSave }) => {
-	console.log("TransactionForm re-render");
-
 	// Redux hooks
 	const dispatch = useDispatch<AppDispatch>();
 	const draftTransaction = useSelector((state: RootState) => state.transaction.draftTransaction);

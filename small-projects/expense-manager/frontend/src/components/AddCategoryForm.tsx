@@ -37,6 +37,7 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 	// Redux store
 	const dispatch = useDispatch<AppDispatch>();
 	const { availableCategoryTypes, loading } = useSelector((state: RootState) => state.settings); // Access availableCategoryTypes from Redux
+	const { user } = useSelector((state: RootState) => state.auth);
 
 	const categoryNameField = useInput<HTMLInputElement, string>({
 		defaultValue: "",
@@ -65,9 +66,11 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 			typeField.value as CategoryType
 		);
 
-		// Dispatch addCategory action with the created category
-		await dispatch(addCategory({ category: createdCategory, userId: "user-id-placeholder" })); // Replace with actual user ID
-		onSave();
+		if (user?.uid) {
+			// Dispatch addCategory action with the created category
+			await dispatch(addCategory({ category: createdCategory, userId: user?.uid })); // Replace with actual user ID
+			onSave();
+		}
 	});
 
 	return (

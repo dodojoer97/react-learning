@@ -62,8 +62,13 @@ export const addTransaction = createAsyncThunk<
 	{ rejectValue: string }
 >("transactions/addTransaction", async ({ transaction, userId }, { rejectWithValue }) => {
 	try {
+		console.log("Attempting to add transaction:", transaction);
+
 		await transactionService.addTransaction({ ...transaction, userId });
+		console.log("Transaction added successfully");
 	} catch (error: any) {
+		console.error("Error adding transaction:", error);
+
 		return rejectWithValue(error.message || "Failed to add transaction");
 	}
 });
@@ -84,7 +89,7 @@ export const saveDraftTransaction = createAsyncThunk<
 	void,
 	void,
 	{ state: RootState; rejectValue: string }
->("transaction/saveDraftTransaction", async (_, { getState, rejectWithValue }) => {
+>("transaction/saveDraftTransaction", async (_, { getState, dispatch, rejectWithValue }) => {
 	const { draftTransaction } = getState().transaction;
 	const { user } = getState().auth;
 
@@ -93,17 +98,24 @@ export const saveDraftTransaction = createAsyncThunk<
 	}
 
 	try {
-		if (draftTransaction.id) {
-			await transactionService.editTransaction(
-				user.uid,
-				draftTransaction.id,
-				draftTransaction
-			);
-		} else {
-			await transactionService.addTransaction({ ...draftTransaction, userId: user.uid });
+		// Determine whether to add a new transaction or edit an existing one
+		const actionType = draftTransaction.id ? editTransaction : addTransaction;
+
+		// Dispatch the appropriate action
+		const resultAction = await dispatch(
+			actionType({
+				transaction: draftTransaction,
+				userId: user.uid,
+			})
+		);
+
+		// Check if the action was not fulfilled and throw an error to handle it in the rejected block
+		if (resultAction.type.endsWith("rejected")) {
+			throw new Error("Failed to process transaction");
 		}
 	} catch (error: any) {
-		return rejectWithValue("Failed to save transaction");
+		// Use a generic error message to simplify error handling
+		return rejectWithValue("Error processing transaction: " + error.message);
 	}
 });
 

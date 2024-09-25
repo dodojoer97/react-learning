@@ -1,15 +1,16 @@
 import React from "react";
 import Flatpickr from "react-flatpickr";
-import { DateOption } from "flatpickr/dist/types/options";
+import { BaseOptions } from "flatpickr/dist/types/options";
 
 interface DatepickerProps {
 	align?: string;
 	onChange?: (selectedDates: Date[], dateStr: string) => void;
+	mode?: BaseOptions["mode"]; // Using the mode type from BaseOptions
 }
 
-const Datepicker: React.FC<DatepickerProps> = ({ align, onChange }) => {
-	const options: DateOption = {
-		mode: "range",
+const Datepicker: React.FC<DatepickerProps> = ({ align, onChange, mode = "range" }) => {
+	const options: BaseOptions = {
+		mode,
 		static: true,
 		monthSelectorType: "static",
 		dateFormat: "M j, Y",

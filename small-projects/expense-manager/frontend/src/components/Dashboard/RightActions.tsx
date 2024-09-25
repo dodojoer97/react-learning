@@ -25,10 +25,14 @@ const RightActions: FC = () => {
 		dispatch(toggleOpen("dashboard-panel")); // Open the sliding panel
 	};
 
+	const handleDateChange = (selectedDates: Date[], dateStr: string): void => {
+		console.log("selectedDates: ", selectedDates);
+	};
+
 	return (
 		<>
 			<div className="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-				<Datepicker />
+				<Datepicker onChange={handleDateChange} />
 				<Button
 					className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white"
 					onClick={(e) => {

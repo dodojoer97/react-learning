@@ -57,7 +57,7 @@ const TransactionList: FC<TransactionListProps> = ({ limit }) => {
 
 	return (
 		<Card title="Latest Transactions">
-			{!!mappedTransactions.length && (
+			{!!displayedTransactions.length && (
 				<ul>
 					{displayedTransactions.map((transactionWithCategory) => (
 						<Transaction

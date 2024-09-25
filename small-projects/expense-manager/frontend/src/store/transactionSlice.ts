@@ -46,11 +46,15 @@ const updateTransactionFields = (
 
 export const fetchTransactions = createAsyncThunk<
 	Partial<Transaction>[],
-	string,
+	{ userId: string; startDate?: string; endDate?: string },
 	{ rejectValue: string }
->("transactions/fetchTransactions", async (userId: string, { rejectWithValue }) => {
+>("transactions/fetchTransactions", async ({ userId, startDate, endDate }, { rejectWithValue }) => {
 	try {
-		const transactions = await transactionService.getTransactionsByUser(userId);
+		const transactions = await transactionService.getTransactionsByUser(
+			userId,
+			startDate,
+			endDate
+		);
 		return transactions;
 	} catch (error: any) {
 		return rejectWithValue(error.message || "Failed to fetch transactions");

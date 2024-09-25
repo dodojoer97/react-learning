@@ -13,7 +13,11 @@ export interface ITransactionService {
 	 * @param {string} userId - The ID of the user whose transactions are to be retrieved.
 	 * @returns {Promise<Transaction[]>} - A promise that resolves with an array of transactions.
 	 */
-	getTransactionsByUser(userId: string): Promise<Transaction[]>;
+	getTransactionsByUser(
+		userId: string,
+		startDate?: string,
+		endDate?: string
+	): Promise<Transaction[]>;
 
 	/**
 	 * Edits an existing transaction.

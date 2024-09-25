@@ -13,7 +13,7 @@ const Dashboard: FC = () => {
 		<Layout title="Dashboard" rightComponent={<RightActions />}>
 			<div className="grid grid-cols-12 gap-6">
 				<TransactionDoughnut />
-				<TransactionList limit={5} />
+				<TransactionList />
 			</div>
 		</Layout>
 	);

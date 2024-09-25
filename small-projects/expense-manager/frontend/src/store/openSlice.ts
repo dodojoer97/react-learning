@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Define the OpenState interface with openSet as an array
-interface OpenState {
+export interface OpenState {
 	openSet: string[]; // Store as an array
 }
 

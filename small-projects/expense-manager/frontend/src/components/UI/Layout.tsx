@@ -1,5 +1,5 @@
 // React
-import { FC, PropsWithChildren, ReactNode, useContext, useState, Component } from "react";
+import { FC, PropsWithChildren, ReactNode, useState } from "react";
 
 // Components
 // import Header from "@/components/UI/Header";
@@ -10,8 +10,6 @@ import Header from "@/templates/mosaic/partials/Header";
 import Sidebar from "@/templates/mosaic/partials/Sidebar";
 
 // Context
-import { AuthContext } from "@/store/AuthContext";
-import { SettingsContext } from "@/store/SettingsContext";
 
 // Hooks
 import useLoading from "@/hooks/useLoading";
@@ -22,11 +20,6 @@ interface Props extends PropsWithChildren {
 }
 
 const Layout: FC<Props> = ({ children, title, rightComponent }) => {
-	const authCTX = useContext(AuthContext);
-	const settingsContext = useContext(SettingsContext);
-
-	const loading: boolean = useLoading([authCTX, settingsContext]);
-
 	const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
 	return (

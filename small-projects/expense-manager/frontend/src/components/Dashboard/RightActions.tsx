@@ -3,9 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 // Store
 import { toggleOpen, close } from "@/store/openSlice"; // Actions for managing open/close panels
-import { selectTransaction } from "@/store/transactionSlice"; // Action for selecting the transaction
+import { selectTransaction, defaultTransaction } from "@/store/transactionSlice"; // Action for selecting the transaction
 import { RootState, AppDispatch } from "@/store/store"; // Redux store types
-import { defaultTransaction } from "@/store/TransactionContext"; // Default transaction structure
 
 // Components
 import TransactionPanel from "@/components/Transaction/TransactionPanel";

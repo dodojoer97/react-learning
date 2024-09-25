@@ -221,6 +221,7 @@ export const getMappedTransactions = (
 ): TransactionWithCategory[] => {
 	const mapper = new TransactionCategoryAssigner(categories);
 	let mappedTransactions = mapper.assignCategoriesToTransactions(transactions);
+	console.log("mappedTransactions: ", mappedTransactions);
 	if (type) {
 		mappedTransactions = mappedTransactions.filter(
 			({ transaction }) => transaction.type === type
@@ -228,6 +229,19 @@ export const getMappedTransactions = (
 	}
 	return mappedTransactions;
 };
+
+// Default transaction template for initializing new transactions
+export const defaultTransaction: Transaction = {
+	id: "",
+	userId: "",
+	amount: 0,
+	date: new Date().toISOString(),
+	categoryId: "",
+	type: "expense" as CategoryType,
+	description: "",
+	createdAt: new Date().toISOString(),
+};
+
 // Export the actions and reducer
 export const { selectTransaction, updateDraftTransaction, clearError } = transactionSlice.actions;
 export default transactionSlice.reducer;

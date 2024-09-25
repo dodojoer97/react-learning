@@ -16,7 +16,9 @@ class TransactionRepository {
 		startDate?: Date,
 		endDate?: Date
 	): Promise<Transaction[]> {
-		let query = this.recordsCollection.where("userId", "==", userId);
+		let query = this.recordsCollection
+			.where("userId", "==", userId)
+			.orderBy("createdAt", "desc"); // Ordering by createdAt in descending order
 
 		if (startDate) {
 			query = query.where("date", ">=", startDate);

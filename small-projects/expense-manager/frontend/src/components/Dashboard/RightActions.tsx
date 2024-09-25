@@ -9,6 +9,8 @@ import { RootState, AppDispatch } from "@/store/store"; // Redux store types
 // Components
 import TransactionPanel from "@/components/Transaction/TransactionPanel";
 import SlidingPanel from "@/components/UI/SlidingPanel";
+import Datepicker from "@/templates/mosaic/components/Datepicker";
+import Button from "@/components/UI/Button";
 
 const RightActions: FC = () => {
 	// Redux hooks
@@ -26,7 +28,8 @@ const RightActions: FC = () => {
 	return (
 		<>
 			<div className="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-				<button
+				<Datepicker />
+				<Button
 					className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white"
 					onClick={(e) => {
 						e.stopPropagation();
@@ -42,7 +45,7 @@ const RightActions: FC = () => {
 						<path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
 					</svg>
 					<span className="max-xs:sr-only">Add Transaction</span>
-				</button>
+				</Button>
 			</div>
 
 			{/* Sliding Panel for Transaction Form */}

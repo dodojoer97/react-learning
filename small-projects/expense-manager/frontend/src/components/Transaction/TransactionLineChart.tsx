@@ -15,6 +15,8 @@ import Card from "@/components/UI/Card"; // Import the new Card component
 import { chartAreaGradient } from "@/templates/mosaic/charts/ChartjsConfig";
 import { tailwindConfig, hexToRGB } from "@/templates/mosaic/utils/Utils"; // Helper functions for Tailwind and color conversions
 import { TransactionWithCategory } from "@/mappers/TransactionCategoryAssigner";
+import AnalyticsCard01 from "@/templates/mosaic/partials/analytics/AnalyticsCard01";
+import moment from "moment";
 
 const TransactionLineChart: FC = () => {
 	// Redux hooks
@@ -44,18 +46,15 @@ const TransactionLineChart: FC = () => {
 		[transactions, categories]
 	);
 
-	// Helper function to generate date range between start and end date
-	const getDatesInRange = (selectedDates: Date[] | null): string[] => {
+	const getDatesInRange = (selectedDates: string[] | null): string[] => {
 		if (!selectedDates) return [];
 
-		const [startDate, endDate] = selectedDates;
-
-		const start = new Date(startDate);
-		const end = new Date(endDate);
+		const start = moment(selectedDates[0]);
+		const end = moment(selectedDates[1]);
 		const dates: string[] = [];
 
-		for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-			dates.push(new Date(d).toISOString().split("T")[0]); // Format as YYYY-MM-DD
+		for (let date = moment(start); date.isSameOrBefore(end); date.add(1, "days")) {
+			dates.push(date.format("MM-DD-YYYY"));
 		}
 
 		return dates;
@@ -65,16 +64,20 @@ const TransactionLineChart: FC = () => {
 	const aggregateTransactionsByDate = (
 		transactions: TransactionWithCategory[]
 	): { [key: string]: number } => {
-		return transactions.reduce((acc, { transaction }) => {
-			const date = new Date(transaction.date).toISOString().split("T")[0]; // Format as YYYY-MM-DD
-			if (!acc[date]) {
-				acc[date] = 0;
-			}
-			acc[date] += transaction.amount;
-			return acc;
-		}, {} as { [key: string]: number });
-	};
+		const aggregation: { [key: string]: number } = {};
 
+		for (const { transaction } of transactions) {
+			const formattedDate = moment(transaction.date).format("MM-DD-YYYY");
+
+			if (!aggregation[formattedDate]) {
+				aggregation[formattedDate] = transaction.amount; // Initialize if not present
+			} else {
+				aggregation[formattedDate] += transaction.amount; // Aggregate if already present
+			}
+		}
+
+		return aggregation;
+	};
 	// Generate date range and aggregate transaction data
 
 	const dateRange = useMemo(() => getDatesInRange(selectedDates), [selectedDates]);
@@ -83,8 +86,11 @@ const TransactionLineChart: FC = () => {
 		[mappedTransactions]
 	);
 
+	console.log("dateRange: ", dateRange);
 	// Map the aggregated data to the date range for the chart
 	const chartData = dateRange.map((date) => aggregatedData[date] || 0);
+
+	console.log("chartData: ", chartData);
 
 	// Chart.js data structure
 	const chartConfig = useMemo(
@@ -129,8 +135,10 @@ const TransactionLineChart: FC = () => {
 		[dateRange, chartData]
 	);
 
+	console.log("chartConfig: ", chartConfig);
 	return (
 		<Card title="Transaction Overview">
+			{/* <AnalyticsCard01 /> */}
 			<LineChart data={chartConfig} width={800} height={300} />
 		</Card>
 	);

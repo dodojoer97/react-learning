@@ -233,7 +233,6 @@ export const getMappedTransactions = (
 ): TransactionWithCategory[] => {
 	const mapper = new TransactionCategoryAssigner(categories);
 	let mappedTransactions = mapper.assignCategoriesToTransactions(transactions);
-	console.log("mappedTransactions: ", mappedTransactions);
 	if (type) {
 		mappedTransactions = mappedTransactions.filter(
 			({ transaction }) => transaction.type === type

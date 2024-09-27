@@ -18,6 +18,7 @@ import TransactionForm from "@/components/Transaction/TransactionForm";
 import SlidingPanel from "@/components/UI/SlidingPanel";
 import Button from "@/components/UI/Button";
 import InputError from "@/components/UI/InputError";
+import CategoryList from "@/components/Category/CategoryList";
 
 interface IProps {
 	onSave(): void;
@@ -87,9 +88,12 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 					displaySideButton
 					onSideButtonClick={() => dispatch(toggleOpen("transactionForm"))}
 				>
-					<div className="bg-white">
-						<Button onClick={() => dispatch(toggleOpen("categorySelector"))}>
-							Category
+					<div className="p-5 flex justify-center">
+						<Button
+							className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white"
+							onClick={() => dispatch(toggleOpen("categorySelector"))}
+						>
+							Choose Category
 						</Button>
 					</div>
 				</Calculator>
@@ -109,6 +113,13 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 				slideDirection="from-right"
 			>
 				<TransactionForm onSave={() => dispatch(toggleOpen("transactionForm"))} />
+			</SlidingPanel>
+			<SlidingPanel
+				isOpen={openSet.includes("categorySelector")} // Use openSet from Redux to check if the panel is open
+				onClose={() => dispatch(toggleOpen("categorySelector"))}
+				slideDirection="from-right"
+			>
+				<CategoryList onSelect={() => dispatch(toggleOpen("categorySelector"))} />
 			</SlidingPanel>
 		</>
 	);

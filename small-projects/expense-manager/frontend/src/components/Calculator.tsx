@@ -135,6 +135,8 @@ const Calculator: FC<ICalculatorProps> = ({
 				</div>
 			</div>
 
+			{children}
+
 			{/* Buttons */}
 			<div className="grid grid-cols-4 gap-2 h-full">
 				{/* First row */}

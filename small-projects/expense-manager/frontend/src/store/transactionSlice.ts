@@ -16,7 +16,7 @@ export interface TransactionState {
 	draftTransaction: Transaction | null;
 	loading: boolean;
 	error: string | null;
-	selectedDates: Date[] | null;
+	selectedDates: string[] | null;
 }
 
 const initialState: TransactionState = {
@@ -148,7 +148,7 @@ const transactionSlice = createSlice({
 				);
 			}
 		},
-		setSelectedDates: (state, action: PayloadAction<Date[] | null>) => {
+		setSelectedDates: (state, action: PayloadAction<string[] | null>) => {
 			state.selectedDates = action.payload; // Set selected dates
 		},
 		clearSelectedDates: (state) => {

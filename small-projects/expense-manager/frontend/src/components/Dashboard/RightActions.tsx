@@ -43,13 +43,16 @@ const RightActions: FC = () => {
 
 		// Execute the request if we have 2 selected dates
 		if (startDate && endDate) {
-			dispatch(setSelectedDates(selectedDates));
+			const formattedStartDate: string = moment(startDate).format("YYYY-MM-DD");
+			const formattedEndDate: string = moment(endDate).format("YYYY-MM-DD");
+
+			dispatch(setSelectedDates([formattedStartDate, formattedEndDate]));
 
 			dispatch(
 				fetchTransactions({
 					userId,
-					startDate: moment(startDate).format("YYYY-MM-DD"),
-					endDate: moment(endDate).format("YYYY-MM-DD"),
+					startDate: formattedStartDate,
+					endDate: formattedEndDate,
 				})
 			);
 		}

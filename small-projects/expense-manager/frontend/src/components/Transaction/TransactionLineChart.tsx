@@ -14,16 +14,13 @@ import Card from "@/components/UI/Card"; // Import the new Card component
 // Utility for chart configuration
 import { chartAreaGradient } from "@/templates/mosaic/charts/ChartjsConfig";
 import { tailwindConfig, hexToRGB } from "@/templates/mosaic/utils/Utils"; // Helper functions for Tailwind and color conversions
+import { TransactionWithCategory } from "@/mappers/TransactionCategoryAssigner";
 
-interface TransactionLineChartProps {
-	startDate: string;
-	endDate: string;
-}
-
-const TransactionLineChart: FC<TransactionLineChartProps> = ({ startDate, endDate }) => {
+const TransactionLineChart: FC = () => {
 	// Redux hooks
 	const dispatch = useDispatch<AppDispatch>();
 	const transactions = useSelector((state: RootState) => state.transaction.transactions);
+	const selectedDates = useSelector((state: RootState) => state.transaction.selectedDates);
 	const categories = useSelector((state: RootState) => state.settings.categories);
 	const userId = useSelector((state: RootState) => state.auth.user?.uid); // Fetch the userId from the auth state
 
@@ -48,7 +45,11 @@ const TransactionLineChart: FC<TransactionLineChartProps> = ({ startDate, endDat
 	);
 
 	// Helper function to generate date range between start and end date
-	const getDatesInRange = (startDate: string, endDate: string): string[] => {
+	const getDatesInRange = (selectedDates: Date[] | null): string[] => {
+		if (!selectedDates) return [];
+
+		const [startDate, endDate] = selectedDates;
+
 		const start = new Date(startDate);
 		const end = new Date(endDate);
 		const dates: string[] = [];
@@ -61,8 +62,10 @@ const TransactionLineChart: FC<TransactionLineChartProps> = ({ startDate, endDat
 	};
 
 	// Helper function to aggregate transaction amounts by date
-	const aggregateTransactionsByDate = (transactions: any[]): { [key: string]: number } => {
-		return transactions.reduce((acc, transaction) => {
+	const aggregateTransactionsByDate = (
+		transactions: TransactionWithCategory[]
+	): { [key: string]: number } => {
+		return transactions.reduce((acc, { transaction }) => {
 			const date = new Date(transaction.date).toISOString().split("T")[0]; // Format as YYYY-MM-DD
 			if (!acc[date]) {
 				acc[date] = 0;
@@ -73,7 +76,8 @@ const TransactionLineChart: FC<TransactionLineChartProps> = ({ startDate, endDat
 	};
 
 	// Generate date range and aggregate transaction data
-	const dateRange = useMemo(() => getDatesInRange(startDate, endDate), [startDate, endDate]);
+
+	const dateRange = useMemo(() => getDatesInRange(selectedDates), [selectedDates]);
 	const aggregatedData = useMemo(
 		() => aggregateTransactionsByDate(mappedTransactions),
 		[mappedTransactions]

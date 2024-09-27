@@ -86,11 +86,8 @@ const TransactionLineChart: FC = () => {
 		[mappedTransactions]
 	);
 
-	console.log("dateRange: ", dateRange);
 	// Map the aggregated data to the date range for the chart
 	const chartData = dateRange.map((date) => aggregatedData[date] || 0);
-
-	console.log("chartData: ", chartData);
 
 	// Chart.js data structure
 	const chartConfig = useMemo(

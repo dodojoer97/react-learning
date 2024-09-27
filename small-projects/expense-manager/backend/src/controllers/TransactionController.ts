@@ -37,13 +37,10 @@ class TransactionController {
 			const { userId } = req.params;
 			const { startDate, endDate } = req.query;
 
-			const parsedStartDate = startDate ? new Date(startDate as string) : undefined;
-			const parsedEndDate = endDate ? new Date(endDate as string) : undefined;
-
 			const transactions = await TransactionService.fetchTransactionsByUser(
 				userId,
-				parsedStartDate,
-				parsedEndDate
+				startDate as string,
+				endDate as string
 			);
 			res.status(200).send(transactions);
 		} catch (error: any) {

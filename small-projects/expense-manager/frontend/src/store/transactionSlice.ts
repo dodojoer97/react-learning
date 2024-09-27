@@ -16,6 +16,7 @@ export interface TransactionState {
 	draftTransaction: Transaction | null;
 	loading: boolean;
 	error: string | null;
+	selectedDates: Date[] | null;
 }
 
 const initialState: TransactionState = {
@@ -24,6 +25,7 @@ const initialState: TransactionState = {
 	draftTransaction: null,
 	loading: false,
 	error: null,
+	selectedDates: null,
 };
 
 // Initialize the TransactionService
@@ -146,6 +148,12 @@ const transactionSlice = createSlice({
 				);
 			}
 		},
+		setSelectedDates: (state, action: PayloadAction<Date[] | null>) => {
+			state.selectedDates = action.payload; // Set selected dates
+		},
+		clearSelectedDates: (state) => {
+			state.selectedDates = null; // Clear selected dates
+		},
 		clearError: (state) => {
 			state.error = null;
 		},
@@ -247,5 +255,6 @@ export const defaultTransaction: Transaction = {
 };
 
 // Export the actions and reducer
-export const { selectTransaction, updateDraftTransaction, clearError } = transactionSlice.actions;
+export const { selectTransaction, updateDraftTransaction, clearError, setSelectedDates } =
+	transactionSlice.actions;
 export default transactionSlice.reducer;

@@ -13,8 +13,8 @@ class TransactionRepository {
 
 	async getTransactionsByUser(
 		userId: string,
-		startDate?: Date,
-		endDate?: Date
+		startDate?: string,
+		endDate?: string
 	): Promise<Transaction[]> {
 		let query = this.recordsCollection
 			.where("userId", "==", userId)
@@ -29,6 +29,7 @@ class TransactionRepository {
 		}
 
 		const snapshot = await query.get();
+
 		return snapshot.docs.map((doc) => doc.data() as Transaction);
 	}
 

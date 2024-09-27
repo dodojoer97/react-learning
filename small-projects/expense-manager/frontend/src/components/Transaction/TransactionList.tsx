@@ -37,11 +37,11 @@ const TransactionList: FC<TransactionListProps> = ({ limit }) => {
 			}
 
 			if (!transactions.length && userId) {
-				await dispatch(fetchTransactions(userId)); // Use userId when fetching transactions
+				await dispatch(fetchTransactions({ userId })); // Use userId when fetching transactions
 			}
 		};
 		handleFetch();
-	}, [dispatch, categories.length, transactions.length, userId]);
+	}, [dispatch, categories.length, userId]);
 
 	// Memoized mapped transactions
 	const mappedTransactions = useMemo(

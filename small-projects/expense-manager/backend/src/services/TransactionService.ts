@@ -9,8 +9,8 @@ class TransactionService {
 
 	async fetchTransactionsByUser(
 		userId: string,
-		startDate?: Date,
-		endDate?: Date
+		startDate?: string,
+		endDate?: string
 	): Promise<Transaction[]> {
 		return TransactionRepository.getTransactionsByUser(userId, startDate, endDate);
 	}

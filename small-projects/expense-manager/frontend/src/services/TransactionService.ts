@@ -49,11 +49,15 @@ class TransactionService extends BaseService implements ITransactionService {
 		startDate?: string,
 		endDate?: string
 	): Promise<Partial<Transaction>[]> {
+		const params: Record<string, string> = {};
+
+		if (startDate && endDate) {
+			params.startDate = startDate;
+			params.endDate = endDate;
+		}
+
 		const fetchedTransactions: Transaction[] = await this.get(`transactions/${userId}`, {
-			params: {
-				startDate,
-				endDate,
-			},
+			params,
 		});
 		return this.buildTransactions(fetchedTransactions);
 	}

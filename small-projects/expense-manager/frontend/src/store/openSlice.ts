@@ -31,7 +31,7 @@ const openSlice = createSlice({
 			state.openSet = addToSet(state.openSet, action.payload);
 		},
 		close: (state, action: PayloadAction<string>) => {
-			state.openSet = removeFromSet(state.openSet, action.payload);
+			state.openSet = [];
 		},
 		toggleOpen: (state, action: PayloadAction<string>) => {
 			if (state.openSet.includes(action.payload)) {

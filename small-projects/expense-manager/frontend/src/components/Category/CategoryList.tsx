@@ -54,21 +54,15 @@ const CategoryList: FC<Props> = ({ onSelect, mode = "list" }) => {
 	return (
 		<ul
 			className={`px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 space-y-2 ${
-				mode === "grid" ? "grid grid-cols-3" : ""
+				mode === "grid" ? "grid grid-cols-3 gap-2" : "flex flex-col"
 			}`}
 		>
 			{categoryList.map((category) => (
-				<li
-					key={category.id}
-					className="flex items-center p-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg cursor-pointer transition-colors"
-					onClick={() => handleSelect(category)}
-				>
-					<CategoryComp
-						id={category.id}
-						name={category.name}
-						icon={category.icon as IconDefinition}
-					/>
-				</li>
+				<CategoryComp
+					id={category.id}
+					name={category.name}
+					icon={category.icon as IconDefinition}
+				/>
 			))}
 		</ul>
 	);

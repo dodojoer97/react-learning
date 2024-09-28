@@ -1,5 +1,12 @@
 import { CategoryType } from "./Category";
 
+// Define an interface for Recurring options
+export interface IRecurringTransaction {
+	isRecurring: boolean; // Whether the transaction is recurring
+	frequency?: "daily" | "weekly" | "monthly" | "yearly"; // Frequency of recurrence
+	endDate?: string; // Optional end date for recurring transactions
+}
+
 export interface ITransaction {
 	id: string;
 	userId: string;
@@ -7,11 +14,16 @@ export interface ITransaction {
 	date: string;
 	categoryId: string;
 	type: CategoryType;
-	createdAt: string; // Add this line for the timestamp
+	createdAt: string; // Timestamp when the transaction was created
 	description?: string;
+	status: "planned" | "completed"; // Status of the transaction
+	recurring?: IRecurringTransaction; // Add this line for recurring transaction support
 }
-export type MandatoryTransactionFields = keyof Omit<ITransaction, "description">;
 
+// Define mandatory fields excluding optional properties
+export type MandatoryTransactionFields = keyof Omit<ITransaction, "description" | "recurring">;
+
+// Transaction class implementation with default values for status and createdAt
 export class Transaction implements ITransaction {
 	constructor(
 		public id: string,
@@ -20,7 +32,9 @@ export class Transaction implements ITransaction {
 		public date: string,
 		public categoryId: string,
 		public type: CategoryType,
+		public status: "planned" | "completed" = "planned", // Default to 'planned' status
 		public description?: string,
+		public recurring?: IRecurringTransaction, // Optional recurring field
 		public createdAt: string = new Date().toISOString() // Default to the current timestamp
 	) {}
 }

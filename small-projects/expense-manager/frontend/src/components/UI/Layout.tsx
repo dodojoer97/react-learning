@@ -22,6 +22,8 @@ interface Props extends PropsWithChildren {
 const Layout: FC<Props> = ({ children, title, rightComponent }) => {
 	const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
+	const loading = useLoading();
+
 	return (
 		<>
 			<div className="flex h-[100dvh] overflow-hidden">
@@ -51,11 +53,11 @@ const Layout: FC<Props> = ({ children, title, rightComponent }) => {
 					</main>
 				</div>
 
-				{/* {loading && (
+				{loading && (
 					<Overlay>
 						<Loader />
 					</Overlay>
-				)} */}
+				)}
 			</div>
 		</>
 	);

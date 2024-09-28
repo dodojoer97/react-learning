@@ -9,23 +9,31 @@ interface DatepickerProps {
 }
 
 const Datepicker: React.FC<DatepickerProps> = ({ align, onChange, mode = "range" }) => {
+	const getFirstDayOfMonth = () => {
+		const date = new Date();
+		return new Date(date.getFullYear(), date.getMonth(), 1);
+	};
+
 	const options: BaseOptions = {
 		mode,
 		static: true,
 		monthSelectorType: "static",
 		dateFormat: "M j, Y",
-		defaultDate: [new Date().setDate(new Date().getDate() - 6), new Date()],
+		defaultDate: [getFirstDayOfMonth(), new Date()], // Set the default date to the start of the month and today
 		prevArrow:
 			'<svg class="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M5.4 10.8l1.4-1.4-4-4 4-4L5.4 0 0 5.4z" /></svg>',
 		nextArrow:
 			'<svg class="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M1.4 10.8L0 9.4l4-4-4-4L1.4 0l5.4 5.4z" /></svg>',
+		onChange: (selectedDates: Date[], dateStr: string, instance: any) => {
+			instance.element.value = dateStr.replace("to", "-");
+			if (onChange) {
+				onChange(selectedDates, dateStr);
+			}
+		},
 		onReady: (selectedDates: Date[], dateStr: string, instance: any) => {
 			instance.element.value = dateStr.replace("to", "-");
 			const customClass = align ? align : "";
 			instance.calendarContainer.classList.add(`flatpickr-${customClass}`);
-		},
-		onChange: (selectedDates: Date[], dateStr: string, instance: any) => {
-			instance.element.value = dateStr.replace("to", "-");
 			if (onChange) {
 				onChange(selectedDates, dateStr);
 			}

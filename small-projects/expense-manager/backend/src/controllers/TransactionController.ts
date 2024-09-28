@@ -58,6 +58,16 @@ class TransactionController {
 			res.status(500).send(error.message);
 		}
 	}
+
+	async deleteTransactionForUser(req: Request, res: Response): Promise<void> {
+		try {
+			const { transactionId, userId } = req.params;
+			await TransactionService.deleteTransactionForUser(transactionId, userId);
+			res.status(200).send({ message: "Transaction updated successfully" });
+		} catch (error: any) {
+			res.status(500).send(error.message);
+		}
+	}
 }
 
 export default new TransactionController();

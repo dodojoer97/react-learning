@@ -31,6 +31,10 @@ class TransactionService {
 		}
 		await TransactionRepository.editTransactionForUser(snapshot, newData);
 	}
+
+	async deleteTransactionForUser(transactionId: string, userId: string): Promise<void> {
+		await TransactionRepository.deleteTransactionForUser(transactionId, userId);
+	}
 }
 
 export default new TransactionService();

@@ -22,8 +22,6 @@ interface Props {
 }
 
 const CategoryList: FC<Props> = ({ onSelect, mode = "list" }) => {
-	console.log("re-render CategoryList");
-
 	// Redux hooks
 	const dispatch = useDispatch<AppDispatch>();
 	const categories = useSelector((state: RootState) => state.settings.categories);
@@ -36,13 +34,11 @@ const CategoryList: FC<Props> = ({ onSelect, mode = "list" }) => {
 	}, [categories, draftTransaction?.type]);
 
 	// Memoized handleSelect method to avoid re-creation on each render
-	const handleSelect = useCallback(
-		(category: Category): void => {
-			dispatch(updateDraftTransaction({ categoryId: category.id }));
-			onSelect && onSelect();
-		},
-		[dispatch, onSelect]
-	);
+	const handleSelect = (category: Category): void => {
+		console.log("handleSelect: ", handleSelect);
+		dispatch(updateDraftTransaction({ categoryId: category.id }));
+		onSelect && onSelect();
+	};
 
 	useEffect(() => {
 		// If we did not load any categories, request them
@@ -59,6 +55,8 @@ const CategoryList: FC<Props> = ({ onSelect, mode = "list" }) => {
 		>
 			{categoryList.map((category) => (
 				<CategoryComp
+					key={category.id}
+					onClick={() => handleSelect(category)}
 					id={category.id}
 					name={category.name}
 					icon={category.icon as IconDefinition}

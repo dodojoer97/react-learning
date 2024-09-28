@@ -58,6 +58,17 @@ class TransactionRepository {
 			throw new Error(`Transaction does not exist for the provided user`);
 		}
 	}
+
+	// Delete a transaction for a specific user
+	async deleteTransactionForUser(transactionId: string, userId: string): Promise<void> {
+		const snapshot = await this.getTransactionSnapshotForUser(transactionId, userId);
+		if (!snapshot.empty) {
+			const docRef = snapshot.docs[0].ref;
+			await docRef.delete(); // Delete the document
+		} else {
+			throw new Error(`Transaction does not exist for the provided user`);
+		}
+	}
 }
 
 export default new TransactionRepository();

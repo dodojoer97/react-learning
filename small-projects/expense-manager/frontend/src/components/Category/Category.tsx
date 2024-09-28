@@ -19,9 +19,10 @@ interface ICategoryProps {
 	id: string;
 	name: string;
 	icon: IconDefinition;
+	onClick?: () => void;
 }
 
-const CategoryComp: FC<ICategoryProps> = ({ id, name, icon }) => {
+const CategoryComp: FC<ICategoryProps> = ({ id, name, icon, onClick }) => {
 	// Redux hooks
 	const dispatch = useDispatch<AppDispatch>();
 	const categoryMode = useSelector((state: RootState) => state.settings.categoryMode);
@@ -45,6 +46,7 @@ const CategoryComp: FC<ICategoryProps> = ({ id, name, icon }) => {
 	return (
 		<>
 			<article
+				onClick={onClick}
 				className={`flex justify-between items-center p-4 bg-white shadow-md rounded-lg hover:bg-gray-50 transition-colors my-2 ${
 					isPanelMode ? "cursor-pointer" : ""
 				}

@@ -66,7 +66,7 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 
 			<Button
 				type="submit"
-				className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white"
+				className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white w-full"
 			>
 				Save
 			</Button>

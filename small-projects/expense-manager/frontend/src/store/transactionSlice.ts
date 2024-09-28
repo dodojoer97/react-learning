@@ -92,6 +92,18 @@ export const editTransaction = createAsyncThunk<
 	}
 });
 
+export const deleteTransaction = createAsyncThunk<
+	void,
+	{ userId: string; transactionId: string },
+	{ rejectValue: string }
+>("transactions/deleteTransaction", async ({ transactionId, userId }, { rejectWithValue }) => {
+	try {
+		await transactionService.deleteTransaction(userId, transactionId);
+	} catch (error: any) {
+		return rejectWithValue(error.message || "Failed to update transaction");
+	}
+});
+
 export const saveDraftTransaction = createAsyncThunk<
 	void,
 	void,
@@ -222,9 +234,26 @@ const transactionSlice = createSlice({
 			.addCase(saveDraftTransaction.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload || "Failed to save draft transaction";
+			})
+			.addCase(deleteTransaction.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(deleteTransaction.fulfilled, (state, action) => {
+				const { transactionId } = action.meta.arg; // Get the transactionId from the fulfilled action meta
+				state.transactions = state.transactions.filter(
+					(transaction) => transaction.id !== transactionId
+				); // Remove the deleted transaction from the state
+				state.loading = false;
+				state.draftTransaction = null; // Clear draft after delete
+				state.error = null;
+			})
+			.addCase(deleteTransaction.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.payload || "Failed to delete transaction";
 			});
 	},
 });
+
 // Mapped Transactions function
 export const getMappedTransactions = (
 	transactions: Transaction[],

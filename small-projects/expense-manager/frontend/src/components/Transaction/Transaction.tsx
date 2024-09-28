@@ -6,7 +6,7 @@ import { TransactionWithCategory } from "@/mappers/TransactionCategoryAssigner";
 import { RootState, AppDispatch } from "@/store/store"; // Redux store types
 
 // Store actions
-import { selectTransaction } from "@/store/transactionSlice";
+import { selectTransaction, deleteTransaction } from "@/store/transactionSlice";
 import { toggleOpen } from "@/store/openSlice";
 
 // FontAwesome Icons
@@ -50,6 +50,12 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 		dispatch(toggleOpen(panelId)); // Dispatch the action to open the sliding panel
 	};
 
+	const handeDelete = (e: React.MouseEvent<HTMLDivElement>): void => {
+		e.stopPropagation();
+		if (!userId) return;
+		dispatch(deleteTransaction({ userId, transactionId: transaction.id }));
+	};
+
 	return (
 		<li
 			className="flex px-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
@@ -57,7 +63,7 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 		>
 			<div
 				className={`w-9 h-9 rounded-full shrink-0 bg-red-500 my-2 mr-3 flex items-center justify-center`}
-				onClick={() => {}}
+				onClick={handeDelete}
 			>
 				<FontAwesomeIcon icon={faMinus} className="text-white" />
 			</div>

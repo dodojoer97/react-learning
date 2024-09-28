@@ -87,6 +87,23 @@ class TransactionService extends BaseService implements ITransactionService {
 		}
 	}
 
+	/**
+	 * deletes an existing transaction using a DELETE request.
+	 *
+	 * @param {string} userId - The user id
+	 * @param {string} transactionId - The ID of the transaction to be deleted.
+	 * @returns {Promise<void>} - A promise that resolves when the transaction is fully deleted.
+	 */
+	async deleteTransaction(userId: string, transactionId: string): Promise<void> {
+		try {
+			await this.delete(`transactions/${userId}/${transactionId}`);
+		} catch (error) {
+			if (isError(error)) {
+				throw error;
+			}
+		}
+	}
+
 	private buildTransactions(fetchedTransactions: Transaction[]): Partial<Transaction>[] {
 		const transactions: Partial<Transaction>[] = fetchedTransactions.map((transaction) => {
 			return {

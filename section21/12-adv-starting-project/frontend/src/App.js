@@ -1,6 +1,5 @@
 // Challenge / Exercise
-import {createBrowserRouter, RouterProvider} from "react-router-dom"
-
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
 
 // 1. Add five new (dummy) page components (content can be simple <h1> elements) - DONE
 //    - HomePage
@@ -8,12 +7,14 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom"
 //    - EventDetailPage
 //    - NewEventPage
 //    - EditEventPage
-import HomePage from "./pages/HomePage";
-import EventsPage from "./pages/EventsPage";
-import EventDetailPage from "./pages/EventDetailPage";
-import NewEventPage from "./pages/NewEventPage";
-import EditEventPage from "./pages/EditEventPage";
+import HomePage from "./pages/HomePage"
+import EventsPage from "./pages/EventsPage"
+import EventDetailPage from "./pages/EventDetailPage"
+import NewEventPage from "./pages/NewEventPage"
+import EditEventPage from "./pages/EditEventPage"
 import RootLayout from "./pages/Root"
+
+import EventsRootLayout from "./pages/EventsRoot"
 
 // 2. Add routing & route definitions for these five pages - DONE
 //    - / => HomePage
@@ -22,27 +23,30 @@ import RootLayout from "./pages/Root"
 //    - /events/new => NewEventPage
 //    - /events/<some-id>/edit => EditEventPage
 
-
-
 // 3. Add a root layout that adds the <MainNavigation> component above all page components - DONE
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <RootLayout />,
-    children: [
-      {path: "/", element: <HomePage />},
-      {path: "/events", element: <EventsPage />},
-      {path: "/events/:eventId", element: <EventDetailPage />},
-      {path: "/events/new", element: <NewEventPage />},
-      {path: "/events/:eventId/edit", element: <EditEventPage />},
-    ],
-  }
+	{
+		path: "/",
+		element: <RootLayout />,
+		children: [
+			{ index: true, element: <HomePage /> },
+			{
+				path: "events",
+				element: <EventsRootLayout />,
+				children: [
+					{ index: true, element: <EventsPage /> },
+					{ path: ":eventId", element: <EventDetailPage /> },
+					{ path: "new", element: <NewEventPage /> },
+					{ path: ":eventId/edit", element: <EditEventPage /> },
+				],
+			},
+		],
+	},
 ])
 
 // 4. Add properly working links to the MainNavigation - DONE
 // 5. Ensure that the links in MainNavigation receive an "active" class when active - DONE
-
 
 // 6. Output a list of dummy events to the EventsPage
 //    Every list item should include a link to the respective EventDetailPage - DONE
@@ -50,7 +54,7 @@ const router = createBrowserRouter([
 // BONUS: Add another (nested) layout route that adds the <EventNavigation> component above all /events... page components
 
 function App() {
-  return <RouterProvider router={router}/>;
+	return <RouterProvider router={router} />
 }
 
-export default App;
+export default App

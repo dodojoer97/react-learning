@@ -40,6 +40,8 @@ const EditCategoryForm: FC<IEditCategoryFormProps> = ({ id, name, onSave }) => {
 		validationFn: (value) => hasMinLength(value, 4),
 	});
 
+	console.log("nameField: ", nameField);
+
 	// Handle form submission
 	const { handleSubmit } = useFormSubmission(async () => {
 		if (!userId) return;

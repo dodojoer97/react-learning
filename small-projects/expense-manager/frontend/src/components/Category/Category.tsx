@@ -19,14 +19,18 @@ interface ICategoryProps {
 	id: string;
 	name: string;
 	icon: IconDefinition;
+	onClick?: () => void;
 }
 
-const CategoryComp: FC<ICategoryProps> = ({ id, name, icon }) => {
+const CategoryComp: FC<ICategoryProps> = ({ id, name, icon, onClick }) => {
 	// Redux hooks
 	const dispatch = useDispatch<AppDispatch>();
 	const categoryMode = useSelector((state: RootState) => state.settings.categoryMode);
 	const draftTransaction = useSelector((state: RootState) => state.transaction.draftTransaction);
-	const isPanelOpen = useSelector((state: RootState) => state.open.openSet.includes("category")); // Check if the panel is open
+
+	const panelId = `category-panel-${id}`;
+
+	const isPanelOpen = useSelector((state: RootState) => state.open.openSet.includes(panelId)); // Check if the panel is open
 
 	// Check if in panel mode to set different displays, functions
 	const isPanelMode: boolean = categoryMode === "panel";
@@ -36,12 +40,13 @@ const CategoryComp: FC<ICategoryProps> = ({ id, name, icon }) => {
 
 	// Handle opening the sliding panel
 	const handleOpen = () => {
-		dispatch(toggleOpen("category"));
+		dispatch(toggleOpen(panelId));
 	};
 
 	return (
 		<>
 			<article
+				onClick={onClick}
 				className={`flex justify-between items-center p-4 bg-white shadow-md rounded-lg hover:bg-gray-50 transition-colors my-2 ${
 					isPanelMode ? "cursor-pointer" : ""
 				}

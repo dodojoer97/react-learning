@@ -9,6 +9,7 @@ import { faSliders, faPlus, faMinus, IconDefinition } from "@fortawesome/free-so
 // Redux
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store"; // Import from Redux store
+import Button from "./UI/Button";
 
 type Operation = "+" | "-" | "*" | "/";
 
@@ -124,139 +125,141 @@ const Calculator: FC<ICalculatorProps> = ({
 					<div>{currentInput}</div>
 					{displaySideButton && (
 						<div className="px-3 border-l-2 flex items-center">
-							<button
+							<Button
 								onClick={onSideButtonClick}
 								className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
 							>
 								<FontAwesomeIcon icon={faSliders} />
-							</button>
+							</Button>
 						</div>
 					)}
 				</div>
 			</div>
 
+			{children}
+
 			{/* Buttons */}
 			<div className="grid grid-cols-4 gap-2 h-full">
 				{/* First row */}
-				<button className="p-4 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-sm shadow-lg">
+				<Button className="p-4 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-sm shadow-lg">
 					%
-				</button>
-				<button
+				</Button>
+				<Button
 					onClick={handleClear}
 					className="p-4 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-sm shadow-lg"
 				>
 					C
-				</button>
-				<button
+				</Button>
+				<Button
 					onClick={handleBackspace}
 					className="p-4 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-sm shadow-lg"
 				>
 					⌫
-				</button>
-				<button
+				</Button>
+				<Button
 					onClick={() => handleOperationClick("/")}
 					className="p-4 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-sm shadow-lg"
 				>
 					÷
-				</button>
+				</Button>
 
 				{/* Second row */}
-				<button
+				<Button
 					onClick={() => handleNumberClick("7")}
 					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg"
 				>
 					7
-				</button>
-				<button
+				</Button>
+				<Button
 					onClick={() => handleNumberClick("8")}
 					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg"
 				>
 					8
-				</button>
-				<button
+				</Button>
+				<Button
 					onClick={() => handleNumberClick("9")}
 					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg"
 				>
 					9
-				</button>
-				<button
+				</Button>
+				<Button
 					onClick={() => handleOperationClick("*")}
 					className="p-4 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-sm shadow-lg"
 				>
 					×
-				</button>
+				</Button>
 
 				{/* Third row */}
-				<button
+				<Button
 					onClick={() => handleNumberClick("4")}
 					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg"
 				>
 					4
-				</button>
-				<button
+				</Button>
+				<Button
 					onClick={() => handleNumberClick("5")}
 					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg"
 				>
 					5
-				</button>
-				<button
+				</Button>
+				<Button
 					onClick={() => handleNumberClick("6")}
 					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg"
 				>
 					6
-				</button>
-				<button
+				</Button>
+				<Button
 					onClick={() => handleOperationClick("-")}
 					className="p-4 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-sm shadow-lg"
 				>
 					−
-				</button>
+				</Button>
 
 				{/* Fourth row */}
-				<button
+				<Button
 					onClick={() => handleNumberClick("1")}
 					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg"
 				>
 					1
-				</button>
-				<button
+				</Button>
+				<Button
 					onClick={() => handleNumberClick("2")}
 					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg"
 				>
 					2
-				</button>
-				<button
+				</Button>
+				<Button
 					onClick={() => handleNumberClick("3")}
 					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg"
 				>
 					3
-				</button>
-				<button
+				</Button>
+				<Button
 					onClick={() => handleOperationClick("+")}
 					className="p-4 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-sm shadow-lg"
 				>
 					+
-				</button>
+				</Button>
 
 				{/* Fifth row */}
-				<button
+				<Button
 					onClick={() => handleNumberClick("0")}
 					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg col-span-2"
 				>
 					0
-				</button>
-				<button
+				</Button>
+				<Button
 					onClick={() => handleNumberClick(".")}
 					className="p-4 bg-gray-100 dark:bg-gray-600 text-black dark:text-white font-semibold rounded-sm shadow-lg"
 				>
 					.
-				</button>
-				<button
+				</Button>
+				<Button
 					onClick={calculateResult}
 					className="p-4 bg-blue-500 dark:bg-blue-600 text-white font-semibold rounded-sm shadow-lg"
 				>
 					=
-				</button>
+				</Button>
 			</div>
 		</div>
 	);

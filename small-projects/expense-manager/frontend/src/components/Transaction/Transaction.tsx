@@ -6,7 +6,7 @@ import { TransactionWithCategory } from "@/mappers/TransactionCategoryAssigner";
 import { RootState, AppDispatch } from "@/store/store"; // Redux store types
 
 // Store actions
-import { selectTransaction } from "@/store/transactionSlice";
+import { selectTransaction, deleteTransaction } from "@/store/transactionSlice";
 import { toggleOpen } from "@/store/openSlice";
 
 // FontAwesome Icons
@@ -15,6 +15,7 @@ import { IconDefinition, faPlus, faMinus } from "@fortawesome/free-solid-svg-ico
 
 // Translation
 import { useTranslation } from "react-i18next";
+import Button from "../UI/Button";
 
 interface Props {
 	transactionWithCategory: TransactionWithCategory;
@@ -32,8 +33,6 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 	const { i18n } = useTranslation();
 
 	// Computed
-	const icon: IconDefinition = transaction.type === "expense" ? faMinus : faPlus;
-	const bgColor = transaction.type === "expense" ? "bg-red-500" : "bg-green-500";
 	const textColor = transaction.type === "expense" ? "text-red-600" : "text-green-600";
 
 	// Formats the date based on the current i18n language,
@@ -51,15 +50,22 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 		dispatch(toggleOpen(panelId)); // Dispatch the action to open the sliding panel
 	};
 
+	const handeDelete = (e: React.MouseEvent<HTMLDivElement>): void => {
+		e.stopPropagation();
+		if (!userId) return;
+		dispatch(deleteTransaction({ userId, transactionId: transaction.id }));
+	};
+
 	return (
 		<li
 			className="flex px-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
 			onClick={handleClick}
 		>
 			<div
-				className={`w-9 h-9 rounded-full shrink-0 ${bgColor} my-2 mr-3 flex items-center justify-center`}
+				className={`w-9 h-9 rounded-full shrink-0 bg-red-500 my-2 mr-3 flex items-center justify-center`}
+				onClick={handeDelete}
 			>
-				<FontAwesomeIcon icon={icon} className="text-white" />
+				<FontAwesomeIcon icon={faMinus} className="text-white" />
 			</div>
 			<div className="grow flex items-center border-b border-gray-100 dark:border-gray-700/60 text-sm py-2">
 				<div className="grow flex justify-between">

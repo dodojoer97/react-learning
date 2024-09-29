@@ -9,8 +9,8 @@ class TransactionService {
 
 	async fetchTransactionsByUser(
 		userId: string,
-		startDate?: Date,
-		endDate?: Date
+		startDate?: string,
+		endDate?: string
 	): Promise<Transaction[]> {
 		return TransactionRepository.getTransactionsByUser(userId, startDate, endDate);
 	}
@@ -30,6 +30,10 @@ class TransactionService {
 			);
 		}
 		await TransactionRepository.editTransactionForUser(snapshot, newData);
+	}
+
+	async deleteTransactionForUser(transactionId: string, userId: string): Promise<void> {
+		await TransactionRepository.deleteTransactionForUser(transactionId, userId);
 	}
 }
 

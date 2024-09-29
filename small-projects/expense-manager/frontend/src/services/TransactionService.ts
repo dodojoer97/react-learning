@@ -49,11 +49,15 @@ class TransactionService extends BaseService implements ITransactionService {
 		startDate?: string,
 		endDate?: string
 	): Promise<Partial<Transaction>[]> {
+		const params: Record<string, string> = {};
+
+		if (startDate && endDate) {
+			params.startDate = startDate;
+			params.endDate = endDate;
+		}
+
 		const fetchedTransactions: Transaction[] = await this.get(`transactions/${userId}`, {
-			params: {
-				startDate,
-				endDate,
-			},
+			params,
 		});
 		return this.buildTransactions(fetchedTransactions);
 	}
@@ -76,6 +80,23 @@ class TransactionService extends BaseService implements ITransactionService {
 				`transactions/${userId}/${transactionId}`,
 				updatedTransaction
 			);
+		} catch (error) {
+			if (isError(error)) {
+				throw error;
+			}
+		}
+	}
+
+	/**
+	 * deletes an existing transaction using a DELETE request.
+	 *
+	 * @param {string} userId - The user id
+	 * @param {string} transactionId - The ID of the transaction to be deleted.
+	 * @returns {Promise<void>} - A promise that resolves when the transaction is fully deleted.
+	 */
+	async deleteTransaction(userId: string, transactionId: string): Promise<void> {
+		try {
+			await this.delete(`transactions/${userId}/${transactionId}`);
 		} catch (error) {
 			if (isError(error)) {
 				throw error;

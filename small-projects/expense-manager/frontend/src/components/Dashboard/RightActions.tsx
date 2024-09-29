@@ -3,7 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 // Store
 import { toggleOpen, close } from "@/store/openSlice"; // Actions for managing open/close panels
-import { selectTransaction, defaultTransaction } from "@/store/transactionSlice"; // Action for selecting the transaction
+import {
+	selectTransaction,
+	defaultTransaction,
+	fetchTransactions,
+	setSelectedDates,
+} from "@/store/transactionSlice"; // Action for selecting the transaction
 import { RootState, AppDispatch } from "@/store/store"; // Redux store types
 
 // Components
@@ -12,12 +17,18 @@ import SlidingPanel from "@/components/UI/SlidingPanel";
 import Datepicker from "@/templates/mosaic/components/Datepicker";
 import Button from "@/components/UI/Button";
 
+// Moment
+import moment from "moment";
+
 const RightActions: FC = () => {
 	// Redux hooks
 	const dispatch = useDispatch<AppDispatch>();
+
 	const isPanelOpen = useSelector((state: RootState) =>
 		state.open.openSet.includes("dashboard-panel")
 	); // Check if the dashboard panel is open
+
+	const userId = useSelector((state: RootState) => state.auth.user?.uid); // Fetch the userId from the auth state
 
 	// Handle open logic
 	const handleOpen = (): void => {
@@ -26,7 +37,25 @@ const RightActions: FC = () => {
 	};
 
 	const handleDateChange = (selectedDates: Date[], dateStr: string): void => {
-		console.log("selectedDates: ", selectedDates);
+		if (!userId) return;
+
+		const [startDate, endDate] = selectedDates;
+
+		// Execute the request if we have 2 selected dates
+		if (startDate && endDate) {
+			const formattedStartDate: string = moment(startDate).format("YYYY-MM-DD");
+			const formattedEndDate: string = moment(endDate).format("YYYY-MM-DD");
+
+			dispatch(setSelectedDates([formattedStartDate, formattedEndDate]));
+
+			dispatch(
+				fetchTransactions({
+					userId,
+					startDate: formattedStartDate,
+					endDate: formattedEndDate,
+				})
+			);
+		}
 	};
 
 	return (

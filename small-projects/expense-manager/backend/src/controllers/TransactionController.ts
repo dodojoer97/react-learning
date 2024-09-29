@@ -37,13 +37,10 @@ class TransactionController {
 			const { userId } = req.params;
 			const { startDate, endDate } = req.query;
 
-			const parsedStartDate = startDate ? new Date(startDate as string) : undefined;
-			const parsedEndDate = endDate ? new Date(endDate as string) : undefined;
-
 			const transactions = await TransactionService.fetchTransactionsByUser(
 				userId,
-				parsedStartDate,
-				parsedEndDate
+				startDate as string,
+				endDate as string
 			);
 			res.status(200).send(transactions);
 		} catch (error: any) {
@@ -56,6 +53,16 @@ class TransactionController {
 			const { transactionId, userId } = req.params;
 			const data: Partial<Transaction> = req.body;
 			await TransactionService.updateTransactionForUser(userId, transactionId, data);
+			res.status(200).send({ message: "Transaction updated successfully" });
+		} catch (error: any) {
+			res.status(500).send(error.message);
+		}
+	}
+
+	async deleteTransactionForUser(req: Request, res: Response): Promise<void> {
+		try {
+			const { transactionId, userId } = req.params;
+			await TransactionService.deleteTransactionForUser(transactionId, userId);
 			res.status(200).send({ message: "Transaction updated successfully" });
 		} catch (error: any) {
 			res.status(500).send(error.message);

@@ -13,8 +13,8 @@ class TransactionRepository {
 
 	async getTransactionsByUser(
 		userId: string,
-		startDate?: Date,
-		endDate?: Date
+		startDate?: string,
+		endDate?: string
 	): Promise<Transaction[]> {
 		let query = this.recordsCollection
 			.where("userId", "==", userId)
@@ -29,6 +29,7 @@ class TransactionRepository {
 		}
 
 		const snapshot = await query.get();
+
 		return snapshot.docs.map((doc) => doc.data() as Transaction);
 	}
 
@@ -53,6 +54,17 @@ class TransactionRepository {
 			// Assuming only one document is returned since id should be unique
 			const docRef = snapshot.docs[0].ref;
 			await docRef.update(newTransactionData);
+		} else {
+			throw new Error(`Transaction does not exist for the provided user`);
+		}
+	}
+
+	// Delete a transaction for a specific user
+	async deleteTransactionForUser(transactionId: string, userId: string): Promise<void> {
+		const snapshot = await this.getTransactionSnapshotForUser(transactionId, userId);
+		if (!snapshot.empty) {
+			const docRef = snapshot.docs[0].ref;
+			await docRef.delete(); // Delete the document
 		} else {
 			throw new Error(`Transaction does not exist for the provided user`);
 		}

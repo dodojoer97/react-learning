@@ -16,7 +16,8 @@ export interface ITransactionService {
 	getTransactionsByUser(
 		userId: string,
 		startDate?: string,
-		endDate?: string
+		endDate?: string,
+		completedOnly?: boolean
 	): Promise<Transaction[]>;
 
 	/**

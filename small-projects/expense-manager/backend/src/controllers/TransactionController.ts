@@ -24,8 +24,8 @@ class TransactionController {
 				type: transaction.type,
 				createdAt: new Date().toISOString(), // You can set this or let the constructor handle it
 				status: transaction.status, // Set status if needed, or let it default to "completed"
-				description: transaction.description,
-				recurring: transaction.recurring, // Optional: include this if recurring details are available
+				description: transaction.description || "",
+				recurring: transaction.recurring || null, // Optional: include this if recurring details are available
 			});
 
 			await TransactionService.createTransaction(transactionModel);
@@ -38,12 +38,13 @@ class TransactionController {
 	async getTransactionsByUser(req: Request, res: Response): Promise<void> {
 		try {
 			const { userId } = req.params;
-			const { startDate, endDate } = req.query;
+			const { startDate, endDate, completedOnly } = req.query;
 
 			const transactions = await TransactionService.fetchTransactionsByUser(
 				userId,
 				startDate as string,
-				endDate as string
+				endDate as string,
+				completedOnly as string
 			);
 			res.status(200).send(transactions);
 		} catch (error: any) {

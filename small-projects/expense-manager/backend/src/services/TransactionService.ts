@@ -11,7 +11,7 @@ class TransactionService {
 		userId: string,
 		startDate?: string,
 		endDate?: string,
-		completedOnly?: boolean
+		completedOnly?: string
 	): Promise<Transaction[]> {
 		return TransactionRepository.getTransactionsByUser(
 			userId,

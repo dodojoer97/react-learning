@@ -15,7 +15,7 @@ class TransactionRepository {
 		userId: string,
 		startDate?: string,
 		endDate?: string,
-		completedOnly?: boolean
+		completedOnly?: string
 	): Promise<Transaction[]> {
 		let query = this.recordsCollection
 			.where("userId", "==", userId)

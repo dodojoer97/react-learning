@@ -48,20 +48,24 @@ const updateTransactionFields = (
 
 export const fetchTransactions = createAsyncThunk<
 	Partial<Transaction>[],
-	{ userId: string; startDate?: string; endDate?: string },
+	{ userId: string; startDate?: string; endDate?: string; completedOnly?: boolean },
 	{ rejectValue: string }
->("transactions/fetchTransactions", async ({ userId, startDate, endDate }, { rejectWithValue }) => {
-	try {
-		const transactions = await transactionService.getTransactionsByUser(
-			userId,
-			startDate,
-			endDate
-		);
-		return transactions;
-	} catch (error: any) {
-		return rejectWithValue(error.message || "Failed to fetch transactions");
+>(
+	"transactions/fetchTransactions",
+	async ({ userId, startDate, endDate, completedOnly }, { rejectWithValue }) => {
+		try {
+			const transactions = await transactionService.getTransactionsByUser(
+				userId,
+				startDate,
+				endDate,
+				completedOnly
+			);
+			return transactions;
+		} catch (error: any) {
+			return rejectWithValue(error.message || "Failed to fetch transactions");
+		}
 	}
-});
+);
 
 export const addTransaction = createAsyncThunk<
 	void,
@@ -271,15 +275,11 @@ export const getMappedTransactions = (
 };
 
 // Default transaction template for initializing new transactions
-export const defaultTransaction: Transaction = {
-	id: "",
-	userId: "",
+export const defaultTransaction: Partial<Transaction> = {
 	amount: 0,
 	date: new Date().toISOString(),
-	categoryId: "",
-	type: "expense" as CategoryType,
-	description: "",
-	createdAt: new Date().toISOString(),
+	type: "expense",
+	status: "completed",
 };
 
 // Export the actions and reducer

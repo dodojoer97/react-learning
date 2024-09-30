@@ -17,7 +17,7 @@ export interface ITransaction {
 	createdAt: string; // Timestamp when the transaction was created
 	description?: string;
 	status: "planned" | "completed"; // Status of the transaction
-	recurring?: IRecurringTransaction; // Add this line for recurring transaction support
+	recurring?: IRecurringTransaction | null; // Add this line for recurring transaction support
 }
 
 // Define mandatory fields excluding optional properties
@@ -34,7 +34,7 @@ export class Transaction implements ITransaction {
 	createdAt: string;
 	status: "planned" | "completed";
 	description?: string;
-	recurring?: IRecurringTransaction;
+	recurring?: IRecurringTransaction | null;
 
 	constructor(transaction: ITransaction) {
 		this.id = transaction.id;

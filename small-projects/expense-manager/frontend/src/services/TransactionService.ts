@@ -47,13 +47,18 @@ class TransactionService extends BaseService implements ITransactionService {
 	async getTransactionsByUser(
 		userId: string,
 		startDate?: string,
-		endDate?: string
+		endDate?: string,
+		completedOnly?: boolean
 	): Promise<Partial<Transaction>[]> {
-		const params: Record<string, string> = {};
+		const params: Record<string, string | boolean> = {};
 
 		if (startDate && endDate) {
 			params.startDate = startDate;
 			params.endDate = endDate;
+		}
+
+		if (completedOnly) {
+			params.completedOnly = completedOnly;
 		}
 
 		const fetchedTransactions: Transaction[] = await this.get(`transactions/${userId}`, {

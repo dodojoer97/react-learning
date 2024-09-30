@@ -26,20 +26,6 @@ const TransactionLineChart: FC = () => {
 	const categories = useSelector((state: RootState) => state.settings.categories);
 	const userId = useSelector((state: RootState) => state.auth.user?.uid); // Fetch the userId from the auth state
 
-	// Fetch categories and transactions when the component mounts
-	useEffect(() => {
-		const handleFetch = async () => {
-			if (!categories.length && userId) {
-				await dispatch(fetchCategories(userId)); // Fetch categories based on userId
-			}
-
-			if (!transactions.length && userId) {
-				await dispatch(fetchTransactions({ userId })); // Fetch transactions based on userId
-			}
-		};
-		handleFetch();
-	}, [dispatch, categories.length, userId]);
-
 	// Memoized mapped transactions
 	const mappedTransactions = useMemo(
 		() => getMappedTransactions(transactions, categories),

@@ -37,7 +37,7 @@ const TransactionList: FC<TransactionListProps> = ({ limit }) => {
 			}
 
 			if (!transactions.length && userId) {
-				await dispatch(fetchTransactions({ userId })); // Use userId when fetching transactions
+				await dispatch(fetchTransactions({ userId, completedOnly: true })); // Use userId when fetching transactions
 			}
 		};
 		handleFetch();

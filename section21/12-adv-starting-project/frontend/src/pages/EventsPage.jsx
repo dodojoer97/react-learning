@@ -17,7 +17,6 @@ export async function loader() {
 	if (!response.ok) {
 		// ...
 	} else {
-		const { events } = await response.json()
-		return events
+		return response
 	}
 }

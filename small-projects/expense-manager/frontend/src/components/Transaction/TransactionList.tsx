@@ -25,19 +25,24 @@ const TransactionList: FC<TransactionListProps> = ({ limit }) => {
 	const categories = useSelector((state: RootState) => state.settings.categories);
 	const openSet = useSelector((state: RootState) => state.open.openSet); // Check if panel is open
 	const userId = useSelector((state: RootState) => state.auth.user?.uid); // Fetch the userId from the auth state
+	const selectedDates = useSelector((state: RootState) => state.transaction.selectedDates);
 
 	// Sliding panel identifier
 	const panelId = "transactionPanel";
 
 	// Fetch categories and transactions when the component mounts
 	useEffect(() => {
+		const [startDate, endDate] = selectedDates || [];
+
 		const handleFetch = async () => {
 			if (!categories.length && userId) {
 				await dispatch(fetchCategories(userId)); // Use userId when fetching categories
 			}
 
 			if (!transactions.length && userId) {
-				await dispatch(fetchTransactions({ userId, completedOnly: true })); // Use userId when fetching transactions
+				await dispatch(
+					fetchTransactions({ userId, completedOnly: true, startDate, endDate })
+				); // Use userId when fetching transactions
 			}
 		};
 		handleFetch();

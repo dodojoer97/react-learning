@@ -118,7 +118,6 @@ const TransactionLineChart: FC = () => {
 		[dateRange, chartData]
 	);
 
-	console.log("chartConfig: ", chartConfig);
 	return (
 		<Card title="Transaction Overview">
 			{/* <AnalyticsCard01 /> */}

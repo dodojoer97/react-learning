@@ -7,7 +7,10 @@ import {
 	TransactionWithCategory,
 	TransactionCategoryAssigner,
 } from "@/mappers/TransactionCategoryAssigner";
-import User from "@/models/User";
+
+// Utils
+import { getFirstDayOfMonth } from "@/utils/utils";
+import moment from "moment";
 
 // Define the state interface
 export interface TransactionState {
@@ -19,13 +22,18 @@ export interface TransactionState {
 	selectedDates: string[] | null;
 }
 
+const defaultDates = [
+	moment(getFirstDayOfMonth()).format("YYYY-MM-DD"),
+	moment(new Date()).format("YYYY-MM-DD"),
+];
+
 const initialState: TransactionState = {
 	transactions: [],
 	selectedTransaction: null,
 	draftTransaction: null,
 	loading: false,
 	error: null,
-	selectedDates: null,
+	selectedDates: defaultDates,
 };
 
 // Initialize the TransactionService

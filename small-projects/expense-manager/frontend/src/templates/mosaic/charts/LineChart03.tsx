@@ -27,8 +27,6 @@ function LineChart03({ data, width, height }) {
 	const { textColor, gridColor, tooltipBodyColor, tooltipBgColor, tooltipBorderColor } =
 		chartColors;
 
-	console.log("data: ", data);
-
 	useEffect(() => {
 		const ctx = canvas.current;
 		// eslint-disable-next-line no-unused-vars

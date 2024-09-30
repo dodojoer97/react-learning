@@ -115,3 +115,8 @@ export const groupByType = <T extends IGroupItem>(data: T[]): IGroupedItem<T>[] 
 		values: groups[type],
 	}));
 };
+
+export const getFirstDayOfMonth = () => {
+	const date = new Date();
+	return new Date(date.getFullYear(), date.getMonth(), 1);
+};

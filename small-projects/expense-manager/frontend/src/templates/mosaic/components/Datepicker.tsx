@@ -2,6 +2,8 @@ import React from "react";
 import Flatpickr from "react-flatpickr";
 import { BaseOptions } from "flatpickr/dist/types/options";
 
+import { getFirstDayOfMonth } from "@/utils/utils";
+
 interface DatepickerProps {
 	align?: string;
 	onChange?: (selectedDates: Date[], dateStr: string) => void;
@@ -15,11 +17,6 @@ const Datepicker: React.FC<DatepickerProps> = ({
 	mode = "range",
 	defaultDate,
 }) => {
-	const getFirstDayOfMonth = () => {
-		const date = new Date();
-		return new Date(date.getFullYear(), date.getMonth(), 1);
-	};
-
 	const options: BaseOptions = {
 		mode,
 		static: true,
@@ -40,9 +37,6 @@ const Datepicker: React.FC<DatepickerProps> = ({
 			instance.element.value = dateStr.replace("to", "-");
 			const customClass = align ? align : "";
 			instance.calendarContainer.classList.add(`flatpickr-${customClass}`);
-			if (onChange) {
-				onChange(selectedDates, dateStr);
-			}
 		},
 	};
 

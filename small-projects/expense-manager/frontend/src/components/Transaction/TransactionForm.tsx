@@ -18,6 +18,7 @@ import DatePicker from "@/templates/mosaic/components/Datepicker";
 // Hooks
 import useInput from "@/hooks/useInput";
 import useIsMobile from "@/hooks/useIsMobile";
+import moment from "moment";
 
 interface IProps {
 	onSave(): void;
@@ -50,7 +51,11 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 				mode="single"
 				defaultDate={draftTransaction.date}
 				onChange={(selectedDates: Date[], dateStr: string) =>
-					dispatch(updateDraftTransaction({ date: dateStr }))
+					dispatch(
+						updateDraftTransaction({
+							date: moment(selectedDates[0]).format("YYYY-MM-DD"),
+						})
+					)
 				}
 			/>
 

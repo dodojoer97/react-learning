@@ -59,6 +59,17 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 
 	const handleSave = useCallback(async (): Promise<void> => {
 		try {
+			if (new Date(draftTransaction?.date as string).getTime() > new Date().getTime()) {
+				const test: boolean = confirm("TEST");
+				if (test && draftTransaction) {
+					draftTransaction.status = "planned";
+					await dispatch(saveDraftTransaction()).unwrap();
+					// If no errors, trigger the onSave callback
+					onSave();
+				} else {
+					return;
+				}
+			}
 			await dispatch(saveDraftTransaction()).unwrap();
 
 			// If no errors, trigger the onSave callback

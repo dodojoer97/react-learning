@@ -8,7 +8,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 //    - NewEventPage
 //    - EditEventPage
 import HomePage from "./pages/HomePage"
-import EventsPage from "./pages/EventsPage"
+import EventsPage, { loader as eventLoader } from "./pages/EventsPage"
 import EventDetailPage from "./pages/EventDetailPage"
 import NewEventPage from "./pages/NewEventPage"
 import EditEventPage from "./pages/EditEventPage"
@@ -38,16 +38,7 @@ const router = createBrowserRouter([
 					{
 						index: true,
 						element: <EventsPage />,
-						loader: async () => {
-							const response = await fetch("http://localhost:8080/events")
-
-							if (!response.ok) {
-								// ...
-							} else {
-								const { events } = await response.json()
-								return events
-							}
-						},
+						loader: eventLoader,
 					},
 					{ path: ":eventId", element: <EventDetailPage /> },
 					{ path: "new", element: <NewEventPage /> },

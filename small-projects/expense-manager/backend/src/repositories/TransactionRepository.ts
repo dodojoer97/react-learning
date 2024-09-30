@@ -14,7 +14,8 @@ class TransactionRepository {
 	async getTransactionsByUser(
 		userId: string,
 		startDate?: string,
-		endDate?: string
+		endDate?: string,
+		completedOnly?: boolean
 	): Promise<Transaction[]> {
 		let query = this.recordsCollection
 			.where("userId", "==", userId)
@@ -26,6 +27,10 @@ class TransactionRepository {
 
 		if (endDate) {
 			query = query.where("date", "<=", endDate);
+		}
+
+		if (completedOnly) {
+			query = query.where("status", "==", "completed");
 		}
 
 		const snapshot = await query.get();

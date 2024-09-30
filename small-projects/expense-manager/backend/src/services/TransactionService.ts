@@ -10,9 +10,15 @@ class TransactionService {
 	async fetchTransactionsByUser(
 		userId: string,
 		startDate?: string,
-		endDate?: string
+		endDate?: string,
+		completedOnly?: boolean
 	): Promise<Transaction[]> {
-		return TransactionRepository.getTransactionsByUser(userId, startDate, endDate);
+		return TransactionRepository.getTransactionsByUser(
+			userId,
+			startDate,
+			endDate,
+			completedOnly
+		);
 	}
 	// Update a transaction for a specific user
 	async updateTransactionForUser(

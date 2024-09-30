@@ -15,6 +15,7 @@ import EditEventPage from "./pages/EditEventPage"
 import RootLayout from "./pages/Root"
 
 import EventsRootLayout from "./pages/EventsRoot"
+import ErrorPage from "./pages/ErrorPage"
 
 // 2. Add routing & route definitions for these five pages - DONE
 //    - / => HomePage
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <RootLayout />,
+		errorElement: <ErrorPage />,
 		children: [
 			{ index: true, element: <HomePage /> },
 			{

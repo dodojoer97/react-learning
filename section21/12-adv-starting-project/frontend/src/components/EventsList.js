@@ -4,10 +4,7 @@ import { Link } from "react-router-dom"
 
 import { useLoaderData } from "react-router-dom"
 
-function EventsList() {
-	const data = useLoaderData()
-	const events = data.events // loader automatically extracts the data
-
+function EventsList({ events }) {
 	return (
 		<div className={classes.events}>
 			<h1>All Events</h1>

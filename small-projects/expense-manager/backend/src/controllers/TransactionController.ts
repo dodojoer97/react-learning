@@ -15,15 +15,18 @@ class TransactionController {
 			const data: CreateTransactionDTO = req.body;
 			const { transaction } = data;
 
-			const transactionModel = new Transaction(
-				v4(),
-				transaction.userId,
-				transaction.amount,
-				transaction.date,
-				transaction.categoryId,
-				transaction.type,
-				transaction.description
-			);
+			const transactionModel = new Transaction({
+				id: v4(), // Generate a new unique ID
+				userId: transaction.userId,
+				amount: transaction.amount,
+				date: transaction.date,
+				categoryId: transaction.categoryId,
+				type: transaction.type,
+				createdAt: new Date().toISOString(), // You can set this or let the constructor handle it
+				status: transaction.status, // Set status if needed, or let it default to "completed"
+				description: transaction.description,
+				recurring: transaction.recurring, // Optional: include this if recurring details are available
+			});
 
 			await TransactionService.createTransaction(transactionModel);
 			res.status(201).send(transaction);

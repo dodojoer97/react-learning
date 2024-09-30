@@ -23,18 +23,29 @@ export interface ITransaction {
 // Define mandatory fields excluding optional properties
 export type MandatoryTransactionFields = keyof Omit<ITransaction, "description" | "recurring">;
 
-// Transaction class implementation with default values for status and createdAt
+// Transaction class implementation with object in constructor
 export class Transaction implements ITransaction {
-	constructor(
-		public id: string,
-		public userId: string,
-		public amount: number,
-		public date: string,
-		public categoryId: string,
-		public type: CategoryType,
-		public status: "planned" | "completed" = "planned", // Default to 'planned' status
-		public description?: string,
-		public recurring?: IRecurringTransaction, // Optional recurring field
-		public createdAt: string = new Date().toISOString() // Default to the current timestamp
-	) {}
+	id: string;
+	userId: string;
+	amount: number;
+	date: string;
+	categoryId: string;
+	type: CategoryType;
+	createdAt: string;
+	status: "planned" | "completed";
+	description?: string;
+	recurring?: IRecurringTransaction;
+
+	constructor(transaction: ITransaction) {
+		this.id = transaction.id;
+		this.userId = transaction.userId;
+		this.amount = transaction.amount;
+		this.date = transaction.date;
+		this.categoryId = transaction.categoryId;
+		this.type = transaction.type;
+		this.createdAt = transaction.createdAt || new Date().toISOString(); // Default to the current timestamp if not provided
+		this.status = transaction.status || "completed"; // Default status to "completed" if not provided
+		this.description = transaction.description;
+		this.recurring = transaction.recurring;
+	}
 }

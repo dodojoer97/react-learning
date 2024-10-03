@@ -315,7 +315,7 @@ export const getMappedTransactions = (
 // Default transaction template for initializing new transactions
 export const defaultTransaction: Partial<Transaction> = {
 	amount: 0,
-	date: new Date().toISOString(),
+	date: new Date(moment(new Date()).format("YYYY-MM-DD")).toISOString(),
 	type: "expense",
 	status: "completed",
 };

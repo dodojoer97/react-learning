@@ -23,11 +23,13 @@ class TransactionRepository {
 			.orderBy("createdAt", "desc"); // Ordering by createdAt in descending order
 
 		if (startDate) {
-			query = query.where("date", ">=", startDate);
+			const start = new Date(startDate).toISOString();
+			query = query.where("date", ">=", start);
 		}
 
 		if (endDate) {
-			query = query.where("date", "<=", endDate);
+			const end = new Date(endDate).toISOString();
+			query = query.where("date", "<=", end);
 		}
 
 		if (completedOnly) {

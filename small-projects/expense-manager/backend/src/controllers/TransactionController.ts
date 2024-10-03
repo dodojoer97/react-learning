@@ -8,6 +8,7 @@ import { v4 } from "uuid";
 
 // DTO
 import CreateTransactionDTO from "@/DTO/request/CreateTransaction";
+import { GetBalanceDTO } from "@/DTO/response/GetBalance";
 
 class TransactionController {
 	async addTransaction(req: Request, res: Response): Promise<void> {
@@ -66,8 +67,26 @@ class TransactionController {
 	async deleteTransactionForUser(req: Request, res: Response): Promise<void> {
 		try {
 			const { transactionId, userId } = req.params;
+
 			await TransactionService.deleteTransactionForUser(transactionId, userId);
 			res.status(200).send({ message: "Transaction updated successfully" });
+		} catch (error: any) {
+			res.status(500).send(error.message);
+		}
+	}
+
+	async getBalance(req: Request, res: Response): Promise<void> {
+		try {
+			const { userId } = req.params;
+			const { startDate, endDate } = req.query;
+
+			const balance: number = await TransactionService.getBalance(
+				userId,
+				startDate as string,
+				endDate as string
+			);
+
+			res.status(200).send({ balance });
 		} catch (error: any) {
 			res.status(500).send(error.message);
 		}

@@ -2,6 +2,7 @@
 import { adminDb } from "../config/firebase";
 import { QuerySnapshot, DocumentData } from "firebase-admin/firestore";
 import { Transaction } from "@common";
+import { getSum } from "@/utils/utils";
 
 class TransactionRepository {
 	private recordsCollection = adminDb.collection("records");
@@ -15,7 +16,7 @@ class TransactionRepository {
 		userId: string,
 		startDate?: string,
 		endDate?: string,
-		completedOnly?: string
+		completedOnly?: string | boolean
 	): Promise<Transaction[]> {
 		let query = this.recordsCollection
 			.where("userId", "==", userId)
@@ -72,6 +73,40 @@ class TransactionRepository {
 			await docRef.delete(); // Delete the document
 		} else {
 			throw new Error(`Transaction does not exist for the provided user`);
+		}
+	}
+
+	// Get a users balance
+	async getBalance(userId: string, startDate?: string, endDate?: string): Promise<number> {
+		try {
+			// Get only completed, to be able to calculate balance correctly
+			const completedOnly = true;
+
+			// Get all the transactions for the specified user
+			const transactions: Transaction[] = await this.getTransactionsByUser(
+				userId,
+				startDate,
+				endDate,
+				completedOnly
+			);
+
+			// Initialize sums
+			let incomeSum = 0;
+			let expenseSum = 0;
+
+			// Calculate income and expense in one loop
+			transactions.forEach((transaction: Transaction) => {
+				if (transaction.type === "expense") {
+					expenseSum += transaction.amount;
+				} else if (transaction.type === "income") {
+					incomeSum += transaction.amount;
+				}
+			});
+
+			// The incomes sum - the expenseSum sum gets us the balance
+			return incomeSum - expenseSum;
+		} catch (err) {
+			throw new Error(`error getting balance the provided user: ${err}`);
 		}
 	}
 }

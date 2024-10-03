@@ -41,6 +41,10 @@ class TransactionService {
 	async deleteTransactionForUser(transactionId: string, userId: string): Promise<void> {
 		await TransactionRepository.deleteTransactionForUser(transactionId, userId);
 	}
+	async getBalance(userId: string, startDate?: string, endDate?: string): Promise<number> {
+		const balance = await TransactionRepository.getBalance(userId, startDate, endDate);
+		return balance;
+	}
 }
 
 export default new TransactionService();

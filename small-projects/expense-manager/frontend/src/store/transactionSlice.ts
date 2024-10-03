@@ -20,6 +20,7 @@ export interface TransactionState {
 	loading: boolean;
 	error: string | null;
 	selectedDates: string[] | null;
+	balance: number | null;
 }
 
 const defaultDates = [
@@ -34,6 +35,7 @@ const initialState: TransactionState = {
 	loading: false,
 	error: null,
 	selectedDates: defaultDates,
+	balance: null,
 };
 
 // Initialize the TransactionService
@@ -150,6 +152,25 @@ export const saveDraftTransaction = createAsyncThunk<
 	}
 });
 
+// Get user balance
+export const getBalance = createAsyncThunk<
+	number,
+	{ userId: string; startDate?: string; endDate?: string },
+	{ rejectValue: string }
+>(
+	"transaction/saveDraftTransaction",
+	async ({ userId, startDate, endDate }, { rejectWithValue }) => {
+		try {
+			// Get the balance
+			const balance: number = await transactionService.getBalance(userId, startDate, endDate);
+			return balance;
+		} catch (error: any) {
+			// Use a generic error message to simplify error handling
+			return rejectWithValue("Error getting balance: " + error.message);
+		}
+	}
+);
+
 // Create the slice
 const transactionSlice = createSlice({
 	name: "transactions",
@@ -262,6 +283,18 @@ const transactionSlice = createSlice({
 			.addCase(deleteTransaction.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload || "Failed to delete transaction";
+			})
+			.addCase(getBalance.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(getBalance.fulfilled, (state, action: PayloadAction<number>) => {
+				state.balance = action.payload;
+				state.loading = false;
+				state.error = null;
+			})
+			.addCase(getBalance.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.payload || "Failed to get balance";
 			});
 	},
 });

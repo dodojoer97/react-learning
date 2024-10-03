@@ -21,6 +21,7 @@ import Button from "@/components/UI/Button";
 import moment from "moment";
 
 const RightActions: FC = () => {
+	// TODO add translations
 	// Redux hooks
 	const dispatch = useDispatch<AppDispatch>();
 

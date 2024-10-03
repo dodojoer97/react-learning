@@ -53,11 +53,11 @@ const Layout: FC<Props> = ({ children, title, rightComponent }) => {
 					</main>
 				</div>
 
-				{loading && (
+				{/* {loading && (
 					<Overlay>
 						<Loader />
 					</Overlay>
-				)}
+				)} */}
 			</div>
 		</>
 	);

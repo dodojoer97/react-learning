@@ -28,7 +28,7 @@ const TransactionLineChart: FC = () => {
 
 	// Memoized mapped transactions
 	const mappedTransactions = useMemo(
-		() => getMappedTransactions(transactions, categories),
+		() => getMappedTransactions(transactions, categories, "expense"),
 		[transactions, categories]
 	);
 
@@ -119,7 +119,7 @@ const TransactionLineChart: FC = () => {
 	);
 
 	return (
-		<Card title="Transaction Overview">
+		<Card title="Expense Overview">
 			{/* <AnalyticsCard01 /> */}
 			<LineChart data={chartConfig} width={800} height={300} />
 		</Card>

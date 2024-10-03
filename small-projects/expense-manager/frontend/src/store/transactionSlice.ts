@@ -317,7 +317,11 @@ export const defaultTransaction: Partial<Transaction> = {
 	amount: 0,
 	date: new Date(moment(new Date()).format("YYYY-MM-DD")).toISOString(),
 	type: "expense",
-	status: "completed",
+	status: "planned",
+	recurring: {
+		isRecurring: true,
+		frequency: "daily",
+	},
 };
 
 // Export the actions and reducer

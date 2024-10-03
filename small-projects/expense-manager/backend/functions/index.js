@@ -29,7 +29,7 @@ function getNextOccurrence(date, frequency) {
 // Scheduled function to process recurring transactions using the onSchedule method
 exports.scheduledRecurringTransactions = onSchedule("every 24 hours", async (context) => {
 	const currentDate = new Date();
-	const plannedTransactionsRef = db.collection("plannedTransactions");
+	const plannedTransactionsRef = db.collection("records");
 
 	try {
 		// Query for all recurring planned transactions
@@ -41,6 +41,10 @@ exports.scheduledRecurringTransactions = onSchedule("every 24 hours", async (con
 		querySnapshot.forEach((doc) => {
 			const transaction = doc.data();
 			const transactionDate = new Date(transaction.date);
+			const endDate = new Date(transaction.recurring.endDate);
+
+			console.log("transactionDate: ", transactionDate);
+			console.log("currentDate: ", currentDate);
 
 			// Check if the transaction date has passed
 			if (transactionDate <= currentDate) {
@@ -50,28 +54,31 @@ exports.scheduledRecurringTransactions = onSchedule("every 24 hours", async (con
 					transaction.recurring.frequency
 				);
 
-				// Check if the endDate has passed (if provided)
-				if (
-					transaction.recurring.endDate &&
-					new Date(transaction.recurring.endDate) < new Date(nextDate)
-				) {
-					console.log("End date passed, no more recurrence");
-					return;
+				console.log("nextDate: ", nextDate);
+
+				// If the nextDate is beyond the end date, mark this transaction as completed
+				if (new Date(nextDate) > endDate) {
+					console.log("End date reached, marking transaction as completed");
+					batch.update(plannedTransactionsRef.doc(doc.id), {
+						status: "completed",
+						date: currentDate.toISOString(), // Mark the transaction as completed
+					});
+				} else {
+					// Mark the current transaction as completed
+					batch.update(plannedTransactionsRef.doc(doc.id), {
+						status: "completed",
+						date: currentDate.toISOString(), // Mark as completed
+					});
+
+					// Create a new planned transaction for the next recurrence
+					const newTransactionRef = plannedTransactionsRef.doc();
+					batch.set(newTransactionRef, {
+						...transaction,
+						date: nextDate, // Set the new recurrence date
+						status: "planned",
+						createdAt: new Date().toISOString(),
+					});
 				}
-
-				// Add a new transaction for the next recurrence
-				const newTransactionRef = plannedTransactionsRef.doc();
-				batch.set(newTransactionRef, {
-					...transaction,
-					date: nextDate, // Set the new recurrence date
-					status: "planned",
-					createdAt: new Date().toISOString(),
-				});
-
-				// Update the original transaction's date to the next occurrence
-				batch.update(plannedTransactionsRef.doc(doc.id), {
-					date: nextDate,
-				});
 			}
 		});
 

@@ -8,7 +8,6 @@ import { v4 } from "uuid";
 
 // DTO
 import CreateTransactionDTO from "@/DTO/request/CreateTransaction";
-import { GetBalanceDTO } from "@/DTO/response/GetBalance";
 
 class TransactionController {
 	async addTransaction(req: Request, res: Response): Promise<void> {

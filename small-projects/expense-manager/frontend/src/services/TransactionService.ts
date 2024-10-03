@@ -7,6 +7,10 @@ import BaseService from "./BaseService";
 
 // Utils
 import { isError } from "@common";
+
+// DTO
+import { GetBalanceDTO } from "@/DTO/response/GetBalance";
+
 /**
  * TransactionService class for handling transactions.
  * Extends BaseService to use common service functionalities.
@@ -106,6 +110,29 @@ class TransactionService extends BaseService implements ITransactionService {
 			if (isError(error)) {
 				throw error;
 			}
+		}
+	}
+
+	async getBalance(userId: string, startDate?: string, endDate?: string): Promise<number> {
+		try {
+			const params: Record<string, string> = {};
+
+			if (startDate && endDate) {
+				params.startDate = startDate;
+				params.endDate = endDate;
+			}
+
+			const data: GetBalanceDTO = await this.get(`transactions/balance/${userId}`, {
+				params,
+			});
+
+			return data.balance;
+		} catch (error) {
+			if (isError(error)) {
+				throw error;
+			}
+
+			throw error;
 		}
 	}
 

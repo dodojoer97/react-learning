@@ -44,15 +44,36 @@ const transactionService = new TransactionService();
 const updateTransactionFields = (
 	transaction: Transaction,
 	updates: Partial<Transaction>
-): Partial<Transaction> => ({
-	id: updates.id ?? transaction.id,
-	userId: updates.userId ?? transaction.userId,
-	amount: updates.amount ?? transaction.amount,
-	date: updates.date ?? transaction.date,
-	categoryId: updates.categoryId ?? transaction.categoryId,
-	type: updates.type ?? transaction.type,
-	description: updates.description ?? transaction.description,
-});
+): Partial<Transaction> => {
+	// get the date, either from the transaction or when updating from the updates obj
+	const comparedDate = updates.date
+		? new Date(updates.date as string)
+		: new Date(transaction.date as string);
+
+	// Create a clone of the updates to not ipact the provided object
+	const updatesClone = { ...updates };
+
+	// If the selected date is in the future is a planned payment
+	if (comparedDate > new Date()) {
+		updatesClone.status = "planned";
+	} else {
+		updatesClone.status = "completed";
+	}
+
+	const current: Partial<Transaction> = {
+		id: updatesClone.id ?? transaction.id,
+		userId: updatesClone.userId ?? transaction.userId,
+		amount: updatesClone.amount ?? transaction.amount,
+		date: updatesClone.date ?? transaction.date,
+		categoryId: updatesClone.categoryId ?? transaction.categoryId,
+		type: updatesClone.type ?? transaction.type,
+		description: updatesClone.description ?? transaction.description,
+		status: updatesClone.status ?? transaction.status,
+		recurring: updatesClone.recurring || transaction.recurring,
+	};
+
+	return current;
+};
 
 // Thunks for async operations
 
@@ -317,11 +338,7 @@ export const defaultTransaction: Partial<Transaction> = {
 	amount: 0,
 	date: new Date(moment(new Date()).format("YYYY-MM-DD")).toISOString(),
 	type: "expense",
-	status: "planned",
-	recurring: {
-		isRecurring: true,
-		frequency: "daily",
-	},
+	status: "completed",
 };
 
 // Export the actions and reducer

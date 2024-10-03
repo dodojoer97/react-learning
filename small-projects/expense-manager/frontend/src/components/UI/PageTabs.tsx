@@ -56,6 +56,7 @@ const Tabs: FC<ITabsProps<IGroupItem>> = ({ data, Component }) => {
 			{isMobile && (
 				<>
 					<Dropdown
+						id={`drodown-${groupedData[0].type}`}
 						items={groupedData.map((group) => group.type)}
 						onSelect={handleTabClick}
 					/>

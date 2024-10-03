@@ -157,19 +157,16 @@ export const getBalance = createAsyncThunk<
 	number,
 	{ userId: string; startDate?: string; endDate?: string },
 	{ rejectValue: string }
->(
-	"transaction/saveDraftTransaction",
-	async ({ userId, startDate, endDate }, { rejectWithValue }) => {
-		try {
-			// Get the balance
-			const balance: number = await transactionService.getBalance(userId, startDate, endDate);
-			return balance;
-		} catch (error: any) {
-			// Use a generic error message to simplify error handling
-			return rejectWithValue("Error getting balance: " + error.message);
-		}
+>("transaction/getBalance", async ({ userId, startDate, endDate }, { rejectWithValue }) => {
+	try {
+		// Get the balance
+		const balance: number = await transactionService.getBalance(userId, startDate, endDate);
+		return balance;
+	} catch (error: any) {
+		// Use a generic error message to simplify error handling
+		return rejectWithValue("Error getting balance: " + error.message);
 	}
-);
+});
 
 // Create the slice
 const transactionSlice = createSlice({

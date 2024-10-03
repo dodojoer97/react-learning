@@ -8,6 +8,7 @@ import SignUp from "@/pages/Signup";
 import Settings from "@/pages/Settings";
 import Categories from "@/pages/Categories";
 import Dashboard from "@/pages/Dashboard";
+import Analytics from "@/pages/Analytics";
 
 export interface RouteConfig {
 	title: string;
@@ -27,23 +28,6 @@ export const routeConfig: RouteConfig[] = [
 		isProtected: false,
 	},
 	{
-		title: "Records",
-		children: [
-			{
-				title: "Main",
-				path: "/dashboard",
-				component: <Dashboard />,
-				isProtected: true,
-			},
-			{
-				title: "Analytics",
-				path: "/dashboard/analytics",
-				component: <> </>,
-				isProtected: true,
-			},
-		],
-	},
-	{
 		title: "Dashboard",
 		sidebarDisplay: true,
 		children: [
@@ -56,7 +40,7 @@ export const routeConfig: RouteConfig[] = [
 			{
 				title: "Analytics",
 				path: "/dashboard/analytics",
-				component: <> </>,
+				component: <Analytics />,
 				isProtected: true,
 			},
 		],

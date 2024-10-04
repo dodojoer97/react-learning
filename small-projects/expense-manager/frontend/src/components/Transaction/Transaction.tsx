@@ -16,6 +16,8 @@ import { IconDefinition, faPlus, faMinus } from "@fortawesome/free-solid-svg-ico
 // Translation
 import { useTranslation } from "react-i18next";
 import Button from "../UI/Button";
+import TransactionSkeleton from "./TransactionSkeleton";
+import useLoading from "@/hooks/useLoading";
 
 interface Props {
 	transactionWithCategory: TransactionWithCategory;
@@ -34,6 +36,7 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 
 	// Computed
 	const textColor = transaction.type === "expense" ? "text-red-600" : "text-green-600";
+	const isLoadingAny: boolean = useLoading();
 
 	// Formats the date based on the current i18n language,
 	const formatDate = (date: string) => {
@@ -55,6 +58,11 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 		if (!userId) return;
 		dispatch(deleteTransaction({ userId, transactionId: transaction.id }));
 	};
+
+	// If loading, return skeleton component
+	if (isLoadingAny) {
+		return <TransactionSkeleton />;
+	}
 
 	return (
 		<li

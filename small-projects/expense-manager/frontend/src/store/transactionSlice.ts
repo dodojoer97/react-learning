@@ -64,7 +64,7 @@ export const getMappedTransactions = (
 };
 
 const initialState: TransactionState = {
-	transactions: [],
+	transactions: [defaultTransaction, defaultTransaction, defaultTransaction],
 	selectedTransaction: null,
 	draftTransaction: null,
 	loading: true,

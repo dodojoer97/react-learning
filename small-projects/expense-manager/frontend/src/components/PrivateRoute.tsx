@@ -7,17 +7,11 @@ import { initializeAuth } from "@/store/authSlice";
 const PrivateRoute: FC<PropsWithChildren> = ({ children }) => {
 	const dispatch = useDispatch<AppDispatch>();
 	const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-	const loading = useSelector((state: RootState) => state.auth.loading);
 
 	// Dispatch initializeAuth on component mount
 	useEffect(() => {
 		dispatch(initializeAuth());
 	}, [dispatch]);
-
-	// Show a loading screen while checking auth status
-	if (loading) {
-		return <div>Loading...</div>;
-	}
 
 	// Only render children if authenticated, otherwise redirect
 	return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;

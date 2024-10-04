@@ -43,7 +43,7 @@ const TransactionList: FC<TransactionListProps> = ({ title, limit, type, status 
 				await dispatch(fetchCategories(userId)); // Use userId when fetching categories
 			}
 
-			if (!transactions.length && userId) {
+			if (userId) {
 				await dispatch(fetchTransactions({ userId })); // Use userId when fetching transactions
 			}
 		};
@@ -66,9 +66,9 @@ const TransactionList: FC<TransactionListProps> = ({ title, limit, type, status 
 		<Card title={title}>
 			{!!displayedTransactions.length && (
 				<ul>
-					{displayedTransactions.map((transactionWithCategory) => (
+					{displayedTransactions.map((transactionWithCategory, index) => (
 						<TransactionComp
-							key={transactionWithCategory.transaction.id}
+							key={`${transactionWithCategory.transaction.id}- ${index}`}
 							transactionWithCategory={transactionWithCategory}
 						/>
 					))}

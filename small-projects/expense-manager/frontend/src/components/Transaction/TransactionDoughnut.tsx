@@ -16,6 +16,9 @@ import { ChartData } from "chart.js";
 import { TransactionWithCategory } from "@/mappers/TransactionCategoryAssigner";
 import Placeholder from "../UI/PlaceHolder";
 
+// Hooks
+import useLoading from "@/hooks/useLoading";
+
 /**
  * Function to generate random colors
  */
@@ -81,10 +84,8 @@ const TransactionDoughnut: FC = () => {
 	const transactions = useSelector((state: RootState) => state.transaction.transactions);
 	const categories = useSelector((state: RootState) => state.settings.categories);
 
-	const loadingTransactions = useSelector((state: RootState) => state.transaction.loading);
-	const loadingCategories = useSelector((state: RootState) => state.settings.loading);
-
-	const loadingAny: boolean = loadingCategories || loadingTransactions;
+	// Hooks
+	const loadingAny: boolean = useLoading();
 
 	// Memoized chart data based on transactions and categories
 	const chartData = useMemo(() => {

@@ -95,14 +95,14 @@ const TransactionDoughnut: FC = () => {
 	}, [transactions, categories]);
 
 	return (
-		<Card title="Expense structure">
+		<Card title="Expense structure" className="min-h-[450px]">
 			{loadingAny && (
 				<>
 					<div className="flex items-center flex-col justify-between">
 						<Placeholder shape="circle" size="xl" />
-						<div className="flex w-60 mt-3">
-							<Placeholder shape="pill" size="md" />
-							<Placeholder shape="pill" size="md" />
+						<div className="flex w-60 mt-3 justify-center gap-1">
+							<Placeholder shape="pill" additionalSizeClasses="w-20 h-8" />
+							<Placeholder shape="pill" additionalSizeClasses="w-20 h-8" />
 						</div>
 					</div>
 				</>

@@ -4,6 +4,7 @@ type PlaceholderProps = {
 	shape?: "circle" | "pill" | "square" | "rectangle";
 	size?: "sm" | "md" | "lg" | "xl";
 	color?: string;
+	additionalSizeClasses?: string;
 	className?: string;
 };
 
@@ -12,6 +13,7 @@ const Placeholder: FC<PlaceholderProps> = ({
 	size = "md",
 	color = "bg-gray-200",
 	className,
+	additionalSizeClasses,
 }) => {
 	const shapeClasses = {
 		circle: "rounded-full",
@@ -29,7 +31,9 @@ const Placeholder: FC<PlaceholderProps> = ({
 
 	return (
 		<div
-			className={`${color} ${shapeClasses[shape]} ${sizeClasses[size]} ${className} animate-pulse duration-500`}
+			className={`${className} ${additionalSizeClasses || sizeClasses[size]} ${color} ${
+				shapeClasses[shape]
+			} animate-pulse duration-500`}
 		/>
 	);
 };

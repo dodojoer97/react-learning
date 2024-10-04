@@ -46,8 +46,6 @@ export const getMappedTransactions = (
 	const mapper = new TransactionCategoryAssigner(categories);
 	let mappedTransactions = mapper.assignCategoriesToTransactions(transactions);
 
-	console.log("mappedTransactions: ", mappedTransactions);
-
 	if (type) {
 		mappedTransactions = mappedTransactions.filter(
 			({ transaction }) => transaction.type === type
@@ -161,10 +159,7 @@ export const addTransaction = createAsyncThunk<
 	{ rejectValue: string }
 >("transactions/addTransaction", async ({ transaction, userId }, { rejectWithValue }) => {
 	try {
-		console.log("Attempting to add transaction:", transaction);
-
 		await transactionService.addTransaction({ ...transaction, userId });
-		console.log("Transaction added successfully");
 	} catch (error: any) {
 		console.error("Error adding transaction:", error);
 

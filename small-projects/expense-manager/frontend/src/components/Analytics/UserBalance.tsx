@@ -12,14 +12,14 @@ import { getBalance } from "@/store/transactionSlice";
 const UserBalance: FC = () => {
 	const dispatch = useDispatch<AppDispatch>();
 	const balance = useSelector((state: RootState) => state.transaction.balance);
-	const selectedDates = useSelector((state: RootState) => state.transaction.selectedDates);
 	const userId = useSelector((state: RootState) => state.auth.user?.uid);
 	const currency = useSelector((state: RootState) => state.settings.currency); // Fetch currency from Redux
+	const transactions = useSelector((state: RootState) => state.transaction.transactions); // Fetch currency from Redux
 
 	useEffect(() => {
-		if (!userId) return;
-
-		dispatch(getBalance({ userId }));
+		if (userId) {
+			dispatch(getBalance({ userId }));
+		}
 	}, []);
 
 	return (

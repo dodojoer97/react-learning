@@ -11,13 +11,15 @@ class TransactionService {
 		userId: string,
 		startDate?: string,
 		endDate?: string,
-		completedOnly?: string
+		completedOnly?: string,
+		plannedOnly?: string
 	): Promise<Transaction[]> {
 		return TransactionRepository.getTransactionsByUser(
 			userId,
 			startDate,
 			endDate,
-			completedOnly
+			completedOnly,
+			plannedOnly
 		);
 	}
 	// Update a transaction for a specific user

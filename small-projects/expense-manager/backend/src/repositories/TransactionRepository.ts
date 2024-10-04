@@ -16,7 +16,8 @@ class TransactionRepository {
 		userId: string,
 		startDate?: string,
 		endDate?: string,
-		completedOnly?: string | boolean
+		completedOnly?: string | boolean,
+		plannedOnly?: string | boolean
 	): Promise<Transaction[]> {
 		let query = this.recordsCollection
 			.where("userId", "==", userId)
@@ -34,6 +35,10 @@ class TransactionRepository {
 
 		if (completedOnly) {
 			query = query.where("status", "==", "completed");
+		}
+
+		if (plannedOnly) {
+			query = query.where("status", "==", "planned");
 		}
 
 		const snapshot = await query.get();

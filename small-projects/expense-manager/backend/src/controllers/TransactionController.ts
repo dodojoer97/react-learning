@@ -38,13 +38,14 @@ class TransactionController {
 	async getTransactionsByUser(req: Request, res: Response): Promise<void> {
 		try {
 			const { userId } = req.params;
-			const { startDate, endDate, completedOnly } = req.query;
+			const { startDate, endDate, completedOnly, plannedOnly } = req.query;
 
 			const transactions = await TransactionService.fetchTransactionsByUser(
 				userId,
 				startDate as string,
 				endDate as string,
-				completedOnly as string
+				completedOnly as string,
+				plannedOnly as string
 			);
 			res.status(200).send(transactions);
 		} catch (error: any) {

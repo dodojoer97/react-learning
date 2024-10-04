@@ -48,7 +48,7 @@ const TransactionList: FC<TransactionListProps> = ({ title, limit, type, status 
 			}
 		};
 		handleFetch();
-	}, [dispatch, categories.length, userId]);
+	}, []);
 
 	// Memoized mapped transactions
 	const mappedTransactions = useMemo(

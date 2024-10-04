@@ -1,30 +1,31 @@
 import type { FC } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 // Redux
-import { useSelector, useDispatch } from "react-redux";
-import { fetchTransactions, getMappedTransactions } from "@/store/transactionSlice"; // Fetch transactions and mapped transactions
-import { fetchCategories } from "@/store/settingsSlice"; // Fetch categories
-import { RootState, AppDispatch } from "@/store/store"; // Store types
+import { useSelector } from "react-redux";
+import { getMappedTransactions } from "@/store/transactionSlice"; // Fetch transactions and mapped transactions
+import { RootState } from "@/store/store"; // Store types
 
 // Components
 import LineChart from "@/templates/mosaic/charts/LineChart03";
 import Card from "@/components/UI/Card"; // Import the new Card component
+import Loader from "@/components/UI/Loader";
 
 // Utility for chart configuration
 import { chartAreaGradient } from "@/templates/mosaic/charts/ChartjsConfig";
 import { tailwindConfig, hexToRGB } from "@/templates/mosaic/utils/Utils"; // Helper functions for Tailwind and color conversions
 import { TransactionWithCategory } from "@/mappers/TransactionCategoryAssigner";
-import AnalyticsCard01 from "@/templates/mosaic/partials/analytics/AnalyticsCard01";
 import moment from "moment";
+import useLoading from "@/hooks/useLoading";
 
 const TransactionLineChart: FC = () => {
 	// Redux hooks
-	const dispatch = useDispatch<AppDispatch>();
 	const transactions = useSelector((state: RootState) => state.transaction.transactions);
 	const selectedDates = useSelector((state: RootState) => state.transaction.selectedDates);
 	const categories = useSelector((state: RootState) => state.settings.categories);
-	const userId = useSelector((state: RootState) => state.auth.user?.uid); // Fetch the userId from the auth state
+
+	// computed
+	const isLoadingAny: boolean = useLoading();
 
 	// Memoized mapped transactions
 	const mappedTransactions = useMemo(
@@ -119,8 +120,11 @@ const TransactionLineChart: FC = () => {
 	);
 
 	return (
-		<Card title="Expense Overview">
-			{/* <AnalyticsCard01 /> */}
+		<Card title="Expense Overview" className="relative">
+			{isLoadingAny && (
+				<Loader className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]" />
+			)}
+
 			<LineChart data={chartConfig} width={800} height={300} />
 		</Card>
 	);

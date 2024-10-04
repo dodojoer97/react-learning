@@ -90,7 +90,12 @@ const TransactionDoughnut: FC = () => {
 	// Memoized chart data based on transactions and categories
 	const chartData = useMemo(() => {
 		if (!transactions.length || !categories.length) return null;
-		const transactionsWithCategory = getMappedTransactions(transactions, categories, "expense");
+		const transactionsWithCategory = getMappedTransactions(
+			transactions,
+			categories,
+			"expense",
+			"completed"
+		);
 		return mapTransactionsToChartData(transactionsWithCategory);
 	}, [transactions, categories]);
 

@@ -4,9 +4,13 @@ import { FC } from "react";
 // CSS
 import "./Loader.css";
 
-const Loader: FC = () => {
+interface Props {
+	className?: string;
+}
+
+const Loader: FC<Props> = ({ className }) => {
 	return (
-		<div className="flex justify-center">
+		<div className={`flex justify-center ${className}`}>
 			<div className="dot"></div>
 			<div className="dot"></div>
 			<div className="dot"></div>

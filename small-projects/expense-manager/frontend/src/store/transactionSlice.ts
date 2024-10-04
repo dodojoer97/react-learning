@@ -67,7 +67,7 @@ const initialState: TransactionState = {
 	transactions: [],
 	selectedTransaction: null,
 	draftTransaction: null,
-	loading: false,
+	loading: true,
 	error: null,
 	selectedDates: defaultDates,
 	balance: null,

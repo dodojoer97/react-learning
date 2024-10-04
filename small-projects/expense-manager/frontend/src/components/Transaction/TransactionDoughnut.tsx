@@ -14,6 +14,7 @@ import { ChartData } from "chart.js";
 
 // Mappers
 import { TransactionWithCategory } from "@/mappers/TransactionCategoryAssigner";
+import Placeholder from "../UI/PlaceHolder";
 
 /**
  * Function to generate random colors
@@ -80,6 +81,11 @@ const TransactionDoughnut: FC = () => {
 	const transactions = useSelector((state: RootState) => state.transaction.transactions);
 	const categories = useSelector((state: RootState) => state.settings.categories);
 
+	const loadingTransactions = useSelector((state: RootState) => state.transaction.loading);
+	const loadingCategories = useSelector((state: RootState) => state.settings.loading);
+
+	const loadingAny: boolean = loadingCategories || loadingTransactions;
+
 	// Memoized chart data based on transactions and categories
 	const chartData = useMemo(() => {
 		if (!transactions.length || !categories.length) return null;
@@ -89,7 +95,21 @@ const TransactionDoughnut: FC = () => {
 
 	return (
 		<Card title="Expense structure">
-			{!!chartData && <DoughnutChart data={chartData} width={389} height={260} />}
+			{loadingAny && (
+				<>
+					<div className="flex items-center flex-col justify-between">
+						<Placeholder shape="circle" size="xl" />
+						<div className="flex w-60 mt-3">
+							<Placeholder shape="pill" size="md" />
+							<Placeholder shape="pill" size="md" />
+						</div>
+					</div>
+				</>
+			)}
+
+			{!loadingAny && !!chartData && (
+				<DoughnutChart data={chartData} width={389} height={260} />
+			)}
 		</Card>
 	);
 };

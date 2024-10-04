@@ -22,7 +22,7 @@ const initialState: SettingsState = {
 	availableCategoryTypes: categoryTypes,
 	categories: [],
 	categoryMode: "page",
-	loading: false,
+	loading: true,
 	error: null, // Initialize error as null
 };
 

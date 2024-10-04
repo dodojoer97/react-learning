@@ -9,16 +9,22 @@ import { toggleOpen } from "@/store/openSlice"; // Open and close sliding panel
 import { RootState, AppDispatch } from "@/store/store"; // Store types
 
 // Components
-import Transaction from "@/components/Transaction/Transaction";
+import TransactionComp from "@/components/Transaction/Transaction";
 import SlidingPanel from "@/components/UI/SlidingPanel";
 import TransactionPanel from "@/components/Transaction/TransactionPanel";
 import Card from "@/components/UI/Card"; // Import the new Card component
 
+// Types
+import { CategoryType, Transaction } from "@common";
+
 interface TransactionListProps {
+	title: string;
 	limit?: number; // Optional prop to limit the number of transactions displayed
+	type?: CategoryType; // Optional prop to display a certain type of transactions
+	status?: Transaction["status"]; // Optional prop to display a certain status of transactions
 }
 
-const TransactionList: FC<TransactionListProps> = ({ limit }) => {
+const TransactionList: FC<TransactionListProps> = ({ title, limit, type, status }) => {
 	// Redux hooks
 	const dispatch = useDispatch<AppDispatch>();
 	const transactions = useSelector((state: RootState) => state.transaction.transactions);
@@ -32,17 +38,13 @@ const TransactionList: FC<TransactionListProps> = ({ limit }) => {
 
 	// Fetch categories and transactions when the component mounts
 	useEffect(() => {
-		const [startDate, endDate] = selectedDates || [];
-
 		const handleFetch = async () => {
 			if (!categories.length && userId) {
 				await dispatch(fetchCategories(userId)); // Use userId when fetching categories
 			}
 
 			if (!transactions.length && userId) {
-				await dispatch(
-					fetchTransactions({ userId, completedOnly: true, startDate, endDate })
-				); // Use userId when fetching transactions
+				await dispatch(fetchTransactions({ userId })); // Use userId when fetching transactions
 			}
 		};
 		handleFetch();
@@ -50,7 +52,7 @@ const TransactionList: FC<TransactionListProps> = ({ limit }) => {
 
 	// Memoized mapped transactions
 	const mappedTransactions = useMemo(
-		() => getMappedTransactions(transactions, categories),
+		() => getMappedTransactions(transactions, categories, type, status),
 		[transactions, categories]
 	);
 
@@ -61,11 +63,11 @@ const TransactionList: FC<TransactionListProps> = ({ limit }) => {
 	);
 
 	return (
-		<Card title="Latest Transactions">
+		<Card title={title}>
 			{!!displayedTransactions.length && (
 				<ul>
 					{displayedTransactions.map((transactionWithCategory) => (
-						<Transaction
+						<TransactionComp
 							key={transactionWithCategory.transaction.id}
 							transactionWithCategory={transactionWithCategory}
 						/>

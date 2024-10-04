@@ -146,6 +146,7 @@ class TransactionService extends BaseService implements ITransactionService {
 				categoryId: transaction.categoryId,
 				type: transaction.type,
 				description: transaction.description,
+				status: transaction.status,
 			};
 		});
 		return transactions;

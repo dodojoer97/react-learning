@@ -28,6 +28,41 @@ const defaultDates = [
 	moment(new Date()).format("YYYY-MM-DD"),
 ];
 
+// Default transaction template for initializing new transactions
+export const defaultTransaction: Partial<Transaction> = {
+	amount: 0,
+	date: new Date(moment(new Date()).format("YYYY-MM-DD")).toISOString(),
+	type: "expense",
+	status: "completed",
+};
+
+// Mapped Transactions function
+export const getMappedTransactions = (
+	transactions: Transaction[],
+	categories: Category[],
+	type?: CategoryType,
+	status?: Transaction["status"]
+): TransactionWithCategory[] => {
+	const mapper = new TransactionCategoryAssigner(categories);
+	let mappedTransactions = mapper.assignCategoriesToTransactions(transactions);
+
+	console.log("mappedTransactions: ", mappedTransactions);
+
+	if (type) {
+		mappedTransactions = mappedTransactions.filter(
+			({ transaction }) => transaction.type === type
+		);
+	}
+
+	if (status) {
+		mappedTransactions = mappedTransactions.filter(
+			({ transaction }) => transaction.status === status
+		);
+	}
+
+	return mappedTransactions;
+};
+
 const initialState: TransactionState = {
 	transactions: [],
 	selectedTransaction: null,
@@ -36,6 +71,28 @@ const initialState: TransactionState = {
 	error: null,
 	selectedDates: defaultDates,
 	balance: null,
+};
+
+/**
+ * Optimistically updates the balance based on the transaction type and amount.
+ * This function calculates the new balance for "income" or "expense" transactions.
+ *
+ * @param {number | null} balance - The current balance. If null, the balance will be treated as 0.
+ * @param {string} transactionType - The type of the transaction. It can be either "income" or "expense".
+ * @param {number} amount - The amount of the transaction to adjust the balance.
+ * @returns {number} - The updated balance after applying the transaction.
+ */
+const updateOptimisticBalance = (
+	balance: number | null,
+	transactionType: string,
+	amount: number
+): number => {
+	if (transactionType === "income") {
+		return (balance || 0) + amount;
+	} else if (transactionType === "expense") {
+		return (balance || 0) - amount;
+	}
+	return balance || 0;
 };
 
 // Initialize the TransactionService
@@ -243,7 +300,15 @@ const transactionSlice = createSlice({
 			.addCase(addTransaction.fulfilled, (state) => {
 				if (state.draftTransaction) {
 					state.transactions.push(state.draftTransaction); // Add the draft to transactions
+
+					// Edit the balance
+					state.balance = updateOptimisticBalance(
+						state.balance,
+						state.draftTransaction.type,
+						state.draftTransaction.amount
+					);
 				}
+
 				state.loading = false;
 				state.draftTransaction = null; // Clear the draft after saving
 				state.error = null;
@@ -261,10 +326,26 @@ const transactionSlice = createSlice({
 					const index = state.transactions.findIndex(
 						(transaction) => transaction.id === state.draftTransaction!.id
 					);
+
 					if (index !== -1) {
-						state.transactions[index] = state.draftTransaction; // Update the existing transaction
+						const existingTransaction = state.transactions[index];
+
+						// Calculate the difference between the old and new amounts
+						const amountDifference =
+							state.draftTransaction.amount - existingTransaction.amount;
+
+						// Optimistically update the balance based on the amount difference
+						state.balance = updateOptimisticBalance(
+							state.balance,
+							state.draftTransaction.type,
+							amountDifference
+						);
+
+						// Update the existing transaction with the draft
+						state.transactions[index] = state.draftTransaction;
 					}
 				}
+
 				state.loading = false;
 				state.draftTransaction = null; // Clear the draft after saving
 				state.error = null;
@@ -291,9 +372,26 @@ const transactionSlice = createSlice({
 			})
 			.addCase(deleteTransaction.fulfilled, (state, action) => {
 				const { transactionId } = action.meta.arg; // Get the transactionId from the fulfilled action meta
-				state.transactions = state.transactions.filter(
-					(transaction) => transaction.id !== transactionId
-				); // Remove the deleted transaction from the state
+
+				// Find the transaction to delete
+				const transactionToDelete = state.transactions.find(
+					(transaction) => transaction.id === transactionId
+				);
+
+				if (transactionToDelete) {
+					// Optimistically update the balance by subtracting the transaction amount
+					state.balance = updateOptimisticBalance(
+						state.balance,
+						transactionToDelete.type,
+						-transactionToDelete.amount
+					);
+
+					// Remove the deleted transaction from the state
+					state.transactions = state.transactions.filter(
+						(transaction) => transaction.id !== transactionId
+					);
+				}
+
 				state.loading = false;
 				state.draftTransaction = null; // Clear draft after delete
 				state.error = null;
@@ -316,30 +414,6 @@ const transactionSlice = createSlice({
 			});
 	},
 });
-
-// Mapped Transactions function
-export const getMappedTransactions = (
-	transactions: Transaction[],
-	categories: Category[],
-	type?: CategoryType
-): TransactionWithCategory[] => {
-	const mapper = new TransactionCategoryAssigner(categories);
-	let mappedTransactions = mapper.assignCategoriesToTransactions(transactions);
-	if (type) {
-		mappedTransactions = mappedTransactions.filter(
-			({ transaction }) => transaction.type === type
-		);
-	}
-	return mappedTransactions;
-};
-
-// Default transaction template for initializing new transactions
-export const defaultTransaction: Partial<Transaction> = {
-	amount: 0,
-	date: new Date(moment(new Date()).format("YYYY-MM-DD")).toISOString(),
-	type: "expense",
-	status: "completed",
-};
 
 // Export the actions and reducer
 export const { selectTransaction, updateDraftTransaction, clearError, setSelectedDates } =

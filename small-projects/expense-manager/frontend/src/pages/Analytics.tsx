@@ -12,9 +12,10 @@ import TransactionLineChart from "@/components/Transaction/TransactionLineChart"
 const Analytics: FC = () => {
 	return (
 		<Layout title="Analytics" rightComponent={<RightActions />}>
-			<UserBalance />
-			{/* <div className="grid grid-cols-12 gap-6">
-			</div> */}
+			<div className="grid grid-cols-12 gap-6">
+				<UserBalance />
+				<TransactionList status="planned" title="Upcoming planned payments" />
+			</div>
 		</Layout>
 	);
 };

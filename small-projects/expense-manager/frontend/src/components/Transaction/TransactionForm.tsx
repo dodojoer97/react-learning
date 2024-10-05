@@ -103,7 +103,7 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 		<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4" onSubmit={(e) => handleSave(e)}>
 			<DatePicker
 				mode="single"
-				defaultDate={draftTransaction.date}
+				defaultDate={new Date(draftTransaction.date)}
 				onChange={(selectedDates: Date[], dateStr: string) =>
 					dispatch(
 						updateDraftTransaction({

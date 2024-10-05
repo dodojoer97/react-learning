@@ -21,15 +21,11 @@ export interface RouteConfig {
 
 export const routeConfig: RouteConfig[] = [
 	{
-		title: "Home",
-		sidebarDisplay: true,
-		path: "/",
-		component: <Home />,
-		isProtected: false,
-	},
-	{
 		title: "Dashboard",
+		path: "/",
 		sidebarDisplay: true,
+		isProtected: true,
+		component: <Dashboard />,
 		children: [
 			{
 				title: "Main",

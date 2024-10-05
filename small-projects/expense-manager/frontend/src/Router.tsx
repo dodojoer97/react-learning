@@ -1,5 +1,5 @@
 // Imports as before
-import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
+import { createBrowserRouter, createRoutesFromElements, Route, Navigate } from "react-router-dom";
 import RouteWrapper from "./components/RouteWrapper";
 import PrivateRoute from "./components/PrivateRoute";
 import { routeConfig, RouteConfig } from "@/config/routes";
@@ -11,6 +11,7 @@ const routes: RouteConfig[] = routeConfig.flatMap((config: RouteConfig) => {
 const router = createBrowserRouter(
 	createRoutesFromElements(
 		<>
+			<Route path="/" element={<Navigate to="/dashboard" />} />
 			{routes.map(({ path, component: Component, isProtected }) => (
 				<Route
 					key={path}

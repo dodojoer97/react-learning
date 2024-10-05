@@ -86,7 +86,7 @@ const updateOptimisticBalance = (
 	transactionType: string,
 	amount: number
 ): number => {
-	if (status === "planned") return balance;
+	if (status === "planned") return balance as number;
 
 	if (transactionType === "income" && transactionType) {
 		return (balance || 0) + amount;

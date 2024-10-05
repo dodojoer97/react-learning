@@ -81,11 +81,14 @@ const initialState: TransactionState = {
  * @returns {number} - The updated balance after applying the transaction.
  */
 const updateOptimisticBalance = (
+	status: Transaction["status"],
 	balance: number | null,
 	transactionType: string,
 	amount: number
 ): number => {
-	if (transactionType === "income") {
+	if (status === "planned") return balance;
+
+	if (transactionType === "income" && transactionType) {
 		return (balance || 0) + amount;
 	} else if (transactionType === "expense") {
 		return (balance || 0) - amount;
@@ -295,9 +298,10 @@ const transactionSlice = createSlice({
 			.addCase(addTransaction.fulfilled, (state) => {
 				if (state.draftTransaction) {
 					state.transactions.push(state.draftTransaction); // Add the draft to transactions
-
+					console.log("state.draftTransaction: ", state.draftTransaction.status);
 					// Edit the balance
 					state.balance = updateOptimisticBalance(
+						state.draftTransaction.status,
 						state.balance,
 						state.draftTransaction.type,
 						state.draftTransaction.amount
@@ -331,6 +335,7 @@ const transactionSlice = createSlice({
 
 						// Optimistically update the balance based on the amount difference
 						state.balance = updateOptimisticBalance(
+							state.draftTransaction.status,
 							state.balance,
 							state.draftTransaction.type,
 							amountDifference
@@ -374,8 +379,10 @@ const transactionSlice = createSlice({
 				);
 
 				if (transactionToDelete) {
+					console.log("transactionToDelete.status: ", transactionToDelete.status);
 					// Optimistically update the balance by subtracting the transaction amount
 					state.balance = updateOptimisticBalance(
+						transactionToDelete.status,
 						state.balance,
 						transactionToDelete.type,
 						-transactionToDelete.amount

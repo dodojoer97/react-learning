@@ -17,7 +17,7 @@ import EditEventPage from "./pages/EditEventPage"
 import RootLayout from "./pages/Root"
 
 import EventsRootLayout from "./pages/EventsRoot"
-import ErrorPage from "./pages/ErrorPage"
+import ErrorPage from "./pages/Error"
 
 // 2. Add routing & route definitions for these five pages - DONE
 //    - / => HomePage

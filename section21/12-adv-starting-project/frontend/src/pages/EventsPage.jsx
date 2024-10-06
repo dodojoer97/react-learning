@@ -1,4 +1,4 @@
-import { json } from "react-router-dom"
+import { json, useLoaderData } from "react-router-dom"
 
 import EventList from "../components/EventsList"
 

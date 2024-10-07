@@ -295,6 +295,7 @@ const transactionSlice = createSlice({
 			state.draftTransaction = action.payload ? { ...action.payload } : null;
 		},
 		updateDraftTransaction: (state, action: PayloadAction<Partial<Transaction>>) => {
+			state.error = ""; // clear the error when something updates
 			if (!state.draftTransaction) {
 				state.draftTransaction = updateTransactionFields(
 					initialState.draftTransaction!,

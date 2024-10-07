@@ -6,6 +6,7 @@ import {
 	ISignupTranslations,
 	IHeaderTranslations,
 	ISettingsTranslations,
+	IErrorMessages,
 } from "@/locales/translation.d";
 
 // Translations for the home page
@@ -52,4 +53,13 @@ export const headerTranslations: IHeaderTranslations = {
 export const settingsTranslations: ISettingsTranslations = {
 	settingsTitle: "Settings",
 	categoriesTitle: "Categories",
+};
+
+export const errorTranslations: IErrorMessages = {
+	invalidAmount: "Amount must be greater than zero.",
+	missingDate: "Transaction date is required.",
+	missingCategory: "Transaction category is required.",
+	noDraftOrUser: "No draft transaction or user ID available.",
+	errorProcessingTransaction: "Error processing the transaction.",
+	failedToProcessTransaction: "Failed to process the transaction.",
 };

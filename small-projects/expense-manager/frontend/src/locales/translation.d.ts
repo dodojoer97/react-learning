@@ -36,6 +36,15 @@ export interface ISettingsTranslations {
 	categoriesTitle: string;
 }
 
+export interface IErrorMessages {
+	invalidAmount: string;
+	missingDate: string;
+	missingCategory: string;
+	noDraftOrUser: string;
+	errorProcessingTransaction: string;
+	failedToProcessTransaction: string;
+}
+
 export interface ILocaleTranslations {
 	[locale: string]: {
 		home: IHomeTranslation;
@@ -44,5 +53,6 @@ export interface ILocaleTranslations {
 		forms: IFormTranslations;
 		header: IHeaderTranslations;
 		settings: ISettingsTranslations;
+		errors: IErrorMessages;
 	};
 }

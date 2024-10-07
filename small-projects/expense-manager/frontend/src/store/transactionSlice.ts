@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import TransactionService from "@/services/TransactionService";
 import { Transaction, CategoryType, OperationStatus, Category } from "@common";
 import { RootState } from "./store";
+import i18n from "@/i18n"; // Import the i18n instance
 
 import {
 	TransactionWithCategory,
@@ -11,6 +12,9 @@ import {
 // Utils
 import { getFirstDayOfMonth } from "@/utils/utils";
 import moment from "moment";
+import { IErrorMessages } from "@/locales/translation";
+import { errorTranslations } from "@/locales/en/translations";
+import { useTranslation } from "react-i18next";
 
 // Define the state interface
 export interface TransactionState {
@@ -194,6 +198,35 @@ export const deleteTransaction = createAsyncThunk<
 	}
 });
 
+/**
+ * Validates a draft transaction and returns an error message if validation fails.
+ * If validation passes, it returns null.
+ *
+ * @param draftTransaction - The transaction object to validate.
+ * @returns The validation error message or null if valid.
+ */
+const validateTransaction = (draftTransaction: Partial<Transaction>): string | null => {
+	const { amount, date, categoryId } = draftTransaction;
+
+	// Validate amount
+	if (amount === undefined || amount <= 0) {
+		return i18n.t("invalidAmount", { ns: "errors" }); // Use i18n with namespace option
+	}
+
+	// Validate date
+	if (!date) {
+		return i18n.t("missingDate", { ns: "errors" }); // Use i18n with namespace option
+	}
+
+	// Validate categoryId
+	if (!categoryId) {
+		return i18n.t("missingCategory", { ns: "errors" }); // Use i18n with namespace option
+	}
+
+	// If all checks pass, return null
+	return null;
+};
+
 export const saveDraftTransaction = createAsyncThunk<
 	void,
 	void,
@@ -206,25 +239,33 @@ export const saveDraftTransaction = createAsyncThunk<
 		return rejectWithValue("No draft transaction or user ID available");
 	}
 
+	const validationError = validateTransaction(draftTransaction);
+
+	console.log("validationError:", validationError);
+	if (validationError) {
+		return rejectWithValue(validationError); // Reject with the validation error
+	}
+
 	try {
 		// Determine whether to add a new transaction or edit an existing one
 		const actionType = draftTransaction.id ? editTransaction : addTransaction;
 
-		// Dispatch the appropriate action
-		const resultAction = await dispatch(
-			actionType({
-				transaction: draftTransaction,
-				userId: user.uid,
-			})
-		);
+		// // Dispatch the appropriate action
+		// const resultAction = await dispatch(
+		// 	actionType({
+		// 		transaction: draftTransaction,
+		// 		userId: user.uid,
+		// 	})
+		// );
 
-		// Check if the action was not fulfilled and throw an error to handle it in the rejected block
-		if (resultAction.type.endsWith("rejected")) {
-			throw new Error("Failed to process transaction");
-		}
+		// // Check if the action was not fulfilled and throw an error to handle it in the rejected block
+		// if (resultAction.type.endsWith("rejected")) {
+		// 	throw new Error("Failed to process transaction");
+		// }
 	} catch (error: any) {
+		console.log("error.message: ", error.message);
 		// Use a generic error message to simplify error handling
-		return rejectWithValue("Error processing transaction: " + error.message);
+		return rejectWithValue(error.message || "processing transaction");
 	}
 });
 
@@ -364,6 +405,7 @@ const transactionSlice = createSlice({
 				state.error = null;
 			})
 			.addCase(saveDraftTransaction.rejected, (state, action) => {
+				console.log("action: ", action.payload);
 				state.loading = false;
 				state.error = action.payload || "Failed to save draft transaction";
 			})

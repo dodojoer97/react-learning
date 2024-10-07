@@ -1,26 +1,18 @@
-// Challenge / Exercise
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { RouterProvider, createBrowserRouter } from "react-router-dom"
 
-// 1. Add five new (dummy) page components (content can be simple <h1> elements) - DONE
-//    - HomePage
-//    - EventsPage
-//    - EventDetailPage
-//    - NewEventPage
-//    - EditEventPage
-import HomePage from "./pages/HomePage"
-import EventsPage, { loader as eventLoader } from "./pages/EventsPage"
+import EditEventPage from "./pages/EditEventPage"
+import ErrorPage from "./pages/Error"
 import EventDetailPage, {
 	loader as eventDetailLoader,
 	action as deleteEventAction,
 } from "./pages/EventDetailPage"
-import NewEventPage from "./pages/NewEventPage"
-import EditEventPage from "./pages/EditEventPage"
-import RootLayout from "./pages/Root"
-
+import EventsPage, { loader as eventsLoader } from "./pages/EventsPage"
 import EventsRootLayout from "./pages/EventsRoot"
-import ErrorPage from "./pages/Error"
-
+import HomePage from "./pages/HomePage"
+import NewEventPage from "./pages/NewEventPage"
+import RootLayout from "./pages/Root"
 import { action as manipulateEventAction } from "./components/EventForm"
+import NewsletterPage, { action as newsletterAction } from "./pages/Newsletter"
 
 const router = createBrowserRouter([
 	{
@@ -36,7 +28,7 @@ const router = createBrowserRouter([
 					{
 						index: true,
 						element: <EventsPage />,
-						loader: eventLoader,
+						loader: eventsLoader,
 					},
 					{
 						path: ":eventId",
@@ -48,7 +40,6 @@ const router = createBrowserRouter([
 								element: <EventDetailPage />,
 								action: deleteEventAction,
 							},
-
 							{
 								path: "edit",
 								element: <EditEventPage />,
@@ -59,10 +50,14 @@ const router = createBrowserRouter([
 					{
 						path: "new",
 						element: <NewEventPage />,
-						action: newEventAction,
 						action: manipulateEventAction,
 					},
 				],
+			},
+			{
+				path: "newsletter",
+				element: <NewsletterPage />,
+				action: newsletterAction,
 			},
 		],
 	},

@@ -13,6 +13,7 @@ import {
 	formsTranslations,
 	headerTranslations,
 	settingsTranslations,
+	errorTranslations,
 } from "./locales/en/translations";
 
 const resources: ILocaleTranslations = {
@@ -23,6 +24,7 @@ const resources: ILocaleTranslations = {
 		forms: formsTranslations,
 		header: headerTranslations,
 		settings: settingsTranslations,
+		errors: errorTranslations,
 	},
 };
 
@@ -31,7 +33,7 @@ i18n.use(initReactI18next) // passes i18n instance to react-i18next
 		resources,
 		lng: "en", // language to use
 		fallbackLng: "en", // language to use if translations in user language are not available
-		ns: ["home", "login", "signup", "forms"], // available namespaces
+		ns: ["home", "login", "signup", "forms", "errors"], // available namespaces
 		interpolation: {
 			escapeValue: false, // react already safes from xss
 		},

@@ -27,7 +27,8 @@ export async function loadeEvents() {
 
 		return json({ message: "Could not fetch events" }, { status: 500 })
 	} else {
-		return response
+		const resData = response.json()
+		return resData.events
 	}
 }
 

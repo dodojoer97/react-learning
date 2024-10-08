@@ -63,8 +63,8 @@ export async function loadeEvents() {
 export async function loader({ request, params }) {
 	const id = params.eventId
 	return defer({
-		event: loadEvent(id),
-		events: loadeEvents(),
+		event: await loadEvent(id), // will be loaded before the page will loaded because of await
+		events: loadeEvents(), // will be loaded before the page is loaded
 	})
 }
 

@@ -4,7 +4,7 @@ import classes from "./NewsletterSignup.module.css"
 import { useEffect } from "react"
 
 function NewsletterSignup() {
-	const fetcher = useFetcher()
+	const fetcher = useFetcher() // use fercher should be used when we want to submit a form without navigating
 	const { data, state } = fetcher
 
 	useEffect(() => {

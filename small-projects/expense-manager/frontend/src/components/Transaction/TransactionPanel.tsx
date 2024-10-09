@@ -19,6 +19,8 @@ import SlidingPanel from "@/components/UI/SlidingPanel";
 import Button from "@/components/UI/Button";
 import InputError from "@/components/UI/InputError";
 import CategoryList from "@/components/Category/CategoryList";
+import Toast from "../UI/Toast";
+import { clearError } from "@/store/authSlice";
 
 interface IProps {
 	onSave(): void;
@@ -27,9 +29,13 @@ interface IProps {
 const TransactionPanel: FC<IProps> = ({ onSave }) => {
 	// Redux
 	const dispatch = useDispatch<AppDispatch>();
-	const { availableCategoryTypes } = useSelector((state: RootState) => state.settings);
-	const { selectedTransaction, draftTransaction, error } = useSelector(
-		(state: RootState) => state.transaction
+	const { availableCategoryTypes, selectedTransaction, draftTransaction, error } = useSelector(
+		(state: RootState) => ({
+			availableCategoryTypes: state.settings.availableCategoryTypes,
+			selectedTransaction: state.transaction.selectedTransaction,
+			draftTransaction: state.transaction.draftTransaction,
+			error: state.transaction.error,
+		})
 	);
 	const { openSet } = useSelector((state: RootState) => state.open);
 
@@ -37,6 +43,9 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 	const [selectedType, setSelectedType] = useState<CategoryType>(
 		selectedTransaction?.type || "expense"
 	);
+
+	// Computed
+	const isErrorToastOpen = !!error;
 
 	// Methods
 	const handleTabClick = useCallback(
@@ -79,14 +88,21 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 		}
 	}, [dispatch, onSave]);
 
+	const handleClose = (): void => {
+		console.log("handleClose");
+		dispatch(clearError());
+	};
+
 	useEffect(() => {
 		// Change the display mode for the category
 		dispatch(setCategoryMode("panel"));
 	}, [dispatch]);
 
+	console.log("error: ", error);
+
 	return (
 		<>
-			<section className="flex flex-col gap-0 h-[100%]">
+			<section className="flex flex-col gap-0 h-[100%] relative">
 				<TypeTabs
 					items={availableCategoryTypes}
 					activeTab={selectedType}
@@ -109,8 +125,6 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 					</div>
 				</Calculator>
 
-				{error && <InputError message={error} className="text-red-600" />}
-
 				<Button
 					className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white"
 					onClick={handleSave}
@@ -132,6 +146,10 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 			>
 				<CategoryList onSelect={() => dispatch(toggleOpen("categorySelector"))} />
 			</SlidingPanel>
+			<p>IS OPEN {isErrorToastOpen.toString()}</p>
+			<Toast isOpen={isErrorToastOpen} type="error" onClose={handleClose}>
+				<p>{error}</p>
+			</Toast>
 		</>
 	);
 };

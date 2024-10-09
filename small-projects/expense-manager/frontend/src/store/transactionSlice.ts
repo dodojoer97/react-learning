@@ -315,6 +315,7 @@ const transactionSlice = createSlice({
 			state.selectedDates = null; // Clear selected dates
 		},
 		clearError: (state) => {
+			console.log("state: ", state);
 			state.error = null;
 		},
 	},

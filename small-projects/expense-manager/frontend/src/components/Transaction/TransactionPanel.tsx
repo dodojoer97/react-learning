@@ -20,7 +20,7 @@ import Button from "@/components/UI/Button";
 import InputError from "@/components/UI/InputError";
 import CategoryList from "@/components/Category/CategoryList";
 import Toast from "../UI/Toast";
-import { clearError } from "@/store/authSlice";
+import { clearError } from "@/store/transactionSlice";
 
 interface IProps {
 	onSave(): void;
@@ -89,7 +89,6 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 	}, [dispatch, onSave]);
 
 	const handleClose = (): void => {
-		console.log("handleClose");
 		dispatch(clearError());
 	};
 
@@ -97,8 +96,6 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 		// Change the display mode for the category
 		dispatch(setCategoryMode("panel"));
 	}, [dispatch]);
-
-	console.log("error: ", error);
 
 	return (
 		<>
@@ -146,7 +143,6 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 			>
 				<CategoryList onSelect={() => dispatch(toggleOpen("categorySelector"))} />
 			</SlidingPanel>
-			<p>IS OPEN {isErrorToastOpen.toString()}</p>
 			<Toast isOpen={isErrorToastOpen} type="error" onClose={handleClose}>
 				<p>{error}</p>
 			</Toast>

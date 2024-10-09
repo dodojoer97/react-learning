@@ -112,33 +112,28 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 					</h2>
 					<div className="space-y-6">
 						<div>
-							<div>
-								<label className="block text-sm font-medium mb-1" htmlFor="card-nr">
-									Transaction Date
-								</label>
-								<DatePicker
-									mode="single"
-									defaultDate={new Date(draftTransaction.date)}
-									onChange={(selectedDates: Date[], dateStr: string) =>
-										dispatch(
-											updateDraftTransaction({
-												date: moment(selectedDates[0]).format("YYYY-MM-DD"),
-											})
-										)
-									}
-								/>
-							</div>
+							<label
+								className="block text-sm font-medium mb-1"
+								htmlFor="transaction-date"
+							>
+								Transaction Date
+							</label>
+							<DatePicker
+								mode="single"
+								defaultDate={new Date(draftTransaction.date)}
+								onChange={(selectedDates: Date[], dateStr: string) =>
+									dispatch(
+										updateDraftTransaction({
+											date: moment(selectedDates[0]).format("YYYY-MM-DD"),
+										})
+									)
+								}
+							/>
 						</div>
 
 						{isPlanned && (
 							<div className="space-y-6">
 								<div>
-									<label
-										className="block text-sm font-medium mb-1"
-										htmlFor="card-nr"
-									>
-										Recurring type
-									</label>
 									<Dropdown
 										id="recurring"
 										label="Recurring type"
@@ -150,24 +145,34 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 								</div>
 							</div>
 						)}
+						{showRecurringFields && (
+							<>
+								<div>
+									<Dropdown
+										id="frequency"
+										label="Frequency"
+										items={frequencyItems as string[]}
+										onSelect={(item: string) =>
+											handleDropdownSelect(item, "frequency")
+										}
+									/>
+								</div>
+								<div>
+									<label
+										className="block text-sm font-medium mb-1"
+										htmlFor="recursion-date"
+									>
+										Recursion Date
+									</label>
+									<DatePicker
+										mode="single"
+										defaultDate={forever}
+										onChange={handleEndDateChange}
+									/>
+								</div>
+							</>
+						)}
 					</div>
-
-					{showRecurringFields && (
-						<div className="space-y-6">
-							<Dropdown
-								id="frequency"
-								label="Frequency"
-								items={frequencyItems as string[]}
-								onSelect={(item: string) => handleDropdownSelect(item, "frequency")}
-							/>
-							<label htmlFor="recurringDate">End Date</label>
-							<DatePicker
-								mode="single"
-								defaultDate={forever}
-								onChange={handleEndDateChange}
-							/>
-						</div>
-					)}
 				</div>
 			</div>
 

@@ -5,6 +5,7 @@ import type { FC } from "react";
 // FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import Transition from "@/templates/mosaic/utils/Transition";
 
 interface IDropdownProps {
 	items: string[];
@@ -16,14 +17,13 @@ interface IDropdownProps {
 const Dropdown: FC<IDropdownProps> = ({ items, onSelect, id, label }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedItem, setSelectedItem] = useState(items[0]);
+
+	const trigger = useRef<HTMLButtonElement>(null);
 	const dropdownRef = useRef<HTMLDivElement>(null); // Ref for the dropdown container
 
-	const handleSelect = (
-		item: string,
-		event: React.MouseEvent<HTMLDivElement, MouseEvent>
-	): void => {
+	const handleSelect = (event: React.MouseEvent<HTMLElement, MouseEvent>, item: string): void => {
 		event.stopPropagation(); // Stop event from bubbling to parent
-		onSelect(item);
+		// onSelect(item);
 		setSelectedItem(item);
 		setIsOpen(false); // Close dropdown
 	};
@@ -36,45 +36,83 @@ const Dropdown: FC<IDropdownProps> = ({ items, onSelect, id, label }) => {
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
 			if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-				setIsOpen(false);
+				// setIsOpen(false);
 			}
 		};
 
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
+		// document.addEventListener("mousedown", handleClickOutside);
+		// return () => {
+		// 	document.removeEventListener("mousedown", handleClickOutside);
+		// };
 	}, []); // Empty dependency array ensures this only runs on mount and unmount
 
 	return (
-		<>
-			<label htmlFor={id}>{label}</label>
-			<div
-				ref={dropdownRef}
-				className="relative cursor-pointer bg-white text-gray-800"
-				onClick={handleToggle}
+		<div className="relative inline-flex w-full">
+			{/* <label htmlFor={id}>{label}</label> */}
+			<button
+				// ref={trigger}
+				className="btn w-full justify-between min-w-44 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100"
+				aria-label="Select date range"
+				aria-haspopup="true"
+				// onClick={handleToggle}
+				// aria-expanded={isOpen}
 			>
-				<div className="p-4 flex justify-between items-center">
+				<span className="flex items-center">
 					<span>{selectedItem}</span>
-					<FontAwesomeIcon icon={isOpen ? faChevronUp : faChevronDown} />
-				</div>
-				<div
-					className={`absolute top-full left-0 z-10 w-full shadow-md max-h-60 overflow-auto bg-white border-t-2 ${
-						isOpen ? "block" : "hidden"
-					}`}
+				</span>
+				<svg
+					className="shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500"
+					width="11"
+					height="7"
+					viewBox="0 0 11 7"
 				>
-					{items.map((item, index) => (
-						<div
-							key={`${item}-${index}`}
-							onClick={(event) => handleSelect(item, event)}
-							className="text-sm py-2 px-4 hover:bg-gray-100 cursor-pointer"
-						>
-							{item}
-						</div>
-					))}
+					<path d="M5.4 6.8L0 1.4 1.4 0l4 4 4-4 1.4 1.4z" />
+				</svg>
+			</button>
+			<Transition
+				show={isOpen}
+				tag="div"
+				className="z-10 absolute top-full left-0 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 py-1.5 rounded-lg shadow-lg overflow-hidden mt-1"
+				enter="transition ease-out duration-100 transform"
+				enterStart="opacity-0 -translate-y-2"
+				enterEnd="opacity-100 translate-y-0"
+				leave="transition ease-out duration-100"
+				leaveStart="opacity-100"
+				leaveEnd="opacity-0"
+			>
+				<div
+					ref={dropdownRef}
+					className="font-medium text-sm text-gray-600 dark:text-gray-300 divide-y divide-gray-200 dark:divide-gray-700/60"
+					// onFocus={() => setIsOpen(true)}
+					// onBlur={() => setIsOpen(false)}
+				>
+					{items.map((item: string, index: number) => {
+						return (
+							<button
+								key={`${item}-${index}`}
+								tabIndex={0}
+								className={`flex items-center justify-between w-full hover:bg-gray-50 dark:hover:bg-gray-700/20 py-2 px-3 cursor-pointer ${
+									item === selectedItem && "text-violet-500"
+								}`}
+								// onClick={(e) => handleSelect(e, item)}
+							>
+								<span>{item}</span>
+								<svg
+									className={`shrink-0 mr-2 fill-current text-violet-500 ${
+										item !== selectedItem && "invisible"
+									}`}
+									width="12"
+									height="9"
+									viewBox="0 0 12 9"
+								>
+									<path d="M10.28.28L3.989 6.575 1.695 4.28A1 1 0 00.28 5.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28.28z" />
+								</svg>
+							</button>
+						);
+					})}
 				</div>
-			</div>
-		</>
+			</Transition>
+		</div>
 	);
 };
 

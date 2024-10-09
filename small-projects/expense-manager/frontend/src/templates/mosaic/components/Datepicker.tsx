@@ -4,6 +4,9 @@ import { BaseOptions } from "flatpickr/dist/types/options";
 
 import { getFirstDayOfMonth } from "@/utils/utils";
 
+// Custom datepicker css
+import "./Datepicker.css";
+
 interface DatepickerProps {
 	align?: string;
 	onChange?: (selectedDates: Date[], dateStr: string) => void;
@@ -44,8 +47,9 @@ const Datepicker: React.FC<DatepickerProps> = ({
 	return (
 		<div className="relative">
 			<Flatpickr
-				className="form-input pl-9 dark:bg-gray-800 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 font-medium w-[15.5rem]"
+				className="form-input pl-9 w-full dark:bg-gray-800 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 font-medium"
 				options={options}
+				width={2000}
 			/>
 			<div className="absolute inset-0 right-auto flex items-center pointer-events-none">
 				<svg

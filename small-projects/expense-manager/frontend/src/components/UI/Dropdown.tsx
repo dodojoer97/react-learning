@@ -23,7 +23,7 @@ const Dropdown: FC<IDropdownProps> = ({ items, onSelect, id, label }) => {
 
 	const handleSelect = (event: React.MouseEvent<HTMLElement, MouseEvent>, item: string): void => {
 		event.stopPropagation(); // Stop event from bubbling to parent
-		// onSelect(item);
+		onSelect(item);
 		setSelectedItem(item);
 		setIsOpen(false); // Close dropdown
 	};
@@ -36,26 +36,26 @@ const Dropdown: FC<IDropdownProps> = ({ items, onSelect, id, label }) => {
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
 			if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-				// setIsOpen(false);
+				setIsOpen(false);
 			}
 		};
 
-		// document.addEventListener("mousedown", handleClickOutside);
-		// return () => {
-		// 	document.removeEventListener("mousedown", handleClickOutside);
-		// };
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
 	}, []); // Empty dependency array ensures this only runs on mount and unmount
 
 	return (
 		<div className="relative inline-flex w-full">
-			{/* <label htmlFor={id}>{label}</label> */}
 			<button
-				// ref={trigger}
+				ref={trigger}
 				className="btn w-full justify-between min-w-44 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100"
 				aria-label="Select date range"
 				aria-haspopup="true"
-				// onClick={handleToggle}
-				// aria-expanded={isOpen}
+				onClick={handleToggle}
+				aria-expanded={isOpen}
+				type="button"
 			>
 				<span className="flex items-center">
 					<span>{selectedItem}</span>
@@ -83,8 +83,8 @@ const Dropdown: FC<IDropdownProps> = ({ items, onSelect, id, label }) => {
 				<div
 					ref={dropdownRef}
 					className="font-medium text-sm text-gray-600 dark:text-gray-300 divide-y divide-gray-200 dark:divide-gray-700/60"
-					// onFocus={() => setIsOpen(true)}
-					// onBlur={() => setIsOpen(false)}
+					onFocus={() => setIsOpen(true)}
+					onBlur={() => setIsOpen(false)}
 				>
 					{items.map((item: string, index: number) => {
 						return (
@@ -94,7 +94,7 @@ const Dropdown: FC<IDropdownProps> = ({ items, onSelect, id, label }) => {
 								className={`flex items-center justify-between w-full hover:bg-gray-50 dark:hover:bg-gray-700/20 py-2 px-3 cursor-pointer ${
 									item === selectedItem && "text-violet-500"
 								}`}
-								// onClick={(e) => handleSelect(e, item)}
+								onClick={(e) => handleSelect(e, item)}
 							>
 								<span>{item}</span>
 								<svg

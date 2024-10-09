@@ -54,6 +54,7 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 	// Redux hooks
 	const dispatch = useDispatch<AppDispatch>();
 	const draftTransaction = useSelector((state: RootState) => state.transaction.draftTransaction);
+	const { openSet } = useSelector((state: RootState) => state.open);
 
 	if (!draftTransaction) return <></>;
 
@@ -142,9 +143,9 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 										id="recurring"
 										label="Recurring type"
 										items={recurringDropdownItems}
-										// onSelect={(item: string) =>
-										// 	handleDropdownSelect(item, "recurringType")
-										// }
+										onSelect={(item: string) =>
+											handleDropdownSelect(item, "recurringType")
+										}
 									/>
 								</div>
 							</div>

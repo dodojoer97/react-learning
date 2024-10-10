@@ -41,5 +41,8 @@ export async function action({request, }) {
   }
 
   // Handle token
+  const resData = await response.json()
+  const token = resData.token
 
+  localStorage.setItem("token", token)
 }

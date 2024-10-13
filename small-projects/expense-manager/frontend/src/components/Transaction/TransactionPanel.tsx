@@ -130,7 +130,7 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 				</Button>
 			</section>
 			<SlidingPanel
-				isOpen={true} // Use openSet from Redux to check if the panel is open
+				isOpen={openSet.includes("transactionForm")} // Use openSet from Redux to check if the panel is open
 				onClose={() => dispatch(toggleOpen("transactionForm"))}
 				slideDirection="from-right"
 			>

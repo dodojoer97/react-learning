@@ -99,6 +99,7 @@ const Dropdown: FC<IDropdownProps> = ({ items, onSelect, id, label }) => {
 										item === selectedItem && "text-violet-500"
 									}`}
 									onClick={(e) => handleSelect(e, item)}
+									type="button"
 								>
 									<span>{item}</span>
 									<svg

@@ -250,18 +250,18 @@ export const saveDraftTransaction = createAsyncThunk<
 		// Determine whether to add a new transaction or edit an existing one
 		const actionType = draftTransaction.id ? editTransaction : addTransaction;
 
-		// // Dispatch the appropriate action
-		// const resultAction = await dispatch(
-		// 	actionType({
-		// 		transaction: draftTransaction,
-		// 		userId: user.uid,
-		// 	})
-		// );
+		// Dispatch the appropriate action
+		const resultAction = await dispatch(
+			actionType({
+				transaction: draftTransaction,
+				userId: user.uid,
+			})
+		);
 
-		// // Check if the action was not fulfilled and throw an error to handle it in the rejected block
-		// if (resultAction.type.endsWith("rejected")) {
-		// 	throw new Error("Failed to process transaction");
-		// }
+		// Check if the action was not fulfilled and throw an error to handle it in the rejected block
+		if (resultAction.type.endsWith("rejected")) {
+			throw new Error("Failed to process transaction");
+		}
 	} catch (error: any) {
 		console.log("error.message: ", error.message);
 		// Use a generic error message to simplify error handling

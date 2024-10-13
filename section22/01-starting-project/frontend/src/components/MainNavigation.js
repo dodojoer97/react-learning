@@ -6,8 +6,6 @@ import NewsletterSignup from './NewsletterSignup';
 function MainNavigation() {
   const token = useRouteLoaderData("id")
 
-  
-
   return (
     <header className={classes.header}>
       <nav>

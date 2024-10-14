@@ -1,7 +1,4 @@
-// Redux
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-
-// Services
 import TransactionService from "@/services/TransactionService";
 
 // Store
@@ -22,9 +19,6 @@ import {
 // Utils
 import { getFirstDayOfMonth } from "@/utils/utils";
 import moment from "moment";
-
-// UUID
-import { v4 } from "uuid";
 
 // Define the state interface
 export interface TransactionState {
@@ -176,13 +170,7 @@ export const addTransaction = createAsyncThunk<
 	{ rejectValue: string }
 >("transactions/addTransaction", async ({ transaction, userId }, { rejectWithValue }) => {
 	try {
-		const newTransaction: Transaction = {
-			...transaction,
-			id: v4(),
-			userId,
-		};
-
-		await transactionService.addTransaction(newTransaction);
+		await transactionService.addTransaction({ ...transaction, userId });
 	} catch (error: any) {
 		console.error("Error adding transaction:", error);
 

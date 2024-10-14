@@ -100,7 +100,7 @@ const Login: FC = () => {
 			</div>
 
 			<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4" onSubmit={handleSubmit}>
-				<div>
+				<div className="space-y-4">
 					<Input
 						id="email"
 						type="email"
@@ -117,9 +117,7 @@ const Login: FC = () => {
 						inputIcon={emailIcon}
 					></Input>
 					{emailField.hasError && <InputError message={t("forms:noEmailMatching")} />}
-				</div>
 
-				<div>
 					<Input
 						id="password"
 						type={passwordInputType}
@@ -141,9 +139,9 @@ const Login: FC = () => {
 					{password1Field.hasError && (
 						<InputError message={t("forms:notPasswordLength")} />
 					)}
-				</div>
 
-				{error && <InputError message={error} className="text-red-600" />}
+					{error && <InputError message={error} className="text-red-600" />}
+				</div>
 
 				<div className="flex items-center justify-between">
 					<p className="text-sm text-gray-500">

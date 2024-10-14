@@ -1,9 +1,19 @@
+// Redux
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import TransactionService from "@/services/TransactionService";
-import { Transaction, CategoryType, OperationStatus, Category } from "@common";
-import { RootState } from "./store";
-import i18n from "@/i18n"; // Import the i18n instance
 
+// Services
+import TransactionService from "@/services/TransactionService";
+
+// Store
+import { RootState } from "./store";
+
+// Models
+import { Transaction, CategoryType, OperationStatus, Category } from "@common";
+
+// Translations
+import i18n from "@/i18n";
+
+// Mappers
 import {
 	TransactionWithCategory,
 	TransactionCategoryAssigner,
@@ -12,9 +22,9 @@ import {
 // Utils
 import { getFirstDayOfMonth } from "@/utils/utils";
 import moment from "moment";
-import { IErrorMessages } from "@/locales/translation";
-import { errorTranslations } from "@/locales/en/translations";
-import { useTranslation } from "react-i18next";
+
+// UUID
+import { v4 } from "uuid";
 
 // Define the state interface
 export interface TransactionState {
@@ -66,7 +76,7 @@ export const getMappedTransactions = (
 };
 
 const initialState: TransactionState = {
-	transactions: [defaultTransaction, defaultTransaction, defaultTransaction],
+	transactions: [],
 	selectedTransaction: null,
 	draftTransaction: null,
 	loading: true,
@@ -166,7 +176,13 @@ export const addTransaction = createAsyncThunk<
 	{ rejectValue: string }
 >("transactions/addTransaction", async ({ transaction, userId }, { rejectWithValue }) => {
 	try {
-		await transactionService.addTransaction({ ...transaction, userId });
+		const newTransaction: Transaction = {
+			...transaction,
+			id: v4(),
+			userId,
+		};
+
+		await transactionService.addTransaction(newTransaction);
 	} catch (error: any) {
 		console.error("Error adding transaction:", error);
 

@@ -56,6 +56,7 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 	const handeDelete = (e: React.MouseEvent<HTMLDivElement>): void => {
 		e.stopPropagation();
 		if (!userId) return;
+		console.log("transaction: ", transaction);
 		dispatch(deleteTransaction({ userId, transactionId: transaction.id }));
 	};
 

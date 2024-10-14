@@ -16,7 +16,7 @@ class TransactionController {
 			const { transaction } = data;
 
 			const transactionModel = new Transaction({
-				id: v4(), // Generate a new unique ID
+				id: transaction.id || v4(), // Generate a new unique ID
 				userId: transaction.userId,
 				amount: transaction.amount,
 				date: transaction.date,

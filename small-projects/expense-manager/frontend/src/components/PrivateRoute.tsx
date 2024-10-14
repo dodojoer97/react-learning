@@ -14,7 +14,7 @@ const PrivateRoute: FC<PropsWithChildren> = ({ children }) => {
 		dispatch(initializeAuth());
 	}, [dispatch]);
 
-	if (isLoadingAuth) return <></>;
+	// if (isLoadingAuth) return <></>;
 	// Only render children if authenticated, otherwise redirect
 	return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
 };

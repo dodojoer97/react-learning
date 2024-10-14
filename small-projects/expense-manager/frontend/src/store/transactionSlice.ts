@@ -236,7 +236,7 @@ export const saveDraftTransaction = createAsyncThunk<
 	void,
 	{ state: RootState; rejectValue: string }
 >("transaction/saveDraftTransaction", async (_, { getState, dispatch, rejectWithValue }) => {
-	const { draftTransaction } = getState().transaction;
+	const { draftTransaction, transactions } = getState().transaction;
 	const { user } = getState().auth;
 
 	if (!draftTransaction || !user?.uid) {
@@ -252,7 +252,10 @@ export const saveDraftTransaction = createAsyncThunk<
 
 	try {
 		// Determine whether to add a new transaction or edit an existing one
-		const actionType = draftTransaction.id ? editTransaction : addTransaction;
+		const foundTransction = transactions.find(
+			(transaction: Transaction) => transaction.id === draftTransaction.id
+		);
+		const actionType = foundTransction ? editTransaction : addTransaction;
 
 		// Dispatch the appropriate action
 		const resultAction = await dispatch(
@@ -342,18 +345,18 @@ const transactionSlice = createSlice({
 			.addCase(addTransaction.pending, (state) => {
 				state.loading = true;
 			})
-			.addCase(addTransaction.fulfilled, (state) => {
-				if (state.draftTransaction) {
-					state.transactions.push(state.draftTransaction); // Add the draft to transactions
-					console.log("state.draftTransaction: ", state.draftTransaction.status);
-					// Edit the balance
-					state.balance = updateOptimisticBalance(
-						state.draftTransaction.status,
-						state.balance,
-						state.draftTransaction.type,
-						state.draftTransaction.amount
-					);
-				}
+			.addCase(addTransaction.fulfilled, (state, action) => {
+				const { arg } = action.meta;
+				const transactionToAdd: Transaction = { ...arg.transaction, userId: arg.userId };
+
+				state.transactions.push(transactionToAdd); // Add the draft to transactions
+				// Edit the balance
+				state.balance = updateOptimisticBalance(
+					transactionToAdd.status,
+					state.balance,
+					transactionToAdd.type,
+					transactionToAdd.amount
+				);
 
 				state.loading = false;
 				state.draftTransaction = null; // Clear the draft after saving

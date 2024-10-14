@@ -47,24 +47,37 @@ const CategoryComp: FC<ICategoryProps> = ({ id, name, icon, onClick }) => {
 		<>
 			<article
 				onClick={onClick}
-				className={`flex justify-between items-center p-4 bg-white shadow-md rounded-lg hover:bg-gray-50 transition-colors my-2 ${
+				className={`cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors  border-b border-gray-100 dark:border-gray-700/60 px-2 ${
 					isPanelMode ? "cursor-pointer" : ""
 				}
 				${isPanelMode && isSelected ? "selected-item" : ""}
 				`}
 			>
-				<div className="flex items-center">
-					<FontAwesomeIcon
-						icon={icon as IconDefinition}
-						className="text-blue-500 text-2xl mr-4"
-					/>
-					<p className="text-lg font-semibold text-gray-800">{name}</p>
+				<div className="flex">
+					<div className="grow flex items-center text-sm py-2">
+						<div className="grow flex justify-between">
+							<div className="self-center flex items-center space-x-2">
+								<FontAwesomeIcon
+									icon={icon as IconDefinition}
+									className="text-blue-500 text-lg"
+								/>
+								<div className="font-medium text-gray-800 dark:text-gray-100 hover:text-gray-900 dark:hover:text-white">
+									{name || "Uncategorized"}
+								</div>
+							</div>
+							<div className="shrink-0 self-start ml-2">
+								{!isPanelMode && (
+									<Button onClick={handleOpen}>
+										<FontAwesomeIcon icon={faPencil} />
+									</Button>
+								)}
+							</div>
+						</div>
+					</div>
 				</div>
-				{!isPanelMode && (
-					<Button onClick={handleOpen}>
-						<FontAwesomeIcon icon={faPencil} />
-					</Button>
-				)}
+				{/* <div className="flex items-center">
+					<p className="text-lg font-semibold text-gray-800">{name}</p>
+				</div> */}
 			</article>
 
 			{!isPanelMode && (

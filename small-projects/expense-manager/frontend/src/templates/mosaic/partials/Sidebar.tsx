@@ -65,6 +65,11 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen, variant = "def
 		}
 	}, [sidebarExpanded]);
 
+	// Close the sidebar on navigation
+	useEffect(() => {
+		setSidebarOpen(false);
+	}, [pathname]);
+
 	// Get all the route groups to display on the sidebat
 	const sidebarLinks: RouteConfig[] = routeConfig.filter((group) => group.sidebarDisplay);
 

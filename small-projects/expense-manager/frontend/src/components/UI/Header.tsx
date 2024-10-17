@@ -1,6 +1,9 @@
 // React
 import type { FC } from "react";
-import { useState, useContext, useCallback } from "react";
+import { useState, useCallback } from "react";
+
+// Redux
+import { useDispatch, useSelector } from "react-redux";
 
 // Router
 import { NavLink } from "react-router-dom"; // Import NavLink
@@ -18,10 +21,16 @@ import burgerIcon from "@/assets/burger.svg";
 import Button from "@/components/UI/Button";
 
 // Store
-import { AuthContext } from "@/store/AuthContext";
+import { logout } from "@/store/authSlice";
+import { RootState, AppDispatch } from "@/store/store";
 
 const Header: FC = () => {
-	const { user, logout } = useContext(AuthContext);
+	// Redux
+	const dispatch = useDispatch<AppDispatch>();
+
+	// Store
+	const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+
 	const navigate = useNavigate();
 	const { t } = useTranslation("header");
 
@@ -37,8 +46,8 @@ const Header: FC = () => {
 	}, []);
 
 	const handleLogout = (): void => {
-		logout();
-		navigate("/login");
+		dispatch(logout());
+		navigate("/auth/login");
 	};
 
 	// Icon to display, burger or close
@@ -62,7 +71,7 @@ const Header: FC = () => {
 						<img src={viteLogo} className="mr-3 h-6 sm:h-9" alt="Vite logo" />
 					</NavLink>
 					<div className="flex items-center lg:order-2">
-						{!user && (
+						{!isAuthenticated && (
 							<>
 								<NavLink
 									to="/login"
@@ -82,7 +91,7 @@ const Header: FC = () => {
 								</NavLink>
 							</>
 						)}
-						{user && (
+						{isAuthenticated && (
 							<Button
 								onClick={handleLogout}
 								type="button"
@@ -103,7 +112,7 @@ const Header: FC = () => {
 					style={{ top: "61px" }}
 				>
 					<ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-						{user && (
+						{isAuthenticated && (
 							<>
 								<li>
 									<NavLink

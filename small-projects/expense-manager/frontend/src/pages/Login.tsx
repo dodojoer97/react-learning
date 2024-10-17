@@ -87,7 +87,7 @@ const Login: FC = () => {
 
 	useEffect(() => {
 		if (!error && isSubmitted && isAuthenticated) {
-			navigate("/settings");
+			navigate("/settings/preferences");
 		}
 
 		return () => {

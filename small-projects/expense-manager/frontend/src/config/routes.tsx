@@ -47,7 +47,7 @@ export const routeConfig: RouteConfig[] = [
 			},
 			{
 				title: "Analytics",
-				path: "analytics", // Relative to "/dashboard"
+				path: "/dashboard/analytics", // Relative to "/dashboard"
 				element: <Analytics />,
 				isProtected: true,
 				loader: () => authLoader({ title: "Analytics" }), // Pass the title to the loader
@@ -65,8 +65,9 @@ export const routeConfig: RouteConfig[] = [
 		errorElement: <ErrorPage />,
 		children: [
 			{
+				index: true,
 				title: "Preferences",
-				path: "preferences", // Relative to "/settings"
+				path: "/settings/preferences", // Relative to "/settings"
 				element: <Settings />,
 				isProtected: true,
 				loader: () => authLoader({ title: "Preferences" }), // Pass the title to the loader
@@ -74,7 +75,7 @@ export const routeConfig: RouteConfig[] = [
 			},
 			{
 				title: "Categories",
-				path: "categories", // Relative to "/settings"
+				path: "/settings/categories", // Relative to "/settings"
 				element: <Categories />,
 				isProtected: true,
 				loader: () => authLoader({ title: "Categories" }), // Pass the title to the loader

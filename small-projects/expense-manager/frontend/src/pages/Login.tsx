@@ -134,13 +134,21 @@ const Login: FC = () => {
 
 					{error && <InputError message={error} className="text-red-600" />}
 				</div>
-				<Button
-					type="submit"
-					disabled={hasErrors || loading || isLoadingForm}
-					className="btn w-full bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white  whitespace-nowrap"
-				>
-					{loading || isLoadingForm ? <Loader /> : t("signup:createAccount")}
-				</Button>
+				<div className="flex items-center justify-between mt-6">
+					<div className="mr-1">
+						<Link className="text-sm underline hover:no-underline" to="/reset-password">
+							Forgot Password?
+						</Link>
+					</div>
+
+					<Button
+						type="submit"
+						disabled={hasErrors || loading || isLoadingForm}
+						className="btn  bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white  whitespace-nowrap"
+					>
+						{loading || isLoadingForm ? <Loader /> : t("signin")}
+					</Button>
+				</div>
 			</Form>
 			{/* FOOTER */}
 			<div className="pt-5 mt-6 border-t border-gray-100 dark:border-gray-700/60">

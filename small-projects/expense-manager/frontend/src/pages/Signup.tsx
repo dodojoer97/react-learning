@@ -14,12 +14,12 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 
 // Components
-import Layout from "@/components/UI/Layout";
 import Form from "@/components/UI/Form";
 import Input from "@/components/UI/Input";
 import Button from "@/components/UI/Button";
 import InputError from "@/components/UI/InputError";
 import Loader from "@/components/UI/Loader";
+import AuthFormWrapper from "@/components/Auth/AuthFormWrapper";
 
 // Hooks
 import useToggleInputType from "@/hooks/useToggleInputType";
@@ -34,9 +34,6 @@ import RegisterDTO from "@/DTO/request/Register";
 
 // FontAwesome
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-
-// Images
-import AuthImage from "@/templates/mosaic/images/auth-image.jpg";
 
 const Signup: FC = () => {
 	const { t, ready } = useTranslation(["signup", "forms"]);
@@ -108,144 +105,85 @@ const Signup: FC = () => {
 	}, [isSubmitted, navigate, error]);
 
 	return (
-		<main className="bg-white dark:bg-gray-900">
-			<div className="relative md:flex">
-				{/* CONTENT */}
-				<div className="md:w-1/2">
-					<div className="min-h-[100dvh] h-full flex flex-col after:flex-1">
-						{/* Header */}
-						<div>
-							<div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
-								{/* Logo */}
-								<Link className="block" to="/">
-									<svg
-										className="fill-violet-500"
-										xmlns="http://www.w3.org/2000/svg"
-										width={32}
-										height={32}
-									>
-										<path d="M31.956 14.8C31.372 6.92 25.08.628 17.2.044V5.76a9.04 9.04 0 0 0 9.04 9.04h5.716ZM14.8 26.24v5.716C6.92 31.372.63 25.08.044 17.2H5.76a9.04 9.04 0 0 1 9.04 9.04Zm11.44-9.04h5.716c-.584 7.88-6.876 14.172-14.756 14.756V26.24a9.04 9.04 0 0 1 9.04-9.04ZM.044 14.8C.63 6.92 6.92.628 14.8.044V5.76a9.04 9.04 0 0 1-9.04 9.04H.044Z" />
-									</svg>
-								</Link>
-							</div>
-						</div>
-						<div className="max-w-sm mx-auto w-full px-4 py-8 flex-1">
-							<h1 className="text-3xl text-gray-800 dark:text-gray-100 font-bold mb-6">
-								Create your Account
-							</h1>
-							<Form onSubmit={(e) => handleSubmit(e)}>
-								<div className="space-y-4">
-									<div>
-										<Input
-											id="email"
-											type="email"
-											label={t("forms:enterEmail")}
-											required
-											value={emailField.value}
-											onChange={(e) =>
-												emailField.handleInputChange(
-													e as ChangeEvent<HTMLInputElement>
-												)
-											}
-											onBlur={emailField.handleInputBlur}
-										></Input>
-										{emailField.hasError && (
-											<InputError message={t("forms:noEmailMatching")} />
-										)}
-									</div>
-									<div>
-										<Input
-											id="password1"
-											type={password1InputType}
-											label={t("forms:enterPassword") + "1"}
-											inputIcon={
-												password1InputType === "text" ? faEyeSlash : faEye
-											}
-											required
-											value={password1Field.value}
-											onChange={(e) =>
-												password1Field.handleInputChange(
-													e as ChangeEvent<HTMLInputElement>
-												)
-											}
-											onBlur={password1Field.handleInputBlur}
-											onClickIcon={togglePassword1Type}
-										></Input>
-										{password1Field.hasError && (
-											<InputError message={t("forms:notPasswordLength")} />
-										)}
-									</div>
-									<div>
-										<Input
-											id="password2"
-											type={password2InputType}
-											label={t("forms:enterPassword") + "2"}
-											inputIcon={
-												password2InputType === "text" ? faEyeSlash : faEye
-											}
-											required
-											value={password2Field.value}
-											onChange={(e) =>
-												password2Field.handleInputChange(
-													e as ChangeEvent<HTMLInputElement>
-												)
-											}
-											onBlur={password2Field.handleInputBlur}
-											onClickIcon={togglePassword2Type}
-										></Input>
-										{password2Field.hasError && (
-											<InputError message={t("forms:notPasswordLength")} />
-										)}
-									</div>
-									{displayPasswordsNotMatching && (
-										<InputError message={t("forms:notMatchingPasswords")} />
-									)}
-									{error && (
-										<InputError message={error} className="text-red-600" />
-									)}
-									<Button
-										type="submit"
-										disabled={hasErrors || isLoading || loading}
-										className="btn w-full bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white  whitespace-nowrap"
-									>
-										{isLoading || loading ? (
-											<Loader />
-										) : (
-											t("signup:createAccount")
-										)}
-									</Button>
-								</div>
-							</Form>
-							{/* FOOTER */}
-							<div className="pt-5 mt-6 border-t border-gray-100 dark:border-gray-700/60">
-								<div className="text-sm">
-									Have an account?{" "}
-									<Link
-										className="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400"
-										to="/login"
-									>
-										Sign In
-									</Link>
-								</div>
-							</div>
-						</div>
+		<AuthFormWrapper title="Create your Account">
+			<Form onSubmit={(e) => handleSubmit(e)}>
+				<div className="space-y-4">
+					<div>
+						<Input
+							id="email"
+							type="email"
+							label={t("forms:enterEmail")}
+							required
+							value={emailField.value}
+							onChange={(e) =>
+								emailField.handleInputChange(e as ChangeEvent<HTMLInputElement>)
+							}
+							onBlur={emailField.handleInputBlur}
+						></Input>
+						{emailField.hasError && <InputError message={t("forms:noEmailMatching")} />}
 					</div>
+					<div>
+						<Input
+							id="password1"
+							type={password1InputType}
+							label={t("forms:enterPassword") + "1"}
+							inputIcon={password1InputType === "text" ? faEyeSlash : faEye}
+							required
+							value={password1Field.value}
+							onChange={(e) =>
+								password1Field.handleInputChange(e as ChangeEvent<HTMLInputElement>)
+							}
+							onBlur={password1Field.handleInputBlur}
+							onClickIcon={togglePassword1Type}
+						></Input>
+						{password1Field.hasError && (
+							<InputError message={t("forms:notPasswordLength")} />
+						)}
+					</div>
+					<div>
+						<Input
+							id="password2"
+							type={password2InputType}
+							label={t("forms:enterPassword") + "2"}
+							inputIcon={password2InputType === "text" ? faEyeSlash : faEye}
+							required
+							value={password2Field.value}
+							onChange={(e) =>
+								password2Field.handleInputChange(e as ChangeEvent<HTMLInputElement>)
+							}
+							onBlur={password2Field.handleInputBlur}
+							onClickIcon={togglePassword2Type}
+						></Input>
+						{password2Field.hasError && (
+							<InputError message={t("forms:notPasswordLength")} />
+						)}
+					</div>
+					{displayPasswordsNotMatching && (
+						<InputError message={t("forms:notMatchingPasswords")} />
+					)}
+					{error && <InputError message={error} className="text-red-600" />}
+					<Button
+						type="submit"
+						disabled={hasErrors || isLoading || loading}
+						className="btn w-full bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white  whitespace-nowrap"
+					>
+						{isLoading || loading ? <Loader /> : t("signup:createAccount")}
+					</Button>
 				</div>
-				{/* Image */}
-				<div
-					className="hidden md:block absolute top-0 bottom-0 right-0 md:w-1/2"
-					aria-hidden="true"
-				>
-					<img
-						className="object-cover object-center w-full h-full"
-						src={AuthImage}
-						width="760"
-						height="1024"
-						alt="Authentication"
-					/>
+			</Form>
+			{/* FOOTER */}
+			<div className="pt-5 mt-6 border-t border-gray-100 dark:border-gray-700/60">
+				<div className="text-sm">
+					Have an account?{" "}
+					<Link
+						className="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400"
+						to="/login"
+					>
+						Sign In
+					</Link>
 				</div>
 			</div>
-		</main>
+		</AuthFormWrapper>
 	);
 };
 

@@ -14,10 +14,7 @@ import router from "./Router";
 const App: FC = () => {
 	return (
 		<Provider store={store}>
-			<RouterProvider
-				router={router}
-				fallbackElement={<p>Initial Load...</p>}
-			></RouterProvider>
+			<RouterProvider router={router} fallbackElement={<></>}></RouterProvider>
 		</Provider>
 	);
 };

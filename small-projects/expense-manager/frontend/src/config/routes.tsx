@@ -1,79 +1,101 @@
-// React
-import { ReactNode } from "react";
+import { ReactNode, lazy } from "react";
+import { authLoader } from "@/loaders/authLoader"; // Example loader for authentication
+import ErrorPage from "@/pages/Error"; // Example error page
 
-// Routes
-import Home from "@/pages/Home";
-import LoginPage from "@/pages/Login";
-import SignUp from "@/pages/Signup";
-import Settings from "@/pages/Settings";
-import Categories from "@/pages/Categories";
-import Dashboard from "@/pages/Dashboard";
-import Analytics from "@/pages/Analytics";
+// Lazy-loaded routes for better performance
+const LoginPage = lazy(() => import("@/pages/Login"));
+const SignUp = lazy(() => import("@/pages/Signup"));
+const Settings = lazy(() => import("@/pages/Settings"));
+const Categories = lazy(() => import("@/pages/Categories"));
+const Dashboard = lazy(() => import("@/pages/Dashboard"));
+const Analytics = lazy(() => import("@/pages/Analytics"));
 
 export interface RouteConfig {
 	title: string;
-	path?: string;
-	component?: ReactNode;
+	path: string;
+	element: ReactNode; // Updated to reflect React Router's expected 'element'
 	isProtected?: boolean;
 	sidebarDisplay?: boolean;
+	loader?: () => Promise<any>; // Loader for data fetching
+	errorElement?: ReactNode; // Error boundary component
 	children?: RouteConfig[];
+	index?: boolean;
 }
 
 export const routeConfig: RouteConfig[] = [
 	{
 		title: "Dashboard",
-		path: "/",
+		path: "/dashboard", // Absolute path for parent
+		element: <Dashboard />,
 		sidebarDisplay: true,
 		isProtected: true,
-		component: <Dashboard />,
+		loader: authLoader, // Add loader for protected route
+		errorElement: <ErrorPage />, // Error boundary
 		children: [
 			{
 				title: "Main",
-				path: "/dashboard",
-				component: <Dashboard />,
+				path: "dashboard",
+				element: <Dashboard />,
 				isProtected: true,
+				loader: authLoader,
+				errorElement: <ErrorPage />,
 			},
 			{
 				title: "Analytics",
-				path: "/dashboard/analytics",
-				component: <Analytics />,
+				path: "analytics", // Relative to "/dashboard"
+				element: <Analytics />,
 				isProtected: true,
+				loader: authLoader,
+				errorElement: <ErrorPage />,
 			},
 		],
 	},
 	{
 		title: "Settings",
+		path: "/settings", // Absolute path for parent
+		element: <Settings />,
 		sidebarDisplay: true,
+		isProtected: true,
+		loader: authLoader,
+		errorElement: <ErrorPage />,
 		children: [
 			{
 				title: "Preferences",
-				path: "/settings",
-				component: <Settings />,
+				path: "preferences", // Relative to "/settings"
+				element: <Settings />,
 				isProtected: true,
+				loader: authLoader,
+				errorElement: <ErrorPage />,
 			},
 			{
 				title: "Categories",
-				path: "/settings/categories",
-				component: <Categories />,
+				path: "categories", // Relative to "/settings"
+				element: <Categories />,
 				isProtected: true,
+				loader: authLoader,
+				errorElement: <ErrorPage />,
 			},
 		],
 	},
 	{
 		title: "Auth",
+		path: "auth", // Base path for Auth section
+		element: null, // No direct element for the base "Auth" route
 		sidebarDisplay: false,
 		children: [
 			{
-				title: "login",
-				path: "/login",
-				component: <LoginPage />,
+				title: "Login",
+				path: "login", // Relative to "auth"
+				element: <LoginPage />,
 				isProtected: false,
+				errorElement: <ErrorPage />,
 			},
 			{
-				title: "signup",
-				path: "/signup",
-				component: <SignUp />,
+				title: "Signup",
+				path: "signup", // Relative to "auth"
+				element: <SignUp />,
 				isProtected: false,
+				errorElement: <ErrorPage />,
 			},
 		],
 	},

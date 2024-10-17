@@ -25,10 +25,7 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen, variant = "def
 	const trigger = useRef<HTMLButtonElement>(null);
 	const sidebar = useRef<HTMLDivElement>(null);
 
-	const storedSidebarExpanded = localStorage.getItem("sidebar-expanded");
-	const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(
-		storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
-	);
+	const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(false);
 
 	// Close on click outside
 	useEffect(() => {
@@ -65,11 +62,6 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen, variant = "def
 		}
 	}, [sidebarExpanded]);
 
-	// Close the sidebar on navigation
-	useEffect(() => {
-		setSidebarOpen(false);
-	}, [pathname]);
-
 	// Get all the route groups to display on the sidebat
 	const sidebarLinks: RouteConfig[] = routeConfig.filter((group) => group.sidebarDisplay);
 
@@ -94,7 +86,6 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen, variant = "def
 										onClick={(e) => {
 											e.preventDefault();
 											handleClick();
-											setSidebarExpanded(true);
 										}}
 									>
 										<div className="flex items-center justify-between">
@@ -146,6 +137,9 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen, variant = "def
 																(isActive
 																	? "text-violet-500"
 																	: "text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200")
+															}
+															onClick={() =>
+																setSidebarOpen(!sidebarOpen)
 															}
 														>
 															<span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">

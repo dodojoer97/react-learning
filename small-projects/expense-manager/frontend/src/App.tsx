@@ -11,10 +11,15 @@ import { store } from "@/store/store"; // Import the Redux store
 // Router
 import router from "./Router";
 
+// Theme provider
+import ThemeProvider from "./templates/mosaic/utils/ThemeContext";
+
 const App: FC = () => {
 	return (
 		<Provider store={store}>
-			<RouterProvider router={router} fallbackElement={<></>}></RouterProvider>
+			<ThemeProvider>
+				<RouterProvider router={router} fallbackElement={<></>}></RouterProvider>
+			</ThemeProvider>
 		</Provider>
 	);
 };

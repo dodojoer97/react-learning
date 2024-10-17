@@ -7,12 +7,14 @@ import { useState } from "react";
  * @returns An object containing the current input type and a function to toggle the type.
  */
 const useToggleInputType = (
-	inputType: string = "password"
-): { type: string; toggleInputType(): void } => {
-	const [type, setType] = useState<string>(inputType);
+	inputType: "password" | "text" = "password"
+): { type: "password" | "text"; toggleInputType(): void } => {
+	const [type, setType] = useState<"password" | "text">(inputType);
 
 	const toggleInputType = (): void => {
-		setType((currentType: string) => (currentType === "password" ? "text" : "password"));
+		setType((currentType: "password" | "text") =>
+			currentType === "password" ? "text" : "password"
+		);
 	};
 
 	return {

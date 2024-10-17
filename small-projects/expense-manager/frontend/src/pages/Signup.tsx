@@ -21,10 +21,6 @@ import Button from "@/components/UI/Button";
 import InputError from "@/components/UI/InputError";
 import Loader from "@/components/UI/Loader";
 
-// Svg
-import emailIcon from "@/assets/email.svg";
-import eyeIcon from "@/assets/eye.svg";
-
 // Hooks
 import useToggleInputType from "@/hooks/useToggleInputType";
 import useInput from "@/hooks/useInput";
@@ -35,6 +31,9 @@ import { isEmail, hasMinLength, checkValuesEqual } from "@/utils/utils";
 
 // DTO
 import RegisterDTO from "@/DTO/request/Register";
+
+// FontAwesome
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Signup: FC = () => {
 	const { t, ready } = useTranslation(["signup", "forms"]);
@@ -122,15 +121,12 @@ const Signup: FC = () => {
 						id="email"
 						type="email"
 						label={t("forms:enterEmail")}
-						hiddenLabel
-						placeholder={t("forms:enterEmail")}
 						required
 						value={emailField.value}
 						onChange={(e) =>
 							emailField.handleInputChange(e as ChangeEvent<HTMLInputElement>)
 						}
 						onBlur={emailField.handleInputBlur}
-						inputIcon={emailIcon}
 					></Input>
 
 					{emailField.hasError && <InputError message={t("forms:noEmailMatching")} />}
@@ -142,9 +138,8 @@ const Signup: FC = () => {
 						type={password1InputType}
 						label={t("forms:enterPassword")}
 						placeholder={t("forms:enterPassword")}
-						inputIcon={eyeIcon}
+						inputIcon={password1InputType === "text" ? faEyeSlash : faEye}
 						hiddenLabel
-						clickableIcon
 						required
 						value={password1Field.value}
 						onChange={(e) =>
@@ -164,9 +159,8 @@ const Signup: FC = () => {
 						type={password2InputType}
 						label={t("forms:enterPassword")}
 						placeholder={t("forms:enterPassword")}
-						inputIcon={eyeIcon}
+						inputIcon={password2InputType === "text" ? faEyeSlash : faEye}
 						hiddenLabel
-						clickableIcon
 						required
 						value={password2Field.value}
 						onChange={(e) =>

@@ -3,11 +3,11 @@ import type { FC } from "react";
 
 interface Props {
 	message: string;
-	className?: string
+	className?: string;
 }
 
-const InputError: FC<Props> = ({ message, className = 'text-yellow-500' }) => {
-	return <p className={`p-2 rounded ${className}`}>{message}</p>;
+const InputError: FC<Props> = ({ message, className = "" }) => {
+	return <p className={`text-xs mt-1 text-red-500 ${className}`}>{message}</p>;
 };
 
 export default InputError;

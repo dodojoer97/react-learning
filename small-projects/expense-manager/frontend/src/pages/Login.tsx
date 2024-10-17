@@ -105,7 +105,6 @@ const Login: FC = () => {
 						id="email"
 						type="email"
 						label={t("forms:enterEmail")}
-						hiddenLabel
 						placeholder={t("forms:enterEmail")}
 						required
 						disabled={isLoadingForm}
@@ -115,8 +114,8 @@ const Login: FC = () => {
 						}
 						onBlur={emailField.handleInputBlur}
 						inputIcon={emailIcon}
+						error={emailField.hasError ? t("forms:noEmailMatching") : undefined}
 					></Input>
-					{emailField.hasError && <InputError message={t("forms:noEmailMatching")} />}
 
 					<Input
 						id="password"

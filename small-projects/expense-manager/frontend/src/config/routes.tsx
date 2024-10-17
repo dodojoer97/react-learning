@@ -2,6 +2,10 @@ import { ReactNode, lazy } from "react";
 import { authLoader } from "@/loaders/authLoader"; // Example loader for authentication
 import ErrorPage from "@/pages/Error"; // Example error page
 
+// components
+import Layout from "@/components/UI/Layout";
+import RightActions from "@/components/Dashboard/RightActions";
+
 // Lazy-loaded routes for better performance
 const LoginPage = lazy(() => import("@/pages/Login"));
 const SignUp = lazy(() => import("@/pages/Signup"));
@@ -12,7 +16,7 @@ const Analytics = lazy(() => import("@/pages/Analytics"));
 
 export interface RouteConfig {
 	title: string;
-	path: string;
+	path?: string;
 	element: ReactNode; // Updated to reflect React Router's expected 'element'
 	isProtected?: boolean;
 	sidebarDisplay?: boolean;
@@ -25,19 +29,20 @@ export interface RouteConfig {
 export const routeConfig: RouteConfig[] = [
 	{
 		title: "Dashboard",
-		path: "/dashboard", // Absolute path for parent
-		element: <Dashboard />,
+		path: "dashboard", // Absolute path for parent
+		element: <Layout rightComponent={<RightActions />} />,
 		sidebarDisplay: true,
 		isProtected: true,
-		loader: authLoader, // Add loader for protected route
+		loader: () => authLoader({ title: "Dashboard" }), // Pass the title to the loader
 		errorElement: <ErrorPage />, // Error boundary
 		children: [
 			{
+				index: true,
 				title: "Main",
-				path: "dashboard",
+				path: "/dashboard",
 				element: <Dashboard />,
 				isProtected: true,
-				loader: authLoader,
+				loader: () => authLoader({ title: "Dashboard" }), // Pass the title to the loader
 				errorElement: <ErrorPage />,
 			},
 			{
@@ -45,7 +50,7 @@ export const routeConfig: RouteConfig[] = [
 				path: "analytics", // Relative to "/dashboard"
 				element: <Analytics />,
 				isProtected: true,
-				loader: authLoader,
+				loader: () => authLoader({ title: "Analytics" }), // Pass the title to the loader
 				errorElement: <ErrorPage />,
 			},
 		],
@@ -53,10 +58,10 @@ export const routeConfig: RouteConfig[] = [
 	{
 		title: "Settings",
 		path: "/settings", // Absolute path for parent
-		element: <Settings />,
+		element: <Layout />,
 		sidebarDisplay: true,
 		isProtected: true,
-		loader: authLoader,
+		loader: () => authLoader({ title: "Settings" }), // Pass the title to the loader
 		errorElement: <ErrorPage />,
 		children: [
 			{
@@ -64,7 +69,7 @@ export const routeConfig: RouteConfig[] = [
 				path: "preferences", // Relative to "/settings"
 				element: <Settings />,
 				isProtected: true,
-				loader: authLoader,
+				loader: () => authLoader({ title: "Preferences" }), // Pass the title to the loader
 				errorElement: <ErrorPage />,
 			},
 			{
@@ -72,7 +77,7 @@ export const routeConfig: RouteConfig[] = [
 				path: "categories", // Relative to "/settings"
 				element: <Categories />,
 				isProtected: true,
-				loader: authLoader,
+				loader: () => authLoader({ title: "Categories" }), // Pass the title to the loader
 				errorElement: <ErrorPage />,
 			},
 		],
@@ -82,6 +87,7 @@ export const routeConfig: RouteConfig[] = [
 		path: "auth", // Base path for Auth section
 		element: null, // No direct element for the base "Auth" route
 		sidebarDisplay: false,
+
 		children: [
 			{
 				title: "Login",

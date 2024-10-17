@@ -43,11 +43,7 @@ const Categories: FC = () => {
 	}, [dispatch, userId]);
 
 	return (
-		<Layout>
-			<div className="mx-auto max-w-lg text-center">
-				<h1 className="text-2xl font-bold sm:text-3xl">{t("categoriesTitle")}</h1>
-			</div>
-
+		<>
 			<div className="flex justify-end">
 				<FontAwesomeIcon
 					className="cursor-pointer w-10 h-10 text-blue-600"
@@ -64,7 +60,7 @@ const Categories: FC = () => {
 			</SlidingPanel>
 
 			<Tabs />
-		</Layout>
+		</>
 	);
 };
 

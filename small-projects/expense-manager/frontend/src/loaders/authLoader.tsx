@@ -22,7 +22,7 @@ export const authLoader = async ({ title }: { title: string }) => {
 
 	// If the user is not authenticated, redirect to the login page
 	if (!isAuthenticated) {
-		return redirect("/login");
+		return redirect("/auth/login");
 	}
 
 	// Return the title for use in the component

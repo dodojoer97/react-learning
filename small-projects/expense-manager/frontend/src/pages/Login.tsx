@@ -156,7 +156,7 @@ const Login: FC = () => {
 					{t("noAccount")}{" "}
 					<Link
 						className="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400"
-						to="/signup"
+						to="/auth/signup"
 					>
 						{t("signup")}{" "}
 					</Link>

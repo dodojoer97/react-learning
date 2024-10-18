@@ -1,12 +1,11 @@
-import { ReactNode, lazy } from "react";
-import { authLoader } from "@/loaders/authLoader"; // Example loader for authentication
-import ErrorPage from "@/pages/Error"; // Example error page
-
-// components
+import { ReactNode, lazy, Suspense } from "react";
+import { authLoader } from "@/loaders/authLoader";
+import ErrorPage from "@/pages/Error";
 import Layout from "@/components/UI/Layout";
 import RightActions from "@/components/Dashboard/RightActions";
+import Loader from "@/components/UI/Loader"; // Add a fallback loading spinner
 
-// Lazy-loaded routes for better performance
+// Lazy-loaded components
 const LoginPage = lazy(() => import("@/pages/Login"));
 const SignUp = lazy(() => import("@/pages/Signup"));
 const Settings = lazy(() => import("@/pages/Settings"));
@@ -17,11 +16,11 @@ const Analytics = lazy(() => import("@/pages/Analytics"));
 export interface RouteConfig {
 	title: string;
 	path?: string;
-	element: ReactNode; // Updated to reflect React Router's expected 'element'
+	element: ReactNode;
 	isProtected?: boolean;
 	sidebarDisplay?: boolean;
-	loader?: () => Promise<any>; // Loader for data fetching
-	errorElement?: ReactNode; // Error boundary component
+	loader?: () => Promise<any>;
+	errorElement?: ReactNode;
 	children?: RouteConfig[];
 	index?: boolean;
 }
@@ -29,78 +28,109 @@ export interface RouteConfig {
 export const routeConfig: RouteConfig[] = [
 	{
 		title: "Dashboard",
-		path: "dashboard", // Absolute path for parent
-		element: <Layout rightComponent={<RightActions />} />,
+		path: "/",
+		element: (
+			<Suspense fallback={<Loader />}>
+				<Layout rightComponent={<RightActions />} />
+			</Suspense>
+		),
 		sidebarDisplay: true,
 		isProtected: true,
-		loader: () => authLoader({ title: "Dashboard" }), // Pass the title to the loader
-		errorElement: <ErrorPage />, // Error boundary
+		loader: () => authLoader({ title: "Dashboard" }),
+		errorElement: <ErrorPage />,
 		children: [
 			{
 				index: true,
 				title: "Main",
 				path: "/dashboard",
-				element: <Dashboard />,
+				element: (
+					<Suspense fallback={<Loader />}>
+						<Dashboard />
+					</Suspense>
+				),
 				isProtected: true,
-				loader: () => authLoader({ title: "Dashboard" }), // Pass the title to the loader
+				loader: () => authLoader({ title: "Dashboard" }),
 				errorElement: <ErrorPage />,
 			},
 			{
 				title: "Analytics",
-				path: "/dashboard/analytics", // Relative to "/dashboard"
-				element: <Analytics />,
+				path: "/dashboard/analytics",
+				element: (
+					<Suspense fallback={<Loader />}>
+						<Analytics />
+					</Suspense>
+				),
 				isProtected: true,
-				loader: () => authLoader({ title: "Analytics" }), // Pass the title to the loader
+				loader: () => authLoader({ title: "Analytics" }),
 				errorElement: <ErrorPage />,
 			},
 		],
 	},
 	{
 		title: "Settings",
-		path: "/settings", // Absolute path for parent
-		element: <Layout />,
+		path: "/settings",
+		element: (
+			<Suspense fallback={<Loader />}>
+				<Layout />
+			</Suspense>
+		),
 		sidebarDisplay: true,
 		isProtected: true,
-		loader: () => authLoader({ title: "Settings" }), // Pass the title to the loader
+		loader: () => authLoader({ title: "Settings" }),
 		errorElement: <ErrorPage />,
 		children: [
 			{
 				index: true,
 				title: "Preferences",
-				path: "/settings/preferences", // Relative to "/settings"
-				element: <Settings />,
+				path: "/settings/preferences",
+				element: (
+					<Suspense fallback={<Loader />}>
+						<Settings />
+					</Suspense>
+				),
 				isProtected: true,
-				loader: () => authLoader({ title: "Preferences" }), // Pass the title to the loader
+				loader: () => authLoader({ title: "Preferences" }),
 				errorElement: <ErrorPage />,
 			},
 			{
 				title: "Categories",
-				path: "/settings/categories", // Relative to "/settings"
-				element: <Categories />,
+				path: "/settings/categories",
+				element: (
+					<Suspense fallback={<Loader />}>
+						<Categories />
+					</Suspense>
+				),
 				isProtected: true,
-				loader: () => authLoader({ title: "Categories" }), // Pass the title to the loader
+				loader: () => authLoader({ title: "Categories" }),
 				errorElement: <ErrorPage />,
 			},
 		],
 	},
 	{
 		title: "Auth",
-		path: "auth", // Base path for Auth section
-		element: null, // No direct element for the base "Auth" route
+		path: "auth",
+		element: null,
 		sidebarDisplay: false,
-
 		children: [
 			{
 				title: "Login",
-				path: "login", // Relative to "auth"
-				element: <LoginPage />,
+				path: "login",
+				element: (
+					<Suspense fallback={<Loader />}>
+						<LoginPage />
+					</Suspense>
+				),
 				isProtected: false,
 				errorElement: <ErrorPage />,
 			},
 			{
 				title: "Signup",
-				path: "signup", // Relative to "auth"
-				element: <SignUp />,
+				path: "signup",
+				element: (
+					<Suspense fallback={<Loader />}>
+						<SignUp />
+					</Suspense>
+				),
 				isProtected: false,
 				errorElement: <ErrorPage />,
 			},

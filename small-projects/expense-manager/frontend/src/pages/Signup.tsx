@@ -96,7 +96,7 @@ const Signup: FC = () => {
 		if (!error && isSubmitted) {
 			// Show a success message or redirect to a success page
 			alert("Signup successful! Please log in to continue.");
-			navigate("/login"); // Redirect to login page
+			navigate("/auth/login"); // Redirect to login page
 		}
 
 		return () => {
@@ -177,7 +177,7 @@ const Signup: FC = () => {
 					Have an account?{" "}
 					<Link
 						className="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400"
-						to="/login"
+						to="/auth/login"
 					>
 						Sign In
 					</Link>

@@ -15,10 +15,18 @@ class BaseService implements IBaseService {
 	 * Get the default headers for HTTP requests.
 	 * @returns {Transaction<string, string>} Default headers.
 	 */
-	getDefaultHeaders(): Record<string, string> {
-		return {
+	getDefaultHeaders(auth?: boolean): Record<string, string> {
+		const params: Record<string, string> = {
 			"Content-Type": "application/json",
 		};
+
+		const token: string | null = this.getToken();
+
+		if (auth && token) {
+			params["Authorization"] = `Bearer ${token}`;
+		}
+
+		return params;
 	}
 
 	/**
@@ -116,6 +124,14 @@ class BaseService implements IBaseService {
 		}
 		const data = await response.json();
 		return data as T;
+	}
+
+	/**
+	 * Retrieves the authentication token from local storage.
+	 * @returns {Promise<T | null>} The authentication token if available, otherwise null.
+	 */
+	protected getToken(): string | null {
+		return localStorage.getItem("token");
 	}
 }
 

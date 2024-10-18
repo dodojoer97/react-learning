@@ -23,5 +23,5 @@ export interface IAuthService {
 	 * Simulates validation of the authentication token by retrieving the user associated with it.
 	 * @returns {Promise<User | undefined>} A promise that resolves to the user object if the token is valid, or undefined if it is not or an error occurs.
 	 */
-	verifyToken(): Promise<User | undefined>;
+	verifyToken(): User | undefined;
 }

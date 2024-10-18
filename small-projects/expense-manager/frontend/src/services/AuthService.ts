@@ -53,7 +53,7 @@ class AuthService extends BaseService implements IAuthService {
 
 			this.storeToken(response.token);
 			const { email, uid } = this.decodeToken(response.token);
-			return new User(uid, email);
+			return { email, uid };
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with signup");
@@ -77,8 +77,8 @@ class AuthService extends BaseService implements IAuthService {
 			const response: LoginResponseDTO = await this.post<LoginRequestDTO>("auth/login", dto);
 
 			this.storeToken(response.token);
-			const decodedUser = this.decodeToken(response.token);
-			return decodedUser;
+			const { email, uid } = this.decodeToken(response.token);
+			return { email, uid };
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with login");
@@ -117,7 +117,7 @@ class AuthService extends BaseService implements IAuthService {
 			if (!expired) {
 				const { email, uid } = this.decodeToken(token);
 
-				return new User(uid, email);
+				return { email, uid };
 			} else {
 				this.removeToken();
 				return undefined;

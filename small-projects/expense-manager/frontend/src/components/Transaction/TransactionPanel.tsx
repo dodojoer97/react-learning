@@ -29,14 +29,14 @@ interface IProps {
 const TransactionPanel: FC<IProps> = ({ onSave }) => {
 	// Redux
 	const dispatch = useDispatch<AppDispatch>();
-	const { availableCategoryTypes, selectedTransaction, draftTransaction, error } = useSelector(
-		(state: RootState) => ({
+	const { availableCategoryTypes, selectedTransaction, draftTransaction, error, loading } =
+		useSelector((state: RootState) => ({
 			availableCategoryTypes: state.settings.availableCategoryTypes,
 			selectedTransaction: state.transaction.selectedTransaction,
 			draftTransaction: state.transaction.draftTransaction,
 			error: state.transaction.error,
-		})
-	);
+			loading: state.transaction.loading,
+		}));
 	const { openSet } = useSelector((state: RootState) => state.open);
 
 	// State
@@ -125,6 +125,7 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 				<Button
 					className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white"
 					onClick={handleSave}
+					loading={loading}
 				>
 					Save
 				</Button>

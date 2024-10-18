@@ -34,7 +34,11 @@ class TransactionService extends BaseService implements ITransactionService {
 	async addTransaction(transaction: Transaction): Promise<void> {
 		try {
 			this.validateTransaction(transaction);
-			await this.post<{ transaction: Transaction }>("transactions", { transaction });
+			await this.post<{ transaction: Transaction }>(
+				"transactions",
+				{ transaction },
+				{ auth: true }
+			);
 		} catch (error) {
 			if (isError(error)) {
 				throw error;

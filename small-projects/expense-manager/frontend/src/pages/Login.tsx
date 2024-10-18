@@ -145,8 +145,9 @@ const Login: FC = () => {
 						type="submit"
 						disabled={hasErrors || loading || isLoadingForm}
 						className="btn  bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white  whitespace-nowrap"
+						loadig={loading || isLoadingForm}
 					>
-						{loading || isLoadingForm ? <Loader /> : t("signin")}
+						{t("signin")}
 					</Button>
 				</div>
 			</Form>

@@ -7,7 +7,7 @@ import { RootState, AppDispatch } from "@/store/store"; // Redux store types
 
 // Store actions
 import { selectTransaction, deleteTransaction } from "@/store/transactionSlice";
-import { toggleOpen } from "@/store/openSlice";
+import { toggleOpen, open } from "@/store/openSlice";
 
 // FontAwesome Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,9 +15,11 @@ import { IconDefinition, faPlus, faMinus } from "@fortawesome/free-solid-svg-ico
 
 // Translation
 import { useTranslation } from "react-i18next";
-import Button from "../UI/Button";
 import TransactionSkeleton from "./TransactionSkeleton";
 import useLoading from "@/hooks/useLoading";
+
+// Components
+import DangerModal from "@/components/UI/DangerModal";
 
 interface Props {
 	transactionWithCategory: TransactionWithCategory;
@@ -28,8 +30,11 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 	const dispatch = useDispatch<AppDispatch>();
 	const currency = useSelector((state: RootState) => state.settings.currency); // Fetch currency from Redux
 	const userId = useSelector((state: RootState) => state.auth.user?.uid);
+	const { openSet } = useSelector((state: RootState) => state.open);
 
+	// Ids
 	const panelId = "transactionPanel";
+	const modalId = "transaction-danger-modal";
 
 	// Translation
 	const { i18n } = useTranslation();
@@ -53,11 +58,15 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 		dispatch(toggleOpen(panelId)); // Dispatch the action to open the sliding panel
 	};
 
-	const handeDelete = (e: React.MouseEvent<HTMLDivElement>): void => {
-		e.stopPropagation();
+	const handeDelete = (): void => {
 		if (!userId) return;
 		console.log("transaction: ", transaction);
 		dispatch(deleteTransaction({ userId, transactionId: transaction.id }));
+	};
+
+	const handleOpenModal = (e: React.MouseEvent): void => {
+		e.stopPropagation();
+		dispatch(open(modalId));
 	};
 
 	// If loading, return skeleton component
@@ -66,49 +75,56 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 	}
 
 	return (
-		<li
-			className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors  border-b border-gray-100 dark:border-gray-700/60 px-2 "
-			onClick={handleClick}
-		>
-			<div className="flex">
-				<div
-					className={`w-9 h-9 rounded-full shrink-0 bg-red-500 my-2 mr-3 flex items-center justify-center`}
-					onClick={handeDelete}
-				>
-					<FontAwesomeIcon icon={faMinus} className="text-white" />
-				</div>
-				<div className="grow flex items-center text-sm py-2">
-					<div className="grow flex justify-between">
-						<div className="self-center flex items-center space-x-2">
-							{category?.icon && (
-								<FontAwesomeIcon
-									icon={category.icon as IconDefinition}
-									className="text-blue-500 text-lg"
-								/>
-							)}
-							<div className="font-medium text-gray-800 dark:text-gray-100 hover:text-gray-900 dark:hover:text-white">
-								{category?.name || "Uncategorized"}
+		<>
+			<li
+				className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors  border-b border-gray-100 dark:border-gray-700/60 px-2 "
+				onClick={handleClick}
+			>
+				<div className="flex">
+					<div
+						className={`w-9 h-9 rounded-full shrink-0 bg-red-500 my-2 mr-3 flex items-center justify-center`}
+						onClick={handleOpenModal}
+					>
+						<FontAwesomeIcon icon={faMinus} className="text-white" />
+					</div>
+					<div className="grow flex items-center text-sm py-2">
+						<div className="grow flex justify-between">
+							<div className="self-center flex items-center space-x-2">
+								{category?.icon && (
+									<FontAwesomeIcon
+										icon={category.icon as IconDefinition}
+										className="text-blue-500 text-lg"
+									/>
+								)}
+								<div className="font-medium text-gray-800 dark:text-gray-100 hover:text-gray-900 dark:hover:text-white">
+									{category?.name || "Uncategorized"}
+								</div>
 							</div>
-						</div>
-						<div className="shrink-0 self-start ml-2">
-							<time
-								dateTime={transaction.date.toString()}
-								className="text-xs text-gray-600 dark:text-gray-400 block"
-							>
-								{formatDate(transaction.date)}
-							</time>
-							<span className={`font-medium ${textColor}`}>
-								{currency.value} {transaction.amount.toFixed(2)}
-							</span>
+							<div className="shrink-0 self-start ml-2">
+								<time
+									dateTime={transaction.date.toString()}
+									className="text-xs text-gray-600 dark:text-gray-400 block"
+								>
+									{formatDate(transaction.date)}
+								</time>
+								<span className={`font-medium ${textColor}`}>
+									{currency.value} {transaction.amount.toFixed(2)}
+								</span>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 
-			{transaction.description && (
-				<p className="mt-1 text-gray-600">{transaction.description}</p>
-			)}
-		</li>
+				{transaction.description && (
+					<p className="mt-1 text-gray-600">{transaction.description}</p>
+				)}
+			</li>
+			<DangerModal
+				isOpen={openSet.includes(modalId)}
+				setModalOpen={() => dispatch(toggleOpen(modalId))}
+				onConfirm={handeDelete}
+			/>
+		</>
 	);
 };
 

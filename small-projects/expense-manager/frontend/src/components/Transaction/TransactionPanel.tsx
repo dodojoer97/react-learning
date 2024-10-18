@@ -37,6 +37,7 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 			error: state.transaction.error,
 			loading: state.transaction.loading,
 		}));
+
 	const { openSet } = useSelector((state: RootState) => state.open);
 
 	// State

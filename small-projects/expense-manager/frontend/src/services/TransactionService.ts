@@ -67,6 +67,7 @@ class TransactionService extends BaseService implements ITransactionService {
 
 		const fetchedTransactions: Transaction[] = await this.get(`transactions/${userId}`, {
 			params,
+			auth: true,
 		});
 		return this.buildTransactions(fetchedTransactions);
 	}
@@ -87,7 +88,8 @@ class TransactionService extends BaseService implements ITransactionService {
 			this.validateTransaction(updatedTransaction);
 			await this.put<Transaction>(
 				`transactions/${userId}/${transactionId}`,
-				updatedTransaction
+				updatedTransaction,
+				{ auth: true }
 			);
 		} catch (error) {
 			if (isError(error)) {
@@ -105,7 +107,7 @@ class TransactionService extends BaseService implements ITransactionService {
 	 */
 	async deleteTransaction(userId: string, transactionId: string): Promise<void> {
 		try {
-			await this.delete(`transactions/${userId}/${transactionId}`);
+			await this.delete(`transactions/${userId}/${transactionId}`, { auth: true });
 		} catch (error) {
 			if (isError(error)) {
 				throw error;
@@ -124,6 +126,7 @@ class TransactionService extends BaseService implements ITransactionService {
 
 			const data: GetBalanceDTO = await this.get(`transactions/balance/${userId}`, {
 				params,
+				auth: true,
 			});
 
 			return data.balance;

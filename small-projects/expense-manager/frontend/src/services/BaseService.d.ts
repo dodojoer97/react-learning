@@ -3,7 +3,8 @@
  */
 export interface RequestOptions {
 	headers?: Record<string, string>;
-	params?: Record<string, string>;
+	params?: Record<string, any>;
+	auth?: boolean;
 }
 
 /**

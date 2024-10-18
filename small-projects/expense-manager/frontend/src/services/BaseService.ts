@@ -15,7 +15,7 @@ class BaseService implements IBaseService {
 	 * Get the default headers for HTTP requests.
 	 * @returns {Transaction<string, string>} Default headers.
 	 */
-	getDefaultHeaders(auth?: boolean): Record<string, string> {
+	public getDefaultHeaders(auth?: boolean): Record<string, string> {
 		const params: Record<string, string> = {
 			"Content-Type": "application/json",
 		};
@@ -35,7 +35,7 @@ class BaseService implements IBaseService {
 	 * @param {RequestOptions} [options] - Optional query parameters and headers.
 	 * @returns {Promise<any>} A promise that resolves to the response data.
 	 */
-	async get(endpoint: string, options?: RequestOptions): Promise<any> {
+	public async get(endpoint: string, options?: RequestOptions): Promise<any> {
 		const url = new URL(`${this.baseUrl}/${endpoint}`);
 		if (options?.params) {
 			Object.keys(options.params).forEach((key) =>
@@ -45,7 +45,7 @@ class BaseService implements IBaseService {
 		const response = await fetch(url.toString(), {
 			method: "GET",
 			headers: {
-				...this.getDefaultHeaders(),
+				...this.getDefaultHeaders(options && options.auth),
 				...options?.headers,
 			},
 		});
@@ -59,7 +59,7 @@ class BaseService implements IBaseService {
 	 * @param {RequestOptions} [options] - Optional query parameters and headers.
 	 * @returns {Promise<any>} A promise that resolves to the response data.
 	 */
-	async post<T extends object>(
+	public async post<T extends object>(
 		endpoint: string,
 		data: T,
 		options?: RequestOptions
@@ -67,7 +67,7 @@ class BaseService implements IBaseService {
 		const response = await fetch(`${this.baseUrl}/${endpoint}`, {
 			method: "POST",
 			headers: {
-				...this.getDefaultHeaders(),
+				...this.getDefaultHeaders(options && options.auth),
 				...options?.headers,
 			},
 			body: JSON.stringify(data),
@@ -82,11 +82,15 @@ class BaseService implements IBaseService {
 	 * @param {RequestOptions} [options] - Optional query parameters and headers.
 	 * @returns {Promise<any>} A promise that resolves to the response data.
 	 */
-	async put<T extends object>(endpoint: string, data: T, options?: RequestOptions): Promise<any> {
+	public async put<T extends object>(
+		endpoint: string,
+		data: T,
+		options?: RequestOptions
+	): Promise<any> {
 		const response = await fetch(`${this.baseUrl}/${endpoint}`, {
 			method: "PUT",
 			headers: {
-				...this.getDefaultHeaders(),
+				...this.getDefaultHeaders(options && options.auth),
 				...options?.headers,
 			},
 			body: JSON.stringify(data),
@@ -100,11 +104,11 @@ class BaseService implements IBaseService {
 	 * @param {RequestOptions} [options] - Optional query parameters and headers.
 	 * @returns {Promise<any>} A promise that resolves to the response data.
 	 */
-	async delete(endpoint: string, options?: RequestOptions): Promise<any> {
+	public async delete(endpoint: string, options?: RequestOptions): Promise<any> {
 		const response = await fetch(`${this.baseUrl}/${endpoint}`, {
 			method: "DELETE",
 			headers: {
-				...this.getDefaultHeaders(),
+				...this.getDefaultHeaders(options && options.auth),
 				...options?.headers,
 			},
 		});

@@ -46,7 +46,7 @@ class SettingsService extends BaseService implements ISettingsService {
 	 */
 	public async getCategories(userId: string): Promise<Category[]> {
 		const endpoint = `categories/${userId}`;
-		const categories: GetCategoriesDTO = await this.get(endpoint);
+		const categories: GetCategoriesDTO = await this.get(endpoint, { auth: true });
 		return this.buildCategories(categories);
 	}
 
@@ -69,7 +69,7 @@ class SettingsService extends BaseService implements ISettingsService {
 	 */
 	public async setCurrency(userId: string, currency: SelectFieldOption): Promise<void> {
 		const endpoint = `users/${userId}/currency`;
-		await this.put<SelectFieldOption>(endpoint, currency);
+		await this.put<SelectFieldOption>(endpoint, currency, { auth: true });
 	}
 
 	/**
@@ -80,7 +80,7 @@ class SettingsService extends BaseService implements ISettingsService {
 	 */
 	public async createCategory(category: Category, userId: string): Promise<Category[]> {
 		const endpoint = `categories`;
-		const categories = await this.post(endpoint, { category, userId });
+		const categories = await this.post(endpoint, { category, userId }, { auth: true });
 
 		return this.buildCategories(categories);
 	}
@@ -96,7 +96,7 @@ class SettingsService extends BaseService implements ISettingsService {
 		// Real endpoint
 		// const endpoint = `users/${userId}/categories/${category.id}`;
 		const endpoint = `categories/${userId}/${categoryId}`;
-		await this.put(endpoint, { name: newName });
+		await this.put(endpoint, { name: newName }, { auth: true });
 	}
 }
 

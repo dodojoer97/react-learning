@@ -12,6 +12,7 @@ const Settings = lazy(() => import("@/pages/Settings"));
 const Categories = lazy(() => import("@/pages/Categories"));
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const Analytics = lazy(() => import("@/pages/Analytics"));
+const ResetPassword = lazy(() => import("@/pages/ResetPassword"));
 
 export interface RouteConfig {
 	title: string;
@@ -129,6 +130,17 @@ export const routeConfig: RouteConfig[] = [
 				element: (
 					<Suspense fallback={<Loader />}>
 						<SignUp />
+					</Suspense>
+				),
+				isProtected: false,
+				errorElement: <ErrorPage />,
+			},
+			{
+				title: "reset-password",
+				path: "reset-password",
+				element: (
+					<Suspense fallback={<Loader />}>
+						<ResetPassword />
 					</Suspense>
 				),
 				isProtected: false,

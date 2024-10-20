@@ -13,6 +13,8 @@
          Identify and optimize performance bottlenecks in the frontend, such as unnecessary renders, large assets, or slow components.
 -   [ ] **Improve useInput hook**
         Improve the hook to only show erros when needed, to solve annoying blur issue on password for example
+-   [ ] **Improve Loading of suspense**
+        Improve the look of the page when first loading a component, to not show the loader and then the other things
 
 ## Backend Tasks
 

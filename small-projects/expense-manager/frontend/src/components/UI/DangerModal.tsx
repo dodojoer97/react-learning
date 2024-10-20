@@ -10,9 +10,11 @@ interface Props {
 	isOpen: boolean;
 	setModalOpen(isOpen: boolean): void;
 	onConfirm(): void;
+	title: string;
+	description?: string;
 }
 
-const DangerModal: FC<Props> = ({ isOpen, setModalOpen, onConfirm }) => {
+const DangerModal: FC<Props> = ({ isOpen, setModalOpen, onConfirm, title, description }) => {
 	return createPortal(
 		<ModalBlank id="danger-modal" modalOpen={isOpen} setModalOpen={setModalOpen}>
 			<div className="p-5 flex space-x-4">
@@ -32,18 +34,20 @@ const DangerModal: FC<Props> = ({ isOpen, setModalOpen, onConfirm }) => {
 					{/* Modal header */}
 					<div className="mb-2">
 						<div className="text-lg font-semibold text-gray-800 dark:text-gray-100">
-							Delete 1 customer?
+							{title}
 						</div>
 					</div>
 					{/* Modal content */}
-					<div className="text-sm mb-10">
-						<div className="space-y-2">
-							<p>
-								Semper eget duis at tellus at urna condimentum mattis pellentesque
-								lacus suspendisse faucibus interdum.
-							</p>
+					{description && (
+						<div className="text-sm mb-10">
+							<div className="space-y-2">
+								<p>
+									Semper eget duis at tellus at urna condimentum mattis
+									pellentesque lacus suspendisse faucibus interdum.
+								</p>
+							</div>
 						</div>
-					</div>
+					)}
 					{/* Modal footer */}
 					<div className="flex flex-wrap justify-end space-x-2">
 						<Button

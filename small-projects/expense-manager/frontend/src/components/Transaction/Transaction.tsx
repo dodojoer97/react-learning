@@ -120,6 +120,7 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 				)}
 			</li>
 			<DangerModal
+				title="Are you sure you want to delete this transaction?"
 				isOpen={openSet.includes(modalId)}
 				setModalOpen={() => dispatch(toggleOpen(modalId))}
 				onConfirm={handeDelete}

@@ -110,6 +110,44 @@ class AuthController {
 			}
 		}
 	}
+
+	async requestPasswordReset(req: Request, res: Response) {
+		try {
+			const { email } = req.body;
+
+			if (!email) {
+				throw new Error("Email is required");
+			}
+
+			// const token = await authService.login(email);
+			// if (token) {
+			// 	res.json({ token });
+			// } else {
+			// 	res.status(401).json({ message: "Invalid email or password" });
+			// }
+		} catch (error) {
+			if (isFirebaseError(error)) {
+				switch (error.code) {
+					case "auth/wrong-password":
+						res.status(401).json({ message: "Wrong password" });
+						break;
+					case "auth/user-not-found":
+						res.status(404).json({ message: "User not found" });
+						break;
+					// Handle other Firebase Auth errors
+					default:
+						logger.error(`Firebase Auth Error during login: ${error.message}`);
+						res.status(500).json({ message: "Internal server error" });
+				}
+			} else if (isError(error)) {
+				logger.error(`Error during login: ${error.message}`);
+				res.status(500).json({ message: "Internal server error" });
+			} else {
+				logger.error("An unknown error occurred during login");
+				res.status(500).json({ message: "Internal server error" });
+			}
+		}
+	}
 }
 
 export default new AuthController();

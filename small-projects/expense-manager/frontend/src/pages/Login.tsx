@@ -136,7 +136,10 @@ const Login: FC = () => {
 				</div>
 				<div className="flex items-center justify-between mt-6">
 					<div className="mr-1">
-						<Link className="text-sm underline hover:no-underline" to="/reset-password">
+						<Link
+							className="text-sm underline hover:no-underline"
+							to="/auth/reset-password"
+						>
 							Forgot Password?
 						</Link>
 					</div>

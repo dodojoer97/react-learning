@@ -16,6 +16,7 @@ import LoginResponseDTO from "@/DTO/response/Login";
 
 // Models
 import User from "@/models/User";
+import ResetPasswordEmailDTO from "@/DTO/request/ResetPasswordEmail";
 
 const logger = new Logger("AuthService");
 
@@ -128,6 +129,22 @@ class AuthService extends BaseService implements IAuthService {
 			}
 			this.removeToken();
 			return undefined;
+		}
+	}
+
+	/**
+	 *
+	 * @param {ResetPasswordDTO} dto The data transfer object containing the email.
+	 * @returns
+	 */
+	public async sendResetPassword(dto: ResetPasswordEmailDTO): Promise<void> {
+		try {
+			await this.post("auth/reset-password", dto);
+		} catch (error) {
+			if (error instanceof Error) {
+				logger.error(error.message || "Something went wrong with sendResetPassword");
+			}
+			throw error;
 		}
 	}
 

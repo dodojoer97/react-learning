@@ -10,7 +10,7 @@ class EmailService {
 		const resetToken = jwt.sign({ email }, secret, { expiresIn: "1h" });
 
 		// Craft the password reset email content
-		const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+		const resetUrl = `${process.env.FRONTEND_URL}/auth/reset-password?token=${resetToken}`;
 		const subject = "Password Reset Request";
 		const text = `You requested a password reset. Click here to reset your password: ${resetUrl}`;
 		const html = `<p>You requested a password reset.</p><p><a href="${resetUrl}">Click here to reset your password</a></p>`;

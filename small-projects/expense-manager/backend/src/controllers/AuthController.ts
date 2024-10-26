@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import authService from "../services/AuthService";
+import emailService from "@/services/EmailService";
 import categoryService from "../services/CategoryService";
 import { isError, isFirebaseError, Logger } from "@common";
 import jwt, { JwtPayload } from "jsonwebtoken";
@@ -119,6 +120,7 @@ class AuthController {
 				throw new Error("Email is required");
 			}
 
+			await emailService.sendPasswordResetEmail(email);
 			res.status(200).json({ message: "success" });
 		} catch (error) {
 			if (isFirebaseError(error)) {

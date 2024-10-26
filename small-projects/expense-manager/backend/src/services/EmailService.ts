@@ -7,7 +7,7 @@ class EmailService {
 		const secret = process.env.JWT_SECRET || "your_jwt_secret";
 
 		// Generate a token for password reset
-		const resetToken = jwt.sign({ email }, secret, { expiresIn: "10s" });
+		const resetToken = jwt.sign({ email }, secret, { expiresIn: "1h" });
 
 		// Craft the password reset email content
 		const resetUrl = `${process.env.FRONTEND_URL}/auth/reset-password?token=${resetToken}`;

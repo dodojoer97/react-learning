@@ -148,7 +148,7 @@ export const routeConfig: RouteConfig[] = [
 					const token = url.searchParams.get("token");
 
 					if (token) {
-						return authLoader({ title: "reset pass" });
+						return authLoader({ title: "reset pass", token });
 					}
 
 					return null;

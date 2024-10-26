@@ -1,3 +1,4 @@
+import { NonIndexRouteObject } from "react-router-dom";
 import { ReactNode, lazy, Suspense } from "react";
 import { authLoader } from "@/loaders/authLoader";
 import ErrorPage from "@/pages/Error";
@@ -14,13 +15,12 @@ const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const Analytics = lazy(() => import("@/pages/Analytics"));
 const ResetPassword = lazy(() => import("@/pages/ResetPassword"));
 
-export interface RouteConfig {
+export interface RouteConfig extends NonIndexRouteObject {
 	title: string;
 	path?: string;
 	element: ReactNode;
 	isProtected?: boolean;
 	sidebarDisplay?: boolean;
-	loader?: () => Promise<any>;
 	errorElement?: ReactNode;
 	children?: RouteConfig[];
 	index?: boolean;
@@ -143,6 +143,16 @@ export const routeConfig: RouteConfig[] = [
 						<ResetPassword />
 					</Suspense>
 				),
+				loader: ({ request }) => {
+					const url = new URL(request.url);
+					const token = url.searchParams.get("token");
+
+					if (token) {
+						return authLoader({ title: "reset pass" });
+					}
+
+					return null;
+				},
 				isProtected: false,
 				errorElement: <ErrorPage />,
 			},

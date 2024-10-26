@@ -59,17 +59,19 @@ export const logout = createAsyncThunk<void, void, { rejectValue: string }>(
 	}
 );
 
-export const initializeAuth = createAsyncThunk<User | undefined, void, { rejectValue: string }>(
-	"auth/initializeAuth",
-	async (_, { rejectWithValue }) => {
-		try {
-			const user = await authService.verifyToken();
-			return user;
-		} catch (error: any) {
-			return rejectWithValue(error.message || "Something went wrong with token verification");
-		}
+export const initializeAuth = createAsyncThunk<
+	User | undefined,
+	string | undefined,
+	{ rejectValue: string }
+>("auth/initializeAuth", async (token, { rejectWithValue }) => {
+	try {
+		// Pass token to verifyToken if provided, otherwise proceed without it
+		const user = authService.verifyToken(token);
+		return user;
+	} catch (error: any) {
+		return rejectWithValue(error.message || "Something went wrong with token verification");
 	}
-);
+});
 
 export const sendResetPassword = createAsyncThunk<
 	void,

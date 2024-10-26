@@ -107,9 +107,9 @@ class AuthService extends BaseService implements IAuthService {
 	 * Verifies the token by sending it to the backend for verification.
 	 * @returns {User | undefined} user object if the token is valid, or undefined if it is not.
 	 */
-	public verifyToken(): User | undefined {
+	public verifyToken(providedToken?: string): User | undefined {
 		try {
-			const token = this.getToken();
+			const token = providedToken || this.getToken();
 
 			if (!token) return undefined;
 

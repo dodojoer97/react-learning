@@ -2,7 +2,7 @@
 
 ## Frontend Tasks
 
--   [ ] **Create Password Reset Page:**  
+-   [x] **Create Password Reset Page:**  
          Design and implement a password reset page where users can request and reset their passwords.
 -   [ ] **Create customer account page**  
          Design and implement a customer account page where users can edit their info

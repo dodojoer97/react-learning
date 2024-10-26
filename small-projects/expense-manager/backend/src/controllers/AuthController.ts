@@ -119,12 +119,7 @@ class AuthController {
 				throw new Error("Email is required");
 			}
 
-			// const token = await authService.login(email);
-			// if (token) {
-			// 	res.json({ token });
-			// } else {
-			// 	res.status(401).json({ message: "Invalid email or password" });
-			// }
+			res.status(200).json({ message: "success" });
 		} catch (error) {
 			if (isFirebaseError(error)) {
 				switch (error.code) {

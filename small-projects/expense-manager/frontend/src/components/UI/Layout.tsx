@@ -1,10 +1,10 @@
 // React
 import { FC, PropsWithChildren, ReactNode, useState } from "react";
 
+import { Outlet, useLoaderData } from "react-router-dom";
+
 // Components
 // import Header from "@/components/UI/Header";
-import Overlay from "@/components/UI/Overlay";
-import Loader from "@/components/UI/Loader";
 
 import Header from "@/templates/mosaic/partials/Header";
 import Sidebar from "@/templates/mosaic/partials/Sidebar";
@@ -15,14 +15,12 @@ import Sidebar from "@/templates/mosaic/partials/Sidebar";
 import useLoading from "@/hooks/useLoading";
 
 interface Props extends PropsWithChildren {
-	title: string;
 	rightComponent?: ReactNode;
 }
 
-const Layout: FC<Props> = ({ children, title, rightComponent }) => {
+const Layout: FC<Props> = ({ rightComponent }) => {
+	const { title } = useLoaderData() as { title: string };
 	const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
-
-	const loading = useLoading();
 
 	return (
 		<>
@@ -44,11 +42,9 @@ const Layout: FC<Props> = ({ children, title, rightComponent }) => {
 								</div>
 
 								{rightComponent && rightComponent}
-
-								{/* Right: Actions */}
 							</div>
 
-							{children}
+							<Outlet />
 						</div>
 					</main>
 				</div>

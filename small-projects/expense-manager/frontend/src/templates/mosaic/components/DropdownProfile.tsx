@@ -127,7 +127,7 @@ const DropdownProfile: FC<DropdownProfileProps> = ({ align = "left" }) => {
 								<li>
 									<Link
 										className="font-medium text-sm text-violet-500 hover:text-violet-600 dark:hover:text-violet-400 flex items-center py-1 px-3"
-										to="/settings"
+										to="/settings/preferences"
 										onClick={() => setDropdownOpen(!dropdownOpen)}
 									>
 										Settings
@@ -136,32 +136,10 @@ const DropdownProfile: FC<DropdownProfileProps> = ({ align = "left" }) => {
 								<li>
 									<Link
 										className="font-medium text-sm text-violet-500 hover:text-violet-600 dark:hover:text-violet-400 flex items-center py-1 px-3"
-										to="/login"
+										to="/auth/login"
 										onClick={handleSignout}
 									>
 										Sign Out
-									</Link>
-								</li>
-							</>
-						)}
-						{!user && (
-							<>
-								<li>
-									<Link
-										className="font-medium text-sm text-violet-500 hover:text-violet-600 dark:hover:text-violet-400 flex items-center py-1 px-3"
-										to="/login"
-										onClick={() => setDropdownOpen(!dropdownOpen)}
-									>
-										Login
-									</Link>
-								</li>
-								<li>
-									<Link
-										className="font-medium text-sm text-violet-500 hover:text-violet-600 dark:hover:text-violet-400 flex items-center py-1 px-3"
-										to="/signup"
-										onClick={handleSignout}
-									>
-										Sign up
 									</Link>
 								</li>
 							</>

@@ -3,46 +3,68 @@ import type { FC } from "react";
 // Props
 import { InputProps } from "./Input.d";
 
+// UI Components
+import InputError from "./InputError";
+
+// FontAwesome
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 const Input: FC<InputProps> = ({
 	type,
 	label,
 	id,
 	hiddenLabel,
 	inputIcon,
-	clickableIcon,
 	onClickIcon,
+	required,
+	error,
 	...props
 }) => {
 	return (
-		<>
+		<div>
 			<div>
-				<label htmlFor={id} className={hiddenLabel ? "opacity-0" : undefined}>
-					{label}
+				<label
+					htmlFor={id}
+					className={`${
+						hiddenLabel ? "opacity-0" : undefined
+					} block text-sm font-medium mb-1`}
+				>
+					{label} {required && <span className="text-red-500">*</span>}
 				</label>
 
-				<div className="relative">
+				{!inputIcon && (
 					<input
 						type={type}
 						id={id}
 						name={id}
 						{...props}
-						className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus-visible:outline-black"
+						required={required}
+						className="form-input w-full"
 					/>
-					{inputIcon && (
-						<span className="absolute inset-y-0 end-0 grid place-content-center px-4">
-							<img
+				)}
+
+				{inputIcon && (
+					<div className="relative">
+						<input
+							type={type}
+							id={id}
+							name={id}
+							{...props}
+							required={required}
+							className="form-input w-full"
+						/>
+						<div className="absolute inset-0 left-auto flex items-center pr-4">
+							<FontAwesomeIcon
+								className="cursor-pointer"
+								icon={inputIcon}
 								onClick={() => onClickIcon?.()}
-								src={inputIcon}
-								alt="Icon"
-								className={`size-4 text-gray-400, ${
-									clickableIcon ? "cursor-pointer" : ""
-								}`}
 							/>
-						</span>
-					)}
-				</div>
+						</div>
+					</div>
+				)}
 			</div>
-		</>
+			{error && <InputError message={error} />}
+		</div>
 	);
 };
 

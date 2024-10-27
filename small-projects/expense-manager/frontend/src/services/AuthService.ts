@@ -16,8 +16,15 @@ import LoginResponseDTO from "@/DTO/response/Login";
 
 // Models
 import User from "@/models/User";
+import ResetPasswordEmailDTO from "@/DTO/request/ResetPasswordEmail";
 
 const logger = new Logger("AuthService");
+
+interface TokenPayload {
+	uid: string;
+	email: string;
+	exp: number; // Expiration time in seconds since epoch
+}
 
 /**
  * AuthService class for handling authentication processes like login, signup, and logout.
@@ -46,8 +53,8 @@ class AuthService extends BaseService implements IAuthService {
 			);
 
 			this.storeToken(response.token);
-			const decodedUser = this.decodeToken(response.token);
-			return decodedUser;
+			const { email, uid } = this.decodeToken(response.token);
+			return { email, uid };
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with signup");
@@ -62,7 +69,7 @@ class AuthService extends BaseService implements IAuthService {
 	 * @returns {Promise<User | undefined>} A promise that resolves to the user object if found, or undefined if not.
 	 */
 	public async login(dto: LoginRequestDTO): Promise<User | undefined> {
-		const currentUser = await this.verifyToken();
+		const currentUser = this.verifyToken();
 		if (currentUser) {
 			return currentUser;
 		}
@@ -71,8 +78,8 @@ class AuthService extends BaseService implements IAuthService {
 			const response: LoginResponseDTO = await this.post<LoginRequestDTO>("auth/login", dto);
 
 			this.storeToken(response.token);
-			const decodedUser = this.decodeToken(response.token);
-			return decodedUser;
+			const { email, uid } = this.decodeToken(response.token);
+			return { email, uid };
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with login");
@@ -98,20 +105,20 @@ class AuthService extends BaseService implements IAuthService {
 
 	/**
 	 * Verifies the token by sending it to the backend for verification.
-	 * @returns {Promise<User | undefined>} A promise that resolves to the user object if the token is valid, or undefined if it is not.
+	 * @returns {User | undefined} user object if the token is valid, or undefined if it is not.
 	 */
-	public async verifyToken(): Promise<User | undefined> {
+	public verifyToken(providedToken?: string): User | undefined {
 		try {
-			const token = this.getToken();
+			const token = providedToken || this.getToken();
 
-			console.log("token: ", token);
 			if (!token) return undefined;
 
-			const response = await this.get("auth/verify-token", {
-				headers: { Authorization: `Bearer ${token}` },
-			});
-			if (response.valid) {
-				return response.user;
+			const expired = this.isTokenExpired(token);
+
+			if (!expired) {
+				const { email, uid } = this.decodeToken(token);
+
+				return { email, uid };
 			} else {
 				this.removeToken();
 				return undefined;
@@ -122,6 +129,22 @@ class AuthService extends BaseService implements IAuthService {
 			}
 			this.removeToken();
 			return undefined;
+		}
+	}
+
+	/**
+	 *
+	 * @param {ResetPasswordEmailDTO} dto The data transfer object containing the email.
+	 * @returns
+	 */
+	public async sendResetPassword(dto: ResetPasswordEmailDTO): Promise<void> {
+		try {
+			await this.post("auth/request-password-reset", dto);
+		} catch (error) {
+			if (error instanceof Error) {
+				logger.error(error.message || "Something went wrong with sendResetPassword");
+			}
+			throw error;
 		}
 	}
 
@@ -141,16 +164,36 @@ class AuthService extends BaseService implements IAuthService {
 	}
 
 	/**
-	 * Retrieves the authentication token from local storage.
-	 * @returns {Promise<T | null>} The authentication token if available, otherwise null.
+	 * Decodes a JWT token and returns its payload.
+	 * @param {string} token - The JWT token to decode.
+	 * @returns {any} - Returns the decoded payload of the token.
 	 */
-	private getToken(): string | null {
-		return localStorage.getItem("token");
+	private decodeToken(token: string): TokenPayload {
+		const payload = JSON.parse(atob(token.split(".")[1]));
+		return payload;
 	}
 
-	private decodeToken(token: string): User {
-		const payload = JSON.parse(atob(token.split(".")[1]));
-		return new User(payload.uid, payload.email);
+	/**
+	 * Checks if the given JWT token is expired by comparing the token's `exp` field with the current time.
+	 * @param {string} token - The JWT token to check for expiration.
+	 * @returns {boolean} - Returns `true` if the token is expired, `false` otherwise.
+	 */
+	private isTokenExpired(token: string): boolean {
+		if (!token) return true;
+
+		try {
+			// Use the decodeToken method to get the payload
+			const payload = this.decodeToken(token);
+
+			// Get the current time in seconds since epoch
+			const currentTime = Math.floor(Date.now() / 1000);
+
+			// Check if the token has expired by comparing the expiration time (exp) with the current time
+			return payload.exp < currentTime;
+		} catch (error) {
+			// In case of any error during decoding, consider the token expired
+			return true;
+		}
 	}
 }
 

@@ -1,79 +1,160 @@
-// React
-import { ReactNode } from "react";
+import { NonIndexRouteObject } from "react-router-dom";
+import { ReactNode, lazy, Suspense } from "react";
+import { authLoader } from "@/loaders/authLoader";
+import ErrorPage from "@/pages/Error";
+import Layout from "@/components/UI/Layout";
+import RightActions from "@/components/Dashboard/RightActions";
+import Loader from "@/components/UI/Loader"; // Add a fallback loading spinner
 
-// Routes
-import Home from "@/pages/Home";
-import LoginPage from "@/pages/Login";
-import SignUp from "@/pages/Signup";
-import Settings from "@/pages/Settings";
-import Categories from "@/pages/Categories";
-import Dashboard from "@/pages/Dashboard";
-import Analytics from "@/pages/Analytics";
+// Lazy-loaded components
+const LoginPage = lazy(() => import("@/pages/Login"));
+const SignUp = lazy(() => import("@/pages/Signup"));
+const Settings = lazy(() => import("@/pages/Settings"));
+const Categories = lazy(() => import("@/pages/Categories"));
+const Dashboard = lazy(() => import("@/pages/Dashboard"));
+const Analytics = lazy(() => import("@/pages/Analytics"));
+const ResetPassword = lazy(() => import("@/pages/ResetPassword"));
 
-export interface RouteConfig {
+export interface RouteConfig extends NonIndexRouteObject {
 	title: string;
 	path?: string;
-	component?: ReactNode;
+	element: ReactNode;
 	isProtected?: boolean;
 	sidebarDisplay?: boolean;
+	errorElement?: ReactNode;
 	children?: RouteConfig[];
+	index?: boolean;
 }
 
 export const routeConfig: RouteConfig[] = [
 	{
 		title: "Dashboard",
 		path: "/",
+		element: (
+			<Suspense fallback={<Loader />}>
+				<Layout rightComponent={<RightActions />} />
+			</Suspense>
+		),
 		sidebarDisplay: true,
 		isProtected: true,
-		component: <Dashboard />,
+		loader: () => authLoader({ title: "Dashboard" }),
+		errorElement: <ErrorPage />,
 		children: [
 			{
+				index: true,
 				title: "Main",
 				path: "/dashboard",
-				component: <Dashboard />,
+				element: (
+					<Suspense fallback={<Loader />}>
+						<Dashboard />
+					</Suspense>
+				),
 				isProtected: true,
+				loader: () => authLoader({ title: "Dashboard" }),
+				errorElement: <ErrorPage />,
 			},
 			{
 				title: "Analytics",
 				path: "/dashboard/analytics",
-				component: <Analytics />,
+				element: (
+					<Suspense fallback={<Loader />}>
+						<Analytics />
+					</Suspense>
+				),
 				isProtected: true,
+				loader: () => authLoader({ title: "Analytics" }),
+				errorElement: <ErrorPage />,
 			},
 		],
 	},
 	{
 		title: "Settings",
+		path: "/settings",
+		element: (
+			<Suspense fallback={<Loader />}>
+				<Layout />
+			</Suspense>
+		),
 		sidebarDisplay: true,
+		isProtected: true,
+		loader: () => authLoader({ title: "Settings" }),
+		errorElement: <ErrorPage />,
 		children: [
 			{
+				index: true,
 				title: "Preferences",
-				path: "/settings",
-				component: <Settings />,
+				path: "/settings/preferences",
+				element: (
+					<Suspense fallback={<Loader />}>
+						<Settings />
+					</Suspense>
+				),
 				isProtected: true,
+				loader: () => authLoader({ title: "Preferences" }),
+				errorElement: <ErrorPage />,
 			},
 			{
 				title: "Categories",
 				path: "/settings/categories",
-				component: <Categories />,
+				element: (
+					<Suspense fallback={<Loader />}>
+						<Categories />
+					</Suspense>
+				),
 				isProtected: true,
+				loader: () => authLoader({ title: "Categories" }),
+				errorElement: <ErrorPage />,
 			},
 		],
 	},
 	{
 		title: "Auth",
+		path: "auth",
+		element: null,
 		sidebarDisplay: false,
 		children: [
 			{
-				title: "login",
-				path: "/login",
-				component: <LoginPage />,
+				title: "Login",
+				path: "login",
+				element: (
+					<Suspense fallback={<Loader />}>
+						<LoginPage />
+					</Suspense>
+				),
 				isProtected: false,
+				errorElement: <ErrorPage />,
 			},
 			{
-				title: "signup",
-				path: "/signup",
-				component: <SignUp />,
+				title: "Signup",
+				path: "signup",
+				element: (
+					<Suspense fallback={<Loader />}>
+						<SignUp />
+					</Suspense>
+				),
 				isProtected: false,
+				errorElement: <ErrorPage />,
+			},
+			{
+				title: "reset-password",
+				path: "reset-password",
+				element: (
+					<Suspense fallback={<Loader />}>
+						<ResetPassword />
+					</Suspense>
+				),
+				loader: ({ request }) => {
+					const url = new URL(request.url);
+					const token = url.searchParams.get("token");
+
+					if (token) {
+						return authLoader({ title: "reset pass", token });
+					}
+
+					return null;
+				},
+				isProtected: false,
+				errorElement: <ErrorPage />,
 			},
 		],
 	},

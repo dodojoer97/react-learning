@@ -1,3 +1,7 @@
+import LoginDTO from "@/DTO/request/Login";
+import RegisterDTO from "@/DTO/request/Register";
+import ResetPasswordEmailDTO from "@/DTO/request/ResetPasswordEmail";
+
 export interface IAuthService {
 	/**
 	 * Signs up a new user using the provided DTO and returns the user object or undefined if an error occurs.
@@ -14,6 +18,13 @@ export interface IAuthService {
 	login(dto: LoginDTO): Promise<User | undefined>;
 
 	/**
+	 * sends a password reset to an email
+	 * @param {LoginDTO} dto - The data transfer object containing the login credentials.
+	 * @returns {Promise<User | undefined>} A promise that resolves to the user object or undefined.
+	 */
+	sendResetPassword(dto: ResetPasswordEmailDTO): Promise<void>;
+
+	/**
 	 * Logs out the current user by clearing the stored authentication token.
 	 * @returns {Promise<void>} A promise that resolves when the logout process is complete.
 	 */
@@ -23,5 +34,5 @@ export interface IAuthService {
 	 * Simulates validation of the authentication token by retrieving the user associated with it.
 	 * @returns {Promise<User | undefined>} A promise that resolves to the user object if the token is valid, or undefined if it is not or an error occurs.
 	 */
-	verifyToken(): Promise<User | undefined>;
+	verifyToken(): User | undefined;
 }

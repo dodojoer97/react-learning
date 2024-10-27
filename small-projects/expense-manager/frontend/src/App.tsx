@@ -9,15 +9,17 @@ import { Provider } from "react-redux"; // Import Redux Provider
 import { store } from "@/store/store"; // Import the Redux store
 
 // Router
-import router from "./Router";
+import Router from "./Router";
+
+// Theme provider
+import ThemeProvider from "./templates/mosaic/utils/ThemeContext";
 
 const App: FC = () => {
 	return (
 		<Provider store={store}>
-			<RouterProvider
-				router={router}
-				fallbackElement={<p>Initial Load...</p>}
-			></RouterProvider>
+			<ThemeProvider>
+				<Router />
+			</ThemeProvider>
 		</Provider>
 	);
 };

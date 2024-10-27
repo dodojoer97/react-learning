@@ -34,6 +34,10 @@ import { RootState, AppDispatch } from "@/store/store";
 // DTO
 import LoginDTO from "@/DTO/request/Login";
 import Loader from "@/components/UI/Loader";
+import AuthFormWrapper from "@/components/Auth/AuthFormWrapper";
+
+// FontAwesome
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Login: FC = () => {
 	const { t } = useTranslation(["login", "forms"]);
@@ -83,7 +87,7 @@ const Login: FC = () => {
 
 	useEffect(() => {
 		if (!error && isSubmitted && isAuthenticated) {
-			navigate("/settings");
+			navigate("/settings/preferences");
 		}
 
 		return () => {
@@ -92,21 +96,13 @@ const Login: FC = () => {
 	}, [isSubmitted, isAuthenticated, navigate, error]);
 
 	return (
-		<Layout>
-			<div className="mx-auto max-w-lg text-center">
-				<h1 className="text-2xl font-bold sm:text-3xl">{t("loginTitle")}</h1>
-
-				<p className="mt-4 text-gray-500">{t("loginDesc")}</p>
-			</div>
-
+		<AuthFormWrapper title={t("loginTitle")}>
 			<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4" onSubmit={handleSubmit}>
-				<div>
+				<div className="space-y-4">
 					<Input
 						id="email"
 						type="email"
 						label={t("forms:enterEmail")}
-						hiddenLabel
-						placeholder={t("forms:enterEmail")}
 						required
 						disabled={isLoadingForm}
 						value={emailField.value}
@@ -114,20 +110,14 @@ const Login: FC = () => {
 							emailField.handleInputChange(e as ChangeEvent<HTMLInputElement>)
 						}
 						onBlur={emailField.handleInputBlur}
-						inputIcon={emailIcon}
+						error={emailField.hasError ? t("forms:noEmailMatching") : undefined}
 					></Input>
-					{emailField.hasError && <InputError message={t("forms:noEmailMatching")} />}
-				</div>
 
-				<div>
 					<Input
 						id="password"
 						type={passwordInputType}
 						label={t("forms:enterPassword")}
-						placeholder={t("forms:enterPassword")}
-						inputIcon={eyeIcon}
-						hiddenLabel
-						clickableIcon
+						inputIcon={passwordInputType === "text" ? faEyeSlash : faEye}
 						required
 						disabled={isLoadingForm}
 						value={password1Field.value}
@@ -141,28 +131,42 @@ const Login: FC = () => {
 					{password1Field.hasError && (
 						<InputError message={t("forms:notPasswordLength")} />
 					)}
+
+					{error && <InputError message={error} className="text-red-600" />}
 				</div>
-
-				{error && <InputError message={error} className="text-red-600" />}
-
-				<div className="flex items-center justify-between">
-					<p className="text-sm text-gray-500">
-						{t("noAccount")}
-						<Link to="/signup" className="underline">
-							{t("signup")}
+				<div className="flex items-center justify-between mt-6">
+					<div className="mr-1">
+						<Link
+							className="text-sm underline hover:no-underline"
+							to="/auth/reset-password"
+						>
+							Forgot Password?
 						</Link>
-					</p>
+					</div>
 
 					<Button
 						type="submit"
-						disabled={hasErrors || isLoadingForm}
-						className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white disabled:bg-slate-400"
+						disabled={hasErrors || loading || isLoadingForm}
+						className="btn  bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white  whitespace-nowrap"
+						loading={loading || isLoadingForm}
 					>
-						{isLoadingForm ? <Loader /> : t("signin")}
+						{t("signin")}
 					</Button>
 				</div>
 			</Form>
-		</Layout>
+			{/* FOOTER */}
+			<div className="pt-5 mt-6 border-t border-gray-100 dark:border-gray-700/60">
+				<div className="text-sm">
+					{t("noAccount")}{" "}
+					<Link
+						className="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400"
+						to="/auth/signup"
+					>
+						{t("signup")}{" "}
+					</Link>
+				</div>
+			</div>
+		</AuthFormWrapper>
 	);
 };
 

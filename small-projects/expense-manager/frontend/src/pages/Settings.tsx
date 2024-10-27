@@ -22,14 +22,11 @@ const Settings: FC = () => {
 	const { availableCurrencies } = useSelector((state: RootState) => state.settings);
 
 	return (
-		<Layout>
-			<div className="mx-auto max-w-lg text-center">
-				<h1 className="text-2xl font-bold sm:text-3xl">{t("settingsTitle")}</h1>
-			</div>
+		<>
 			<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4">
 				<Select id="currency" label="Currency" options={availableCurrencies} />
 			</Form>
-		</Layout>
+		</>
 	);
 };
 

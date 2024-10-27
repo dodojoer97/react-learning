@@ -44,12 +44,12 @@ const SlidingPanel: FC<ISlidingPanelProps> = ({
 				onClick={onClose}
 			/>
 			<div
-				className={`fixed inset-y-0 ${panelDirection} z-50 bg-white dark:bg-gray-800 shadow-lg w-full max-w-lg transform ${openClass} transition-transform duration-300 ease-in-out`}
+				className={`fixed overflow-auto inset-y-0 ${panelDirection} z-50 bg-white dark:bg-gray-800 shadow-lg w-full max-w-lg transform ${openClass} transition-transform duration-300 ease-in-out`}
 			>
 				<div className="flex justify-end p-4">
 					<CloseButton onClose={onClose} />
 				</div>
-				<div className="p-4 ">{isOpen && children}</div>
+				<div className="p-4">{isOpen && children}</div>
 			</div>
 		</>,
 		document.querySelector("#sliding-panel") as HTMLDivElement

@@ -11,6 +11,7 @@ import { IGroupedItem, IGroupItem } from "@/utils/utils.d";
 
 // Hooks
 import useIsMobile from "@/hooks/useIsMobile";
+import Card from "./Card";
 
 interface ITabsProps<T extends IGroupItem> {
 	data: T[];
@@ -46,9 +47,11 @@ const Tabs: FC<ITabsProps<IGroupItem>> = ({ data, Component }) => {
 							isActive={isActiveTab(group.type)}
 							onClick={() => handleTabClick(group.type)}
 						>
-							{group.values.map((item, index) => (
-								<Component key={`${item.type}-${index}`} {...item} />
-							))}
+							<Card className="mt-2">
+								{group.values.map((item, index) => (
+									<Component key={`${item.type}-${index}`} {...item} />
+								))}
+							</Card>
 						</TabItem>
 					))}
 				</ul>
@@ -60,13 +63,15 @@ const Tabs: FC<ITabsProps<IGroupItem>> = ({ data, Component }) => {
 						items={groupedData.map((group) => group.type)}
 						onSelect={handleTabClick}
 					/>
-					{groupedData.map(
-						(group) =>
-							isActiveTab(group.type) &&
-							group.values.map((item, index) => (
-								<Component key={`${item.type}-${index}`} {...item} />
-							))
-					)}
+					<Card className="mt-2">
+						{groupedData.map(
+							(group) =>
+								isActiveTab(group.type) &&
+								group.values.map((item, index) => (
+									<Component key={`${item.type}-${index}`} {...item} />
+								))
+						)}
+					</Card>
 				</>
 			)}
 		</>

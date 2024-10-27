@@ -20,6 +20,9 @@ import Button from "@/components/UI/Button";
 // Moment
 import moment from "moment";
 
+// UUID
+import { v4 } from "uuid";
+
 const RightActions: FC = () => {
 	// TODO add translations
 	// Redux hooks
@@ -33,7 +36,7 @@ const RightActions: FC = () => {
 
 	// Handle open logic
 	const handleOpen = (): void => {
-		dispatch(selectTransaction(defaultTransaction)); // Select the default transaction
+		dispatch(selectTransaction({ ...defaultTransaction, id: v4() })); // Select the default transaction with a new id
 		dispatch(toggleOpen("dashboard-panel")); // Open the sliding panel
 	};
 

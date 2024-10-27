@@ -27,6 +27,7 @@ const useFormSubmission = (handleSubmitLogic: () => Promise<void>) => {
 			setError(err.message || "An error occurred");
 		} finally {
 			setIsSubmitted(true);
+
 			setIsLoading(false);
 		}
 	};

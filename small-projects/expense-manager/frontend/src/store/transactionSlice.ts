@@ -1,9 +1,16 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import TransactionService from "@/services/TransactionService";
-import { Transaction, CategoryType, OperationStatus, Category } from "@common";
-import { RootState } from "./store";
-import i18n from "@/i18n"; // Import the i18n instance
 
+// Store
+import { RootState } from "./store";
+
+// Models
+import { Transaction, CategoryType, OperationStatus, Category } from "@common";
+
+// Translations
+import i18n from "@/i18n";
+
+// Mappers
 import {
 	TransactionWithCategory,
 	TransactionCategoryAssigner,
@@ -12,9 +19,6 @@ import {
 // Utils
 import { getFirstDayOfMonth } from "@/utils/utils";
 import moment from "moment";
-import { IErrorMessages } from "@/locales/translation";
-import { errorTranslations } from "@/locales/en/translations";
-import { useTranslation } from "react-i18next";
 
 // Define the state interface
 export interface TransactionState {
@@ -66,7 +70,7 @@ export const getMappedTransactions = (
 };
 
 const initialState: TransactionState = {
-	transactions: [defaultTransaction, defaultTransaction, defaultTransaction],
+	transactions: [],
 	selectedTransaction: null,
 	draftTransaction: null,
 	loading: true,
@@ -232,7 +236,7 @@ export const saveDraftTransaction = createAsyncThunk<
 	void,
 	{ state: RootState; rejectValue: string }
 >("transaction/saveDraftTransaction", async (_, { getState, dispatch, rejectWithValue }) => {
-	const { draftTransaction } = getState().transaction;
+	const { draftTransaction, transactions } = getState().transaction;
 	const { user } = getState().auth;
 
 	if (!draftTransaction || !user?.uid) {
@@ -248,20 +252,23 @@ export const saveDraftTransaction = createAsyncThunk<
 
 	try {
 		// Determine whether to add a new transaction or edit an existing one
-		const actionType = draftTransaction.id ? editTransaction : addTransaction;
+		const foundTransction = transactions.find(
+			(transaction: Transaction) => transaction.id === draftTransaction.id
+		);
+		const actionType = foundTransction ? editTransaction : addTransaction;
 
-		// // Dispatch the appropriate action
-		// const resultAction = await dispatch(
-		// 	actionType({
-		// 		transaction: draftTransaction,
-		// 		userId: user.uid,
-		// 	})
-		// );
+		// Dispatch the appropriate action
+		const resultAction = await dispatch(
+			actionType({
+				transaction: draftTransaction,
+				userId: user.uid,
+			})
+		);
 
-		// // Check if the action was not fulfilled and throw an error to handle it in the rejected block
-		// if (resultAction.type.endsWith("rejected")) {
-		// 	throw new Error("Failed to process transaction");
-		// }
+		// Check if the action was not fulfilled and throw an error to handle it in the rejected block
+		if (resultAction.type.endsWith("rejected")) {
+			throw new Error("Failed to process transaction");
+		}
 	} catch (error: any) {
 		console.log("error.message: ", error.message);
 		// Use a generic error message to simplify error handling
@@ -338,18 +345,18 @@ const transactionSlice = createSlice({
 			.addCase(addTransaction.pending, (state) => {
 				state.loading = true;
 			})
-			.addCase(addTransaction.fulfilled, (state) => {
-				if (state.draftTransaction) {
-					state.transactions.push(state.draftTransaction); // Add the draft to transactions
-					console.log("state.draftTransaction: ", state.draftTransaction.status);
-					// Edit the balance
-					state.balance = updateOptimisticBalance(
-						state.draftTransaction.status,
-						state.balance,
-						state.draftTransaction.type,
-						state.draftTransaction.amount
-					);
-				}
+			.addCase(addTransaction.fulfilled, (state, action) => {
+				const { arg } = action.meta;
+				const transactionToAdd: Transaction = { ...arg.transaction, userId: arg.userId };
+
+				state.transactions.push(transactionToAdd); // Add the draft to transactions
+				// Edit the balance
+				state.balance = updateOptimisticBalance(
+					transactionToAdd.status,
+					state.balance,
+					transactionToAdd.type,
+					transactionToAdd.amount
+				);
 
 				state.loading = false;
 				state.draftTransaction = null; // Clear the draft after saving

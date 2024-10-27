@@ -1,34 +1,16 @@
-// Imports as before
-import { createBrowserRouter, createRoutesFromElements, Route, Navigate } from "react-router-dom";
-import RouteWrapper from "./components/RouteWrapper";
-import PrivateRoute from "./components/PrivateRoute";
-import { routeConfig, RouteConfig } from "@/config/routes";
+import { Suspense } from "react";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { routeConfig } from "@/config/routes";
+import LoadingSpinner from "@/components/UI/Loader"; // Add a fallback loader component
 
-// routes without grouping
-const routes: RouteConfig[] = routeConfig.flatMap((config: RouteConfig) => {
-	return config.children ? config.children : config;
-});
-const router = createBrowserRouter(
-	createRoutesFromElements(
-		<>
-			<Route path="/" element={<Navigate to="/dashboard" />} />
-			{routes.map(({ path, component: Component, isProtected }) => (
-				<Route
-					key={path}
-					path={path}
-					element={
-						<RouteWrapper>
-							{isProtected ? (
-								<PrivateRoute>{Component}</PrivateRoute>
-							) : (
-								<>{Component}</>
-							)}
-						</RouteWrapper>
-					}
-				/>
-			))}
-		</>
-	)
-);
+const router = createBrowserRouter(routeConfig);
 
-export default router;
+const Router = () => {
+	return (
+		<Suspense fallback={<LoadingSpinner />}>
+			<RouterProvider router={router} />
+		</Suspense>
+	);
+};
+
+export default Router;

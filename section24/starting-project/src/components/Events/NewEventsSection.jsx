@@ -5,7 +5,7 @@ import ErrorBlock from '../UI/ErrorBlock.jsx';
 import EventItem from './EventItem.jsx';
 
 // Http
-import { fetchEvents } from "../../util/https.js";
+import { fetchEvents } from "../../util/http.js";
 
 export default function NewEventsSection() {
   const {data, isPending, isError, error} = useQuery({

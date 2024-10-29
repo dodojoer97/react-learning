@@ -1,6 +1,6 @@
 // React query
 import {useMutation} from "@tanstack/react-query"
-import {createNewEvent} from "../../util/http.js"
+import {createNewEvent, queryClient} from "../../util/http.js"
 
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -13,6 +13,10 @@ export default function NewEvent() {
 
   const {mutate, isPending, isError, error} = useMutation({
     mutationFn: createNewEvent,
+    onSuccess: () => {
+      navigate("/events")
+      queryClient.invalidateQueries({queryKey: ['events'], exact: false}) // if exact is not sent or false, any query with 'events' will be re executed
+    }
   })
 
   function handleSubmit(formData) {

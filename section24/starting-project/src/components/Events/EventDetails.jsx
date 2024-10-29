@@ -1,7 +1,7 @@
 import { Link, Outlet, useParams } from 'react-router-dom';
 
 import { useQuery, useMutation } from '@tanstack/react-query';
-import {fetchEvent, deleteEvent} from "../../util/http.js"
+import {fetchEvent, deleteEvent, queryClient} from "../../util/http.js"
 
 import Header from '../Header.jsx';
 import ErrorBlock from '../UI/ErrorBlock.jsx';
@@ -14,7 +14,17 @@ export default function EventDetails() {
     queryFn: ({signal}) => fetchEvent({id, signal})
   })
 
-  console.log("Data: ", data)
+  const {mutate, isPending: isDeletePending, isError, error} = useMutation({
+    mutationFn: deleteEvent,
+    onSuccess: () => {
+      navigate("/events")
+      queryClient.invalidateQueries({queryKey: ['events'], exact: false}) // if exact is not sent or false, any query with 'events' will be re executed
+    }
+  })
+
+  const handleDelete = () => {
+    mutate({id})
+  }
 
 
   return (
@@ -35,7 +45,10 @@ export default function EventDetails() {
           <header>
             <h1>{data.title}</h1>
             <nav>
-              <button>Delete</button>
+              {isDeletePending &&  "DELETING"}
+              {!isDeletePending &&  
+                <button onClick={handleDelete}>Delete</button>
+              }
               <Link to="edit">Edit</Link>
             </nav>
           </header>
@@ -50,7 +63,11 @@ export default function EventDetails() {
             </div>
           </div>
         </article>
+        
       }
+
+      {isError && <ErrorBlock title="Failed to create event" message={error.message || "Failed"}/>}
+
     </>
   );
 }

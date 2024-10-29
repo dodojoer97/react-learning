@@ -1,4 +1,4 @@
-import { Link, Outlet, useParams } from 'react-router-dom';
+import { Link, Outlet, useNavigate, useParams } from 'react-router-dom';
 
 import { useQuery, useMutation } from '@tanstack/react-query';
 import {fetchEvent, deleteEvent, queryClient} from "../../util/http.js"
@@ -8,6 +8,8 @@ import ErrorBlock from '../UI/ErrorBlock.jsx';
 
 export default function EventDetails() {
   const {id} = useParams()
+
+  const navigate = useNavigate()
   
   const {data, isPending: isFetchEventPending, isError: isFetchEventError, error: fetchEventError} = useQuery({
     queryKey: ['events', id],

@@ -10,7 +10,7 @@
          Replace all hardcoded texts with translations using i18n or another translation library to support multiple languages.
 
 -   [ ] **Clean and Optimize Components:**  
-         Refactor and optimize frontend components to improve code cleanliness and maintainability.
+         Refactor and optimize frontend components to improve code cleanliness and maintainability, match styling.
 -   [ ] **Improve Performance:**  
          Identify and optimize performance bottlenecks in the frontend, such as unnecessary renders, large assets, or slow components.
 -   [ ] **Improve useInput hook**
@@ -22,7 +22,7 @@
 
 ## Backend Tasks
 
--   [ ] **Create Emailing Functionality:**  
+-   [x] **Create Emailing Functionality:**  
          Implement backend logic for sending emails, including the password reset email and potentially other email notifications.
 -   [ ] **Create Edit customer Functionality:**  
          Implement backend logic for editing user info

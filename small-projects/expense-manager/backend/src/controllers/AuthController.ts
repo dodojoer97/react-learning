@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import authService from "../services/AuthService";
-import emailService from "@/services/EmailService";
 import categoryService from "../services/CategoryService";
 import { isError, isFirebaseError, Logger } from "@common";
 import jwt, { JwtPayload } from "jsonwebtoken";
@@ -120,27 +119,14 @@ class AuthController {
 				throw new Error("Email is required");
 			}
 
-			await emailService.sendPasswordResetEmail(email);
-			res.status(200).json({ message: "success" });
+			const sendPasswordResponse = await authService.sendPasswordResetEmail(email);
+			res.status(sendPasswordResponse.status).json({ message: sendPasswordResponse.message });
 		} catch (error) {
-			if (isFirebaseError(error)) {
-				switch (error.code) {
-					case "auth/wrong-password":
-						res.status(401).json({ message: "Wrong password" });
-						break;
-					case "auth/user-not-found":
-						res.status(404).json({ message: "User not found" });
-						break;
-					// Handle other Firebase Auth errors
-					default:
-						logger.error(`Firebase Auth Error during login: ${error.message}`);
-						res.status(500).json({ message: "Internal server error" });
-				}
-			} else if (isError(error)) {
-				logger.error(`Error during login: ${error.message}`);
+			if (isError(error)) {
+				logger.error(`Error during requestPasswordReset: ${error.message}`);
 				res.status(500).json({ message: "Internal server error" });
 			} else {
-				logger.error("An unknown error occurred during login");
+				logger.error("An unknown error occurred during requestPasswordReset");
 				res.status(500).json({ message: "Internal server error" });
 			}
 		}

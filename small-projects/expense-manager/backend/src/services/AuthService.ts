@@ -1,14 +1,29 @@
+// Firebase
 import {
 	auth,
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
 } from "../config/firebase";
+
+// Repositories
 import userRepository from "../repositories/UserRepository";
+
+// Services
+import emailService from "@/services/EmailService";
+
+// JWT
 import jwt, { JwtPayload } from "jsonwebtoken";
 
+// Common
 import { isError, Logger } from "@common";
 
 const logger = new Logger("AuthService");
+
+// Interfaces
+interface PasswordResetResponse {
+	message: string;
+	status: number;
+}
 
 class AuthService {
 	private jwtSecret = process.env.JWT_SECRET || "your_jwt_secret";
@@ -94,6 +109,31 @@ class AuthService {
 				logger.error("An unknown error occurred during token verification");
 			}
 			return { valid: false };
+		}
+	}
+
+	async sendPasswordResetEmail(email: string): Promise<PasswordResetResponse> {
+		const result: PasswordResetResponse = {
+			status: 200,
+			message: "If an account with that email exists, a password reset link has been sent.",
+		};
+
+		try {
+			const user = await userRepository.getUserByEmail(email);
+
+			if (user) {
+				await emailService.sendPasswordResetEmail(email);
+			}
+
+			// Always return the same response
+			return result;
+		} catch (error) {
+			if (isError(error)) {
+				logger.error(`Error during token verification: ${error.message}`);
+			} else {
+				logger.error("An unknown error occurred during token verification");
+			}
+			return { message: "Something went wrong in sendPasswordResetEmail", status: 500 };
 		}
 	}
 }

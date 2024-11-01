@@ -19,10 +19,18 @@ export interface IAuthService {
 
 	/**
 	 * sends a password reset to an email
-	 * @param {LoginDTO} dto - The data transfer object containing the login credentials.
-	 * @returns {Promise<User | undefined>} A promise that resolves to the user object or undefined.
+	 * @param {ResetPasswordEmailDTO} dto - The data transfer object containing the reset password credentials.
+	 * @returns {Promise<void>}
 	 */
-	sendResetPassword(dto: ResetPasswordEmailDTO): Promise<void>;
+	sendResetPasswordEmail(dto: ResetPasswordEmailDTO): Promise<void>;
+
+	/**
+	 * sends a password reset to an email
+	 * @param {string} password - the new password for the uer
+	 * @param {string} token - the token for the user
+	 * @returns {Promise<void>}
+	 */
+	resetPassword(password: string, token: string): Promise<void>;
 
 	/**
 	 * Logs out the current user by clearing the stored authentication token.

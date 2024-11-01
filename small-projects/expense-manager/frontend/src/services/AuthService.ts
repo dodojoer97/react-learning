@@ -137,9 +137,33 @@ class AuthService extends BaseService implements IAuthService {
 	 * @param {ResetPasswordEmailDTO} dto The data transfer object containing the email.
 	 * @returns
 	 */
-	public async sendResetPassword(dto: ResetPasswordEmailDTO): Promise<void> {
+	public async sendResetPasswordEmail(dto: ResetPasswordEmailDTO): Promise<void> {
 		try {
 			await this.post("auth/request-password-reset", dto);
+		} catch (error) {
+			if (error instanceof Error) {
+				logger.error(error.message || "Something went wrong with sendResetPassword");
+			}
+			throw error;
+		}
+	}
+
+	/**
+	 *
+	 * @param {string} password
+	 * @param {string} token
+	 */
+	async resetPassword(password: string, token: string): Promise<void> {
+		try {
+			await this.post(
+				"auth/reset-password",
+				{ password },
+				{
+					headers: {
+						authorization: `Bearer ${token}`,
+					},
+				}
+			);
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with sendResetPassword");

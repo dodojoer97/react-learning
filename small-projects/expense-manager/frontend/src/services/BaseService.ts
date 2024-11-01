@@ -23,7 +23,7 @@ class BaseService implements IBaseService {
 		const token: string | null = this.getToken();
 
 		if (auth && token) {
-			params["Authorization"] = `Bearer ${token}`;
+			params["authorization"] = `Bearer ${token}`;
 		}
 
 		return params;

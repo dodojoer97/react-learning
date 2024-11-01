@@ -73,13 +73,25 @@ export const initializeAuth = createAsyncThunk<
 	}
 });
 
-export const sendResetPassword = createAsyncThunk<
+export const sendResetPasswordEmail = createAsyncThunk<
 	void,
 	ResetPasswordEmailDTO,
 	{ rejectValue: string }
->("auth/sendResetPassword", async (dto: ResetPasswordEmailDTO, { rejectWithValue }) => {
+>("auth/sendResetPasswordEmail", async (dto: ResetPasswordEmailDTO, { rejectWithValue }) => {
 	try {
-		await authService.sendResetPassword(dto);
+		await authService.sendResetPasswordEmail(dto);
+	} catch (error: any) {
+		return rejectWithValue(error.message || "Something went wrong with sendResetPassword");
+	}
+});
+
+export const resetPassword = createAsyncThunk<
+	void,
+	{ password: string; token: string },
+	{ rejectValue: string }
+>("auth/resetPassword", async (dto: { password: string; token: string }, { rejectWithValue }) => {
+	try {
+		await authService.resetPassword(dto.password, dto.token);
 	} catch (error: any) {
 		return rejectWithValue(error.message || "Something went wrong with sendResetPassword");
 	}
@@ -131,18 +143,29 @@ const authSlice = createSlice({
 			state.error = null;
 		});
 		builder.addCase(login.rejected, (state, action) => {
-			state.error = action.payload || "sendResetPassword failed";
+			state.error = action.payload || "login failed";
 			state.loading = false;
 		});
-		builder.addCase(sendResetPassword.pending, (state) => {
+		builder.addCase(sendResetPasswordEmail.pending, (state) => {
 			state.loading = true;
 		});
-		builder.addCase(sendResetPassword.fulfilled, (state) => {
+		builder.addCase(sendResetPasswordEmail.fulfilled, (state) => {
 			state.loading = false;
 			state.error = null;
 		});
-		builder.addCase(sendResetPassword.rejected, (state, action) => {
-			state.error = "sendResetPassword failed";
+		builder.addCase(sendResetPasswordEmail.rejected, (state, action) => {
+			state.error = "sendResetPasswordEmail failed";
+			state.loading = false;
+		});
+		builder.addCase(resetPassword.pending, (state) => {
+			state.loading = true;
+		});
+		builder.addCase(resetPassword.fulfilled, (state) => {
+			state.loading = false;
+			state.error = null;
+		});
+		builder.addCase(resetPassword.rejected, (state, action) => {
+			state.error = "resetPassword failed";
 			state.loading = false;
 		});
 		// Handle logout lifecycle

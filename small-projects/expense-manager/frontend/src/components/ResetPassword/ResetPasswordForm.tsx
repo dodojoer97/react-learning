@@ -14,7 +14,7 @@ import InputError from "@/components/UI/InputError";
 import { useTranslation } from "react-i18next";
 
 // Store
-import { sendResetPassword, clearError } from "@/store/authSlice";
+import { resetPassword, clearError } from "@/store/authSlice";
 import { RootState, AppDispatch } from "@/store/store";
 
 // Hooks
@@ -28,7 +28,11 @@ import { hasMinLength } from "@/utils/utils";
 // FontAweomse
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
-const ResetPasswordForm: FC = () => {
+interface Props {
+	token: string;
+}
+
+const ResetPasswordForm: FC<Props> = ({ token }) => {
 	const { t } = useTranslation(["login", "forms"]);
 
 	// Redux
@@ -72,7 +76,7 @@ const ResetPasswordForm: FC = () => {
 	} = useFormSubmission(async () => {
 		if (password1Field.hasError) return;
 
-		await dispatch(sendResetPassword({ email: password1Field.value }));
+		await dispatch(resetPassword({ password: password1Field.value, token }));
 	});
 
 	// Check if we have any errors
@@ -126,7 +130,7 @@ const ResetPasswordForm: FC = () => {
 
 					<div className="flex justify-end mt-6">
 						<Button
-							disabled={isLoadingForm || loadingAuth || hasErrors}
+							disabled={isLoadingForm || loadingAuth}
 							loading={loadingAuth || isLoadingForm}
 							className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white whitespace-nowrap"
 						>

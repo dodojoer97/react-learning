@@ -13,7 +13,7 @@ import Button from "@/components/UI/Button";
 import { useTranslation } from "react-i18next";
 
 // Store
-import { sendResetPassword, clearError } from "@/store/authSlice";
+import { sendResetPasswordEmail, clearError } from "@/store/authSlice";
 import { RootState, AppDispatch } from "@/store/store";
 
 // Hooks
@@ -53,7 +53,7 @@ const RequestPasswordResetForm: FC = () => {
 	} = useFormSubmission(async () => {
 		if (emailField.hasError) return;
 
-		await dispatch(sendResetPassword({ email: emailField.value }));
+		await dispatch(sendResetPasswordEmail({ email: emailField.value }));
 	});
 
 	const hasErrors: boolean = !!(formError || authError);

@@ -16,7 +16,7 @@ const ResetPassword: FC = () => {
 	return (
 		<AuthFormWrapper title="Reset password">
 			{/* IF we have the token the reset password form should be loaded, to enable to user to edit */}
-			{token && <ResetPasswordForm />}
+			{token && <ResetPasswordForm token={token} />}
 
 			{!token && <RequestPasswordResetForm />}
 		</AuthFormWrapper>

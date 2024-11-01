@@ -3,7 +3,6 @@ import {
 	auth,
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
-	updatePassword,
 } from "../config/firebase";
 
 // Repositories
@@ -17,7 +16,9 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 
 // Common
 import { isError, Logger } from "@common";
-import { User } from "firebase/auth";
+
+// Models
+import { User } from "@/models/User";
 
 const logger = new Logger("AuthService");
 
@@ -141,7 +142,11 @@ class AuthService {
 
 	async resetPassword(user: User, newPassword: string): Promise<void> {
 		try {
-			await updatePassword(user, newPassword);
+			const foundUser = await userRepository.getUserByEmail(user.email);
+
+			if (foundUser) {
+				await userRepository.updateUser(foundUser.uid, newPassword);
+			}
 		} catch (error) {
 			if (isError(error)) {
 				logger.error(`Error during  resetPassword: ${error.message}`);

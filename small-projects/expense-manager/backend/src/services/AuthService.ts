@@ -3,6 +3,7 @@ import {
 	auth,
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
+	updatePassword,
 } from "../config/firebase";
 
 // Repositories
@@ -16,6 +17,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 
 // Common
 import { isError, Logger } from "@common";
+import { User } from "firebase/auth";
 
 const logger = new Logger("AuthService");
 
@@ -129,11 +131,24 @@ class AuthService {
 			return result;
 		} catch (error) {
 			if (isError(error)) {
-				logger.error(`Error during token verification: ${error.message}`);
+				logger.error(`Error during sendPasswordResetEmail: ${error.message}`);
 			} else {
-				logger.error("An unknown error occurred during token verification");
+				logger.error("An unknown error occurred during sendPasswordResetEmail");
 			}
 			return { message: "Something went wrong in sendPasswordResetEmail", status: 500 };
+		}
+	}
+
+	async resetPassword(user: User, newPassword: string): Promise<void> {
+		try {
+			await updatePassword(user, newPassword);
+		} catch (error) {
+			if (isError(error)) {
+				logger.error(`Error during  resetPassword: ${error.message}`);
+			} else {
+				logger.error("An unknown error occurred during resetPassword");
+			}
+			throw error;
 		}
 	}
 }

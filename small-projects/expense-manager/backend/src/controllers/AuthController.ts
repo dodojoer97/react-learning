@@ -131,6 +131,30 @@ class AuthController {
 			}
 		}
 	}
+
+	async resetPassword(req: Request, res: Response) {
+		const { password } = req.body;
+
+		try {
+			// @ts-ignore
+			// user provided by middelware
+			if (req.user) {
+				// @ts-ignore
+				await authService.resetPassword(req.user, password);
+				res.status(200).json({ message: "Password updated" });
+			} else {
+				res.status(500).json({ message: "Internal server error" });
+			}
+		} catch (error) {
+			if (isError(error)) {
+				logger.error(`Error during resetPassword: ${error.message}`);
+				res.status(500).json({ message: "Internal server error" });
+			} else {
+				logger.error("An unknown error occurred during resetPassword");
+				res.status(500).json({ message: "Internal server error" });
+			}
+		}
+	}
 }
 
 export default new AuthController();

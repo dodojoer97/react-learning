@@ -4,6 +4,7 @@ import {
 	connectAuthEmulator,
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
+	updatePassword,
 } from "firebase/auth";
 import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
 import dotenv from "dotenv";
@@ -52,6 +53,7 @@ export {
 	auth,
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
+	updatePassword,
 	clientDb,
 	admin,
 	adminDb,

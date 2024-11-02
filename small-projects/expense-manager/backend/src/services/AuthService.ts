@@ -19,6 +19,7 @@ import { isError, Logger } from "@common";
 
 // Models
 import { User } from "@/models/User";
+import e from "cors";
 
 const logger = new Logger("AuthService");
 
@@ -61,14 +62,13 @@ class AuthService {
 		}
 	}
 
-	async register(email: string, password: string): Promise<string | null> {
+	async register(email: string, password: string, displayName: string): Promise<string | null> {
 		try {
-			if (!email || !password) {
-				throw new Error("Email and password are required");
+			if (!email || !password || !displayName) {
+				throw new Error("Email and password and displayName are required");
 			}
 
-			const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-			const user = userCredential.user;
+			const user = await userRepository.createUser(email, password, "");
 
 			if (user) {
 				const token = jwt.sign({ uid: user.uid, email: user.email }, this.jwtSecret, {

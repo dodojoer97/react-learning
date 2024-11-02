@@ -47,13 +47,13 @@ class AuthController {
 
 	async register(req: Request, res: Response) {
 		try {
-			const { email, password } = req.body;
+			const { email, password, displayName } = req.body;
 
-			if (!email || !password) {
-				throw new Error("Email and password are required");
+			if (!email || !password || !displayName) {
+				throw new Error("Email and password, displayName are required");
 			}
 
-			const token = await authService.register(email, password);
+			const token = await authService.register(email, password, displayName);
 
 			if (token) {
 				const { uid } = jwt.decode(token) as { uid: string };

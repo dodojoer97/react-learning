@@ -6,11 +6,11 @@ class UserRepository {
 	async getUserByEmail(email: string): Promise<User | null> {
 		try {
 			const userRecord = await admin.auth().getUserByEmail(email);
-			console.log("userRecordL ", userRecord);
 			return {
 				...userRecord,
 				uid: userRecord.uid,
 				email: userRecord.email as string,
+				displayName: userRecord.displayName as string,
 			};
 		} catch (error) {
 			console.error("getUserByEmail error: ", error);
@@ -18,10 +18,15 @@ class UserRepository {
 		}
 	}
 
-	async createUser(email: string, password: string): Promise<User | null> {
+	async createUser(email: string, password: string, displayName: string): Promise<User | null> {
 		try {
-			const userRecord = await admin.auth().createUser({ email, password });
-			return { uid: userRecord.uid, email: userRecord.email as string, password };
+			const userRecord = await admin.auth().createUser({ email, password, displayName });
+			return {
+				uid: userRecord.uid,
+				email: userRecord.email as string,
+				password,
+				displayName,
+			};
 		} catch (error) {
 			console.error("createUser error: ", error);
 			return null;

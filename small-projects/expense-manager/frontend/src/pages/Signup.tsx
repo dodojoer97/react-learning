@@ -55,6 +55,13 @@ const Signup: FC = () => {
 		clearErrorFN: () => dispatch(clearError()), // Dispatch clear error action
 	});
 
+	// Name field
+	const nameField = useInput<HTMLInputElement, string>({
+		defaultValue: "",
+		validationFn: (value: string) => hasMinLength(value, 8),
+		clearErrorFN: () => dispatch(clearError()), // Dispatch clear error action
+	});
+
 	// Password fields
 	const password1Field = useInput<HTMLInputElement, string>({
 		defaultValue: "",
@@ -87,7 +94,7 @@ const Signup: FC = () => {
 	const { handleSubmit, isSubmitted, setIsSubmitted, isLoading } = useFormSubmission(async () => {
 		if (hasErrors) return;
 
-		const dto = new RegisterDTO(emailField.value, password1Field.value);
+		const dto = new RegisterDTO(emailField.value, password1Field.value, nameField.value);
 		await dispatch(signup(dto)); // Dispatch the signup action
 	});
 
@@ -121,6 +128,20 @@ const Signup: FC = () => {
 							onBlur={emailField.handleInputBlur}
 						></Input>
 						{emailField.hasError && <InputError message={t("forms:noEmailMatching")} />}
+					</div>
+					<div>
+						<Input
+							id="name"
+							type="text"
+							label={"Name"}
+							required
+							value={nameField.value}
+							onChange={(e) =>
+								nameField.handleInputChange(e as ChangeEvent<HTMLInputElement>)
+							}
+							onBlur={nameField.handleInputBlur}
+						></Input>
+						{nameField.hasError && <InputError message={"Some error"} />}
 					</div>
 					<div>
 						<Input

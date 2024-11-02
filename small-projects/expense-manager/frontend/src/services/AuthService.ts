@@ -23,6 +23,7 @@ const logger = new Logger("AuthService");
 interface TokenPayload {
 	uid: string;
 	email: string;
+	displayName: string;
 	exp: number; // Expiration time in seconds since epoch
 }
 
@@ -53,8 +54,8 @@ class AuthService extends BaseService implements IAuthService {
 			);
 
 			this.storeToken(response.token);
-			const { email, uid } = this.decodeToken(response.token);
-			return { email, uid };
+			const { email, uid, displayName } = this.decodeToken(response.token);
+			return { email, uid, displayName };
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with signup");
@@ -78,8 +79,8 @@ class AuthService extends BaseService implements IAuthService {
 			const response: LoginResponseDTO = await this.post<LoginRequestDTO>("auth/login", dto);
 
 			this.storeToken(response.token);
-			const { email, uid } = this.decodeToken(response.token);
-			return { email, uid };
+			const { email, uid, displayName } = this.decodeToken(response.token);
+			return { email, uid, displayName };
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with login");
@@ -116,9 +117,9 @@ class AuthService extends BaseService implements IAuthService {
 			const expired = this.isTokenExpired(token);
 
 			if (!expired) {
-				const { email, uid } = this.decodeToken(token);
+				const { email, uid, displayName } = this.decodeToken(token);
 
-				return { email, uid };
+				return { email, uid, displayName };
 			} else {
 				this.removeToken();
 				return undefined;

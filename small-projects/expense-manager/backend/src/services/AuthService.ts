@@ -42,9 +42,13 @@ class AuthService {
 			const user = userCredential.user;
 
 			if (user) {
-				const token = jwt.sign({ uid: user.uid, email: user.email }, this.jwtSecret, {
-					expiresIn: "1h",
-				});
+				const token = jwt.sign(
+					{ uid: user.uid, email: user.email, displayName: user.displayName },
+					this.jwtSecret,
+					{
+						expiresIn: "1h",
+					}
+				);
 				logger.info(`User ${email} logged in successfully`);
 				return token;
 			}
@@ -68,12 +72,16 @@ class AuthService {
 				throw new Error("Email and password and displayName are required");
 			}
 
-			const user = await userRepository.createUser(email, password, "");
+			const user = await userRepository.createUser(email, password, displayName);
 
 			if (user) {
-				const token = jwt.sign({ uid: user.uid, email: user.email }, this.jwtSecret, {
-					expiresIn: "1h",
-				});
+				const token = jwt.sign(
+					{ uid: user.uid, email: user.email, displayName: user.displayName },
+					this.jwtSecret,
+					{
+						expiresIn: "1h",
+					}
+				);
 				logger.info(`User ${email} registered successfully`);
 				return token;
 			}

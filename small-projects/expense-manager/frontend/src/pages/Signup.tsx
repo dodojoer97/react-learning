@@ -58,7 +58,7 @@ const Signup: FC = () => {
 	// Name field
 	const nameField = useInput<HTMLInputElement, string>({
 		defaultValue: "",
-		validationFn: (value: string) => hasMinLength(value, 8),
+		validationFn: (value: string) => hasMinLength(value, 3),
 		clearErrorFN: () => dispatch(clearError()), // Dispatch clear error action
 	});
 

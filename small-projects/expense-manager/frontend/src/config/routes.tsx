@@ -14,6 +14,7 @@ const Categories = lazy(() => import("@/pages/Categories"));
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const Analytics = lazy(() => import("@/pages/Analytics"));
 const ResetPassword = lazy(() => import("@/pages/ResetPassword"));
+const Account = lazy(() => import("@/pages/Account"));
 
 export interface RouteConfig extends NonIndexRouteObject {
 	title: string;
@@ -77,7 +78,7 @@ export const routeConfig: RouteConfig[] = [
 		),
 		sidebarDisplay: true,
 		isProtected: true,
-		loader: () => authLoader({ title: "Settings" }),
+		loader: () => authLoader({ title: "" }),
 		errorElement: <ErrorPage />,
 		children: [
 			{
@@ -103,6 +104,18 @@ export const routeConfig: RouteConfig[] = [
 				),
 				isProtected: true,
 				loader: () => authLoader({ title: "Categories" }),
+				errorElement: <ErrorPage />,
+			},
+			{
+				title: "Account",
+				path: "/settings/account",
+				element: (
+					<Suspense fallback={<Loader />}>
+						<Account />
+					</Suspense>
+				),
+				isProtected: true,
+				loader: () => authLoader({ title: "Account" }),
 				errorElement: <ErrorPage />,
 			},
 		],

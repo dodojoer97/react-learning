@@ -11,17 +11,19 @@ import Input from "@/components/UI/Input";
 import { isEmail, hasMinLength } from "@/utils/utils";
 
 // Store
-import { login, clearError } from "@/store/authSlice";
+import { clearError } from "@/store/authSlice";
 import { RootState, AppDispatch } from "@/store/store";
 
 // Hooks
 import useInput from "@/hooks/useInput";
 import InputError from "@/components/UI/InputError";
+import useFormSubmission from "@/hooks/useFormSubmission";
 
 // Translations
 import { useTranslation } from "react-i18next";
 import Form from "@/components/UI/Form";
 import Button from "@/components/UI/Button";
+import { Link } from "react-router-dom";
 
 const AccountPanel: React.FC = () => {
 	// Translations
@@ -49,7 +51,7 @@ const AccountPanel: React.FC = () => {
 		clearErrorFN: () => dispatch(clearError()), // Dispatch clear error action
 	});
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {};
+	const { handleSubmit, isLoading, error } = useFormSubmission(async () => {});
 
 	const handleReset = (e: React.FormEvent<HTMLFormElement>): void => {
 		e.preventDefault();
@@ -130,9 +132,13 @@ const AccountPanel: React.FC = () => {
 								Password
 							</h2>
 							<div className="mt-5">
-								<Button className="btn border-gray-200 dark:border-gray-700/60 shadow-sm text-violet-500">
+								<Link
+									to={"/auth/reset-password"}
+									target="_blank"
+									className="btn border-gray-200 dark:border-gray-700/60 shadow-sm text-violet-500"
+								>
 									Set New Password
-								</Button>
+								</Link>
 							</div>
 						</section>
 					</div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import type { ChangeEvent } from "react";
 
 // Redux
@@ -29,10 +29,13 @@ const AccountPanel: React.FC = () => {
 
 	// Redux
 	const dispatch = useDispatch<AppDispatch>();
+	const { user } = useSelector((state: RootState) => state.auth);
+
+	if (!user) return <>No user</>;
 
 	// Form fields
 	const emailField = useInput<HTMLInputElement, string>({
-		defaultValue: "",
+		defaultValue: user.email,
 		validationFn: (value: string) => {
 			return isEmail(value);
 		},
@@ -41,12 +44,18 @@ const AccountPanel: React.FC = () => {
 
 	// Name field
 	const nameField = useInput<HTMLInputElement, string>({
-		defaultValue: "",
+		defaultValue: user.displayName,
 		validationFn: (value: string) => hasMinLength(value, 3),
 		clearErrorFN: () => dispatch(clearError()), // Dispatch clear error action
 	});
 
-	function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {}
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {};
+
+	const handleReset = (e: React.FormEvent<HTMLFormElement>): void => {
+		e.preventDefault();
+		emailField.reset();
+		nameField.reset();
+	};
 
 	return (
 		<div className="bg-white dark:bg-gray-800 shadow-sm rounded-xl mb-8">
@@ -131,7 +140,12 @@ const AccountPanel: React.FC = () => {
 					<footer>
 						<div className="flex flex-col px-6 py-5 border-t border-gray-200 dark:border-gray-700/60">
 							<div className="flex self-end">
-								<Button className="btn dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-800 dark:text-gray-300">
+								<Button
+									onClick={(e: React.FormEvent<HTMLFormElement>) =>
+										handleReset(e)
+									}
+									className="btn dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-800 dark:text-gray-300"
+								>
 									Cancel
 								</Button>
 								<Button className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white ml-3">

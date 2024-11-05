@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import type { ChangeEvent } from "react";
 
 /**
@@ -27,11 +27,15 @@ const useInput = <
 	value: V;
 	handleInputChange(e: ChangeEvent<T> | Date): void;
 	handleInputBlur(): void;
+	reset(): void;
 	hasError: boolean;
 	isTouched: boolean;
 } => {
 	const [value, setValue] = useState<V>(defaultValue);
 	const [isTouched, setIsTouched] = useState<boolean>(false);
+
+	// Initial value for resetting
+	const InitialValue = useRef<V>(defaultValue);
 
 	// Memoize validation result
 	const valueIsValid: boolean = validationFn ? validationFn(value) : true;
@@ -61,6 +65,10 @@ const useInput = <
 		[changeFn, clearErrorFN]
 	);
 
+	const reset = () => {
+		setValue(InitialValue.current);
+	};
+
 	// Memoized blur handler
 	const handleInputBlur = useCallback((): void => {
 		setIsTouched(true);
@@ -70,6 +78,7 @@ const useInput = <
 		value,
 		handleInputChange,
 		handleInputBlur,
+		reset,
 		hasError: isTouched && !valueIsValid,
 		isTouched,
 	};

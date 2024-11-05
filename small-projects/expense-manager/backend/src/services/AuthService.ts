@@ -165,7 +165,7 @@ class AuthService {
 		}
 	}
 
-	async updateUserInfo(user: User, { ...fields }: Omit<User, "password">): Promise<void> {
+	async updateUserInfo(user: User, { ...fields }: Omit<User, "password" | "uid">): Promise<void> {
 		try {
 			const foundUser = await userRepository.getUserByEmail(user.email);
 

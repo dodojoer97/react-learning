@@ -11,7 +11,7 @@ import Input from "@/components/UI/Input";
 import { isEmail, hasMinLength } from "@/utils/utils";
 
 // Store
-import { clearError } from "@/store/authSlice";
+import { clearError, updateUserInfo } from "@/store/authSlice";
 import { RootState, AppDispatch } from "@/store/store";
 
 // Hooks
@@ -51,7 +51,9 @@ const AccountPanel: React.FC = () => {
 		clearErrorFN: () => dispatch(clearError()), // Dispatch clear error action
 	});
 
-	const { handleSubmit, isLoading, error } = useFormSubmission(async () => {});
+	const { handleSubmit, isLoading, error } = useFormSubmission(async () => {
+		await dispatch(updateUserInfo({ displayName: nameField.value, email: emailField.value }));
+	});
 
 	const handleReset = (e: React.FormEvent<HTMLFormElement>): void => {
 		e.preventDefault();
@@ -59,6 +61,12 @@ const AccountPanel: React.FC = () => {
 		nameField.reset();
 	};
 
+	const areButtonsDisabled: boolean = !!(
+		isLoading ||
+		error ||
+		emailField.hasError ||
+		nameField.hasError
+	);
 	return (
 		<div className="bg-white dark:bg-gray-800 shadow-sm rounded-xl mb-8">
 			<Form onSubmit={(e) => handleSubmit(e)}>
@@ -147,6 +155,7 @@ const AccountPanel: React.FC = () => {
 						<div className="flex flex-col px-6 py-5 border-t border-gray-200 dark:border-gray-700/60">
 							<div className="flex self-end">
 								<Button
+									disabled={areButtonsDisabled}
 									onClick={(e: React.FormEvent<HTMLFormElement>) =>
 										handleReset(e)
 									}
@@ -154,7 +163,11 @@ const AccountPanel: React.FC = () => {
 								>
 									Cancel
 								</Button>
-								<Button className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white ml-3">
+								<Button
+									disabled={areButtonsDisabled}
+									loading={isLoading}
+									className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white ml-3"
+								>
 									Save Changes
 								</Button>
 							</div>

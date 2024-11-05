@@ -159,7 +159,7 @@ class AuthController {
 	}
 
 	async updateUserInfo(req: Request, res: Response) {
-		const { ...fields }: Omit<User, "password"> = req.body;
+		const { ...fields }: Omit<User, "password" | "uid"> = req.body;
 
 		try {
 			// @ts-ignore

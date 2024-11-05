@@ -153,13 +153,30 @@ class AuthService {
 			const foundUser = await userRepository.getUserByEmail(user.email);
 
 			if (foundUser) {
-				await userRepository.updateUser(foundUser.uid, newPassword);
+				await userRepository.updateUser(foundUser.uid, { password: newPassword });
 			}
 		} catch (error) {
 			if (isError(error)) {
 				logger.error(`Error during  resetPassword: ${error.message}`);
 			} else {
 				logger.error("An unknown error occurred during resetPassword");
+			}
+			throw error;
+		}
+	}
+
+	async updateUserInfo(user: User, { ...fields }: Omit<User, "password">): Promise<void> {
+		try {
+			const foundUser = await userRepository.getUserByEmail(user.email);
+
+			if (foundUser) {
+				await userRepository.updateUser(foundUser.uid, { ...fields });
+			}
+		} catch (error) {
+			if (isError(error)) {
+				logger.error(`Error during  updateUserInfo: ${error.message}`);
+			} else {
+				logger.error("An unknown error occurred during updateUserInfo");
 			}
 			throw error;
 		}

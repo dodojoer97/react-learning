@@ -27,8 +27,10 @@
 -   [ ] **Create Edit customer Functionality:**  
          Implement backend logic for editing user info
 
--   [ ] **Check Firebase Scheduling Functionality Online:**  
-         Test and verify the Firebase scheduling function in the production environment (online), not just locally, to ensure it works as expected.
+-   [ ] **Check Firebase Scheduling Functionality Online:**
+
+-   [ ] **Add schema validations**  
+         Add a genric validation function that takes a schema and validates it
 
 ## Common Tasks
 

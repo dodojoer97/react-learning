@@ -9,5 +9,6 @@ router.post("/auth/login", authController.login);
 router.post("/auth/register", authController.register);
 router.post("/auth/request-password-reset", authController.requestPasswordReset);
 router.post("/auth/reset-password", authenticateToken, authController.resetPassword);
+router.post("/auth/reset-password", authenticateToken, authController.updateUserInfo);
 
 export default router;

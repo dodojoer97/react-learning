@@ -33,9 +33,9 @@ class UserRepository {
 		}
 	}
 
-	async updateUser(userId: string, newPassword: string): Promise<void> {
+	async updateUser(userId: string, { ...fields }: Partial<User>): Promise<void> {
 		try {
-			await admin.auth().updateUser(userId, { password: newPassword });
+			await admin.auth().updateUser(userId, { ...fields });
 		} catch (error) {
 			console.error("updateUser error: ", error);
 			throw error;

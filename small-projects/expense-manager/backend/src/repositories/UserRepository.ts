@@ -5,6 +5,8 @@ interface AdditionalUserData {
 	currency: string;
 }
 
+const DEFAULT_CURRENCY = "$";
+
 class UserRepository {
 	private userCollection = adminDb.collection("users");
 
@@ -42,14 +44,14 @@ class UserRepository {
 
 			// Create user document in Firestore with custom fields
 			const userDoc = this.userCollection.doc(userRecord.uid);
-			await userDoc.set({ currency: "$" }); // Set default currency field
+			await userDoc.set({ currency: DEFAULT_CURRENCY }); // Set default currency field
 
 			return {
 				uid: userRecord.uid,
 				email: userRecord.email as string,
 				password,
 				displayName,
-				currency: "$",
+				currency: DEFAULT_CURRENCY,
 			};
 		} catch (error) {
 			console.error("createUser error: ", error);

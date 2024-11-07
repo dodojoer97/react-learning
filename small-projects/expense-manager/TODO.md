@@ -26,6 +26,8 @@
          Implement backend logic for sending emails, including the password reset email and potentially other email notifications.
 -   [x] **Create Edit customer Functionality:**
         Implement backend logic for editing user info
+-   [x] **Create user info endpoint:**
+        Implement backend logic for getting user info
 
 -   [ ] **Check Firebase Scheduling Functionality Online:**
 

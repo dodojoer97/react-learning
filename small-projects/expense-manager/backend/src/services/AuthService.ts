@@ -181,6 +181,20 @@ class AuthService {
 			throw error;
 		}
 	}
+
+	async getUserInfo(userId: string): Promise<User | null> {
+		try {
+			const foundUser = await userRepository.getUserById(userId);
+			return foundUser;
+		} catch (error) {
+			if (isError(error)) {
+				logger.error(`Error during  getUserInfo: ${error.message}`);
+			} else {
+				logger.error("An unknown error occurred during updateUserInfo");
+			}
+			throw error;
+		}
+	}
 }
 
 export default new AuthService();

@@ -181,6 +181,28 @@ class AuthController {
 			}
 		}
 	}
+
+	async getUserInfo(req: Request, res: Response) {
+		try {
+			const { userId } = req.params;
+
+			const foundUser = await authService.getUserInfo(userId);
+
+			if (foundUser) {
+				res.status(200).json(foundUser);
+			} else {
+				res.status(404).json({ message: "No user found with id" });
+			}
+		} catch (error) {
+			if (isError(error)) {
+				logger.error(`Error during getUserInfo: ${error.message}`);
+				res.status(500).json({ message: "Internal server error" });
+			} else {
+				logger.error("An unknown error occurred during getUserInfo");
+				res.status(500).json({ message: "Internal server error" });
+			}
+		}
+	}
 }
 
 export default new AuthController();

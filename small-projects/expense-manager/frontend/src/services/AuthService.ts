@@ -177,9 +177,25 @@ class AuthService extends BaseService implements IAuthService {
 	 *
 	 * @param {User} userInfo the user data to update
 	 */
-	async updateUserInfo(userInfo: Omit<User, "password" | "uid">) {
+	async updateUserInfo(userInfo: Omit<User, "uid">) {
 		try {
 			await this.put("auth/update-info", { ...userInfo }, { auth: true });
+		} catch (error) {
+			if (error instanceof Error) {
+				logger.error(error.message || "Something went wrong with sendResetPassword");
+			}
+			throw error;
+		}
+	}
+
+	/**
+	 *
+	 * @param {string} userId the user id to retrieve
+	 */
+	async getUserInfo(userId: string): Promise<User> {
+		try {
+			const userInfo = await this.get(`/auth/user-info/${userId}`);
+			return userInfo;
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with sendResetPassword");

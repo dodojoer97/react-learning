@@ -109,6 +109,18 @@ export const updateUserInfo = createAsyncThunk<
 	}
 });
 
+export const getUserInfo = createAsyncThunk<User, string, { rejectValue: string }>(
+	"auth/getUserInfo",
+	async (userId: string, { rejectWithValue }) => {
+		try {
+			const user = await authService.getUserInfo(userId);
+			return user;
+		} catch (error: any) {
+			return rejectWithValue(error.message || "Something went wrong with sendResetPassword");
+		}
+	}
+);
+
 // Create the auth slice
 const authSlice = createSlice({
 	name: "auth",
@@ -156,6 +168,19 @@ const authSlice = createSlice({
 		});
 		builder.addCase(login.rejected, (state, action) => {
 			state.error = action.payload || "login failed";
+			state.loading = false;
+		});
+		builder.addCase(getUserInfo.pending, (state) => {
+			state.loading = true;
+		});
+		builder.addCase(getUserInfo.fulfilled, (state, action: PayloadAction<User>) => {
+			state.user = action.payload;
+			state.isAuthenticated = !!action.payload;
+			state.loading = false;
+			state.error = null;
+		});
+		builder.addCase(getUserInfo.rejected, (state, action) => {
+			state.error = action.payload || "getUserInfo failed";
 			state.loading = false;
 		});
 		builder.addCase(sendResetPasswordEmail.pending, (state) => {

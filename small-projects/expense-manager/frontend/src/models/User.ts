@@ -1,14 +1,5 @@
-import { IUser } from "./User.d";
+import { User as UserModel } from "@common";
 
-class User implements IUser {
-	uid: string;
-	email: string;
-	displayName: string;
-	constructor(uid: string, email: string, displayName: string) {
-		this.uid = uid;
-		this.email = email;
-		this.displayName = displayName;
-	}
-}
+type User = Omit<UserModel, "password">;
 
 export default User;

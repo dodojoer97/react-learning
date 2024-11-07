@@ -1,6 +1,5 @@
 import { admin } from "../config/firebase";
-import { User } from "../models/User";
-import { UserRecord } from "firebase-admin/lib/auth/user-record";
+import { User } from "@common";
 
 class UserRepository {
 	async getUserByEmail(email: string): Promise<User | null> {

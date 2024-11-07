@@ -18,7 +18,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { isError, Logger } from "@common";
 
 // Models
-import { User } from "@/models/User";
+import { User } from "@common";
 import e from "cors";
 
 const logger = new Logger("AuthService");

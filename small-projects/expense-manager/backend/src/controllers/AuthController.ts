@@ -4,7 +4,7 @@ import categoryService from "../services/CategoryService";
 import { isError, isFirebaseError, Logger } from "@common";
 import jwt, { JwtPayload } from "jsonwebtoken";
 // Models
-import { User } from "@/models/User";
+import { User } from "@common";
 
 const logger = new Logger("AuthController");
 

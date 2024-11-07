@@ -194,7 +194,7 @@ class AuthService extends BaseService implements IAuthService {
 	 */
 	async getUserInfo(userId: string): Promise<User> {
 		try {
-			const userInfo = await this.get(`/auth/user-info/${userId}`);
+			const userInfo = await this.get(`auth/user-info/${userId}`, { auth: true });
 			return userInfo;
 		} catch (error) {
 			if (error instanceof Error) {

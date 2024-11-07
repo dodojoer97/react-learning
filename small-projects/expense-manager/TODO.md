@@ -24,8 +24,8 @@
 
 -   [x] **Create Emailing Functionality:**  
          Implement backend logic for sending emails, including the password reset email and potentially other email notifications.
--   [ ] **Create Edit customer Functionality:**  
-         Implement backend logic for editing user info
+-   [x] **Create Edit customer Functionality:**
+        Implement backend logic for editing user info
 
 -   [ ] **Check Firebase Scheduling Functionality Online:**
 

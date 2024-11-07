@@ -92,6 +92,7 @@ const AccountPanel: React.FC = () => {
 										type="text"
 										label={"Name"}
 										required
+										disabled={isLoading}
 										value={nameField.value}
 										onChange={(e) =>
 											nameField.handleInputChange(
@@ -120,6 +121,7 @@ const AccountPanel: React.FC = () => {
 										type="email"
 										label={t("forms:enterEmail")}
 										required
+										disabled={isLoading}
 										value={emailField.value}
 										onChange={(e) =>
 											emailField.handleInputChange(

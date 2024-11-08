@@ -8,7 +8,7 @@ import type { CategoryType } from "@common";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store"; // Correct store import
-import { addCategory } from "@/store/settingsSlice"; // Import addCategory action
+import { addCategory } from "@/store/categorySlice"; // Import addCategory action
 
 // Components
 import Form from "@/components/UI/Form";

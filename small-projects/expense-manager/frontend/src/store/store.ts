@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import settingsReducer from "./settingsSlice";
+import settingsReducer from "./categorySlice";
 import openReducer from "./openSlice";
 import authReducer from "./authSlice"; // Import the auth reducer
 import transactionReducer from "./transactionSlice";

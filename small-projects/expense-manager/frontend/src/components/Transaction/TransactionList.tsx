@@ -4,7 +4,7 @@ import { useEffect, useMemo } from "react";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTransactions, getMappedTransactions } from "@/store/transactionSlice"; // Fetch transactions and mapped transactions
-import { fetchCategories } from "@/store/settingsSlice"; // Fetch categories
+import { fetchCategories } from "@/store/categorySlice"; // Fetch categories
 import { toggleOpen } from "@/store/openSlice"; // Open and close sliding panel
 import { RootState, AppDispatch } from "@/store/store"; // Store types
 

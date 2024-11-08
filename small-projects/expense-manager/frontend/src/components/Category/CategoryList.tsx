@@ -10,7 +10,7 @@ import CategoryComp from "@/components/Category/Category";
 
 // Store
 import { RootState, AppDispatch } from "@/store/store"; // Redux store types
-import { fetchCategories } from "@/store/settingsSlice"; // Action to fetch categories
+import { fetchCategories } from "@/store/categorySlice"; // Action to fetch categories
 import { updateDraftTransaction } from "@/store/transactionSlice"; // Action to update draft transaction
 
 // Models

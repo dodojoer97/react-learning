@@ -5,7 +5,7 @@ import { useEffect } from "react";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store"; // Import the store
-import { setCategoryMode, fetchCategories } from "@/store/settingsSlice"; // Import actions from settings slice
+import { setCategoryMode, fetchCategories } from "@/store/categorySlice"; // Import actions from settings slice
 import { toggleOpen } from "@/store/openSlice"; // Import toggle action from open slice
 
 // Translation

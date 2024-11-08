@@ -5,14 +5,7 @@ import { ISettingsService } from "./SettingsService.interface";
 import BaseService from "./BaseService";
 
 // Models
-import { Category } from "@common";
-import SelectFieldOption from "@/models/SelectFieldOption";
-
-// DTO
-import GetCategoriesDTO from "@/DTO/response/GetCategories";
-
-// Config
-import { categoryIcons } from "@/config/categoryIcons";
+import { UserSettings, isError } from "@common";
 
 /**
  *  SettingsService class for handling settings.
@@ -26,6 +19,39 @@ class SettingsService extends BaseService implements ISettingsService {
 	constructor() {
 		const baseUrl = "http://localhost:3000";
 		super(baseUrl);
+	}
+
+	async getSettings(userId: string): Promise<UserSettings> {
+		try {
+			const userSettings: UserSettings = await this.get(`settings/${userId}`, { auth: true });
+
+			return userSettings;
+		} catch (error) {
+			if (isError(error)) {
+				throw error;
+			}
+			throw error;
+		}
+	}
+
+	async updateSettings(
+		userId: string,
+		fields: Partial<Omit<UserSettings, "id" | "userId">>
+	): Promise<UserSettings> {
+		try {
+			const userSettings: UserSettings = await this.put(
+				`settings`,
+				{ userId, fields },
+				{ auth: true }
+			);
+
+			return userSettings;
+		} catch (error) {
+			if (isError(error)) {
+				throw error;
+			}
+			throw error;
+		}
 	}
 }
 

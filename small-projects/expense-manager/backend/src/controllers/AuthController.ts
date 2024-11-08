@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import authService from "../services/AuthService";
 import categoryService from "../services/CategoryService";
+import settingsService from "@/services/SettingsService";
+
 import { isError, isFirebaseError, Logger } from "@common";
 import jwt, { JwtPayload } from "jsonwebtoken";
 // Models
@@ -59,7 +61,10 @@ class AuthController {
 
 			if (token) {
 				const { uid } = jwt.decode(token) as { uid: string };
+
+				// Assign default data
 				await categoryService.addDefaultCategoriesForUser(uid);
+				await settingsService.createInitialSettings(uid);
 
 				res.status(201).json({ token });
 			} else {

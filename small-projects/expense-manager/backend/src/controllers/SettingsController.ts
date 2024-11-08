@@ -10,23 +10,6 @@ import settingsService from "@/services/SettingsService";
 const logger = new Logger("SettingsController");
 
 class SettingsController {
-	async createInitialSettings(req: Request, res: Response) {
-		const { userId } = req.body;
-		try {
-			const userSettings = await settingsService.createInitialSettings(userId);
-
-			res.json(201).json(userSettings);
-		} catch (error) {
-			if (isError(error)) {
-				logger.error(`Error during createInitialSettings: ${error.message}`);
-				res.status(500).json({ message: "Internal server error" });
-			} else {
-				logger.error("An unknown error occurred during createInitialSettings");
-				res.status(500).json({ message: "Internal server error" });
-			}
-		}
-	}
-
 	async getSettings(req: Request, res: Response) {
 		const { userId } = req.params;
 		try {

@@ -1,0 +1,1 @@
+{"version":3,"file":"UserSettings.d.ts","sourceRoot":"","sources":["../../src/models/UserSettings.ts"],"names":[],"mappings":"AAAA,qBAAa,YAAY;IACxB,QAAQ,EAAE,MAAM,CAAC;IACjB,MAAM,EAAE,MAAM,CAAC;IACf,EAAE,EAAE,MAAM,CAAC;gBACC,QAAQ,EAAE,YAAY;CAKlC"}

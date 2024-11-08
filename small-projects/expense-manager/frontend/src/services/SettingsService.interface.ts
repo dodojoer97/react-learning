@@ -1,13 +1,29 @@
 // Models
-import SelectFieldOption from "@/models/SelectFieldOption";
+import { UserSettings } from "@common";
 
 export interface ISettingsService {
 	/**
-	 * Sets the currency for a specific user.
-	 *
-	 * @param {string} userId - The ID of the user to set the currency for.
-	 * @param {Currency} currency - The currency to set for the user.
-	 * @returns {Promise<void>} - A promise that resolves when the currency has been set.
+	 * Creates the intial settings for a user with default values
+	 * @param {string} userId the user to create the settings for
+	 * @returns {Promise<void>}
 	 */
-	setCurrency(userId: string, currency: SelectFieldOption): Promise<void>;
+	createInitialSettings(userId: string): Promise<void>;
+
+	/**
+	 * Gets the settings for a specific user by user ID.
+	 * @param {string} userId The user ID to get settings for.
+	 * @returns {Promise<UserSettings>} The user's settings
+	 */
+	getSettings(userId: string): Promise<UserSettings>;
+
+	/**
+	 * Gets the settings for a specific user by user ID.
+	 * @param {string} userId The user ID to get settings for.
+	 * @param {Partial<UserSettings>} fields the fields to update on settings
+	 * @returns {Promise<UserSettings>} The user's settings
+	 */
+	updateSettings(
+		userId: string,
+		fields: Partial<Omit<UserSettings, "id" | "userId">>
+	): Promise<UserSettings>;
 }

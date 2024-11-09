@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import settingsReducer from "./categorySlice";
+import settingsReducer from "./settingsSlice";
+import categoryReducer from "./categorySlice";
 import openReducer from "./openSlice";
 import authReducer from "./authSlice"; // Import the auth reducer
 import transactionReducer from "./transactionSlice";
@@ -11,6 +12,7 @@ export const store = configureStore({
 		open: openReducer,
 		auth: authReducer, // Add the auth reducer
 		transaction: transactionReducer,
+		categories: categoryReducer,
 	},
 });
 

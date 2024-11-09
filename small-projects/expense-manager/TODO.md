@@ -19,6 +19,8 @@
         Improve the look of the page when first loading a component, to not show the loader and then the other things
 -   [ ] **Improve Setting page**
         Add more settings options, improve look
+-   [ ] **Add check for unauthorized requests, in that case redirect to login**
+        Secure the frontend
 
 ## Backend Tasks
 

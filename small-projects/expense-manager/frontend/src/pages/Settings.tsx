@@ -19,12 +19,17 @@ const Settings: FC = () => {
 	const { t } = useTranslation("settings");
 
 	// Redux: Select available currencies from the settings slice
-	const { availableCurrencies } = useSelector((state: RootState) => state.settings);
+	const { availableCurrencies, currency } = useSelector((state: RootState) => state.settings);
 
 	return (
 		<>
 			<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4">
-				<Select id="currency" label="Currency" options={availableCurrencies} />
+				<Select
+					value={currency.value}
+					id="currency"
+					label="Currency"
+					options={availableCurrencies}
+				/>
 			</Form>
 		</>
 	);

@@ -22,7 +22,7 @@ const TransactionLineChart: FC = () => {
 	// Redux hooks
 	const transactions = useSelector((state: RootState) => state.transaction.transactions);
 	const selectedDates = useSelector((state: RootState) => state.transaction.selectedDates);
-	const categories = useSelector((state: RootState) => state.settings.categories);
+	const categories = useSelector((state: RootState) => state.categories.categories);
 
 	// computed
 	const isLoadingAny: boolean = useLoading();

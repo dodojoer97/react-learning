@@ -31,7 +31,7 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 	const dispatch = useDispatch<AppDispatch>();
 	const { availableCategoryTypes, selectedTransaction, draftTransaction, error, loading } =
 		useSelector((state: RootState) => ({
-			availableCategoryTypes: state.settings.availableCategoryTypes,
+			availableCategoryTypes: state.categories.availableCategoryTypes,
 			selectedTransaction: state.transaction.selectedTransaction,
 			draftTransaction: state.transaction.draftTransaction,
 			error: state.transaction.error,

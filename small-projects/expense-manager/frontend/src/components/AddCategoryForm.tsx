@@ -36,7 +36,7 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 
 	// Redux store
 	const dispatch = useDispatch<AppDispatch>();
-	const { availableCategoryTypes, loading } = useSelector((state: RootState) => state.settings); // Access availableCategoryTypes from Redux
+	const { availableCategoryTypes, loading } = useSelector((state: RootState) => state.categories); // Access availableCategoryTypes from Redux
 	const { user } = useSelector((state: RootState) => state.auth);
 
 	const categoryNameField = useInput<HTMLInputElement, string>({

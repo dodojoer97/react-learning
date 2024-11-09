@@ -24,7 +24,7 @@ interface Props {
 const CategoryList: FC<Props> = ({ onSelect, mode = "list" }) => {
 	// Redux hooks
 	const dispatch = useDispatch<AppDispatch>();
-	const categories = useSelector((state: RootState) => state.settings.categories);
+	const categories = useSelector((state: RootState) => state.categories.categories);
 	const draftTransaction = useSelector((state: RootState) => state.transaction.draftTransaction);
 	const userId = useSelector((state: RootState) => state.auth.user?.uid);
 

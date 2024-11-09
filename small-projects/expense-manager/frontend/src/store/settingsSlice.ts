@@ -27,7 +27,7 @@ export interface SettingsState {
 const initialState: SettingsState = {
 	currency: currencies[0],
 	availableCurrencies: currencies,
-	loading: true,
+	loading: false,
 	error: null, // Initialize error as null
 };
 

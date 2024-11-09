@@ -31,6 +31,10 @@ const initialState: SettingsState = {
 	error: null, // Initialize error as null
 };
 
+// Helper function to find matching currency
+const findCurrency = (currencyValue: string): SelectFieldOption =>
+	currencies.find((currency) => currency.value === currencyValue) || currencies[0];
+
 // Async actions (thunks)
 export const getSettings = createAsyncThunk<
 	UserSettings,
@@ -69,9 +73,24 @@ const settingsSlice = createSlice({
 				state.loading = true;
 			})
 			.addCase(getSettings.fulfilled, (state, action: PayloadAction<UserSettings>) => {
-				state.currency = action.payload.currency;
+				// Set the currency in the state, or default if not found
+				state.currency = findCurrency(action.payload.currency);
 				state.loading = false;
 				state.error = null;
+			})
+			.addCase(getSettings.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.payload || "Something went wrong in getSettings";
+			})
+			.addCase(updateSettings.fulfilled, (state, action: PayloadAction<UserSettings>) => {
+				// Set the currency in the state, or default if not found
+				state.currency = findCurrency(action.payload.currency);
+				state.loading = false;
+				state.error = null;
+			})
+			.addCase(updateSettings.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.payload || "Something went wrong in updateSettings";
 			});
 	},
 });

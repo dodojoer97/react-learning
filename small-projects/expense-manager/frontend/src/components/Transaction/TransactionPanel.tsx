@@ -7,7 +7,7 @@ import type { CategoryType, OperationStatus } from "@common";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store"; // Correct store import
-import { setCategoryMode } from "@/store/settingsSlice"; // Action from settings slice
+import { setCategoryMode } from "@/store/categorySlice"; // Action from settings slice
 import { updateDraftTransaction, saveDraftTransaction } from "@/store/transactionSlice"; // Actions from transaction slice
 import { toggleOpen } from "@/store/openSlice"; // Action from open slice
 
@@ -31,7 +31,7 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 	const dispatch = useDispatch<AppDispatch>();
 	const { availableCategoryTypes, selectedTransaction, draftTransaction, error, loading } =
 		useSelector((state: RootState) => ({
-			availableCategoryTypes: state.settings.availableCategoryTypes,
+			availableCategoryTypes: state.categories.availableCategoryTypes,
 			selectedTransaction: state.transaction.selectedTransaction,
 			draftTransaction: state.transaction.draftTransaction,
 			error: state.transaction.error,

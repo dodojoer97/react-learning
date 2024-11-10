@@ -19,16 +19,22 @@
         Improve the look of the page when first loading a component, to not show the loader and then the other things
 -   [ ] **Improve Setting page**
         Add more settings options, improve look
+-   [ ] **Add check for unauthorized requests, in that case redirect to login**
+        Secure the frontend
 
 ## Backend Tasks
 
 -   [x] **Create Emailing Functionality:**  
          Implement backend logic for sending emails, including the password reset email and potentially other email notifications.
--   [ ] **Create Edit customer Functionality:**  
-         Implement backend logic for editing user info
+-   [x] **Create Edit customer Functionality:**
+        Implement backend logic for editing user info
+-   [ ] **Create user info endpoint:**
+        Implement backend logic for getting user info
 
--   [ ] **Check Firebase Scheduling Functionality Online:**  
-         Test and verify the Firebase scheduling function in the production environment (online), not just locally, to ensure it works as expected.
+-   [ ] **Check Firebase Scheduling Functionality Online:**
+
+-   [ ] **Add schema validations**  
+         Add a genric validation function that takes a schema and validates it
 
 ## Common Tasks
 

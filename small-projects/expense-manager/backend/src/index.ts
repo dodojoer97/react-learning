@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import userRoutes from "./routes/authRoutes";
 import recordRoutes from "./routes/transactionRoutes";
 import categoryRoutes from "./routes/categoryRoutes";
+import settingsRoutes from "./routes/settingsRoutes";
 import cors from "cors";
 
 // CORS options
@@ -21,6 +22,7 @@ app.use(bodyParser.json());
 app.use(userRoutes);
 app.use(recordRoutes);
 app.use(categoryRoutes);
+app.use(settingsRoutes);
 
 app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`);

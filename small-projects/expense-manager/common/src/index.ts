@@ -8,6 +8,8 @@ export { debounce } from "./utils/utils";
 // Models
 export { Category } from "./models/Category";
 export { OperationStatus } from "./models/OperationStatus";
+export { User } from "./models/User";
+export { UserSettings } from "./models/UserSettings";
 
 export { Transaction } from "./models/Transaction";
 export { type MandatoryTransactionFields } from "./models/Transaction";

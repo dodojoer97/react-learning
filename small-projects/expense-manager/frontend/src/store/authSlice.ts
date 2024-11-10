@@ -97,6 +97,30 @@ export const resetPassword = createAsyncThunk<
 	}
 });
 
+export const updateUserInfo = createAsyncThunk<
+	void,
+	Omit<User, "password" | "uid">,
+	{ rejectValue: string }
+>("auth/updateUserInfo", async (userInfo: Omit<User, "password" | "uid">, { rejectWithValue }) => {
+	try {
+		await authService.updateUserInfo(userInfo);
+	} catch (error: any) {
+		return rejectWithValue(error.message || "Something went wrong with sendResetPassword");
+	}
+});
+
+export const getUserInfo = createAsyncThunk<User, string, { rejectValue: string }>(
+	"auth/getUserInfo",
+	async (userId: string, { rejectWithValue }) => {
+		try {
+			const user = await authService.getUserInfo(userId);
+			return user;
+		} catch (error: any) {
+			return rejectWithValue(error.message || "Something went wrong with sendResetPassword");
+		}
+	}
+);
+
 // Create the auth slice
 const authSlice = createSlice({
 	name: "auth",
@@ -146,6 +170,19 @@ const authSlice = createSlice({
 			state.error = action.payload || "login failed";
 			state.loading = false;
 		});
+		builder.addCase(getUserInfo.pending, (state) => {
+			state.loading = true;
+		});
+		builder.addCase(getUserInfo.fulfilled, (state, action: PayloadAction<User>) => {
+			state.user = action.payload;
+			state.isAuthenticated = !!action.payload;
+			state.loading = false;
+			state.error = null;
+		});
+		builder.addCase(getUserInfo.rejected, (state, action) => {
+			state.error = action.payload || "getUserInfo failed";
+			state.loading = false;
+		});
 		builder.addCase(sendResetPasswordEmail.pending, (state) => {
 			state.loading = true;
 		});
@@ -166,6 +203,18 @@ const authSlice = createSlice({
 		});
 		builder.addCase(resetPassword.rejected, (state, action) => {
 			state.error = "resetPassword failed";
+			state.loading = false;
+		});
+		builder.addCase(updateUserInfo.pending, (state) => {
+			state.loading = true;
+		});
+		builder.addCase(updateUserInfo.fulfilled, (state, action) => {
+			state.user = { uid: state.user.uid, ...action.meta.arg };
+			state.loading = false;
+			state.error = null;
+		});
+		builder.addCase(updateUserInfo.rejected, (state, action) => {
+			state.error = "updateUserInfo failed";
 			state.loading = false;
 		});
 		// Handle logout lifecycle

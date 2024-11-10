@@ -1,5 +1,5 @@
 import { AppDispatch, RootState } from "@/store/store";
-import { initializeAuth } from "@/store/authSlice";
+import { initializeAuth, getUserInfo } from "@/store/authSlice";
 
 import { redirect } from "react-router-dom";
 import { store } from "@/store/store"; // Import your Redux store if needed
@@ -16,14 +16,20 @@ export const authLoader = async ({ title, token }: { title: string; token?: stri
 	const isAuthenticated = state.auth.isAuthenticated;
 	const isLoadingAuth = state.auth.loading;
 
+	const { user } = state.auth;
+
 	// If authentication is still loading, you could return a loading state (e.g., spinner)
 	if (isLoadingAuth) {
 		return null;
 	}
 
 	// If the user is not authenticated, redirect to the login page
-	if (!isAuthenticated) {
+	if (!isAuthenticated && !user) {
 		return redirect("/auth/login");
+	}
+
+	if (user) {
+		await dispatch(getUserInfo(user.uid));
 	}
 
 	// Return the title for use in the component

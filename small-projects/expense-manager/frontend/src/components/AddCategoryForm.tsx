@@ -8,7 +8,7 @@ import type { CategoryType } from "@common";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store"; // Correct store import
-import { addCategory } from "@/store/settingsSlice"; // Import addCategory action
+import { addCategory } from "@/store/categorySlice"; // Import addCategory action
 
 // Components
 import Form from "@/components/UI/Form";
@@ -36,7 +36,7 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 
 	// Redux store
 	const dispatch = useDispatch<AppDispatch>();
-	const { availableCategoryTypes, loading } = useSelector((state: RootState) => state.settings); // Access availableCategoryTypes from Redux
+	const { availableCategoryTypes, loading } = useSelector((state: RootState) => state.categories); // Access availableCategoryTypes from Redux
 	const { user } = useSelector((state: RootState) => state.auth);
 
 	const categoryNameField = useInput<HTMLInputElement, string>({

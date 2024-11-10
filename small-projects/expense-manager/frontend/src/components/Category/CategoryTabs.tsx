@@ -10,7 +10,7 @@ import CategoryComp from "@/components/Category/Category";
 
 const CategoryTabs: FC = () => {
 	// Use `useSelector` to get categories from the Redux store
-	const categories = useSelector((state: RootState) => state.settings.categories);
+	const categories = useSelector((state: RootState) => state.categories.categories);
 
 	return <>{categories.length > 0 && <Tabs Component={CategoryComp} data={categories} />}</>;
 };

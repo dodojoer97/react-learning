@@ -10,7 +10,7 @@ import CategoryComp from "@/components/Category/Category";
 
 // Store
 import { RootState, AppDispatch } from "@/store/store"; // Redux store types
-import { fetchCategories } from "@/store/settingsSlice"; // Action to fetch categories
+import { fetchCategories } from "@/store/categorySlice"; // Action to fetch categories
 import { updateDraftTransaction } from "@/store/transactionSlice"; // Action to update draft transaction
 
 // Models
@@ -24,7 +24,7 @@ interface Props {
 const CategoryList: FC<Props> = ({ onSelect, mode = "list" }) => {
 	// Redux hooks
 	const dispatch = useDispatch<AppDispatch>();
-	const categories = useSelector((state: RootState) => state.settings.categories);
+	const categories = useSelector((state: RootState) => state.categories.categories);
 	const draftTransaction = useSelector((state: RootState) => state.transaction.draftTransaction);
 	const userId = useSelector((state: RootState) => state.auth.user?.uid);
 

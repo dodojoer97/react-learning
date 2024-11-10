@@ -4,7 +4,7 @@ import type { ChangeEvent, FC } from "react";
 // Redux
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store"; // Correct store import path
-import { editCategory } from "@/store/settingsSlice"; // Import the editCategory action
+import { editCategory } from "@/store/categorySlice"; // Import the editCategory action
 
 // UI Components
 import Button from "@/components/UI/Button";

@@ -1,19 +1,44 @@
-import { admin } from "../config/firebase";
-import { User } from "../models/User";
-import { UserRecord } from "firebase-admin/lib/auth/user-record";
+import { admin, adminDb } from "../config/firebase";
+import { Logger, User, isError } from "@common";
+
+const logger = new Logger("AuthController");
 
 class UserRepository {
 	async getUserByEmail(email: string): Promise<User | null> {
 		try {
 			const userRecord = await admin.auth().getUserByEmail(email);
 			return {
-				...userRecord,
 				uid: userRecord.uid,
 				email: userRecord.email as string,
 				displayName: userRecord.displayName as string,
 			};
 		} catch (error) {
-			console.error("getUserByEmail error: ", error);
+			if (isError(error)) {
+				logger.error(error.message);
+			} else {
+				logger.error("Something went wrong in getUserByEmail");
+			}
+			return null;
+		}
+	}
+
+	async getUserById(id: string): Promise<User | null> {
+		try {
+			// Step 1: Get the authentication data
+			const userRecord = await admin.auth().getUser(id);
+
+			// Step 3: Return combined user data with custom fields
+			return {
+				uid: userRecord.uid,
+				email: userRecord.email as string,
+				displayName: userRecord.displayName as string,
+			};
+		} catch (error) {
+			if (isError(error)) {
+				logger.error(error.message);
+			} else {
+				logger.error("Something went wrong in getUserById");
+			}
 			return null;
 		}
 	}
@@ -28,16 +53,24 @@ class UserRepository {
 				displayName,
 			};
 		} catch (error) {
-			console.error("createUser error: ", error);
+			if (isError(error)) {
+				logger.error(error.message);
+			} else {
+				logger.error("Something went wrong in createUser");
+			}
 			return null;
 		}
 	}
 
-	async updateUser(userId: string, newPassword: string): Promise<void> {
+	async updateUser(userId: string, { ...fields }: Partial<User>): Promise<void> {
 		try {
-			await admin.auth().updateUser(userId, { password: newPassword });
+			await admin.auth().updateUser(userId, { ...fields });
 		} catch (error) {
-			console.error("updateUser error: ", error);
+			if (isError(error)) {
+				logger.error(error.message);
+			} else {
+				logger.error("Something went wrong in updateUser");
+			}
 			throw error;
 		}
 	}

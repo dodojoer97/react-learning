@@ -1,18 +1,11 @@
 // Interface
-import { ISettingsService } from "./SettingsService.d";
+import { ISettingsService } from "./SettingsService.interface";
 
 // Classes
 import BaseService from "./BaseService";
 
 // Models
-import { Category } from "@common";
-import SelectFieldOption from "@/models/SelectFieldOption";
-
-// DTO
-import GetCategoriesDTO from "@/DTO/response/GetCategories";
-
-// Config
-import { categoryIcons } from "@/config/categoryIcons";
+import { UserSettings, isError } from "@common";
 
 /**
  *  SettingsService class for handling settings.
@@ -28,75 +21,37 @@ class SettingsService extends BaseService implements ISettingsService {
 		super(baseUrl);
 	}
 
-	/**
-	 * Sets categories for a user.
-	 * @param {Category[]} categories - The categories to set.
-	 * @param {string} userId - The ID of the user.
-	 * @returns {Promise<void>} A promise that resolves when the operation is complete.
-	 */
-	public async setCategories(categories: Category[], userId: string): Promise<void> {
-		const endpoint = `users/${userId}/categories`;
-		await this.put<Category[]>(endpoint, categories);
+	async getSettings(userId: string): Promise<UserSettings> {
+		try {
+			const userSettings: UserSettings = await this.get(`settings/${userId}`, { auth: true });
+
+			return userSettings;
+		} catch (error) {
+			if (isError(error)) {
+				throw error;
+			}
+			throw error;
+		}
 	}
 
-	/**
-	 * Gets categories for a user.
-	 * @param {string} userId - The ID of the user.
-	 * @returns {Promise<Category[]>} A promise that resolves to an array of categories.
-	 */
-	public async getCategories(userId: string): Promise<Category[]> {
-		const endpoint = `categories/${userId}`;
-		const categories: GetCategoriesDTO = await this.get(endpoint, { auth: true });
-		return this.buildCategories(categories);
-	}
+	async updateSettings(
+		userId: string,
+		fields: Partial<Omit<UserSettings, "id" | "userId">>
+	): Promise<UserSettings> {
+		try {
+			const userSettings: UserSettings = await this.put(
+				`settings`,
+				{ userId, fields },
+				{ auth: true }
+			);
 
-	private buildCategories(dto: GetCategoriesDTO): Category[] {
-		const categories: Category[] = dto.map((category) => {
-			return {
-				icon: categoryIcons[category.icon as string],
-				name: category.name,
-				id: category.id,
-				type: category.type,
-			};
-		});
-		return categories;
-	}
-	/**
-	 * Sets currency for a user.
-	 * @param {Currency} currency - The currency to set.
-	 * @param {string} userId - The ID of the user.
-	 * @returns {Promise<void>} A promise that resolves when the operation is complete.
-	 */
-	public async setCurrency(userId: string, currency: SelectFieldOption): Promise<void> {
-		const endpoint = `users/${userId}/currency`;
-		await this.put<SelectFieldOption>(endpoint, currency, { auth: true });
-	}
-
-	/**
-	 * Creates a new category for a user.
-	 * @param {Category} category - The category to create.
-	 * @param {string} userId - The ID of the user.
-	 * @returns {Promise<void>} A promise that resolves when the operation is complete.
-	 */
-	public async createCategory(category: Category, userId: string): Promise<Category[]> {
-		const endpoint = `categories`;
-		const categories = await this.post(endpoint, { category, userId }, { auth: true });
-
-		return this.buildCategories(categories);
-	}
-
-	/**
-	 * Edits an existing category for a user.
-	 * @param {string} userId - The ID of the user.
-	 * @param {string} categoryId - The categoryId to edit.
-	 * @param {string} newName - The new name;
-	 * @returns {Promise<void>} A promise that resolves when the operation is complete.
-	 */
-	public async editCategory(userId: string, categoryId: string, newName: string): Promise<void> {
-		// Real endpoint
-		// const endpoint = `users/${userId}/categories/${category.id}`;
-		const endpoint = `categories/${userId}/${categoryId}`;
-		await this.put(endpoint, { name: newName }, { auth: true });
+			return userSettings;
+		} catch (error) {
+			if (isError(error)) {
+				throw error;
+			}
+			throw error;
+		}
 	}
 }
 

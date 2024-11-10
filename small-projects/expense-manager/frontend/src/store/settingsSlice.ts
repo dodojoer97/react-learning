@@ -1,17 +1,25 @@
+// Redux
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import type { Category } from "@common";
-import SelectFieldOption from "@/models/SelectFieldOption";
-import SettingsService from "@/services/SettingsService";
+
+// Data
 import currencies from "@/data/currencies";
-import categoryTypes from "@/data/categoryTypes";
+
+// Models
+import SelectFieldOption from "@/models/SelectFieldOption";
+
+// Service
+import SettingsService from "@/services/SettingsService";
+
+// Initialize the SettingsService
+const settingsService = new SettingsService();
+
+// Common
+import { UserSettings } from "@common";
 
 // Define the state interface
 export interface SettingsState {
 	currency: SelectFieldOption;
 	availableCurrencies: SelectFieldOption[];
-	availableCategoryTypes: SelectFieldOption[];
-	categories: Category[];
-	categoryMode: "page" | "panel";
 	loading: boolean;
 	error: string | null; // Add error property to track errors
 }
@@ -19,117 +27,72 @@ export interface SettingsState {
 const initialState: SettingsState = {
 	currency: currencies[0],
 	availableCurrencies: currencies,
-	availableCategoryTypes: categoryTypes,
-	categories: [],
-	categoryMode: "page",
-	loading: true,
+	loading: false,
 	error: null, // Initialize error as null
 };
 
+// Helper function to find matching currency
+const findCurrency = (currencyValue: string): SelectFieldOption =>
+	currencies.find((currency) => currency.value === currencyValue) || currencies[0];
+
 // Async actions (thunks)
-export const fetchCategories = createAsyncThunk(
-	"settings/fetchCategories",
-	async (userId: string, { rejectWithValue }) => {
-		const settingsService = new SettingsService();
-		try {
-			const categories = await settingsService.getCategories(userId);
-			return categories || [];
-		} catch (error) {
-			return rejectWithValue("Failed to fetch categories");
-		}
+export const getSettings = createAsyncThunk<
+	UserSettings,
+	{ userId: string },
+	{ rejectValue: string }
+>("settings/getSettings", async ({ userId }, { rejectWithValue }) => {
+	try {
+		const settings = await settingsService.getSettings(userId);
+		return settings;
+	} catch (error: any) {
+		return rejectWithValue(error.message || "Failed to fetch transactions");
 	}
-);
+});
 
-export const addCategory = createAsyncThunk(
-	"settings/addCategory",
-	async ({ category, userId }: { category: Category; userId: string }, { rejectWithValue }) => {
-		const settingsService = new SettingsService();
-		try {
-			const newCategories = await settingsService.createCategory(category, userId);
-			return newCategories;
-		} catch (error) {
-			return rejectWithValue("Failed to add category");
-		}
+export const updateSettings = createAsyncThunk<
+	UserSettings,
+	{ userId: string; fields: Partial<Omit<UserSettings, "id" | "userId">> },
+	{ rejectValue: string }
+>("settings/updateSettings", async ({ userId, fields }, { rejectWithValue }) => {
+	try {
+		const settings = await settingsService.updateSettings(userId, fields);
+		return settings;
+	} catch (error: any) {
+		return rejectWithValue(error.message || "Failed to fetch transactions");
 	}
-);
-
-export const editCategory = createAsyncThunk(
-	"settings/editCategory",
-	async (
-		{ categoryId, newName, userId }: { categoryId: string; newName: string; userId: string },
-		{ rejectWithValue }
-	) => {
-		const settingsService = new SettingsService();
-		try {
-			await settingsService.editCategory(userId, categoryId, newName);
-			return { categoryId, newName };
-		} catch (error) {
-			return rejectWithValue("Failed to edit category");
-		}
-	}
-);
+});
 
 // Slice definition
 const settingsSlice = createSlice({
 	name: "settings",
 	initialState,
-	reducers: {
-		setCurrency: (state, action: PayloadAction<SelectFieldOption>) => {
-			state.currency = action.payload;
-		},
-		setCategoryMode: (state, action: PayloadAction<"page" | "panel">) => {
-			state.categoryMode = action.payload;
-		},
-	},
+	reducers: {},
 	extraReducers: (builder) => {
 		builder
-			// Fetch categories
-			.addCase(fetchCategories.pending, (state) => {
+			.addCase(getSettings.pending, (state) => {
 				state.loading = true;
-				state.error = null; // Reset error on new request
 			})
-			.addCase(fetchCategories.fulfilled, (state, action) => {
-				state.categories = action.payload;
+			.addCase(getSettings.fulfilled, (state, action: PayloadAction<UserSettings>) => {
+				// Set the currency in the state, or default if not found
+				state.currency = findCurrency(action.payload.currency);
 				state.loading = false;
+				state.error = null;
 			})
-			.addCase(fetchCategories.rejected, (state, action) => {
+			.addCase(getSettings.rejected, (state, action) => {
 				state.loading = false;
-				state.error = action.payload as string; // Set error message on failure
+				state.error = action.payload || "Something went wrong in getSettings";
 			})
-
-			// Add category
-			.addCase(addCategory.pending, (state) => {
-				state.loading = true;
-				state.error = null; // Reset error on new request
-			})
-			.addCase(addCategory.fulfilled, (state, action) => {
-				state.categories = action.payload;
+			.addCase(updateSettings.fulfilled, (state, action: PayloadAction<UserSettings>) => {
+				// Set the currency in the state, or default if not found
+				state.currency = findCurrency(action.payload.currency);
 				state.loading = false;
+				state.error = null;
 			})
-			.addCase(addCategory.rejected, (state, action) => {
+			.addCase(updateSettings.rejected, (state, action) => {
 				state.loading = false;
-				state.error = action.payload as string; // Set error message on failure
-			})
-
-			// Edit category
-			.addCase(editCategory.pending, (state) => {
-				state.loading = true;
-				state.error = null; // Reset error on new request
-			})
-			.addCase(editCategory.fulfilled, (state, action) => {
-				const { categoryId, newName } = action.payload;
-				state.categories = state.categories.map((category) =>
-					category.id === categoryId ? { ...category, name: newName } : category
-				);
-				state.loading = false;
-			})
-			.addCase(editCategory.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload as string; // Set error message on failure
+				state.error = action.payload || "Something went wrong in updateSettings";
 			});
 	},
 });
 
-// Export actions and reducer
-export const { setCurrency, setCategoryMode } = settingsSlice.actions;
 export default settingsSlice.reducer;

@@ -82,7 +82,7 @@ const mapTransactionsToChartData = (
 const TransactionDoughnut: FC = () => {
 	// Get transactions and categories from the Redux store
 	const transactions = useSelector((state: RootState) => state.transaction.transactions);
-	const categories = useSelector((state: RootState) => state.settings.categories);
+	const categories = useSelector((state: RootState) => state.categories.categories);
 
 	// Hooks
 	const loadingAny: boolean = useLoading();

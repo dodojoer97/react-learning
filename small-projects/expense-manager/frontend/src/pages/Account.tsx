@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import type { ChangeEvent } from "react";
 
 // Redux
@@ -11,17 +11,19 @@ import Input from "@/components/UI/Input";
 import { isEmail, hasMinLength } from "@/utils/utils";
 
 // Store
-import { login, clearError } from "@/store/authSlice";
+import { clearError, updateUserInfo } from "@/store/authSlice";
 import { RootState, AppDispatch } from "@/store/store";
 
 // Hooks
 import useInput from "@/hooks/useInput";
 import InputError from "@/components/UI/InputError";
+import useFormSubmission from "@/hooks/useFormSubmission";
 
 // Translations
 import { useTranslation } from "react-i18next";
 import Form from "@/components/UI/Form";
 import Button from "@/components/UI/Button";
+import { Link } from "react-router-dom";
 
 const AccountPanel: React.FC = () => {
 	// Translations
@@ -29,10 +31,13 @@ const AccountPanel: React.FC = () => {
 
 	// Redux
 	const dispatch = useDispatch<AppDispatch>();
+	const { user } = useSelector((state: RootState) => state.auth);
+
+	if (!user) return <>No user</>;
 
 	// Form fields
 	const emailField = useInput<HTMLInputElement, string>({
-		defaultValue: "",
+		defaultValue: user.email,
 		validationFn: (value: string) => {
 			return isEmail(value);
 		},
@@ -41,13 +46,27 @@ const AccountPanel: React.FC = () => {
 
 	// Name field
 	const nameField = useInput<HTMLInputElement, string>({
-		defaultValue: "",
+		defaultValue: user.displayName,
 		validationFn: (value: string) => hasMinLength(value, 3),
 		clearErrorFN: () => dispatch(clearError()), // Dispatch clear error action
 	});
 
-	function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {}
+	const { handleSubmit, isLoading, error } = useFormSubmission(async () => {
+		await dispatch(updateUserInfo({ displayName: nameField.value, email: emailField.value }));
+	});
 
+	const handleReset = (e: React.FormEvent<HTMLFormElement>): void => {
+		e.preventDefault();
+		emailField.reset();
+		nameField.reset();
+	};
+
+	const areButtonsDisabled: boolean = !!(
+		isLoading ||
+		error ||
+		emailField.hasError ||
+		nameField.hasError
+	);
 	return (
 		<div className="bg-white dark:bg-gray-800 shadow-sm rounded-xl mb-8">
 			<Form onSubmit={(e) => handleSubmit(e)}>
@@ -73,6 +92,7 @@ const AccountPanel: React.FC = () => {
 										type="text"
 										label={"Name"}
 										required
+										disabled={isLoading}
 										value={nameField.value}
 										onChange={(e) =>
 											nameField.handleInputChange(
@@ -101,6 +121,7 @@ const AccountPanel: React.FC = () => {
 										type="email"
 										label={t("forms:enterEmail")}
 										required
+										disabled={isLoading}
 										value={emailField.value}
 										onChange={(e) =>
 											emailField.handleInputChange(
@@ -121,9 +142,13 @@ const AccountPanel: React.FC = () => {
 								Password
 							</h2>
 							<div className="mt-5">
-								<Button className="btn border-gray-200 dark:border-gray-700/60 shadow-sm text-violet-500">
+								<Link
+									to={"/auth/reset-password"}
+									target="_blank"
+									className="btn border-gray-200 dark:border-gray-700/60 shadow-sm text-violet-500"
+								>
 									Set New Password
-								</Button>
+								</Link>
 							</div>
 						</section>
 					</div>
@@ -131,10 +156,20 @@ const AccountPanel: React.FC = () => {
 					<footer>
 						<div className="flex flex-col px-6 py-5 border-t border-gray-200 dark:border-gray-700/60">
 							<div className="flex self-end">
-								<Button className="btn dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-800 dark:text-gray-300">
+								<Button
+									disabled={areButtonsDisabled}
+									onClick={(e: React.FormEvent<HTMLFormElement>) =>
+										handleReset(e)
+									}
+									className="btn dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-800 dark:text-gray-300"
+								>
 									Cancel
 								</Button>
-								<Button className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white ml-3">
+								<Button
+									disabled={areButtonsDisabled}
+									loading={isLoading}
+									className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white ml-3"
+								>
 									Save Changes
 								</Button>
 							</div>

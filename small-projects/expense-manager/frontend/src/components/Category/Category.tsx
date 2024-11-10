@@ -25,7 +25,7 @@ interface ICategoryProps {
 const CategoryComp: FC<ICategoryProps> = ({ id, name, icon, onClick }) => {
 	// Redux hooks
 	const dispatch = useDispatch<AppDispatch>();
-	const categoryMode = useSelector((state: RootState) => state.settings.categoryMode);
+	const categoryMode = useSelector((state: RootState) => state.categories.categoryMode);
 	const draftTransaction = useSelector((state: RootState) => state.transaction.draftTransaction);
 
 	const panelId = `category-panel-${id}`;

@@ -156,7 +156,7 @@ class AuthService extends BaseService implements IAuthService {
 	 */
 	async resetPassword(password: string, token: string): Promise<void> {
 		try {
-			await this.post(
+			await this.put(
 				"auth/reset-password",
 				{ password },
 				{
@@ -165,6 +165,37 @@ class AuthService extends BaseService implements IAuthService {
 					},
 				}
 			);
+		} catch (error) {
+			if (error instanceof Error) {
+				logger.error(error.message || "Something went wrong with sendResetPassword");
+			}
+			throw error;
+		}
+	}
+
+	/**
+	 *
+	 * @param {User} userInfo the user data to update
+	 */
+	async updateUserInfo(userInfo: Omit<User, "uid">) {
+		try {
+			await this.put("auth/update-info", { ...userInfo }, { auth: true });
+		} catch (error) {
+			if (error instanceof Error) {
+				logger.error(error.message || "Something went wrong with sendResetPassword");
+			}
+			throw error;
+		}
+	}
+
+	/**
+	 *
+	 * @param {string} userId the user id to retrieve
+	 */
+	async getUserInfo(userId: string): Promise<User> {
+		try {
+			const userInfo = await this.get(`auth/user-info/${userId}`, { auth: true });
+			return userInfo;
 		} catch (error) {
 			if (error instanceof Error) {
 				logger.error(error.message || "Something went wrong with sendResetPassword");

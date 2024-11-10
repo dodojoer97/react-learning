@@ -1,8 +1,12 @@
 import { Request, Response } from "express";
 import authService from "../services/AuthService";
 import categoryService from "../services/CategoryService";
+import settingsService from "@/services/SettingsService";
+
 import { isError, isFirebaseError, Logger } from "@common";
 import jwt, { JwtPayload } from "jsonwebtoken";
+// Models
+import { User } from "@common";
 
 const logger = new Logger("AuthController");
 
@@ -57,7 +61,10 @@ class AuthController {
 
 			if (token) {
 				const { uid } = jwt.decode(token) as { uid: string };
+
+				// Assign default data
 				await categoryService.addDefaultCategoriesForUser(uid);
+				await settingsService.createInitialSettings(uid);
 
 				res.status(201).json({ token });
 			} else {
@@ -151,6 +158,52 @@ class AuthController {
 				res.status(500).json({ message: "Internal server error" });
 			} else {
 				logger.error("An unknown error occurred during resetPassword");
+				res.status(500).json({ message: "Internal server error" });
+			}
+		}
+	}
+
+	async updateUserInfo(req: Request, res: Response) {
+		const { ...fields }: Omit<User, "password" | "uid"> = req.body;
+
+		try {
+			// @ts-ignore
+			// user provided by middelware
+			if (req.user) {
+				// @ts-ignore
+				await authService.updateUserInfo(req.user, { ...fields });
+				res.status(200).json({ message: "Info updated" });
+			} else {
+				res.status(500).json({ message: "Internal server error" });
+			}
+		} catch (error) {
+			if (isError(error)) {
+				logger.error(`Error during updateUserInfo: ${error.message}`);
+				res.status(500).json({ message: "Internal server error" });
+			} else {
+				logger.error("An unknown error occurred during updateUserInfo");
+				res.status(500).json({ message: "Internal server error" });
+			}
+		}
+	}
+
+	async getUserInfo(req: Request, res: Response) {
+		try {
+			const { userId } = req.params;
+
+			const foundUser = await authService.getUserInfo(userId);
+
+			if (foundUser) {
+				res.status(200).json(foundUser);
+			} else {
+				res.status(404).json({ message: "No user found with id" });
+			}
+		} catch (error) {
+			if (isError(error)) {
+				logger.error(`Error during getUserInfo: ${error.message}`);
+				res.status(500).json({ message: "Internal server error" });
+			} else {
+				logger.error("An unknown error occurred during getUserInfo");
 				res.status(500).json({ message: "Internal server error" });
 			}
 		}

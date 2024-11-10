@@ -18,7 +18,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { isError, Logger } from "@common";
 
 // Models
-import { User } from "@/models/User";
+import { User } from "@common";
 import e from "cors";
 
 const logger = new Logger("AuthService");
@@ -153,13 +153,44 @@ class AuthService {
 			const foundUser = await userRepository.getUserByEmail(user.email);
 
 			if (foundUser) {
-				await userRepository.updateUser(foundUser.uid, newPassword);
+				await userRepository.updateUser(foundUser.uid, { password: newPassword });
 			}
 		} catch (error) {
 			if (isError(error)) {
 				logger.error(`Error during  resetPassword: ${error.message}`);
 			} else {
 				logger.error("An unknown error occurred during resetPassword");
+			}
+			throw error;
+		}
+	}
+
+	async updateUserInfo(user: User, { ...fields }: Omit<User, "password" | "uid">): Promise<void> {
+		try {
+			const foundUser = await userRepository.getUserByEmail(user.email);
+
+			if (foundUser) {
+				await userRepository.updateUser(foundUser.uid, { ...fields });
+			}
+		} catch (error) {
+			if (isError(error)) {
+				logger.error(`Error during  updateUserInfo: ${error.message}`);
+			} else {
+				logger.error("An unknown error occurred during updateUserInfo");
+			}
+			throw error;
+		}
+	}
+
+	async getUserInfo(userId: string): Promise<User | null> {
+		try {
+			const foundUser = await userRepository.getUserById(userId);
+			return foundUser;
+		} catch (error) {
+			if (isError(error)) {
+				logger.error(`Error during  getUserInfo: ${error.message}`);
+			} else {
+				logger.error("An unknown error occurred during updateUserInfo");
 			}
 			throw error;
 		}

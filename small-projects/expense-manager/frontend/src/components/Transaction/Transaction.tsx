@@ -60,13 +60,13 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 
 	const handeDelete = (): void => {
 		if (!userId) return;
-		console.log("transaction: ", transaction);
 		dispatch(deleteTransaction({ userId, transactionId: transaction.id }));
+		dispatch(toggleOpen(modalId));
 	};
 
 	const handleOpenModal = (e: React.MouseEvent): void => {
 		e.stopPropagation();
-		dispatch(open(modalId));
+		dispatch(toggleOpen(modalId));
 	};
 
 	// If loading, return skeleton component

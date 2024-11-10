@@ -5,7 +5,7 @@ import { redirect } from "react-router-dom";
 import { store } from "@/store/store"; // Import your Redux store if needed
 
 // Loader to handle authentication logic and return title
-export const authLoader = async ({ title, token }: { title: string; token?: string }) => {
+export const authLoader = async ({ title, token }: { title: string; token: string | null }) => {
 	const dispatch: AppDispatch = store.dispatch; // Get dispatch from the store
 
 	// Dispatch the initializeAuth action
@@ -25,7 +25,7 @@ export const authLoader = async ({ title, token }: { title: string; token?: stri
 
 	// If the user is not authenticated, redirect to the login page
 	if (!isAuthenticated && !user) {
-		return redirect("/auth/login");
+		return null;
 	}
 
 	if (user) {

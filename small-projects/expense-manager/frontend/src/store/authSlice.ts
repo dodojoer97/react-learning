@@ -61,7 +61,7 @@ export const logout = createAsyncThunk<void, void, { rejectValue: string }>(
 
 export const initializeAuth = createAsyncThunk<
 	User | undefined,
-	string | undefined,
+	string | null,
 	{ rejectValue: string }
 >("auth/initializeAuth", async (token, { rejectWithValue }) => {
 	try {

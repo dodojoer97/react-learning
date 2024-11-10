@@ -19,7 +19,6 @@ interface Props extends PropsWithChildren {
 }
 
 const Layout: FC<Props> = ({ rightComponent }) => {
-	const { title } = useLoaderData() as { title: string };
 	const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
 	return (
@@ -37,7 +36,8 @@ const Layout: FC<Props> = ({ rightComponent }) => {
 								{/* Left: Title */}
 								<div className="mb-4 sm:mb-0">
 									<h1 className="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">
-										{title}
+										{/* TODO figure out how to do this dynamically */}
+										Title
 									</h1>
 								</div>
 

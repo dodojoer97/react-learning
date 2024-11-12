@@ -3,6 +3,7 @@ import { initializeAuth, getUserInfo } from "@/store/authSlice";
 
 import { redirect } from "react-router-dom";
 import { store } from "@/store/store"; // Import your Redux store if needed
+import { getSettings } from "@/store/settingsSlice";
 
 // Loader to handle authentication logic and return title
 export const authLoader = async ({ title, token }: { title: string; token: string | null }) => {
@@ -17,6 +18,7 @@ export const authLoader = async ({ title, token }: { title: string; token: strin
 	const isLoadingAuth = state.auth.loading;
 
 	const { user } = state.auth;
+	const { currency } = state.settings;
 
 	// If authentication is still loading, you could return a loading state (e.g., spinner)
 	if (isLoadingAuth) {
@@ -31,6 +33,11 @@ export const authLoader = async ({ title, token }: { title: string; token: strin
 
 	if (user) {
 		await dispatch(getUserInfo(user.uid));
+	}
+
+	// fetch the settings if not fetched
+	if (user && !currency) {
+		await dispatch(getSettings({ userId: user.uid }));
 	}
 
 	// Return the title for use in the component

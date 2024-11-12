@@ -1,13 +1,10 @@
 import { NonIndexRouteObject } from "react-router-dom";
 import { ReactNode, lazy, Suspense } from "react";
 import { authLoader } from "@/loaders/authLoader";
-import { settingsLoader } from "@/loaders/settingsLoader";
 import ErrorPage from "@/pages/Error";
 import Layout from "@/components/UI/Layout";
 import RightActions from "@/components/Dashboard/RightActions";
 import Loader from "@/components/UI/Loader"; // Add a fallback loading spinner
-
-import ProtectedRoute from "@/pages/ProtectedRoute";
 
 // Lazy-loaded components
 const LoginPage = lazy(() => import("@/pages/Login"));
@@ -35,14 +32,13 @@ export const routeConfig: RouteConfig[] = [
 		title: "Dashboard",
 		path: "/",
 		element: (
-			<ProtectedRoute title="Some title">
-				<Suspense fallback={<Loader />}>
-					<Layout rightComponent={<RightActions />} />
-				</Suspense>
-			</ProtectedRoute>
+			<Suspense fallback={<Loader />}>
+				<Layout rightComponent={<RightActions />} />
+			</Suspense>
 		),
 		sidebarDisplay: true,
 		isProtected: true,
+		loader: () => authLoader({ title: "Dashboard" }),
 		errorElement: <ErrorPage />,
 		children: [
 			{
@@ -54,6 +50,8 @@ export const routeConfig: RouteConfig[] = [
 						<Dashboard />
 					</Suspense>
 				),
+				isProtected: true,
+				loader: () => authLoader({ title: "Dashboard" }),
 				errorElement: <ErrorPage />,
 			},
 			{
@@ -64,6 +62,8 @@ export const routeConfig: RouteConfig[] = [
 						<Analytics />
 					</Suspense>
 				),
+				isProtected: true,
+				loader: () => authLoader({ title: "Analytics" }),
 				errorElement: <ErrorPage />,
 			},
 		],
@@ -72,14 +72,13 @@ export const routeConfig: RouteConfig[] = [
 		title: "Settings",
 		path: "/settings",
 		element: (
-			<ProtectedRoute title="Some title">
-				<Suspense fallback={<Loader />}>
-					<Layout />
-				</Suspense>
-			</ProtectedRoute>
+			<Suspense fallback={<Loader />}>
+				<Layout />
+			</Suspense>
 		),
 		sidebarDisplay: true,
 		isProtected: true,
+		loader: () => authLoader({ title: "" }),
 		errorElement: <ErrorPage />,
 		children: [
 			{
@@ -91,6 +90,8 @@ export const routeConfig: RouteConfig[] = [
 						<Settings />
 					</Suspense>
 				),
+				isProtected: true,
+				loader: () => authLoader({ title: "Preferences" }),
 				errorElement: <ErrorPage />,
 			},
 			{
@@ -101,6 +102,8 @@ export const routeConfig: RouteConfig[] = [
 						<Categories />
 					</Suspense>
 				),
+				isProtected: true,
+				loader: () => authLoader({ title: "Categories" }),
 				errorElement: <ErrorPage />,
 			},
 			{
@@ -111,6 +114,8 @@ export const routeConfig: RouteConfig[] = [
 						<Account />
 					</Suspense>
 				),
+				isProtected: true,
+				loader: () => authLoader({ title: "Account" }),
 				errorElement: <ErrorPage />,
 			},
 		],

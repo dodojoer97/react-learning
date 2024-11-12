@@ -18,14 +18,14 @@ import { UserSettings } from "@common";
 
 // Define the state interface
 export interface SettingsState {
-	currency: SelectFieldOption;
+	currency: SelectFieldOption | null;
 	availableCurrencies: SelectFieldOption[];
 	loading: boolean;
 	error: string | null; // Add error property to track errors
 }
 
 const initialState: SettingsState = {
-	currency: currencies[0],
+	currency: null,
 	availableCurrencies: currencies,
 	loading: false,
 	error: null, // Initialize error as null

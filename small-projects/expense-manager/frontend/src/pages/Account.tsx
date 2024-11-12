@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 // UI Components
 import Input from "@/components/UI/Input";
+import Card from "@/components/UI/Card";
 
 // Util
 import { isEmail, hasMinLength } from "@/utils/utils";
@@ -68,7 +69,7 @@ const AccountPanel: React.FC = () => {
 		nameField.hasError
 	);
 	return (
-		<div className="bg-white dark:bg-gray-800 shadow-sm rounded-xl mb-8">
+		<Card>
 			<Form onSubmit={(e) => handleSubmit(e)}>
 				<div className="grow">
 					{/* Panel body */}
@@ -177,7 +178,7 @@ const AccountPanel: React.FC = () => {
 					</footer>
 				</div>
 			</Form>
-		</div>
+		</Card>
 	);
 };
 

@@ -18,11 +18,11 @@ class SettingsRepository {
 	 */
 	async createInitialSettings(userId: string): Promise<void> {
 		try {
-			const settingsModel = new UserSettings({
+			const settingsModel: UserSettings = {
 				id: v4(),
 				currency: DEFAULT_CURRENCY,
 				userId,
-			});
+			};
 
 			const settingsDoc = this.settingsCollection.doc(settingsModel.id);
 			await settingsDoc.set(settingsModel);

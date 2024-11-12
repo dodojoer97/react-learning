@@ -13,11 +13,7 @@ interface ProtectedRouteProps {
 }
 
 // Component definition
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
-	title,
-	children,
-	redirectTo = "/auth/login",
-}) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ title, children }) => {
 	const url = new URL(window.location.href);
 	const token = url.searchParams.get("token");
 
@@ -42,9 +38,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
 	if (isLoading) return <Loader />;
 
-	if (!authLoaderData) {
-		return <Navigate to={redirectTo} replace />;
-	}
+	console.log("authLoaderData: ", authLoaderData);
 
 	return <>{children || <Outlet />}</>;
 };

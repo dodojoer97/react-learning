@@ -25,6 +25,7 @@ export const authLoader = async ({ title, token }: { title: string; token: strin
 
 	// If the user is not authenticated, redirect to the login page
 	if (!isAuthenticated && !user) {
+		redirect("/auth/login");
 		return null;
 	}
 

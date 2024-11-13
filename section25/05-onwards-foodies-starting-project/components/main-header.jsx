@@ -4,11 +4,13 @@ import logo from "@/assets/logo.png"
 
 // Components
 import MainHeaderBackground from "./main-header-background"
+import NavLink from "./nav-link"
 
 // CSS
 import classes from "./main-header.module.css"
 
 export default function MainHeader() {
+
 	return (
 		<>
 			<MainHeaderBackground />
@@ -24,15 +26,16 @@ export default function MainHeader() {
 						height={100}
 						priority
 					/>
+					
 				</Link>
 
 				<nav className={classes.nav}>
 					<ul>
 						<li>
-							<Link href='/meals'>Meals</Link>
+							<NavLink href={'/meals'}>Meals</NavLink>
 						</li>
 						<li>
-							<Link href='/community'>community</Link>
+							<NavLink href={'/community'}>community</NavLink>
 						</li>
 					</ul>
 				</nav>

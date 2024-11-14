@@ -7,7 +7,7 @@ import { v4 } from "uuid";
 
 const logger = new Logger("SettingsRepository");
 
-const DEFAULT_CURRENCY = "$";
+const DEFAULT_CURRENCY = "USD";
 
 class SettingsRepository {
 	private settingsCollection = adminDb.collection("settings");

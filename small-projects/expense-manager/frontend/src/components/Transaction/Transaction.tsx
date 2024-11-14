@@ -21,6 +21,9 @@ import useLoading from "@/hooks/useLoading";
 // Components
 import DangerModal from "@/components/UI/DangerModal";
 
+// Utils
+import { formatAmount } from "@/utils/utils";
+
 interface Props {
 	transactionWithCategory: TransactionWithCategory;
 }
@@ -108,7 +111,7 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 									{formatDate(transaction.date)}
 								</time>
 								<span className={`font-medium ${textColor}`}>
-									{currency.value} {transaction.amount.toFixed(2)}
+									{formatAmount(transaction.amount, ",", currency.value)}
 								</span>
 							</div>
 						</div>

@@ -120,3 +120,17 @@ export const getFirstDayOfMonth = () => {
 	const date = new Date();
 	return new Date(date.getFullYear(), date.getMonth(), 1);
 };
+
+// Function to get locale based on separator choice
+const getLocale = (separator: string) => {
+	return separator === "." ? "en-US" : "de-DE";
+};
+
+export const formatAmount = (amount: number, separator: string, currency: string) => {
+	const locale = getLocale(separator);
+	console.log(locale);
+	return new Intl.NumberFormat(locale, {
+		style: "currency",
+		currency,
+	}).format(amount);
+};

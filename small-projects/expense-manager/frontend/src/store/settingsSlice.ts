@@ -66,7 +66,14 @@ export const updateSettings = createAsyncThunk<
 const settingsSlice = createSlice({
 	name: "settings",
 	initialState,
-	reducers: {},
+	reducers: {
+		setLoading: (state, action: PayloadAction<boolean>) => {
+			state.loading = action.payload;
+		},
+		setCurrency(state, action: PayloadAction<SelectFieldOption<string>>) {
+			state.currency = action.payload;
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(getSettings.pending, (state) => {
@@ -94,5 +101,7 @@ const settingsSlice = createSlice({
 			});
 	},
 });
+
+export const { setCurrency, setLoading } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

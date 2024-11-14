@@ -24,7 +24,6 @@ const Settings: FC = () => {
 	// Redux: Select available currencies from the settings slice
 	const { availableCurrencies, currency } = useSelector((state: RootState) => state.settings);
 
-	console.log("availableCurrencies: ", availableCurrencies);
 	return (
 		<Card>
 			<div className="grow">

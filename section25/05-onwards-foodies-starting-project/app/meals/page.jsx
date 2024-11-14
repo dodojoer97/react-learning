@@ -4,7 +4,13 @@ import classes from "./page.module.css"
 
 import MealsGrid from "@/components/meals/meals-grid"
 
+
+// Data
+import { getMeals } from "@/lib/meals"
+
 export default function MealsPage() {
+    const meals = getMeals()
+
     return <>
         <header className={classes.header}>
             <h1>Meals <span className={classes.highlight}>teext</span></h1>
@@ -16,7 +22,7 @@ export default function MealsPage() {
             </p>
         </header>
         <main className={classes.main}>
-            <MealsGrid meals={[]}/>
+            <MealsGrid meals={meals}/>
         </main>
     </>
 }

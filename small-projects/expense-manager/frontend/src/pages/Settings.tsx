@@ -24,12 +24,14 @@ const Settings: FC = () => {
 	return (
 		<>
 			<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4">
-				<Select
-					value={currency.value}
-					id="currency"
-					label="Currency"
-					options={availableCurrencies}
-				/>
+				{currency && (
+					<Select
+						value={currency.value}
+						id="currency"
+						label="Currency"
+						options={availableCurrencies}
+					/>
+				)}
 			</Form>
 		</>
 	);

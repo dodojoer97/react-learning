@@ -16,16 +16,16 @@ class SettingsController {
 			const userSettings = await settingsService.getSettings(userId);
 
 			if (userSettings) {
-				res.json(200).json(userSettings);
+				res.status(200).json(userSettings);
 			} else {
-				res.json(404).json({ message: "No settings found for user id" });
+				res.status(404).json({ message: "No settings found for user id" });
 			}
 		} catch (error) {
 			if (isError(error)) {
-				logger.error(`Error during createInitialSettings: ${error.message}`);
+				logger.error(`Error during getSettings: ${error.message}`);
 				res.status(500).json({ message: "Internal server error" });
 			} else {
-				logger.error("An unknown error occurred during createInitialSettings");
+				logger.error("An unknown error occurred during getSettings");
 				res.status(500).json({ message: "Internal server error" });
 			}
 		}
@@ -39,16 +39,16 @@ class SettingsController {
 			});
 
 			if (userSettings) {
-				res.json(200).json(userSettings);
+				res.status(200).json(userSettings);
 			} else {
-				res.json(404).json({ message: "No settings found for user id" });
+				res.status(404).json({ message: "No settings found for user id" });
 			}
 		} catch (error) {
 			if (isError(error)) {
-				logger.error(`Error during createInitialSettings: ${error.message}`);
+				logger.error(`Error during updateSettings: ${error.message}`);
 				res.status(500).json({ message: "Internal server error" });
 			} else {
-				logger.error("An unknown error occurred during createInitialSettings");
+				logger.error("An unknown error occurred during updateSettings");
 				res.status(500).json({ message: "Internal server error" });
 			}
 		}

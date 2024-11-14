@@ -39,6 +39,7 @@ class SettingsService extends BaseService implements ISettingsService {
 		fields: Partial<Omit<UserSettings, "id" | "userId">>
 	): Promise<UserSettings> {
 		try {
+			console.log("fields: ", fields);
 			const userSettings: UserSettings = await this.put(
 				`settings`,
 				{ userId, fields },

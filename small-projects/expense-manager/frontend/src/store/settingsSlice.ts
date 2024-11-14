@@ -21,6 +21,7 @@ export interface SettingsState {
 	currency: SelectFieldOption<string> | null;
 	numberSeperator: SelectFieldOption<UserSettings["numberSeperator"]>;
 	availableCurrencies: SelectFieldOption<string>[];
+	availableNumberSeperators: SelectFieldOption<UserSettings["numberSeperator"]>[];
 	loading: boolean;
 	error: string | null; // Add error property to track errors
 }
@@ -28,6 +29,10 @@ export interface SettingsState {
 const initialState: SettingsState = {
 	currency: null,
 	availableCurrencies: currencies,
+	availableNumberSeperators: [
+		{ label: ",", value: "," },
+		{ label: ".", value: "." },
+	],
 	numberSeperator: { label: ".", value: "." },
 	loading: false,
 	error: null, // Initialize error as null

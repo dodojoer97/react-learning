@@ -12,13 +12,13 @@ interface IDropdownProps {
 	items: SelectFieldOption<string>[];
 	onSelect(item: SelectFieldOption<string>): void;
 	id: string;
-	selectedItem?: string;
+	selectedItem?: SelectFieldOption<string>;
 	label?: string;
 }
 
-const Dropdown: FC<IDropdownProps> = ({ items, onSelect, id, label }) => {
+const Dropdown: FC<IDropdownProps> = ({ items, onSelect, id, label, selectedItem }) => {
 	const [isOpen, setIsOpen] = useState(false);
-	const [selectedItem, setSelectedItem] = useState(items[0]);
+	const [currentlySelectedItem, setCurrentlySelectedItem] = useState(selectedItem || items[0]);
 
 	const trigger = useRef<HTMLButtonElement>(null);
 	const dropdownRef = useRef<HTMLDivElement>(null); // Ref for the dropdown container
@@ -29,7 +29,7 @@ const Dropdown: FC<IDropdownProps> = ({ items, onSelect, id, label }) => {
 	): void => {
 		event.stopPropagation(); // Stop event from bubbling to parent
 		onSelect(item);
-		setSelectedItem(item);
+		setCurrentlySelectedItem(item);
 		setIsOpen(false); // Close dropdown
 	};
 
@@ -67,7 +67,7 @@ const Dropdown: FC<IDropdownProps> = ({ items, onSelect, id, label }) => {
 					type="button"
 				>
 					<span className="flex items-center">
-						<span>{selectedItem.label}</span>
+						<span>{currentlySelectedItem.label}</span>
 					</span>
 					<svg
 						className="shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500"
@@ -101,7 +101,8 @@ const Dropdown: FC<IDropdownProps> = ({ items, onSelect, id, label }) => {
 									key={`${item}-${index}`}
 									tabIndex={0}
 									className={`flex items-center justify-between w-full hover:bg-gray-50 dark:hover:bg-gray-700/20 py-2 px-3 cursor-pointer ${
-										item.value === selectedItem.value && "text-violet-500"
+										item.value === currentlySelectedItem.value &&
+										"text-violet-500"
 									}`}
 									onClick={(e) => handleSelect(e, item)}
 									type="button"
@@ -109,7 +110,8 @@ const Dropdown: FC<IDropdownProps> = ({ items, onSelect, id, label }) => {
 									<span>{item.label}</span>
 									<svg
 										className={`shrink-0 mr-2 fill-current text-violet-500 ${
-											item.value !== selectedItem.value && "invisible"
+											item.value !== currentlySelectedItem.value &&
+											"invisible"
 										}`}
 										width="12"
 										height="9"

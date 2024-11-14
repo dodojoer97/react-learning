@@ -34,9 +34,7 @@ class SettingsController {
 	async updateSettings(req: Request, res: Response) {
 		const { userId, fields } = req.body;
 		try {
-			const userSettings = await settingsService.updateSettings(userId, {
-				currency: fields.curreny,
-			});
+			const userSettings = await settingsService.updateSettings(userId, fields);
 
 			if (userSettings) {
 				res.status(200).json(userSettings);

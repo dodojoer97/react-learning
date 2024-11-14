@@ -83,10 +83,10 @@ class SettingsRepository {
 			const docRef = snapshot.docs[0].ref;
 
 			// Step 3: update the data and return
-			await docRef.update(fields);
+			await docRef.update({ ...fields });
 
 			const settingsData = snapshot.docs[0].data() as UserSettings;
-			return new UserSettings(settingsData);
+			return { ...settingsData, ...fields };
 		} catch (error) {
 			if (isError(error)) {
 				logger.error(error.message);

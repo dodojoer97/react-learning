@@ -95,6 +95,7 @@ const settingsSlice = createSlice({
 			.addCase(getSettings.fulfilled, (state, action: PayloadAction<UserSettings>) => {
 				// Set the currency in the state, or default if not found
 				state.currency = findCurrency(action.payload.currency);
+
 				state.numberSeperator = {
 					value: action.payload.numberSeperator,
 					label: action.payload.numberSeperator,
@@ -109,6 +110,10 @@ const settingsSlice = createSlice({
 			.addCase(updateSettings.fulfilled, (state, action: PayloadAction<UserSettings>) => {
 				// Set the currency in the state, or default if not found
 				state.currency = findCurrency(action.payload.currency);
+				state.numberSeperator = {
+					value: action.payload.numberSeperator,
+					label: action.payload.numberSeperator,
+				};
 				state.loading = false;
 				state.error = null;
 			})

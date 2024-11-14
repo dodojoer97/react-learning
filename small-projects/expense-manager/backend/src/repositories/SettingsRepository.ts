@@ -8,6 +8,7 @@ import { v4 } from "uuid";
 const logger = new Logger("SettingsRepository");
 
 const DEFAULT_CURRENCY = "USD";
+const DEFAULT_NUMBER_SEPERATOR = ".";
 
 class SettingsRepository {
 	private settingsCollection = adminDb.collection("settings");
@@ -22,6 +23,7 @@ class SettingsRepository {
 				id: v4(),
 				currency: DEFAULT_CURRENCY,
 				userId,
+				numberSeperator: DEFAULT_NUMBER_SEPERATOR,
 			};
 
 			const settingsDoc = this.settingsCollection.doc(settingsModel.id);

@@ -19,6 +19,7 @@ import { UserSettings } from "@common";
 // Define the state interface
 export interface SettingsState {
 	currency: SelectFieldOption<string> | null;
+	numberSeperator: SelectFieldOption<UserSettings["numberSeperator"]>;
 	availableCurrencies: SelectFieldOption<string>[];
 	loading: boolean;
 	error: string | null; // Add error property to track errors
@@ -27,6 +28,7 @@ export interface SettingsState {
 const initialState: SettingsState = {
 	currency: null,
 	availableCurrencies: currencies,
+	numberSeperator: { label: ".", value: "." },
 	loading: false,
 	error: null, // Initialize error as null
 };
@@ -73,6 +75,12 @@ const settingsSlice = createSlice({
 		setCurrency(state, action: PayloadAction<SelectFieldOption<string>>) {
 			state.currency = action.payload;
 		},
+		setNumberSeperator(
+			state,
+			action: PayloadAction<SelectFieldOption<UserSettings["numberSeperator"]>>
+		) {
+			state.numberSeperator = action.payload;
+		},
 	},
 	extraReducers: (builder) => {
 		builder
@@ -102,6 +110,6 @@ const settingsSlice = createSlice({
 	},
 });
 
-export const { setCurrency, setLoading } = settingsSlice.actions;
+export const { setCurrency, setLoading, setNumberSeperator } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

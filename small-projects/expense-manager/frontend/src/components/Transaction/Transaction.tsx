@@ -31,7 +31,7 @@ interface Props {
 const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, category } }) => {
 	// Redux hooks
 	const dispatch = useDispatch<AppDispatch>();
-	const currency = useSelector((state: RootState) => state.settings.currency); // Fetch currency from Redux
+	const { currency, numberSeperator } = useSelector((state: RootState) => state.settings); // Fetch currency from Redux
 	const userId = useSelector((state: RootState) => state.auth.user?.uid);
 	const { openSet } = useSelector((state: RootState) => state.open);
 
@@ -111,7 +111,11 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 									{formatDate(transaction.date)}
 								</time>
 								<span className={`font-medium ${textColor}`}>
-									{formatAmount(transaction.amount, ",", currency.value)}
+									{formatAmount(
+										transaction.amount,
+										numberSeperator.label,
+										currency?.value as string
+									)}
 								</span>
 							</div>
 						</div>

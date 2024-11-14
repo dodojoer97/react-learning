@@ -6,6 +6,7 @@ class UserSettings {
         this.currency = settings.currency;
         this.userId = settings.userId;
         this.id = settings.id;
+        this.numberSeperator = settings.numberSeperator;
     }
 }
 exports.UserSettings = UserSettings;

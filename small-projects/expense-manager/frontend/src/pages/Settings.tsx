@@ -6,6 +6,7 @@ import { useEffect } from "react";
 // Redux
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store"; // Import the store using the new preferred path
+import { setCurrency } from "@/store/settingsSlice";
 
 // Translation
 import { useTranslation } from "react-i18next";

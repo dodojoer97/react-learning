@@ -9,11 +9,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store"; // Redux store types
 import { getBalance } from "@/store/transactionSlice";
 import { formatAmount } from "@/utils/utils";
+import User from "@/models/User";
 
 const UserBalance: FC = () => {
 	const dispatch = useDispatch<AppDispatch>();
 	const balance = useSelector((state: RootState) => state.transaction.balance);
-	const userId = useSelector((state: RootState) => state.auth.user?.uid);
+	const { uid: userId, displayName } = useSelector((state: RootState) => state.auth.user as User);
 	const { currency, numberSeperator } = useSelector((state: RootState) => state.settings); // Fetch currency from Redux
 
 	useEffect(() => {
@@ -40,7 +41,9 @@ const UserBalance: FC = () => {
 						</div> */}
 						{/* User info */}
 						<div>
-							<div className="mb-2">This is your current balance:</div>
+							<div className="mb-2">
+								Hey {displayName}, This is your current balance:
+							</div>
 							{balance !== null && (
 								<div
 									className={`text-3xl font-bold ${

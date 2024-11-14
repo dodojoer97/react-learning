@@ -109,7 +109,7 @@ const Dropdown: FC<IDropdownProps> = ({ items, onSelect, id, label }) => {
 									<span>{item.label}</span>
 									<svg
 										className={`shrink-0 mr-2 fill-current text-violet-500 ${
-											item !== selectedItem && "invisible"
+											item.value !== selectedItem.value && "invisible"
 										}`}
 										width="12"
 										height="9"

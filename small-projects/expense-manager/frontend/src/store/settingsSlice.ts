@@ -18,8 +18,8 @@ import { UserSettings } from "@common";
 
 // Define the state interface
 export interface SettingsState {
-	currency: SelectFieldOption | null;
-	availableCurrencies: SelectFieldOption[];
+	currency: SelectFieldOption<string> | null;
+	availableCurrencies: SelectFieldOption<string>[];
 	loading: boolean;
 	error: string | null; // Add error property to track errors
 }
@@ -32,7 +32,7 @@ const initialState: SettingsState = {
 };
 
 // Helper function to find matching currency
-const findCurrency = (currencyValue: string): SelectFieldOption =>
+const findCurrency = (currencyValue: string): SelectFieldOption<string> =>
 	currencies.find((currency) => currency.value === currencyValue) || currencies[0];
 
 // Async actions (thunks)

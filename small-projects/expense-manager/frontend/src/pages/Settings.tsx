@@ -24,6 +24,7 @@ const Settings: FC = () => {
 	// Redux: Select available currencies from the settings slice
 	const { availableCurrencies, currency } = useSelector((state: RootState) => state.settings);
 
+	console.log("availableCurrencies: ", availableCurrencies);
 	return (
 		<Card>
 			<div className="grow">
@@ -31,9 +32,7 @@ const Settings: FC = () => {
 					{currency && (
 						<Dropdown
 							id="currency"
-							items={availableCurrencies.map(
-								(option) => new SelectFieldOption(option, option)
-							)}
+							items={availableCurrencies.map((option) => option)}
 						/>
 					)}
 				</Form>

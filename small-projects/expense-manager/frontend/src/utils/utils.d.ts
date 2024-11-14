@@ -3,7 +3,7 @@ export interface IGroupItem {
 	// Additional properties can be defined here
 }
 
-export interface IGroupedItem<T extends IGroupItem> {
+export interface IGroupedItem<T> {
 	type: string;
 	values: T[];
 }

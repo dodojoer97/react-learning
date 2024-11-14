@@ -1,7 +1,5 @@
-import { ISelectFieldOption } from "./SelectFieldOption.d";
-
-class SelectFieldOption implements ISelectFieldOption {
-	constructor(public text: string, public value: string) {}
+class SelectFieldOption<T extends string> {
+	constructor(public label: T, public value: T) {}
 }
 
 export default SelectFieldOption;

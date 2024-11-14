@@ -11,11 +11,8 @@ import { updateDraftTransaction } from "@/store/transactionSlice"; // Action to 
 
 // Components
 import Form from "@/components/UI/Form";
-import Input from "@/components/UI/Input";
-import Select from "@/components/UI/Select";
 import Button from "@/components/UI/Button";
 import TextArea from "@/components/UI/TextArea";
-import InputError from "@/components/UI/InputError";
 import Dropdown from "../UI/Dropdown";
 
 import DatePicker from "@/templates/mosaic/components/Datepicker";
@@ -25,7 +22,7 @@ import useInput from "@/hooks/useInput";
 import useIsMobile from "@/hooks/useIsMobile";
 import moment from "moment";
 import SelectFieldOption from "@/models/SelectFieldOption";
-import { IRecurringTransaction } from "../../../../common/src/models/Transaction";
+import { IRecurringTransaction, Frequency } from "@common";
 
 interface IProps {
 	onSave(): void;
@@ -34,12 +31,16 @@ interface IProps {
 type Recurring = "One time" | "Recurring";
 
 // Local dropdown options
-const recurringDropdownItems: Recurring[] = ["One time", "Recurring"];
-const frequencyItems: Array<IRecurringTransaction["frequency"]> = [
-	"monthly",
-	"daily",
-	"weekly",
-	"yearly",
+const recurringDropdownItems: SelectFieldOption<Recurring>[] = [
+	new SelectFieldOption("One time", "One time"),
+	new SelectFieldOption("Recurring", "Recurring"),
+];
+
+const frequencyItems: SelectFieldOption<Frequency>[] = [
+	new SelectFieldOption("monthly", "monthly"),
+	new SelectFieldOption("daily", "daily"),
+	new SelectFieldOption("weekly", "weekly"),
+	new SelectFieldOption("yearly", "yearly"),
 ];
 
 // Forever date
@@ -47,8 +48,8 @@ const forever = new Date("2100-01-01");
 
 const TransactionForm: FC<IProps> = ({ onSave }) => {
 	// Local state
-	const [recurringType, setRecurring] = useState<string>(recurringDropdownItems[0]);
-	const [frequency, setFrequency] = useState<string>(frequencyItems[0] as string);
+	const [recurringType, setRecurring] = useState<string>(recurringDropdownItems[0].value);
+	const [frequency, setFrequency] = useState<string>(frequencyItems[0].value);
 	const [plannedEndDate, setPlannedEndDate] = useState(forever);
 
 	// Redux hooks
@@ -138,8 +139,8 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 										id="recurring"
 										label="Recurring type"
 										items={recurringDropdownItems}
-										onSelect={(item: string) =>
-											handleDropdownSelect(item, "recurringType")
+										onSelect={(item) =>
+											handleDropdownSelect(item.value, "recurringType")
 										}
 									/>
 								</div>
@@ -151,9 +152,9 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 									<Dropdown
 										id="frequency"
 										label="Frequency"
-										items={frequencyItems as string[]}
-										onSelect={(item: string) =>
-											handleDropdownSelect(item, "frequency")
+										items={frequencyItems}
+										onSelect={(item) =>
+											handleDropdownSelect(item.value, "frequency")
 										}
 									/>
 								</div>

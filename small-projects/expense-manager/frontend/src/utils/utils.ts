@@ -99,7 +99,7 @@ export const getCurrencySign = (currency: string): string => {
  * @returns {IGroupedItem<T>[]} An array of grouped items, each with a type and an array of items of that type.
  */
 export const groupByType = <T extends IGroupItem>(data: T[]): IGroupedItem<T>[] => {
-	const groups: Transaction<string, T[]> = {};
+	const groups: Record<string, T[]> = {};
 
 	// Grouping items by their type
 	data.forEach((item) => {

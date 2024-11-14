@@ -1,9 +1,10 @@
 import { CategoryType } from "./Category";
-export interface IRecurringTransaction {
+export type Frequency = "daily" | "weekly" | "monthly" | "yearly";
+export type IRecurringTransaction = {
     isRecurring: boolean;
-    frequency?: "daily" | "weekly" | "monthly" | "yearly";
+    frequency?: Frequency;
     endDate?: string;
-}
+};
 export interface ITransaction {
     id: string;
     userId: string;

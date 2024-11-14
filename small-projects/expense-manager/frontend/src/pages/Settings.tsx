@@ -14,6 +14,9 @@ import { useTranslation } from "react-i18next";
 import Layout from "@/components/UI/Layout";
 import Form from "@/components/UI/Form";
 import Select from "@/components/UI/Select";
+import Card from "@/components/UI/Card";
+import Dropdown from "@/components/UI/Dropdown";
+import SelectFieldOption from "@/models/SelectFieldOption";
 
 const Settings: FC = () => {
 	const { t } = useTranslation("settings");
@@ -22,18 +25,20 @@ const Settings: FC = () => {
 	const { availableCurrencies, currency } = useSelector((state: RootState) => state.settings);
 
 	return (
-		<>
-			<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4">
-				{currency && (
-					<Select
-						value={currency.value}
-						id="currency"
-						label="Currency"
-						options={availableCurrencies}
-					/>
-				)}
-			</Form>
-		</>
+		<Card>
+			<div className="grow">
+				<Form>
+					{currency && (
+						<Dropdown
+							id="currency"
+							items={availableCurrencies.map(
+								(option) => new SelectFieldOption(option, option)
+							)}
+						/>
+					)}
+				</Form>
+			</div>
+		</Card>
 	);
 };
 

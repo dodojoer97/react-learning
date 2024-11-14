@@ -6,11 +6,13 @@ import type { FC } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import Transition from "@/templates/mosaic/utils/Transition";
+import type SelectFieldOption from "@/models/SelectFieldOption";
 
 interface IDropdownProps {
-	items: string[];
-	onSelect(item: string): void;
+	items: SelectFieldOption<string>[];
+	onSelect(item: SelectFieldOption<string>): void;
 	id: string;
+	selectedItem?: string;
 	label?: string;
 }
 
@@ -21,7 +23,10 @@ const Dropdown: FC<IDropdownProps> = ({ items, onSelect, id, label }) => {
 	const trigger = useRef<HTMLButtonElement>(null);
 	const dropdownRef = useRef<HTMLDivElement>(null); // Ref for the dropdown container
 
-	const handleSelect = (event: React.MouseEvent<HTMLElement, MouseEvent>, item: string): void => {
+	const handleSelect = (
+		event: React.MouseEvent<HTMLElement, MouseEvent>,
+		item: SelectFieldOption<string>
+	): void => {
 		event.stopPropagation(); // Stop event from bubbling to parent
 		onSelect(item);
 		setSelectedItem(item);
@@ -62,7 +67,7 @@ const Dropdown: FC<IDropdownProps> = ({ items, onSelect, id, label }) => {
 					type="button"
 				>
 					<span className="flex items-center">
-						<span>{selectedItem}</span>
+						<span>{selectedItem.label}</span>
 					</span>
 					<svg
 						className="shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500"
@@ -90,18 +95,18 @@ const Dropdown: FC<IDropdownProps> = ({ items, onSelect, id, label }) => {
 						onFocus={() => setIsOpen(true)}
 						onBlur={() => setIsOpen(false)}
 					>
-						{items.map((item: string, index: number) => {
+						{items.map((item: SelectFieldOption<string>, index: number) => {
 							return (
 								<button
 									key={`${item}-${index}`}
 									tabIndex={0}
 									className={`flex items-center justify-between w-full hover:bg-gray-50 dark:hover:bg-gray-700/20 py-2 px-3 cursor-pointer ${
-										item === selectedItem && "text-violet-500"
+										item.value === selectedItem.value && "text-violet-500"
 									}`}
 									onClick={(e) => handleSelect(e, item)}
 									type="button"
 								>
-									<span>{item}</span>
+									<span>{item.label}</span>
 									<svg
 										className={`shrink-0 mr-2 fill-current text-violet-500 ${
 											item !== selectedItem && "invisible"

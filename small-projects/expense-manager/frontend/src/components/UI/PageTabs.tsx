@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useMemo } from "react";
 import type { FC } from "react";
 
 // Components
@@ -13,17 +13,21 @@ import { IGroupedItem, IGroupItem } from "@/utils/utils.d";
 import useIsMobile from "@/hooks/useIsMobile";
 import Card from "./Card";
 
+// Models
+import SelectFieldOption from "@/models/SelectFieldOption";
+import { Category } from "../../../../common/src";
+
 interface ITabsProps<T extends IGroupItem> {
 	data: T[];
 	Component: FC<any>; // Using React.ComponentType to define the component prop
 }
 
-const Tabs: FC<ITabsProps<IGroupItem>> = ({ data, Component }) => {
+const Tabs: FC<ITabsProps<Category>> = ({ data, Component }) => {
 	// Hooks
 	const isMobile = useIsMobile();
 
 	// Data
-	const groupedData: IGroupedItem<IGroupItem>[] = groupByType(data);
+	const groupedData: IGroupedItem<Category>[] = groupByType(data);
 
 	// Set the first active tab as the first group
 	const [activeTab, setActiveTab] = useState<string>(groupedData[0].type);
@@ -60,8 +64,10 @@ const Tabs: FC<ITabsProps<IGroupItem>> = ({ data, Component }) => {
 				<>
 					<Dropdown
 						id={`drodown-${groupedData[0].type}`}
-						items={groupedData.map((group) => group.type)}
-						onSelect={handleTabClick}
+						items={groupedData.map(
+							(group) => new SelectFieldOption(group.type, group.type)
+						)}
+						onSelect={(option) => handleTabClick(option.value)}
 					/>
 					<Card className="mt-2">
 						{groupedData.map(

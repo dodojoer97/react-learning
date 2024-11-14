@@ -1,11 +1,13 @@
 import { CategoryType } from "./Category";
 
 // Define an interface for Recurring options
-export interface IRecurringTransaction {
+export type Frequency = "daily" | "weekly" | "monthly" | "yearly";
+
+export type IRecurringTransaction = {
 	isRecurring: boolean; // Whether the transaction is recurring
-	frequency?: "daily" | "weekly" | "monthly" | "yearly"; // Frequency of recurrence
+	frequency?: Frequency; // Frequency of recurrence
 	endDate?: string; // Optional end date for recurring transactions
-}
+};
 
 export interface ITransaction {
 	id: string;

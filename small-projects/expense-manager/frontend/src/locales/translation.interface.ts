@@ -33,6 +33,9 @@ export interface ISignupTranslations {
 export interface IFormTranslations {
 	enterEmail: string;
 	enterPassword: string;
+	currency: string;
+	seperator: string;
+	save: string;
 }
 
 export interface IHeaderTranslations {

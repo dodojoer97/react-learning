@@ -113,7 +113,7 @@ const Login: FC = () => {
 					<Input
 						id="password"
 						type={passwordInputType}
-						label={t("forms:enterPassword")}
+						label={t("errors:enterPassword")}
 						inputIcon={passwordInputType === "text" ? faEyeSlash : faEye}
 						required
 						disabled={isLoadingForm}
@@ -127,7 +127,7 @@ const Login: FC = () => {
 					></Input>
 
 					{password1Field.hasError && (
-						<InputError message={t("forms:notPasswordLength")} />
+						<InputError message={t("errors:notPasswordLength")} />
 					)}
 
 					{error && <InputError message={error} className="text-red-600" />}

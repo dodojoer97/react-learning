@@ -24,7 +24,7 @@ import SelectFieldOption from "@/models/SelectFieldOption";
 
 const Settings: FC = () => {
 	// Translations
-	const { t } = useTranslation("settings");
+	const { t } = useTranslation(["forms"]);
 
 	// Redux
 	const dispatch = useDispatch<AppDispatch>();
@@ -40,8 +40,6 @@ const Settings: FC = () => {
 	const [selectedCurrency, setSelectedCurrency] = useState<SelectFieldOption<string>>(currency);
 	const [selectedSeperator, setSelectedSeperator] =
 		useState<SelectFieldOption<string>>(numberSeperator);
-
-	console.log("selectedCurrency: ", selectedCurrency);
 
 	const { handleSubmit, isLoading, error } = useFormSubmission(async () => {
 		setCurrency(selectedCurrency);
@@ -64,14 +62,14 @@ const Settings: FC = () => {
 				<Form onSubmit={handleSubmit}>
 					<Dropdown
 						id="currency"
-						label="Currency"
+						label={t("forms:currency")}
 						items={availableCurrencies.map((option) => option)}
 						selectedItem={selectedCurrency}
 						onSelect={(option) => setSelectedCurrency(option)}
 					/>
 					<Dropdown
-						id="currency"
-						label="Seperator"
+						id="seperator"
+						label={t("forms:seperator")}
 						items={availableNumberSeperators.map((option) => option)}
 						selectedItem={selectedSeperator}
 						onSelect={(option) => setSelectedSeperator(option)}
@@ -81,8 +79,9 @@ const Settings: FC = () => {
 							type="submit"
 							disabled={isLoading} // Disable if there are errors or the form is loading
 							className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white ml-3"
+							loading={isLoading}
 						>
-							{isLoading ? "Saving..." : "SAVE"} {/* Show loading state */}
+							{t("forms:save")}
 						</Button>
 					</div>
 				</Form>

@@ -26,6 +26,9 @@ export const translations: ITranslations = {
 	forms: {
 		enterEmail: "Enter email",
 		enterPassword: "Enter password",
+		currency: "Choose a currency",
+		seperator: "Choose a seperator",
+		save: "Save",
 	},
 	header: {
 		signin: "Log in",

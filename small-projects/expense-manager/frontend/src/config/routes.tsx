@@ -77,7 +77,6 @@ export const routeConfig: RouteConfig[] = [
 		),
 		sidebarDisplay: true,
 		isProtected: true,
-		loader: () => authLoader({ title: "" }),
 		errorElement: <ErrorPage />,
 		children: [
 			{

@@ -19,6 +19,7 @@ export interface ILoginTranslations {
 	loginDesc: string;
 	signup: string;
 	noAccount: string;
+	forgotPassword: string;
 }
 
 export interface ISignupTranslations {

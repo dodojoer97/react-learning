@@ -15,10 +15,6 @@ import Input from "@/components/UI/Input";
 import Button from "@/components/UI/Button";
 import InputError from "@/components/UI/InputError";
 
-// Svg
-import emailIcon from "@/assets/email.svg";
-import eyeIcon from "@/assets/eye.svg";
-
 // Hooks
 import useToggleInputType from "@/hooks/useToggleInputType";
 import useInput from "@/hooks/useInput";
@@ -33,14 +29,13 @@ import { RootState, AppDispatch } from "@/store/store";
 
 // DTO
 import LoginDTO from "@/DTO/request/Login";
-import Loader from "@/components/UI/Loader";
 import AuthFormWrapper from "@/components/Auth/AuthFormWrapper";
 
 // FontAwesome
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Login: FC = () => {
-	const { t } = useTranslation(["login", "forms"]);
+	const { t } = useTranslation(["login", "forms", "errors"]);
 
 	// Redux
 	const dispatch = useDispatch<AppDispatch>();
@@ -55,6 +50,7 @@ const Login: FC = () => {
 			return isEmail(value);
 		},
 		clearErrorFN: () => dispatch(clearError()),
+		errorMessage: t("errors:noEmailMatching"),
 	});
 
 	const password1Field = useInput<HTMLInputElement, string>({
@@ -63,6 +59,7 @@ const Login: FC = () => {
 			return hasMinLength(value, 8);
 		},
 		clearErrorFN: () => dispatch(clearError()),
+		errorMessage: t("errors:notPasswordLength"),
 	});
 
 	// Toggle input type
@@ -96,7 +93,7 @@ const Login: FC = () => {
 	}, [isSubmitted, isAuthenticated, navigate, error]);
 
 	return (
-		<AuthFormWrapper title={t("loginTitle")}>
+		<AuthFormWrapper title={t("login:loginTitle")}>
 			<Form className="mx-auto mb-0 mt-8 max-w-md space-y-4" onSubmit={handleSubmit}>
 				<div className="space-y-4">
 					<Input
@@ -110,7 +107,7 @@ const Login: FC = () => {
 							emailField.handleInputChange(e as ChangeEvent<HTMLInputElement>)
 						}
 						onBlur={emailField.handleInputBlur}
-						error={emailField.hasError ? t("forms:noEmailMatching") : undefined}
+						error={emailField.errorMessage}
 					></Input>
 
 					<Input
@@ -126,6 +123,7 @@ const Login: FC = () => {
 						}
 						onBlur={password1Field.handleInputBlur}
 						onClickIcon={toggleInputType}
+						error={password1Field.errorMessage}
 					></Input>
 
 					{password1Field.hasError && (
@@ -140,7 +138,7 @@ const Login: FC = () => {
 							className="text-sm underline hover:no-underline"
 							to="/auth/reset-password"
 						>
-							Forgot Password?
+							{t("login:forgotPassword")}
 						</Link>
 					</div>
 
@@ -150,19 +148,19 @@ const Login: FC = () => {
 						className="btn  bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white  whitespace-nowrap"
 						loading={loading || isLoadingForm}
 					>
-						{t("signin")}
+						{t("login:signin")}
 					</Button>
 				</div>
 			</Form>
 			{/* FOOTER */}
 			<div className="pt-5 mt-6 border-t border-gray-100 dark:border-gray-700/60">
 				<div className="text-sm">
-					{t("noAccount")}{" "}
+					{t("login:noAccount")}{" "}
 					<Link
 						className="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400"
 						to="/auth/signup"
 					>
-						{t("signup")}{" "}
+						{t("login:signup")}{" "}
 					</Link>
 				</div>
 			</div>

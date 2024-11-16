@@ -13,6 +13,7 @@ export const translations: ITranslations = {
 			"Securely access your account with our simple login process. Ensure your data's safety while enjoying hassle-free entry to manage your tasks efficiently.",
 		signup: "Sign up",
 		noAccount: "No account? ",
+		forgotPassword: "Forgot Password?",
 	},
 	signup: {
 		signupTitle: "Get started Today!",

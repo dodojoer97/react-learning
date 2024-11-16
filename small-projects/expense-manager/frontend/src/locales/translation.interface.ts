@@ -5,15 +5,20 @@ export interface ITranslations {
 	forms: IFormTranslations;
 	header: IHeaderTranslations;
 	settings: ISettingsTranslations;
+	resetPassword: IResetPasswordTranslations;
 	errors: IErrorMessages;
 }
 
-export interface IHomeTranslation {
+export interface IPageTranslations {
+	title: string;
+}
+
+export interface IHomeTranslation extends IPageTranslations {
 	homeTitle: string;
 	homeDesc: string;
 }
 
-export interface ILoginTranslations {
+export interface ILoginTranslations extends IPageTranslations {
 	signin: string;
 	loginTitle: string;
 	loginDesc: string;
@@ -22,12 +27,23 @@ export interface ILoginTranslations {
 	forgotPassword: string;
 }
 
-export interface ISignupTranslations {
+export interface ISignupTranslations extends IPageTranslations {
 	signupTitle: string;
 	signupDesc: string;
 	createAccount: string;
 	hasAccount: string;
 	signin: string;
+}
+
+export interface ISettingsTranslations extends IPageTranslations {
+	categoriesTitle: string;
+}
+
+export interface IResetPasswordTranslations extends IPageTranslations {
+	resetPassword: string;
+	sendLink: string;
+	emailSent: string;
+	resetPasswordSuccessMessage: string;
 }
 
 export interface IFormTranslations {
@@ -43,11 +59,6 @@ export interface IHeaderTranslations {
 	signup: string;
 	settings: string;
 	categories: string;
-}
-
-export interface ISettingsTranslations {
-	settingsTitle: string;
-	categoriesTitle: string;
 }
 
 export interface IErrorMessages {

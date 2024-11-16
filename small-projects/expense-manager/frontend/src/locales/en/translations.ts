@@ -5,6 +5,7 @@ export const translations: ITranslations = {
 		homeTitle: "Expense Manager",
 		homeDesc:
 			"Efficiently manage your finances with our Expense Manager. This tool provides detailed insights into your spending, helping you budget wisely and save effectively. Stay on top of your finances and make informed decisions with ease.",
+		title: "Home",
 	},
 	login: {
 		signin: "Sign in",
@@ -14,6 +15,7 @@ export const translations: ITranslations = {
 		signup: "Sign up",
 		noAccount: "No account? ",
 		forgotPassword: "Forgot Password?",
+		title: "Login",
 	},
 	signup: {
 		signupTitle: "Get started Today!",
@@ -22,6 +24,7 @@ export const translations: ITranslations = {
 		createAccount: "Create account",
 		hasAccount: "Have an account?",
 		signin: "Sign in",
+		title: "Sign in",
 	},
 	forms: {
 		enterEmail: "Enter email",
@@ -37,8 +40,15 @@ export const translations: ITranslations = {
 		categories: "Categories",
 	},
 	settings: {
-		settingsTitle: "Settings",
+		title: "Settings",
 		categoriesTitle: "Categories",
+	},
+	resetPassword: {
+		resetPassword: "Reset password",
+		title: "Reset password",
+		sendLink: "Send Reset Link",
+		resetPasswordSuccessMessage: "Password changed, Please Log in",
+		emailSent: "An email will be sent to the provided email address",
 	},
 	errors: {
 		invalidAmount: "Amount must be greater than zero.",

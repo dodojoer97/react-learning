@@ -25,7 +25,7 @@ import { isEmail } from "@/utils/utils";
 import InputError from "@/components/UI/InputError";
 
 const RequestPasswordResetForm: FC = () => {
-	const { t } = useTranslation(["login", "forms"]);
+	const { t } = useTranslation(["forms", "resetPassword", "errors"]);
 
 	// Redux
 	const dispatch = useDispatch<AppDispatch>();
@@ -42,6 +42,7 @@ const RequestPasswordResetForm: FC = () => {
 			return isEmail(value);
 		},
 		clearErrorFN: () => dispatch(clearError()),
+		errorMessage: t("errors:noEmailMatching"),
 	});
 
 	// Handle submit
@@ -63,7 +64,7 @@ const RequestPasswordResetForm: FC = () => {
 			{isSubmitted && !hasErrors ? (
 				// Render success message if form is successfully submitted
 				<div className="text-center mt-6">
-					<p>{t("forms:resetPasswordSuccessMessage")}</p>
+					<p>{t("resetPassword:emailSent")}</p>
 				</div>
 			) : (
 				<Form onSubmit={handleSubmit}>
@@ -78,7 +79,7 @@ const RequestPasswordResetForm: FC = () => {
 							emailField.handleInputChange(e as ChangeEvent<HTMLInputElement>)
 						}
 						onBlur={emailField.handleInputBlur}
-						error={emailField.hasError ? t("forms:noEmailMatching") : undefined}
+						error={emailField.errorMessage}
 					/>
 					<div className="flex justify-end mt-6">
 						<Button
@@ -86,7 +87,7 @@ const RequestPasswordResetForm: FC = () => {
 							loading={loadingAuth || isLoadingForm}
 							className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white whitespace-nowrap"
 						>
-							Send Reset Link
+							{t("resetPassword:sendLink")}
 						</Button>
 					</div>
 					{authError && <InputError message={authError} />}

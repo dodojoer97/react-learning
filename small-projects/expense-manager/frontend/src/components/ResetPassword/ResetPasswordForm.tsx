@@ -14,7 +14,7 @@ import InputError from "@/components/UI/InputError";
 import { useTranslation } from "react-i18next";
 
 // Store
-import { resetPassword, clearError } from "@/store/authSlice";
+import { resetPassword, clearError, logout } from "@/store/authSlice";
 import { RootState, AppDispatch } from "@/store/store";
 
 // Hooks
@@ -33,7 +33,7 @@ interface Props {
 }
 
 const ResetPasswordForm: FC<Props> = ({ token }) => {
-	const { t } = useTranslation(["login", "forms"]);
+	const { t } = useTranslation(["forms", "resetPassword"]);
 
 	// Redux
 	const dispatch = useDispatch<AppDispatch>();
@@ -48,12 +48,14 @@ const ResetPasswordForm: FC<Props> = ({ token }) => {
 		defaultValue: "",
 		validationFn: (value: string) => hasMinLength(value, 8),
 		clearErrorFN: () => dispatch(clearError()), // Dispatch clear error action
+		errorMessage: t("errors:notPasswordLength"),
 	});
 
 	const password2Field = useInput<HTMLInputElement, string>({
 		defaultValue: "",
 		validationFn: (value: string) => hasMinLength(value, 8),
 		clearErrorFN: () => dispatch(clearError()), // Dispatch clear error action
+		errorMessage: t("errors:notPasswordLength"),
 	});
 
 	// Input type togglers
@@ -77,6 +79,7 @@ const ResetPasswordForm: FC<Props> = ({ token }) => {
 		if (password1Field.hasError) return;
 
 		await dispatch(resetPassword({ password: password1Field.value, token }));
+		dispatch(logout());
 	});
 
 	// Check if we have any errors
@@ -88,7 +91,7 @@ const ResetPasswordForm: FC<Props> = ({ token }) => {
 			{isSubmitted && !hasErrors ? (
 				// Render success message if form is successfully submitted
 				<div className="text-center mt-6">
-					<p>{t("forms:resetPasswordSuccessMessage")}</p>
+					<p>{t("resetPassword:resetPasswordSuccessMessage")}</p>
 				</div>
 			) : (
 				<Form onSubmit={handleSubmit}>
@@ -104,10 +107,8 @@ const ResetPasswordForm: FC<Props> = ({ token }) => {
 						}
 						onBlur={password1Field.handleInputBlur}
 						onClickIcon={togglePassword1Type}
+						error={password1Field.errorMessage}
 					></Input>
-					{password1Field.hasError && (
-						<InputError message={t("forms:notPasswordLength")} />
-					)}
 					<Input
 						id="password2"
 						type={password2InputType}
@@ -120,12 +121,11 @@ const ResetPasswordForm: FC<Props> = ({ token }) => {
 						}
 						onBlur={password2Field.handleInputBlur}
 						onClickIcon={togglePassword2Type}
+						error={password2Field.errorMessage}
 					></Input>
-					{password2Field.hasError && (
-						<InputError message={t("forms:notPasswordLength")} />
-					)}
+
 					{displayPasswordsNotMatching && (
-						<InputError message={t("forms:notMatchingPasswords")} />
+						<InputError message={t("errors:notMatchingPasswords")} />
 					)}
 
 					<div className="flex justify-end mt-6">
@@ -134,7 +134,7 @@ const ResetPasswordForm: FC<Props> = ({ token }) => {
 							loading={loadingAuth || isLoadingForm}
 							className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white whitespace-nowrap"
 						>
-							Reset password
+							{t("resetPassword:resetPassword")}
 						</Button>
 					</div>
 					{authError && <InputError message={authError} />}

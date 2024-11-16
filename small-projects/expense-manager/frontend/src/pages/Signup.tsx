@@ -36,7 +36,7 @@ import RegisterDTO from "@/DTO/request/Register";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Signup: FC = () => {
-	const { t } = useTranslation(["signup", "forms"]);
+	const { t } = useTranslation(["signup", "errors", "forms"]);
 
 	// Redux Store
 	const dispatch = useDispatch<AppDispatch>();
@@ -49,7 +49,8 @@ const Signup: FC = () => {
 	const emailField = useInput<HTMLInputElement, string>({
 		defaultValue: "",
 		validationFn: (value: string) => isEmail(value),
-		clearErrorFN: () => dispatch(clearError()), // Dispatch clear error action
+		clearErrorFN: () => dispatch(clearError()),
+		errorMessage: t("errors:noEmailMatching"),
 	});
 
 	// Name field
@@ -57,6 +58,7 @@ const Signup: FC = () => {
 		defaultValue: "",
 		validationFn: (value: string) => hasMinLength(value, 3),
 		clearErrorFN: () => dispatch(clearError()), // Dispatch clear error action
+		errorMessage: t("errors:invalidLength", { min: 3 }),
 	});
 
 	// Password fields
@@ -64,12 +66,14 @@ const Signup: FC = () => {
 		defaultValue: "",
 		validationFn: (value: string) => hasMinLength(value, 8),
 		clearErrorFN: () => dispatch(clearError()), // Dispatch clear error action
+		errorMessage: t("errors:notPasswordLength"),
 	});
 
 	const password2Field = useInput<HTMLInputElement, string>({
 		defaultValue: "",
 		validationFn: (value: string) => hasMinLength(value, 8),
 		clearErrorFN: () => dispatch(clearError()), // Dispatch clear error action
+		errorMessage: t("errors:notPasswordLength"),
 	});
 
 	// Input type togglers
@@ -98,8 +102,6 @@ const Signup: FC = () => {
 	// Handle post-signup logic
 	useEffect(() => {
 		if (!error && isSubmitted) {
-			// Show a success message or redirect to a success page
-			alert("Signup successful! Please log in to continue.");
 			navigate("/auth/login"); // Redirect to login page
 		}
 
@@ -123,8 +125,8 @@ const Signup: FC = () => {
 								emailField.handleInputChange(e as ChangeEvent<HTMLInputElement>)
 							}
 							onBlur={emailField.handleInputBlur}
+							error={emailField.errorMessage}
 						></Input>
-						{emailField.hasError && <InputError message={t("forms:noEmailMatching")} />}
 					</div>
 					<div>
 						<Input
@@ -137,8 +139,8 @@ const Signup: FC = () => {
 								nameField.handleInputChange(e as ChangeEvent<HTMLInputElement>)
 							}
 							onBlur={nameField.handleInputBlur}
+							error={nameField.errorMessage}
 						></Input>
-						{nameField.hasError && <InputError message={"Some error"} />}
 					</div>
 					<div>
 						<Input
@@ -153,10 +155,8 @@ const Signup: FC = () => {
 							}
 							onBlur={password1Field.handleInputBlur}
 							onClickIcon={togglePassword1Type}
+							error={password1Field.errorMessage}
 						></Input>
-						{password1Field.hasError && (
-							<InputError message={t("forms:notPasswordLength")} />
-						)}
 					</div>
 					<div>
 						<Input
@@ -171,13 +171,11 @@ const Signup: FC = () => {
 							}
 							onBlur={password2Field.handleInputBlur}
 							onClickIcon={togglePassword2Type}
+							error={password2Field.errorMessage}
 						></Input>
-						{password2Field.hasError && (
-							<InputError message={t("forms:notPasswordLength")} />
-						)}
 					</div>
 					{displayPasswordsNotMatching && (
-						<InputError message={t("forms:notMatchingPasswords")} />
+						<InputError message={t("errors:notMatchingPasswords")} />
 					)}
 					{error && <InputError message={error} className="text-red-600" />}
 					<Button
@@ -192,12 +190,12 @@ const Signup: FC = () => {
 			{/* FOOTER */}
 			<div className="pt-5 mt-6 border-t border-gray-100 dark:border-gray-700/60">
 				<div className="text-sm">
-					Have an account?{" "}
+					{t("signup:hasAccount")}{" "}
 					<Link
 						className="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400"
 						to="/auth/login"
 					>
-						Sign In
+						{t("signup:signin")}
 					</Link>
 				</div>
 			</div>

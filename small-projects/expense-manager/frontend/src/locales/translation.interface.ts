@@ -1,27 +1,37 @@
+export interface ITranslations {
+	home: IHomeTranslation;
+	login: ILoginTranslations;
+	signup: ISignupTranslations;
+	forms: IFormTranslations;
+	header: IHeaderTranslations;
+	settings: ISettingsTranslations;
+	errors: IErrorMessages;
+}
+
 export interface IHomeTranslation {
 	homeTitle: string;
 	homeDesc: string;
 }
+
 export interface ILoginTranslations {
+	signin: string;
 	loginTitle: string;
 	loginDesc: string;
-	signin: string;
-	noAccount: string;
 	signup: string;
-}
-
-export interface IFormTranslations {
-	enterPassword: string;
-	enterEmail: string;
-	notPasswordLength: string;
-	notMatchingPasswords: string;
-	noEmailMatching: string;
+	noAccount: string;
 }
 
 export interface ISignupTranslations {
 	signupTitle: string;
 	signupDesc: string;
 	createAccount: string;
+	hasAccount: string;
+	signin: string;
+}
+
+export interface IFormTranslations {
+	enterEmail: string;
+	enterPassword: string;
 }
 
 export interface IHeaderTranslations {
@@ -43,16 +53,8 @@ export interface IErrorMessages {
 	noDraftOrUser: string;
 	errorProcessingTransaction: string;
 	failedToProcessTransaction: string;
-}
-
-export interface ILocaleTranslations {
-	[locale: string]: {
-		home: IHomeTranslation;
-		login: ILoginTranslations;
-		signup: ISignupTranslations;
-		forms: IFormTranslations;
-		header: IHeaderTranslations;
-		settings: ISettingsTranslations;
-		errors: IErrorMessages;
-	};
+	noEmailMatching: string;
+	notPasswordLength: string;
+	notMatchingPasswords: string;
+	invalidLength: string;
 }

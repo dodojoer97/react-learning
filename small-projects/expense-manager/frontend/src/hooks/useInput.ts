@@ -18,11 +18,13 @@ const useInput = <
 	validationFn,
 	clearErrorFN,
 	changeFn,
+	errorMessage,
 }: {
 	defaultValue: V;
 	validationFn?: (value: V) => boolean;
 	clearErrorFN?: () => void;
 	changeFn?: (value: V) => void;
+	errorMessage?: string;
 }): {
 	value: V;
 	handleInputChange(e: ChangeEvent<T> | Date): void;
@@ -30,6 +32,7 @@ const useInput = <
 	reset(): void;
 	hasError: boolean;
 	isTouched: boolean;
+	errorMessage?: string;
 } => {
 	const [value, setValue] = useState<V>(defaultValue);
 	const [isTouched, setIsTouched] = useState<boolean>(false);
@@ -74,13 +77,16 @@ const useInput = <
 		setIsTouched(true);
 	}, []);
 
+	const hasError: boolean = isTouched && !valueIsValid;
+
 	return {
 		value,
 		handleInputChange,
 		handleInputBlur,
 		reset,
-		hasError: isTouched && !valueIsValid,
+		hasError,
 		isTouched,
+		errorMessage: hasError ? errorMessage : undefined,
 	};
 };
 

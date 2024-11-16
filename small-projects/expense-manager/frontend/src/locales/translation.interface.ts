@@ -6,6 +6,7 @@ export interface ITranslations {
 	settings: ISettingsTranslations;
 	resetPassword: IResetPasswordTranslations;
 	account: IAccountTranslations;
+	categories: ICategoriesTranslations;
 	errors: IErrorMessages;
 }
 
@@ -48,6 +49,8 @@ export interface IAccountTranslations extends IPageTranslations {
 	setPassword: string;
 }
 
+export interface ICategoriesTranslations extends IPageTranslations {}
+
 export interface IFormTranslations {
 	enterEmail: string;
 	enterPassword: string;
@@ -56,6 +59,7 @@ export interface IFormTranslations {
 	save: string;
 	cancel: string;
 	enterName: string;
+	categoryName: string;
 }
 
 export interface IHeaderTranslations {

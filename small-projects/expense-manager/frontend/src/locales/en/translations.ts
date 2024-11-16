@@ -28,6 +28,7 @@ export const translations: ITranslations = {
 		seperator: "Choose a seperator",
 		save: "Save",
 		cancel: "Cancel",
+		categoryName: "Category Name",
 	},
 	header: {
 		signin: "Log in",
@@ -53,6 +54,9 @@ export const translations: ITranslations = {
 		myAccount: "My Account",
 		personalInfo: "Personal Info",
 		setPassword: "Set New Password",
+	},
+	categories: {
+		title: "Categories",
 	},
 	errors: {
 		invalidAmount: "Amount must be greater than zero.",

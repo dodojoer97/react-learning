@@ -12,7 +12,7 @@ import { addCategory } from "@/store/categorySlice"; // Import addCategory actio
 
 // Components
 import Form from "@/components/UI/Form";
-import IconSelector from "./IconSelector";
+import IconSelector from "../IconSelector";
 import Input from "@/components/UI/Input";
 import Select from "@/components/UI/Select";
 import Button from "@/components/UI/Button";

@@ -12,6 +12,9 @@ import Form from "@/components/UI/Form";
 import Input from "@/components/UI/Input";
 import InputError from "@/components/UI/InputError";
 
+// Translations
+import { useTranslation } from "react-i18next";
+
 // Hooks
 import useInput from "@/hooks/useInput";
 import useFormSubmission from "@/hooks/useFormSubmission";
@@ -29,6 +32,9 @@ interface IEditCategoryFormProps {
 }
 
 const EditCategoryForm: FC<IEditCategoryFormProps> = ({ id, name, onSave }) => {
+	// translations
+	const { t } = useTranslation(["errors", "categories"]);
+
 	// Redux store
 	const dispatch = useDispatch<AppDispatch>();
 	const { loading, error } = useSelector((state: RootState) => state.settings); // Access loading and error state from settings slice
@@ -38,9 +44,8 @@ const EditCategoryForm: FC<IEditCategoryFormProps> = ({ id, name, onSave }) => {
 	const nameField = useInput<HTMLInputElement, string>({
 		defaultValue: name,
 		validationFn: (value) => hasMinLength(value, 4),
+		errorMessage: t("errors:invalidLength", { min: 4 }),
 	});
-
-	console.log("nameField: ", nameField);
 
 	// Handle form submission
 	const { handleSubmit } = useFormSubmission(async () => {
@@ -58,13 +63,14 @@ const EditCategoryForm: FC<IEditCategoryFormProps> = ({ id, name, onSave }) => {
 			<div>
 				<Input
 					id="name"
-					label="Category Name"
+					label={t("forms:categoryName")}
 					className="w-12"
 					value={nameField.value}
 					onChange={(e) =>
 						nameField.handleInputChange(e as ChangeEvent<HTMLInputElement>)
 					}
 					onBlur={nameField.handleInputBlur}
+					error={nameField.errorMessage}
 				/>
 				{nameField.hasError && (
 					<InputError
@@ -80,7 +86,7 @@ const EditCategoryForm: FC<IEditCategoryFormProps> = ({ id, name, onSave }) => {
 				disabled={nameField.hasError || loading} // Disable if there's an error or if the form is loading
 				className="inline-block rounded-lg w-full bg-blue-500 px-5 py-3 text-sm font-medium text-white disabled:bg-slate-400"
 			>
-				{loading ? "Saving..." : "SAVE"} {/* Show loading state */}
+				{t("forms:save")}
 			</Button>
 		</Form>
 	);

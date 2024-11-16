@@ -16,7 +16,7 @@ import Layout from "@/components/UI/Layout";
 import SlidingPanel from "@/components/UI/SlidingPanel";
 
 // Components
-import AddCategoryForm from "@/components/AddCategoryForm";
+import AddCategoryForm from "@/components/Category/AddCategoryForm";
 import Tabs from "@/components/Category/CategoryTabs";
 
 // FontAwesome

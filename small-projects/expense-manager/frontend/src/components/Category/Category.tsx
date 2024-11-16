@@ -8,7 +8,7 @@ import { faPencil, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 // UI Components
 import Button from "@/components/UI/Button";
 import SlidingPanel from "@/components/UI/SlidingPanel";
-import EditCategoryForm from "@/components/EditCategoryForm";
+import EditCategoryForm from "@/components/Category/EditCategoryForm";
 
 // Store
 import { RootState, AppDispatch } from "@/store/store"; // Redux store types

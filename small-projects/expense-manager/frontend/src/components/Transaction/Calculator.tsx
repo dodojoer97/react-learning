@@ -9,7 +9,7 @@ import { faSliders, faPlus, faMinus, IconDefinition } from "@fortawesome/free-so
 // Redux
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store"; // Import from Redux store
-import Button from "./UI/Button";
+import Button from "../UI/Button";
 
 type Operation = "+" | "-" | "*" | "/";
 

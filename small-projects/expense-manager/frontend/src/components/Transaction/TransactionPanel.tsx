@@ -12,7 +12,7 @@ import { updateDraftTransaction, saveDraftTransaction } from "@/store/transactio
 import { toggleOpen } from "@/store/openSlice"; // Action from open slice
 
 // Components
-import Calculator from "@/components/Calculator";
+import Calculator from "@/components/Transaction/Calculator";
 import TypeTabs from "@/components/Transaction/TypeTabs";
 import TransactionForm from "@/components/Transaction/TransactionForm";
 import SlidingPanel from "@/components/UI/SlidingPanel";

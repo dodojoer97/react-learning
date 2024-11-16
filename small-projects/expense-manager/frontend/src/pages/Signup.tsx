@@ -36,10 +36,7 @@ import RegisterDTO from "@/DTO/request/Register";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Signup: FC = () => {
-	const { t, ready } = useTranslation(["signup", "forms"]);
-	if (!ready) {
-		return <div>Loading...</div>; // Or some loading spinner
-	}
+	const { t } = useTranslation(["signup", "forms"]);
 
 	// Redux Store
 	const dispatch = useDispatch<AppDispatch>();

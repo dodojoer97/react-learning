@@ -6,11 +6,11 @@ import { store } from "@/store/store"; // Import your Redux store if needed
 import { getSettings } from "@/store/settingsSlice";
 
 // Loader to handle authentication logic and return title
-export const authLoader = async ({ title, token }: { title: string; token: string | null }) => {
+export const authLoader = async ({ title, token }: { title: string; token?: string }) => {
 	const dispatch: AppDispatch = store.dispatch; // Get dispatch from the store
 
 	// Dispatch the initializeAuth action
-	await dispatch(initializeAuth(token));
+	await dispatch(initializeAuth(token || null));
 
 	// Get the updated state after initializing auth
 	const state: RootState = store.getState();

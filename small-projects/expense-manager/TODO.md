@@ -8,7 +8,6 @@
          Design and implement a customer account page where users can edit their info
 -   [ ] **Add Translations:**  
          Replace all hardcoded texts with translations using i18n or another translation library to support multiple languages.
-
 -   [ ] **Clean and Optimize Components:**  
          Refactor and optimize frontend components to improve code cleanliness and maintainability, match styling.
 -   [ ] **Improve Performance:**  
@@ -28,13 +27,13 @@
          Implement backend logic for sending emails, including the password reset email and potentially other email notifications.
 -   [x] **Create Edit customer Functionality:**
         Implement backend logic for editing user info
--   [ ] **Create user info endpoint:**
+-   [x] **Create user info endpoint:**
         Implement backend logic for getting user info
-
--   [ ] **Check Firebase Scheduling Functionality Online:**
 
 -   [ ] **Add schema validations**  
          Add a genric validation function that takes a schema and validates it
+
+-   [ ] **Check Firebase Scheduling Functionality Online:**
 
 ## Common Tasks
 

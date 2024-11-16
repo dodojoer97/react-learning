@@ -1,21 +1,16 @@
 export interface ITranslations {
-	home: IHomeTranslation;
 	login: ILoginTranslations;
 	signup: ISignupTranslations;
 	forms: IFormTranslations;
 	header: IHeaderTranslations;
 	settings: ISettingsTranslations;
 	resetPassword: IResetPasswordTranslations;
+	account: IAccountTranslations;
 	errors: IErrorMessages;
 }
 
 export interface IPageTranslations {
 	title: string;
-}
-
-export interface IHomeTranslation extends IPageTranslations {
-	homeTitle: string;
-	homeDesc: string;
 }
 
 export interface ILoginTranslations extends IPageTranslations {
@@ -45,6 +40,13 @@ export interface IResetPasswordTranslations extends IPageTranslations {
 	emailSent: string;
 	resetPasswordSuccessMessage: string;
 }
+export interface IAccountTranslations extends IPageTranslations {
+	myAccount: string;
+	personalInfo: string;
+	emailTitle: string;
+	passwordTitle: string;
+	setPassword: string;
+}
 
 export interface IFormTranslations {
 	enterEmail: string;
@@ -52,6 +54,8 @@ export interface IFormTranslations {
 	currency: string;
 	seperator: string;
 	save: string;
+	cancel: string;
+	enterName: string;
 }
 
 export interface IHeaderTranslations {

@@ -43,7 +43,7 @@ export const routeConfig: RouteConfig[] = [
 			{
 				index: true,
 				title: "Main",
-				path: "/dashboard",
+				path: "/",
 				element: (
 					<Suspense fallback={<Loader />}>
 						<Dashboard />

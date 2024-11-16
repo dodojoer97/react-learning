@@ -132,7 +132,7 @@ const Signup: FC = () => {
 						<Input
 							id="name"
 							type="text"
-							label={"Name"}
+							label={t("forms:enterName")}
 							required
 							value={nameField.value}
 							onChange={(e) =>

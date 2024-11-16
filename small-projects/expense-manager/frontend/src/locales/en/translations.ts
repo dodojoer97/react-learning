@@ -1,12 +1,6 @@
 import { ITranslations } from "@/locales/translation.interface";
 
 export const translations: ITranslations = {
-	home: {
-		homeTitle: "Expense Manager",
-		homeDesc:
-			"Efficiently manage your finances with our Expense Manager. This tool provides detailed insights into your spending, helping you budget wisely and save effectively. Stay on top of your finances and make informed decisions with ease.",
-		title: "Home",
-	},
 	login: {
 		signin: "Sign in",
 		loginTitle: "Login",
@@ -29,9 +23,11 @@ export const translations: ITranslations = {
 	forms: {
 		enterEmail: "Enter email",
 		enterPassword: "Enter password",
+		enterName: "Name",
 		currency: "Choose a currency",
 		seperator: "Choose a seperator",
 		save: "Save",
+		cancel: "Cancel",
 	},
 	header: {
 		signin: "Log in",
@@ -49,6 +45,14 @@ export const translations: ITranslations = {
 		sendLink: "Send Reset Link",
 		resetPasswordSuccessMessage: "Password changed, Please Log in",
 		emailSent: "An email will be sent to the provided email address",
+	},
+	account: {
+		title: "Account",
+		emailTitle: "Email",
+		passwordTitle: "Password",
+		myAccount: "My Account",
+		personalInfo: "Personal Info",
+		setPassword: "Set New Password",
 	},
 	errors: {
 		invalidAmount: "Amount must be greater than zero.",

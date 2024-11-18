@@ -29,6 +29,9 @@ export const translations: ITranslations = {
 		save: "Save",
 		cancel: "Cancel",
 		categoryName: "Category Name",
+		recurringType: "Recurring type",
+		frequency: "Frequency",
+		description: "Description",
 	},
 	header: {
 		signin: "Log in",
@@ -77,5 +80,9 @@ export const translations: ITranslations = {
 	},
 	transactions: {
 		transaction: "transaction",
+		chooseCategory: "Choose Category",
+		details: "Transaction Details",
+		date: "Transaction Date",
+		recursionDate: "Recursion Date",
 	},
 };

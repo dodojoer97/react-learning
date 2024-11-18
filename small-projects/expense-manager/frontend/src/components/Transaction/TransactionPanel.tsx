@@ -1,6 +1,9 @@
 import type { FC } from "react";
 import { useState, useEffect, useCallback } from "react";
 
+// Translations
+import { useTranslation } from "react-i18next";
+
 // Types
 import type { CategoryType, OperationStatus } from "@common";
 
@@ -27,6 +30,8 @@ interface IProps {
 }
 
 const TransactionPanel: FC<IProps> = ({ onSave }) => {
+	const { t } = useTranslation();
+
 	// Redux
 	const dispatch = useDispatch<AppDispatch>();
 	const { availableCategoryTypes, selectedTransaction, draftTransaction, error, loading } =
@@ -118,7 +123,7 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 							className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white"
 							onClick={() => dispatch(toggleOpen("categorySelector"))}
 						>
-							Choose Category
+							{t("transactions:chooseCategory")}
 						</Button>
 					</div>
 				</Calculator>
@@ -128,7 +133,7 @@ const TransactionPanel: FC<IProps> = ({ onSave }) => {
 					onClick={handleSave}
 					loading={loading}
 				>
-					Save
+					{t("forms:save")}
 				</Button>
 			</section>
 			<SlidingPanel

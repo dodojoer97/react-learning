@@ -2,6 +2,9 @@
 import { useState } from "react";
 import type { ChangeEvent, FC } from "react";
 
+// Translations
+import { useTranslation } from "react-i18next";
+
 // Redux
 import { useDispatch, useSelector } from "react-redux";
 
@@ -19,7 +22,6 @@ import DatePicker from "@/templates/mosaic/components/Datepicker";
 
 // Hooks
 import useInput from "@/hooks/useInput";
-import useIsMobile from "@/hooks/useIsMobile";
 import moment from "moment";
 import SelectFieldOption from "@/models/SelectFieldOption";
 import { IRecurringTransaction, Frequency } from "@common";
@@ -47,6 +49,8 @@ const frequencyItems: SelectFieldOption<Frequency>[] = [
 const forever = new Date("2100-01-01");
 
 const TransactionForm: FC<IProps> = ({ onSave }) => {
+	// Translations
+	const { t } = useTranslation();
 	// Local state
 	const [recurringType, setRecurring] = useState<string>(recurringDropdownItems[0].value);
 	const [frequency, setFrequency] = useState<string>(frequencyItems[0].value);
@@ -55,16 +59,12 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 	// Redux hooks
 	const dispatch = useDispatch<AppDispatch>();
 	const draftTransaction = useSelector((state: RootState) => state.transaction.draftTransaction);
-	const { openSet } = useSelector((state: RootState) => state.open);
 
 	if (!draftTransaction) return <></>;
 
 	// Computed
 	const isPlanned: boolean = draftTransaction.status === "planned";
 	const showRecurringFields: boolean = isPlanned && recurringType === "Recurring";
-
-	// Hooks
-	const isMobile: boolean = useIsMobile();
 
 	// Form fields
 	const descriptionField = useInput<HTMLTextAreaElement, string>({
@@ -81,7 +81,7 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 		}
 	};
 
-	const handleEndDateChange = (selectedDates: Date[], dateStr: string) => {
+	const handleEndDateChange = (selectedDates: Date[]) => {
 		setPlannedEndDate(selectedDates[0]);
 	};
 
@@ -109,7 +109,7 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 			<div className="py-8 px-4 lg:px-8 2xl:px-12">
 				<div className="max-w-sm mx-auto lg:max-w-none">
 					<h2 className="text-2xl text-gray-800 dark:text-gray-100 font-bold mb-6">
-						Transaction Details
+						{t("transactions:details")}
 					</h2>
 					<div className="space-y-6">
 						<div>
@@ -117,7 +117,7 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 								className="block text-sm font-medium mb-1"
 								htmlFor="transaction-date"
 							>
-								Transaction Date
+								{t("transactions:date")}
 							</label>
 							<DatePicker
 								mode="single"
@@ -137,7 +137,7 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 								<div>
 									<Dropdown
 										id="recurring"
-										label="Recurring type"
+										label={t("forms:recurringType")}
 										items={recurringDropdownItems}
 										onSelect={(item) =>
 											handleDropdownSelect(item.value, "recurringType")
@@ -151,7 +151,7 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 								<div>
 									<Dropdown
 										id="frequency"
-										label="Frequency"
+										label={t("forms:frequency")}
 										items={frequencyItems}
 										onSelect={(item) =>
 											handleDropdownSelect(item.value, "frequency")
@@ -163,7 +163,7 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 										className="block text-sm font-medium mb-1"
 										htmlFor="recursion-date"
 									>
-										Recursion Date
+										{t("transactions:recursionDate")}
 									</label>
 									<DatePicker
 										mode="single"
@@ -179,7 +179,7 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 
 			<TextArea
 				id="description"
-				label="Description"
+				label={t("forms:description")}
 				value={descriptionField.value}
 				onChange={(e) =>
 					descriptionField.handleInputChange(e as ChangeEvent<HTMLTextAreaElement>)
@@ -191,7 +191,7 @@ const TransactionForm: FC<IProps> = ({ onSave }) => {
 				type="submit"
 				className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white w-full"
 			>
-				Save
+				{t("forms:save")}
 			</Button>
 		</Form>
 	);

@@ -55,6 +55,10 @@ export interface ICategoriesTranslations extends IPageTranslations {}
 
 export interface ITransactionTranslations {
 	transaction: string;
+	chooseCategory: string;
+	details: string;
+	date: string;
+	recursionDate: string;
 }
 
 export interface IFormTranslations {
@@ -66,6 +70,9 @@ export interface IFormTranslations {
 	cancel: string;
 	enterName: string;
 	categoryName: string;
+	recurringType: string;
+	frequency: string;
+	description: string;
 }
 
 export interface IHeaderTranslations {

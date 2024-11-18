@@ -87,5 +87,6 @@ export const translations: ITranslations = {
 		expenseStructure: "Expense structure",
 		latest: "Latest Transactions",
 		overview: "Expense Overview",
+		add: "Add Transaction",
 	},
 };

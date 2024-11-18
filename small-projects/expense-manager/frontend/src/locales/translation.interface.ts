@@ -61,6 +61,8 @@ export interface ITransactionTranslations {
 	recursionDate: string;
 	expenseStructure: string;
 	latest: string;
+	overview: string;
+	add: string;
 }
 
 export interface IFormTranslations {

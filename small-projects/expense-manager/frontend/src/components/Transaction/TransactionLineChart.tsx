@@ -1,6 +1,9 @@
 import type { FC } from "react";
 import { useMemo } from "react";
 
+// Translations
+import { useTranslation } from "react-i18next";
+
 // Redux
 import { useSelector } from "react-redux";
 import { getMappedTransactions } from "@/store/transactionSlice"; // Fetch transactions and mapped transactions
@@ -19,6 +22,8 @@ import moment from "moment";
 import useLoading from "@/hooks/useLoading";
 
 const TransactionLineChart: FC = () => {
+	// Translations
+	const { t } = useTranslation();
 	// Redux hooks
 	const transactions = useSelector((state: RootState) => state.transaction.transactions);
 	const selectedDates = useSelector((state: RootState) => state.transaction.selectedDates);
@@ -120,7 +125,7 @@ const TransactionLineChart: FC = () => {
 	);
 
 	return (
-		<Card title="Expense Overview" className="relative">
+		<Card title={t("transactions:overview")} className="relative">
 			{isLoadingAny && (
 				<Loader className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]" />
 			)}

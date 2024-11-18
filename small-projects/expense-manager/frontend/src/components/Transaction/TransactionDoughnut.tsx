@@ -1,6 +1,9 @@
 import { FC, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
+// Translations
+import { useTranslation } from "react-i18next";
+
 // Store
 import { RootState } from "@/store/store"; // Import the store types
 import { getMappedTransactions } from "@/store/transactionSlice"; // Redux function to map transactions
@@ -80,6 +83,8 @@ const mapTransactionsToChartData = (
 };
 
 const TransactionDoughnut: FC = () => {
+	// Translations
+	const { t } = useTranslation();
 	// Get transactions and categories from the Redux store
 	const transactions = useSelector((state: RootState) => state.transaction.transactions);
 	const categories = useSelector((state: RootState) => state.categories.categories);
@@ -100,7 +105,7 @@ const TransactionDoughnut: FC = () => {
 	}, [transactions, categories]);
 
 	return (
-		<Card title="Expense structure" className="min-h-[450px]">
+		<Card title={t("transactions:expenseStructure")} className="min-h-[450px]">
 			{loadingAny && (
 				<>
 					<div className="flex items-center flex-col justify-between">

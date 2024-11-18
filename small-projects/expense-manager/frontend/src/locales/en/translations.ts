@@ -84,5 +84,8 @@ export const translations: ITranslations = {
 		details: "Transaction Details",
 		date: "Transaction Date",
 		recursionDate: "Recursion Date",
+		expenseStructure: "Expense structure",
+		latest: "Latest Transactions",
+		overview: "Expense Overview",
 	},
 };

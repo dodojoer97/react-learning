@@ -72,12 +72,6 @@ const EditCategoryForm: FC<IEditCategoryFormProps> = ({ id, name, onSave }) => {
 					onBlur={nameField.handleInputBlur}
 					error={nameField.errorMessage}
 				/>
-				{nameField.hasError && (
-					<InputError
-						message="Category name must be at least 4 characters long"
-						className="text-red-600"
-					/>
-				)}
 			</div>
 			{error && <InputError message={error} className="text-red-600" />}{" "}
 			{/* Show error from Redux */}

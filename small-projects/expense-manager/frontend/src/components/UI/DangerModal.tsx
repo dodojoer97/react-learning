@@ -2,6 +2,9 @@
 import type { FC } from "react";
 import { createPortal } from "react-dom";
 
+// Translations
+import { useTranslation } from "react-i18next";
+
 // Components
 import ModalBlank from "@/templates/mosaic/components/ModalBlank";
 import Button from "./Button";
@@ -15,6 +18,8 @@ interface Props {
 }
 
 const DangerModal: FC<Props> = ({ isOpen, setModalOpen, onConfirm, title, description }) => {
+	const { t } = useTranslation(["notifications"]);
+
 	return createPortal(
 		<ModalBlank id="danger-modal" modalOpen={isOpen} setModalOpen={setModalOpen}>
 			<div className="p-5 flex space-x-4">
@@ -41,10 +46,7 @@ const DangerModal: FC<Props> = ({ isOpen, setModalOpen, onConfirm, title, descri
 					{description && (
 						<div className="text-sm mb-10">
 							<div className="space-y-2">
-								<p>
-									Semper eget duis at tellus at urna condimentum mattis
-									pellentesque lacus suspendisse faucibus interdum.
-								</p>
+								<p>{description}</p>
 							</div>
 						</div>
 					)}
@@ -57,13 +59,13 @@ const DangerModal: FC<Props> = ({ isOpen, setModalOpen, onConfirm, title, descri
 								setModalOpen(false);
 							}}
 						>
-							Cancel
+							{t("cancel")}
 						</Button>
 						<Button
 							className="btn-sm bg-red-500 hover:bg-red-600 text-white"
 							onClick={onConfirm}
 						>
-							Yes, Delete it
+							{t("confirmDelete")}
 						</Button>
 					</div>
 				</div>

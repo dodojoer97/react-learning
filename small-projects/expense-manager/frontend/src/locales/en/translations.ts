@@ -70,4 +70,12 @@ export const translations: ITranslations = {
 		notMatchingPasswords: "Passwords do not match",
 		invalidLength: "Must have {{min}} letters",
 	},
+	notifications: {
+		cancel: "Cancel",
+		confirmDelete: "Yes, Delete it",
+		deleteBaseTitle: "Are you sure you want to delete this {{item}}?",
+	},
+	transactions: {
+		transaction: "transaction",
+	},
 };

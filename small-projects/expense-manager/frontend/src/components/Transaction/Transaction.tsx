@@ -40,7 +40,7 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 	const modalId = "transaction-danger-modal";
 
 	// Translation
-	const { i18n } = useTranslation();
+	const { i18n, t } = useTranslation();
 
 	// Computed
 	const textColor = transaction.type === "expense" ? "text-red-600" : "text-green-600";
@@ -127,7 +127,7 @@ const Transaction: FC<Props> = ({ transactionWithCategory: { transaction, catego
 				)}
 			</li>
 			<DangerModal
-				title="Are you sure you want to delete this transaction?"
+				title={t("notifications:deleteBaseTitle", { item: t("transactions:transaction") })}
 				isOpen={openSet.includes(modalId)}
 				setModalOpen={() => dispatch(toggleOpen(modalId))}
 				onConfirm={handeDelete}

@@ -8,6 +8,8 @@ export interface ITranslations {
 	account: IAccountTranslations;
 	categories: ICategoriesTranslations;
 	errors: IErrorMessages;
+	notifications: INotificationTranslations;
+	transactions: ITransactionTranslations;
 }
 
 export interface IPageTranslations {
@@ -51,6 +53,10 @@ export interface IAccountTranslations extends IPageTranslations {
 
 export interface ICategoriesTranslations extends IPageTranslations {}
 
+export interface ITransactionTranslations {
+	transaction: string;
+}
+
 export interface IFormTranslations {
 	enterEmail: string;
 	enterPassword: string;
@@ -80,4 +86,10 @@ export interface IErrorMessages {
 	notPasswordLength: string;
 	notMatchingPasswords: string;
 	invalidLength: string;
+}
+
+export interface INotificationTranslations {
+	cancel: string;
+	confirmDelete: string;
+	deleteBaseTitle: string;
 }

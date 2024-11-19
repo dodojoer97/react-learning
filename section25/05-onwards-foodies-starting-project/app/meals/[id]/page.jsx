@@ -6,11 +6,12 @@ import {getMeal} from "@/lib/meals"
 export default async function MealPage({params}) {
     const {id} = params
     const meal = await getMeal(id)
+
+    meal.instructions = meal.instructions.replace(/\n/g, "<br />")
     return <>
-    {id}
         <header className={classes.header}>
             <div className={classes.image}>
-                <Image src={meal.image} alt={meal.title} width={100} height={100}/>
+                <Image src={meal.image} alt={meal.title} width={"300"} height={"200"}/>
             </div>
             <div className={classes.headerText}>
                 <h1>{meal.title}</h1>
@@ -22,7 +23,7 @@ export default async function MealPage({params}) {
             </div>
         </header>
         <main>
-            {/* <p className={classes.instructions} dangerouslySetInnerHTML={{__html: meal.instructions}}></p> */}
+            <p className={classes.instructions} dangerouslySetInnerHTML={{__html: meal.instructions}}></p>
         </main>
     </>
 }

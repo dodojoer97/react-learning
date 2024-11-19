@@ -10,10 +10,15 @@ export interface ITranslations {
 	errors: IErrorMessages;
 	notifications: INotificationTranslations;
 	transactions: ITransactionTranslations;
+	analytics: IAnalyticsTranslations;
 }
 
 export interface IPageTranslations {
 	title: string;
+}
+
+export interface IAnalyticsTranslations extends IPageTranslations {
+	userBalance: string;
 }
 
 export interface ILoginTranslations extends IPageTranslations {

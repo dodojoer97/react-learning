@@ -91,4 +91,8 @@ export const translations: ITranslations = {
 		overview: "Expense Overview",
 		add: "Add Transaction",
 	},
+	analytics: {
+		title: "Analytics",
+		userBalance: "Hey {{name}}, This is your current balance:",
+	},
 };

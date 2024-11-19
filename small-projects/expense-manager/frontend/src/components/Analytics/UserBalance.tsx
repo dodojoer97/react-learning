@@ -2,6 +2,9 @@
 import type { FC } from "react";
 import { useEffect } from "react";
 
+// i18n
+import { useTranslation } from "react-i18next";
+
 // Redux
 import { useDispatch, useSelector } from "react-redux";
 
@@ -12,6 +15,8 @@ import { formatAmount } from "@/utils/utils";
 import User from "@/models/User";
 
 const UserBalance: FC = () => {
+	const { t } = useTranslation();
+
 	const dispatch = useDispatch<AppDispatch>();
 	const balance = useSelector((state: RootState) => state.transaction.balance);
 	const { uid: userId, displayName } = useSelector((state: RootState) => state.auth.user as User);
@@ -27,22 +32,11 @@ const UserBalance: FC = () => {
 		<div className="flex flex-col col-span-full bg-white dark:bg-gray-800 shadow-sm rounded-xl">
 			<div className="px-5 py-6">
 				<div className="md:flex md:justify-between md:items-center">
-					{/* Left side */}
 					<div className="flex items-center mb-4 md:mb-0">
-						{/* Avatar */}
-						{/* <div className="mr-4">
-							<img
-								className="inline-flex rounded-full"
-								src={""}
-								width="64"
-								height="64"
-								alt="User"
-							/>
-						</div> */}
 						{/* User info */}
 						<div>
 							<div className="mb-2">
-								Hey {displayName}, This is your current balance:
+								{t("analytics:userBalance", { name: displayName })}
 							</div>
 							{balance !== null && (
 								<div

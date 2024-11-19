@@ -37,8 +37,10 @@ export const translations: ITranslations = {
 	header: {
 		signin: "Log in",
 		signup: "Sign up",
+		logout: "Sign Out",
 		settings: "Settings",
 		categories: "Categories",
+		expenseManager: "Expense manager",
 	},
 	settings: {
 		title: "Settings",

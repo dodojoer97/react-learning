@@ -92,6 +92,8 @@ export interface IHeaderTranslations {
 	signup: string;
 	settings: string;
 	categories: string;
+	logout: string;
+	expenseManager: string;
 }
 
 export interface IErrorMessages {

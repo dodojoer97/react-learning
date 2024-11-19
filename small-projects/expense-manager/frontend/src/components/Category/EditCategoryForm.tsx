@@ -12,7 +12,7 @@ import Form from "@/components/UI/Form";
 import Input from "@/components/UI/Input";
 import InputError from "@/components/UI/InputError";
 
-// Translations
+// i18n
 import { useTranslation } from "react-i18next";
 
 // Hooks

@@ -20,14 +20,14 @@ import useInput from "@/hooks/useInput";
 import InputError from "@/components/UI/InputError";
 import useFormSubmission from "@/hooks/useFormSubmission";
 
-// Translations
+// i18n
 import { useTranslation } from "react-i18next";
 import Form from "@/components/UI/Form";
 import Button from "@/components/UI/Button";
 import { Link } from "react-router-dom";
 
 const Account: React.FC = () => {
-	// Translations
+	// i18n
 	const { t } = useTranslation(["signup", "forms", "errors"]);
 
 	// Redux

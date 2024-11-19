@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { useMemo } from "react";
 
-// Translations
+// i18n
 import { useTranslation } from "react-i18next";
 
 // Redux
@@ -22,7 +22,7 @@ import moment from "moment";
 import useLoading from "@/hooks/useLoading";
 
 const TransactionLineChart: FC = () => {
-	// Translations
+	// i18n
 	const { t } = useTranslation();
 	// Redux hooks
 	const transactions = useSelector((state: RootState) => state.transaction.transactions);

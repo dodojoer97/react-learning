@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-// Translations
+// i18n
 import { useTranslation } from "react-i18next";
 
 // Store
@@ -27,7 +27,7 @@ import moment from "moment";
 import { v4 } from "uuid";
 
 const RightActions: FC = () => {
-	// Translations
+	// i18n
 	const { t } = useTranslation();
 
 	// Redux hooks

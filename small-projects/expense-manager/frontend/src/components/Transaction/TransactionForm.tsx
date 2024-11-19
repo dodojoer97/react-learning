@@ -2,7 +2,7 @@
 import { useState } from "react";
 import type { ChangeEvent, FC } from "react";
 
-// Translations
+// i18n
 import { useTranslation } from "react-i18next";
 
 // Redux
@@ -49,7 +49,7 @@ const frequencyItems: SelectFieldOption<Frequency>[] = [
 const forever = new Date("2100-01-01");
 
 const TransactionForm: FC<IProps> = ({ onSave }) => {
-	// Translations
+	// i18n
 	const { t } = useTranslation();
 	// Local state
 	const [recurringType, setRecurring] = useState<string>(recurringDropdownItems[0].value);

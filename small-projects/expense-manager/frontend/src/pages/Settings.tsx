@@ -23,7 +23,7 @@ import User from "@/models/User";
 import SelectFieldOption from "@/models/SelectFieldOption";
 
 const Settings: FC = () => {
-	// Translations
+	// i18n
 	const { t } = useTranslation(["forms"]);
 
 	// Redux

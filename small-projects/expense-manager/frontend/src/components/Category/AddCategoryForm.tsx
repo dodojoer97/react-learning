@@ -2,6 +2,9 @@
 import type { FC } from "react";
 import { useState } from "react";
 
+// i18n
+import { useTranslation } from "react-i18next";
+
 // Types
 import type { CategoryType } from "@common";
 
@@ -31,7 +34,9 @@ interface IProps {
 }
 
 const AddCategoryForm: FC<IProps> = ({ onSave }) => {
-	// TODO ADD TRANSLATIONS
+	// i18n
+	const { t } = useTranslation();
+
 	const [iconName, setIconName] = useState<string | null>(null);
 
 	// Redux store
@@ -44,6 +49,7 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 		validationFn: (value: string) => {
 			return hasMinLength(value, 4);
 		},
+		errorMessage: t("errors:invalidLength", { min: 4 }),
 	});
 
 	const typeField = useInput<HTMLSelectElement, string>({
@@ -83,21 +89,18 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 
 				<Input
 					id="name"
-					label="Category name"
-					placeholder="Category name"
+					label={t("forms:categoryName")}
+					placeholder={t("forms:categoryName")}
 					required
 					value={categoryNameField.value}
 					onChange={categoryNameField.handleInputChange}
 					onBlur={categoryNameField.handleInputBlur}
+					error={categoryNameField.errorMessage}
 				/>
-
-				{categoryNameField.hasError && (
-					<InputError message={"some error of length"} className="text-red-600" />
-				)}
 
 				<Select
 					id="type"
-					label="Category type"
+					label={t("forms:categoryType")}
 					options={availableCategoryTypes} // Access available category types from Redux
 					value={typeField.value}
 					onChange={typeField.handleInputChange}
@@ -109,9 +112,10 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 			<Button
 				type="submit"
 				disabled={categoryNameField.hasError || !iconName || loading} // Disable if there are errors or the form is loading
+				loading={loading}
 				className="inline-block rounded-lg w-full bg-blue-500 px-5 py-3 text-sm font-medium text-white disabled:bg-slate-400"
 			>
-				{loading ? "Saving..." : "SAVE"} {/* Show loading state */}
+				{t("forms:save")}
 			</Button>
 		</Form>
 	);

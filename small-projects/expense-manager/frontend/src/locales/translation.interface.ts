@@ -51,7 +51,9 @@ export interface IAccountTranslations extends IPageTranslations {
 	setPassword: string;
 }
 
-export interface ICategoriesTranslations extends IPageTranslations {}
+export interface ICategoriesTranslations extends IPageTranslations {
+	selectIcon: string;
+}
 
 export interface ITransactionTranslations {
 	transaction: string;
@@ -77,6 +79,7 @@ export interface IFormTranslations {
 	recurringType: string;
 	frequency: string;
 	description: string;
+	categoryType: string;
 }
 
 export interface IHeaderTranslations {

@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { useState, useEffect, useCallback } from "react";
 
-// Translations
+// i18n
 import { useTranslation } from "react-i18next";
 
 // Types

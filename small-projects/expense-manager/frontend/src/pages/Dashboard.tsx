@@ -1,7 +1,7 @@
 // React
 import type { FC } from "react";
 
-// Translations
+// i18n
 import { useTranslation } from "react-i18next";
 
 // Components

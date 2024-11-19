@@ -32,6 +32,7 @@ export const translations: ITranslations = {
 		recurringType: "Recurring type",
 		frequency: "Frequency",
 		description: "Description",
+		categoryType: "Category Type",
 	},
 	header: {
 		signin: "Log in",
@@ -60,6 +61,7 @@ export const translations: ITranslations = {
 	},
 	categories: {
 		title: "Categories",
+		selectIcon: "Select an icon",
 	},
 	errors: {
 		invalidAmount: "Amount must be greater than zero.",

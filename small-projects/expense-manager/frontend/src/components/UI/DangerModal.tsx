@@ -2,7 +2,7 @@
 import type { FC } from "react";
 import { createPortal } from "react-dom";
 
-// Translations
+// i18n
 import { useTranslation } from "react-i18next";
 
 // Components

@@ -78,7 +78,7 @@ const EditCategoryForm: FC<IEditCategoryFormProps> = ({ id, name, onSave }) => {
 			<Button
 				type="submit"
 				disabled={nameField.hasError || loading} // Disable if there's an error or if the form is loading
-				className="inline-block rounded-lg w-full bg-blue-500 px-5 py-3 text-sm font-medium text-white disabled:bg-slate-400"
+				className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white w-full"
 			>
 				{t("forms:save")}
 			</Button>

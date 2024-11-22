@@ -17,7 +17,7 @@ import SlidingPanel from "@/components/UI/SlidingPanel";
 
 // Components
 import AddCategoryForm from "@/components/Category/AddCategoryForm";
-import Tabs from "@/components/Category/CategoryTabs";
+import CategoriesDropdown from "@/components/UI/CategoriesDropdown";
 
 // FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,13 +25,12 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 const Categories: FC = () => {
 	const dispatch = useDispatch<AppDispatch>();
-	const { t } = useTranslation("settings");
 
 	// Get the open state for categories panel from Redux
 	const isCategoriesOpen = useSelector((state: RootState) =>
 		state.open.openSet.includes("categories")
 	); // Check if 'categories' panel is open
-
+	const categories = useSelector((state: RootState) => state.categories.categories);
 	const userId = useSelector((state: RootState) => state.auth.user?.uid);
 
 	// Dispatch to set category mode and fetch categories
@@ -59,7 +58,7 @@ const Categories: FC = () => {
 				<AddCategoryForm onSave={() => dispatch(toggleOpen("categories"))} />
 			</SlidingPanel>
 
-			<Tabs />
+			{categories.length > 0 && <CategoriesDropdown categories={categories} />}
 		</>
 	);
 };

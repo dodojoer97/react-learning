@@ -58,6 +58,7 @@ export interface IAccountTranslations extends IPageTranslations {
 
 export interface ICategoriesTranslations extends IPageTranslations {
 	selectIcon: string;
+	add: string;
 }
 
 export interface ITransactionTranslations {

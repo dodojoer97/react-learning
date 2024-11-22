@@ -64,6 +64,7 @@ export const translations: ITranslations = {
 	categories: {
 		title: "Categories",
 		selectIcon: "Select an icon",
+		add: "Add Category",
 	},
 	errors: {
 		invalidAmount: "Amount must be greater than zero.",

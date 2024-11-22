@@ -4,6 +4,7 @@ import { authLoader } from "@/loaders/authLoader";
 import ErrorPage from "@/pages/Error";
 import Layout from "@/components/UI/Layout";
 import RightActions from "@/components/Dashboard/RightActions";
+import CategoriesRightActions from "@/components/Category/RightActions";
 import Loader from "@/components/UI/Loader"; // Add a fallback loading spinner
 
 // Lazy-loaded components
@@ -72,7 +73,7 @@ export const routeConfig: RouteConfig[] = [
 		path: "/settings",
 		element: (
 			<Suspense fallback={<Loader />}>
-				<Layout />
+				<Layout rightComponent={<CategoriesRightActions />} />
 			</Suspense>
 		),
 		sidebarDisplay: true,

@@ -17,7 +17,7 @@ const Input: FC<InputProps> = ({
 	inputIcon,
 	onClickIcon,
 	required,
-	errorMessage,
+	error,
 	...props
 }) => {
 	return (
@@ -63,7 +63,7 @@ const Input: FC<InputProps> = ({
 					</div>
 				)}
 			</div>
-			{errorMessage && <InputError message={errorMessage} />}
+			{error && <InputError message={error} />}
 		</div>
 	);
 };

@@ -150,7 +150,6 @@ const Account: React.FC = () => {
 						<div className="flex flex-col px-6 py-5 border-t border-gray-200 dark:border-gray-700/60">
 							<div className="flex self-end">
 								<Button
-									disabled={areButtonsDisabled}
 									onClick={(e: React.FormEvent<HTMLFormElement>) =>
 										handleReset(e)
 									}

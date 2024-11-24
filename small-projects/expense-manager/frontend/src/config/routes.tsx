@@ -6,6 +6,7 @@ import Layout from "@/components/UI/Layout";
 import RightActions from "@/components/Dashboard/RightActions";
 import CategoriesRightActions from "@/components/Category/RightActions";
 import Loader from "@/components/UI/Loader"; // Add a fallback loading spinner
+import { categoryLoader } from "@/loaders/categoryLoader";
 
 // Lazy-loaded components
 const LoginPage = lazy(() => import("@/pages/Login"));
@@ -31,7 +32,7 @@ export interface RouteConfig extends NonIndexRouteObject {
 export const routeConfig: RouteConfig[] = [
 	{
 		title: "Dashboard",
-		path: "/",
+		path: "/dashboard",
 		element: (
 			<Suspense fallback={<Loader />}>
 				<Layout rightComponent={<RightActions />} />
@@ -44,14 +45,14 @@ export const routeConfig: RouteConfig[] = [
 			{
 				index: true,
 				title: "Main",
-				path: "/",
+				path: "/dashboard",
 				element: (
 					<Suspense fallback={<Loader />}>
 						<Dashboard />
 					</Suspense>
 				),
 				isProtected: true,
-				loader: () => authLoader({ title: "Dashboard" }),
+				loader: () => authLoader(),
 				errorElement: <ErrorPage />,
 			},
 			{
@@ -63,7 +64,7 @@ export const routeConfig: RouteConfig[] = [
 					</Suspense>
 				),
 				isProtected: true,
-				loader: () => authLoader({ title: "Analytics" }),
+				loader: () => authLoader(),
 				errorElement: <ErrorPage />,
 			},
 		],
@@ -79,7 +80,6 @@ export const routeConfig: RouteConfig[] = [
 		sidebarDisplay: true,
 		isProtected: true,
 		errorElement: <ErrorPage />,
-		loader: () => authLoader({ title: "" }),
 		children: [
 			{
 				index: true,
@@ -91,7 +91,11 @@ export const routeConfig: RouteConfig[] = [
 					</Suspense>
 				),
 				isProtected: true,
-				loader: () => authLoader({ title: "Preferences" }),
+				loader: async () => {
+					await authLoader();
+					categoryLoader();
+					return { title: "Preferences" };
+				},
 				errorElement: <ErrorPage />,
 			},
 			{
@@ -103,7 +107,11 @@ export const routeConfig: RouteConfig[] = [
 					</Suspense>
 				),
 				isProtected: true,
-				loader: () => authLoader({ title: "Categories" }),
+				loader: async () => {
+					await authLoader();
+					categoryLoader();
+					return { title: "Categories" };
+				},
 				errorElement: <ErrorPage />,
 			},
 			{
@@ -115,7 +123,11 @@ export const routeConfig: RouteConfig[] = [
 					</Suspense>
 				),
 				isProtected: true,
-				loader: () => authLoader({ title: "Account" }),
+				loader: async () => {
+					await authLoader();
+					categoryLoader();
+					return { title: "Account" };
+				},
 				errorElement: <ErrorPage />,
 			},
 		],
@@ -161,7 +173,7 @@ export const routeConfig: RouteConfig[] = [
 					const token = url.searchParams.get("token");
 
 					if (token) {
-						return authLoader({ title: "reset pass", token });
+						return authLoader(token);
 					}
 
 					return null;

@@ -6,7 +6,7 @@ import categoryTypes from "@/data/categoryTypes";
 
 // Define the state interface
 export interface CategorState {
-	availableCategoryTypes: SelectFieldOption[];
+	availableCategoryTypes: SelectFieldOption<string>[];
 	categories: Category[];
 	categoryMode: "page" | "panel";
 	loading: boolean;

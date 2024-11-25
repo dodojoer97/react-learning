@@ -14,7 +14,7 @@ import App from "./App.tsx";
 import "./index.css";
 
 // MOSAIC
-import "@/templates/mosaic/css/style.css";
+import "@/css/style.css";
 import "@/templates/mosaic/charts/ChartjsConfig";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

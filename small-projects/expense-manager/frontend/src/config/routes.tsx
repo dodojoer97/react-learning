@@ -7,6 +7,7 @@ import RightActions from "@/components/Dashboard/RightActions";
 import CategoriesRightActions from "@/components/Category/RightActions";
 import Loader from "@/components/UI/Loader"; // Add a fallback loading spinner
 import { categoryLoader } from "@/loaders/categoryLoader";
+import { Navigate } from "react-router-dom";
 
 // Lazy-loaded components
 const LoginPage = lazy(() => import("@/pages/Login"));
@@ -31,8 +32,12 @@ export interface RouteConfig extends NonIndexRouteObject {
 
 export const routeConfig: RouteConfig[] = [
 	{
+		path: "/",
+		element: <Navigate to="/dashboard" replace />,
+		title: "",
+	},
+	{
 		title: "Dashboard",
-		path: "/dashboard",
 		element: (
 			<Suspense fallback={<Loader />}>
 				<Layout rightComponent={<RightActions />} />
@@ -41,10 +46,11 @@ export const routeConfig: RouteConfig[] = [
 		sidebarDisplay: true,
 		isProtected: true,
 		errorElement: <ErrorPage />,
+		loader: () => authLoader(),
 		children: [
 			{
-				index: true,
-				title: "Main",
+				index: true, // Makes this the default for the parent "/"
+				title: "Dashboard",
 				path: "/dashboard",
 				element: (
 					<Suspense fallback={<Loader />}>
@@ -52,8 +58,10 @@ export const routeConfig: RouteConfig[] = [
 					</Suspense>
 				),
 				isProtected: true,
-				loader: () => authLoader(),
 				errorElement: <ErrorPage />,
+				loader: () => {
+					return { title: "Dashboard" };
+				},
 			},
 			{
 				title: "Analytics",
@@ -64,8 +72,10 @@ export const routeConfig: RouteConfig[] = [
 					</Suspense>
 				),
 				isProtected: true,
-				loader: () => authLoader(),
 				errorElement: <ErrorPage />,
+				loader: () => {
+					return { title: "Dasboard" };
+				},
 			},
 		],
 	},

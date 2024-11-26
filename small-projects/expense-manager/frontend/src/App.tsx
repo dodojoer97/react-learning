@@ -12,7 +12,7 @@ import { store } from "@/store/store"; // Import the Redux store
 import Router from "./Router";
 
 // Theme provider
-import ThemeProvider from "./templates/mosaic/utils/ThemeContext";
+import ThemeProvider from "./store/ThemeContext";
 
 const App: FC = () => {
 	return (

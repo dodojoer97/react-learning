@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { useThemeProvider } from "../utils/ThemeContext";
+import { useThemeProvider } from "../../../store/ThemeContext";
 import { chartColors } from "./ChartjsConfig";
 import { Chart, PieController, ArcElement, TimeScale, Tooltip } from "chart.js";
 import "chartjs-adapter-moment";

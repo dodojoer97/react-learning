@@ -1,8 +1,8 @@
 import SelectFieldOption from "@/models/SelectFieldOption";
 
-const categoryTypes: SelectFieldOption[] = [
-	{ value: "expense", text: "expense" },
-	{ value: "income", text: "income" },
+const categoryTypes: SelectFieldOption<string>[] = [
+	{ value: "expense", label: "expense" },
+	{ value: "income", label: "income" },
 ];
 
 export default categoryTypes;

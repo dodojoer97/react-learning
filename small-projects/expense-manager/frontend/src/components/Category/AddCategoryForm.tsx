@@ -2,6 +2,9 @@
 import type { FC } from "react";
 import { useState } from "react";
 
+// i18n
+import { useTranslation } from "react-i18next";
+
 // Types
 import type { CategoryType } from "@common";
 
@@ -17,6 +20,7 @@ import Input from "@/components/UI/Input";
 import Select from "@/components/UI/Select";
 import Button from "@/components/UI/Button";
 import InputError from "@/components/UI/InputError";
+import Dropdown from "@/components/UI/Dropdown";
 
 // Hooks
 import useInput from "@/hooks/useInput";
@@ -25,32 +29,32 @@ import useFormSubmission from "@/hooks/useFormSubmission";
 // Util
 import { hasMinLength } from "@/utils/utils";
 import { Category } from "@common";
+import SelectFieldOption from "@/models/SelectFieldOption";
 
 interface IProps {
 	onSave(): void;
 }
 
 const AddCategoryForm: FC<IProps> = ({ onSave }) => {
-	// TODO ADD TRANSLATIONS
-	const [iconName, setIconName] = useState<string | null>(null);
+	// i18n
+	const { t } = useTranslation();
 
 	// Redux store
 	const dispatch = useDispatch<AppDispatch>();
 	const { availableCategoryTypes, loading } = useSelector((state: RootState) => state.categories); // Access availableCategoryTypes from Redux
 	const { user } = useSelector((state: RootState) => state.auth);
 
+	const [iconName, setIconName] = useState<string | null>(null);
+	const [categoryType, setCategoryType] = useState<SelectFieldOption<string>>(
+		availableCategoryTypes[0]
+	);
+
 	const categoryNameField = useInput<HTMLInputElement, string>({
 		defaultValue: "",
 		validationFn: (value: string) => {
 			return hasMinLength(value, 4);
 		},
-	});
-
-	const typeField = useInput<HTMLSelectElement, string>({
-		defaultValue: "expense",
-		validationFn: (value: string) => {
-			return hasMinLength(value, 4);
-		},
+		errorMessage: t("errors:invalidLength", { min: 4 }),
 	});
 
 	const handleSelectIcon = (iconName: string): void => {
@@ -63,7 +67,7 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 			iconName,
 			categoryNameField.value,
 			"",
-			typeField.value as CategoryType
+			categoryType?.value as CategoryType
 		);
 
 		if (user?.uid) {
@@ -83,24 +87,21 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 
 				<Input
 					id="name"
-					label="Category name"
-					placeholder="Category name"
+					label={t("forms:categoryName")}
+					placeholder={t("forms:categoryName")}
 					required
 					value={categoryNameField.value}
 					onChange={categoryNameField.handleInputChange}
 					onBlur={categoryNameField.handleInputBlur}
+					error={categoryNameField.errorMessage}
 				/>
 
-				{categoryNameField.hasError && (
-					<InputError message={"some error of length"} className="text-red-600" />
-				)}
-
-				<Select
+				<Dropdown
 					id="type"
-					label="Category type"
-					options={availableCategoryTypes} // Access available category types from Redux
-					value={typeField.value}
-					onChange={typeField.handleInputChange}
+					label={t("forms:categoryType")}
+					items={availableCategoryTypes} // Access available category types from Redux
+					selectedItem={categoryType}
+					onSelect={(value) => setCategoryType(value)}
 				/>
 			</div>
 
@@ -109,9 +110,10 @@ const AddCategoryForm: FC<IProps> = ({ onSave }) => {
 			<Button
 				type="submit"
 				disabled={categoryNameField.hasError || !iconName || loading} // Disable if there are errors or the form is loading
-				className="inline-block rounded-lg w-full bg-blue-500 px-5 py-3 text-sm font-medium text-white disabled:bg-slate-400"
+				loading={loading}
+				className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white w-full"
 			>
-				{loading ? "Saving..." : "SAVE"} {/* Show loading state */}
+				{t("forms:save")}
 			</Button>
 		</Form>
 	);

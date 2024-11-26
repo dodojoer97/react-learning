@@ -42,7 +42,6 @@ const Header: React.FC<HeaderProps> = ({ sidebarOpen, setSidebarOpen, variant = 
 								setSidebarOpen(!sidebarOpen);
 							}}
 						>
-							<span className="sr-only">Open sidebar</span>
 							<svg
 								className="w-6 h-6 fill-current"
 								viewBox="0 0 24 24"

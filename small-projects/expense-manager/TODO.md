@@ -4,9 +4,9 @@
 
 -   [x] **Create Password Reset Page:**  
          Design and implement a password reset page where users can request and reset their passwords.
--   [ ] **Create customer account page**  
+-   [x] **Create customer account page**  
          Design and implement a customer account page where users can edit their info
--   [ ] **Add Translations:**  
+-   [x] **Add Translations:**  
          Replace all hardcoded texts with translations using i18n or another translation library to support multiple languages.
 -   [ ] **Clean and Optimize Components:**  
          Refactor and optimize frontend components to improve code cleanliness and maintainability, match styling.

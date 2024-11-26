@@ -1,7 +1,7 @@
 import { FC, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-// Translations
+// i18n
 import { useTranslation } from "react-i18next";
 
 // Store
@@ -83,7 +83,7 @@ const mapTransactionsToChartData = (
 };
 
 const TransactionDoughnut: FC = () => {
-	// Translations
+	// i18n
 	const { t } = useTranslation();
 	// Get transactions and categories from the Redux store
 	const transactions = useSelector((state: RootState) => state.transaction.transactions);

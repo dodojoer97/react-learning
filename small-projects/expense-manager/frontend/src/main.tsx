@@ -1,4 +1,4 @@
-// Translations
+// i18n
 import "./i18n";
 
 // React

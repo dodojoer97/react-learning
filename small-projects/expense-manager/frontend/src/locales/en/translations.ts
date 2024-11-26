@@ -32,12 +32,15 @@ export const translations: ITranslations = {
 		recurringType: "Recurring type",
 		frequency: "Frequency",
 		description: "Description",
+		categoryType: "Category Type",
 	},
 	header: {
 		signin: "Log in",
 		signup: "Sign up",
+		logout: "Sign Out",
 		settings: "Settings",
 		categories: "Categories",
+		expenseManager: "Expense manager",
 	},
 	settings: {
 		title: "Settings",
@@ -60,6 +63,8 @@ export const translations: ITranslations = {
 	},
 	categories: {
 		title: "Categories",
+		selectIcon: "Select an icon",
+		add: "Add Category",
 	},
 	errors: {
 		invalidAmount: "Amount must be greater than zero.",
@@ -88,5 +93,9 @@ export const translations: ITranslations = {
 		latest: "Latest Transactions",
 		overview: "Expense Overview",
 		add: "Add Transaction",
+	},
+	analytics: {
+		title: "Analytics",
+		userBalance: "Hey {{name}}, This is your current balance:",
 	},
 };

@@ -20,14 +20,14 @@ import useInput from "@/hooks/useInput";
 import InputError from "@/components/UI/InputError";
 import useFormSubmission from "@/hooks/useFormSubmission";
 
-// Translations
+// i18n
 import { useTranslation } from "react-i18next";
 import Form from "@/components/UI/Form";
 import Button from "@/components/UI/Button";
 import { Link } from "react-router-dom";
 
 const Account: React.FC = () => {
-	// Translations
+	// i18n
 	const { t } = useTranslation(["signup", "forms", "errors"]);
 
 	// Redux
@@ -150,7 +150,6 @@ const Account: React.FC = () => {
 						<div className="flex flex-col px-6 py-5 border-t border-gray-200 dark:border-gray-700/60">
 							<div className="flex self-end">
 								<Button
-									disabled={areButtonsDisabled}
 									onClick={(e: React.FormEvent<HTMLFormElement>) =>
 										handleReset(e)
 									}

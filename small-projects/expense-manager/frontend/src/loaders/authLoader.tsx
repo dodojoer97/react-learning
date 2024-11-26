@@ -6,7 +6,9 @@ import { store } from "@/store/store"; // Import your Redux store if needed
 import { getSettings } from "@/store/settingsSlice";
 
 // Loader to handle authentication logic and return title
-export const authLoader = async ({ title, token }: { title: string; token?: string }) => {
+
+export const authLoader = async (token?: string) => {
+	console.log("authLoader");
 	const dispatch: AppDispatch = store.dispatch; // Get dispatch from the store
 
 	// Dispatch the initializeAuth action
@@ -40,5 +42,5 @@ export const authLoader = async ({ title, token }: { title: string; token?: stri
 	}
 
 	// Return the title for use in the component
-	return { title };
+	return null;
 };

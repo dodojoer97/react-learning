@@ -10,10 +10,15 @@ export interface ITranslations {
 	errors: IErrorMessages;
 	notifications: INotificationTranslations;
 	transactions: ITransactionTranslations;
+	analytics: IAnalyticsTranslations;
 }
 
 export interface IPageTranslations {
 	title: string;
+}
+
+export interface IAnalyticsTranslations extends IPageTranslations {
+	userBalance: string;
 }
 
 export interface ILoginTranslations extends IPageTranslations {
@@ -51,7 +56,10 @@ export interface IAccountTranslations extends IPageTranslations {
 	setPassword: string;
 }
 
-export interface ICategoriesTranslations extends IPageTranslations {}
+export interface ICategoriesTranslations extends IPageTranslations {
+	selectIcon: string;
+	add: string;
+}
 
 export interface ITransactionTranslations {
 	transaction: string;
@@ -77,6 +85,7 @@ export interface IFormTranslations {
 	recurringType: string;
 	frequency: string;
 	description: string;
+	categoryType: string;
 }
 
 export interface IHeaderTranslations {
@@ -84,6 +93,8 @@ export interface IHeaderTranslations {
 	signup: string;
 	settings: string;
 	categories: string;
+	logout: string;
+	expenseManager: string;
 }
 
 export interface IErrorMessages {

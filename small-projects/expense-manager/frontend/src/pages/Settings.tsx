@@ -1,12 +1,13 @@
 // React
 import type { FC } from "react";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store"; // Import the store using the new preferred path
 import { setCurrency, setNumberSeperator, updateSettings } from "@/store/settingsSlice";
+import { setCategoryMode, fetchCategories } from "@/store/categorySlice"; // Import actions from settings slice
 
 // Translation
 import { useTranslation } from "react-i18next";
@@ -23,7 +24,7 @@ import User from "@/models/User";
 import SelectFieldOption from "@/models/SelectFieldOption";
 
 const Settings: FC = () => {
-	// Translations
+	// i18n
 	const { t } = useTranslation(["forms"]);
 
 	// Redux
@@ -55,6 +56,14 @@ const Settings: FC = () => {
 			})
 		);
 	});
+
+	// Dispatch to set category mode and fetch categories
+	useEffect(() => {
+		dispatch(setCategoryMode("page"));
+		if (userId) {
+			dispatch(fetchCategories(userId)); // Pass userId when fetching categories
+		}
+	}, [dispatch, userId]);
 
 	return (
 		<Card>

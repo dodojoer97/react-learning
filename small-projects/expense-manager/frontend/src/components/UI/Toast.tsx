@@ -127,7 +127,7 @@ const Toast: React.FC<ToastProps> = ({ children, className = "", type, isOpen, o
 				</div>
 			)}
 		</>,
-		document.querySelector("#sliding-panel") as HTMLDivElement
+		document.querySelector("#toast") as HTMLDivElement
 	);
 };
 

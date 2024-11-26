@@ -17,7 +17,6 @@ import { addCategory } from "@/store/categorySlice"; // Import addCategory actio
 import Form from "@/components/UI/Form";
 import IconSelector from "../UI/IconSelector";
 import Input from "@/components/UI/Input";
-import Select from "@/components/UI/Select";
 import Button from "@/components/UI/Button";
 import InputError from "@/components/UI/InputError";
 import Dropdown from "@/components/UI/Dropdown";

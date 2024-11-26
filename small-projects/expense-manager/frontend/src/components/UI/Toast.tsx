@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import CloseButton from "./CloseButton";
 
 // Transition
-import Transition from "@/templates/mosaic/utils/Transition";
+import Transition from "@/components/UI/Transition";
 
 import React, { ReactNode } from "react";
 

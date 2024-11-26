@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, ReactNode } from "react";
-import Transition from "../utils/Transition";
+import Transition from "../../../components/UI/Transition";
 
 interface ModalBasicProps {
 	children: ReactNode;

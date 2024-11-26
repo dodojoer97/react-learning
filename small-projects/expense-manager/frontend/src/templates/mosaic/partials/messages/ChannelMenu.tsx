@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import Transition from "../../utils/Transition";
+import Transition from "../../../../components/UI/Transition";
 
 import ChannelImage01 from "../../images/channel-01.png";
 import ChannelImage02 from "../../images/channel-02.png";

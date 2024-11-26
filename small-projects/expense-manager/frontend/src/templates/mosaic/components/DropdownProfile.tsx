@@ -6,7 +6,7 @@ import { RootState, AppDispatch } from "@/store/store";
 import { logout } from "@/store/authSlice";
 
 import { Link } from "react-router-dom";
-import Transition from "../utils/Transition";
+import Transition from "../../../components/UI/Transition";
 
 // Translation
 import { useTranslation } from "react-i18next";

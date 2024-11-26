@@ -1,42 +1,10 @@
 // React
-import type { ChangeEvent, FC, PropsWithChildren } from "react";
-import { useEffect } from "react";
-
-// Redux
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "@/store/store";
-import { signup, clearError } from "@/store/authSlice";
-
-// Translation
-import { useTranslation } from "react-i18next";
+import type { FC, PropsWithChildren } from "react";
 
 // Router
-import { Link, useNavigate } from "react-router-dom";
-
-// Components
-import Layout from "@/components/UI/Layout";
-import Form from "@/components/UI/Form";
-import Input from "@/components/UI/Input";
-import Button from "@/components/UI/Button";
-import InputError from "@/components/UI/InputError";
-import Loader from "@/components/UI/Loader";
-
-// Hooks
-import useToggleInputType from "@/hooks/useToggleInputType";
-import useInput from "@/hooks/useInput";
-import useFormSubmission from "@/hooks/useFormSubmission";
-
-// Util
-import { isEmail, hasMinLength, checkValuesEqual } from "@/utils/utils";
-
-// DTO
-import RegisterDTO from "@/DTO/request/Register";
-
-// FontAwesome
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-
+import { Link } from "react-router-dom";
 // Images
-import AuthImage from "@/templates/mosaic/images/auth-image.jpg";
+import AuthImage from "@/images/auth-image.jpg";
 
 interface Props extends PropsWithChildren {
 	title: string;

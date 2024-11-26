@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 
 // Components
-import ModalBlank from "@/templates/mosaic/components/ModalBlank";
+import ModalBlank from "@/components/UI/ModalBlank";
 import Button from "./Button";
 
 interface Props {

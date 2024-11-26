@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import Sidebar from "../../../components/UI/sidebar/Sidebar";
 import Header from "../../../components/UI/header/Header";
-import Datepicker from "../components/Datepicker";
+import Datepicker from "../../../components/UI/Datepicker";
 import AnalyticsCard01 from "../partials/analytics/AnalyticsCard01";
 import AnalyticsCard02 from "../partials/analytics/AnalyticsCard02";
 import AnalyticsCard03 from "../partials/analytics/AnalyticsCard03";

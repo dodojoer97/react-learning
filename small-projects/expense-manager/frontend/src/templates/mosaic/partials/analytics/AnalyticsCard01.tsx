@@ -1,6 +1,6 @@
 import React from "react";
 import { chartAreaGradient } from "../../../../config/ChartjsConfig";
-import LineChart from "../../charts/LineChart03";
+import LineChart from "../../../../components/UI/charts/LineChart03";
 
 // Import utilities
 import { tailwindConfig, hexToRGB } from "../../utils/Utils";

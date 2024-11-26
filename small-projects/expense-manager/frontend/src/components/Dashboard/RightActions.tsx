@@ -17,7 +17,7 @@ import { RootState, AppDispatch } from "@/store/store"; // Redux store types
 // Components
 import TransactionPanel from "@/components/Transaction/TransactionPanel";
 import SlidingPanel from "@/components/UI/SlidingPanel";
-import Datepicker from "@/templates/mosaic/components/Datepicker";
+import Datepicker from "@/components/UI/Datepicker";
 import Button from "@/components/UI/Button";
 
 // Moment

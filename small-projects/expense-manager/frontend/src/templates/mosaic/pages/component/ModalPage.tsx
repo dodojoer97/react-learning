@@ -4,7 +4,7 @@ import Sidebar from "../../../../components/UI/sidebar/Sidebar";
 import Header from "../../../../components/UI/header/Header";
 import ModalBasic from "../../components/ModalBasic";
 import ModalCookies from "../../components/ModalCookies";
-import ModalBlank from "../../components/ModalBlank";
+import ModalBlank from "../../../../components/UI/ModalBlank";
 import ModalAction from "../../components/ModalAction";
 import ModalSearch from "../../components/ModalSearch";
 

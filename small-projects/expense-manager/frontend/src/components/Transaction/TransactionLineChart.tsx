@@ -10,7 +10,7 @@ import { getMappedTransactions } from "@/store/transactionSlice"; // Fetch trans
 import { RootState } from "@/store/store"; // Store types
 
 // Components
-import LineChart from "@/templates/mosaic/charts/LineChart03";
+import LineChart from "@/components/UI/charts/LineChart03";
 import Card from "@/components/UI/Card"; // Import the new Card component
 import Loader from "@/components/UI/Loader";
 

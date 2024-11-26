@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import Transition from "../../../components/UI/Transition";
+import Transition from "./Transition";
 
 function ModalBlank({ children, id, modalOpen, setModalOpen }) {
 	const modalContent = useRef(null);

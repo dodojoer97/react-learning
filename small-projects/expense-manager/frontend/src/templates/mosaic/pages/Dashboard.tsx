@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Sidebar from "../../../components/UI/sidebar/Sidebar";
 import Header from "../../../components/UI/header/Header";
 import FilterButton from "../components/DropdownFilter";
-import Datepicker from "../components/Datepicker";
+import Datepicker from "../../../components/UI/Datepicker";
 import DashboardCard01 from "../partials/dashboard/DashboardCard01";
 import DashboardCard02 from "../partials/dashboard/DashboardCard02";
 import DashboardCard03 from "../partials/dashboard/DashboardCard03";

@@ -9,7 +9,7 @@ import { RootState } from "@/store/store"; // Import the store types
 import { getMappedTransactions } from "@/store/transactionSlice"; // Redux function to map transactions
 
 // Import the DoughnutChart component
-import DoughnutChart from "@/templates/mosaic/charts/DoughnutChart";
+import DoughnutChart from "@/components/UI/charts/DoughnutChart";
 import Card from "@/components/UI/Card";
 
 // Chart.js Data type

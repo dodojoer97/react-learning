@@ -5,7 +5,7 @@ import { Chart, DoughnutController, ArcElement, TimeScale, Tooltip } from "chart
 import "chartjs-adapter-moment";
 
 // Import utilities
-import { tailwindConfig } from "../utils/Utils";
+import { tailwindConfig } from "../../../templates/mosaic/utils/Utils";
 
 // Register Chart.js components
 Chart.register(DoughnutController, ArcElement, TimeScale, Tooltip);

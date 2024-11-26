@@ -10,7 +10,7 @@ import DropdownSwitch from "../../components/DropdownSwitch";
 import DropdownNotifications from "../../components/DropdownNotifications";
 import DropdownHelp from "../../components/DropdownHelp";
 import DropdownEditMenu from "../../components/DropdownEditMenu";
-import Datepicker from "../../components/Datepicker";
+import Datepicker from "../../../../components/UI/Datepicker";
 
 function DropdownPage() {
 	const [sidebarOpen, setSidebarOpen] = useState(false);

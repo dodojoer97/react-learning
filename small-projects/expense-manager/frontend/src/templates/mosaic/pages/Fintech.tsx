@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import Sidebar from "../../../components/UI/sidebar/Sidebar";
 import Header from "../../../components/UI/header/Header";
-import Datepicker from "../components/Datepicker";
+import Datepicker from "../../../components/UI/Datepicker";
 import FintechIntro from "../partials/fintech/FintechIntro";
 import FintechCard01 from "../partials/fintech/FintechCard01";
 import FintechCard02 from "../partials/fintech/FintechCard02";

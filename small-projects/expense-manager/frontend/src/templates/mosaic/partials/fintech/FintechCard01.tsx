@@ -1,5 +1,5 @@
 import React from "react";
-import { chartAreaGradient } from "../../charts/ChartjsConfig";
+import { chartAreaGradient } from "../../../../config/ChartjsConfig";
 import LineChart from "../../charts/LineChart05";
 
 // Import utilities

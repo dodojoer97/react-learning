@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useThemeProvider } from "../../../store/ThemeContext";
 
-import { chartColors } from "./ChartjsConfig";
+import { chartColors } from "../../../config/ChartjsConfig";
 import {
 	Chart,
 	BarController,

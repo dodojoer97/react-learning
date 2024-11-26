@@ -5,7 +5,7 @@ import { Chart, PolarAreaController, RadialLinearScale, Tooltip, Legend } from "
 import "chartjs-adapter-moment";
 
 // Import utilities
-import { tailwindConfig } from "../utils/Utils";
+import { tailwindConfig } from "@/utils/utils";
 
 // Register Chart.js components
 Chart.register(PolarAreaController, RadialLinearScale, Tooltip, Legend);

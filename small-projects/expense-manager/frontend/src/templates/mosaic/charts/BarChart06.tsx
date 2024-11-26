@@ -14,7 +14,7 @@ import {
 import "chartjs-adapter-moment";
 
 // Import utilities
-import { tailwindConfig, formatValue } from "../utils/Utils";
+import { tailwindConfig, formatValue } from "@/utils/utils";
 
 // Import images
 import coinbaseIcon from "../images/company-icon-06.svg";

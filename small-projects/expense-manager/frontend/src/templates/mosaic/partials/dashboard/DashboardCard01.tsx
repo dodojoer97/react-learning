@@ -5,7 +5,7 @@ import { chartAreaGradient } from "../../../../config/ChartjsConfig";
 import EditMenu from "../../components/DropdownEditMenu";
 
 // Import utilities
-import { tailwindConfig, hexToRGB } from "../../utils/Utils";
+import { tailwindConfig, hexToRGB } from "../@/utils/utils";
 
 function DashboardCard01() {
 	const chartData = {

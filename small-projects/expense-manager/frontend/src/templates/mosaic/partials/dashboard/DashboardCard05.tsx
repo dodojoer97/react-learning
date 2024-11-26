@@ -4,7 +4,7 @@ import { chartAreaGradient } from "../../../../config/ChartjsConfig";
 import RealtimeChart from "../../charts/RealtimeChart";
 
 // Import utilities
-import { tailwindConfig, hexToRGB } from "../../utils/Utils";
+import { tailwindConfig, hexToRGB } from "../@/utils/utils";
 
 function DashboardCard05() {
 	// IMPORTANT:

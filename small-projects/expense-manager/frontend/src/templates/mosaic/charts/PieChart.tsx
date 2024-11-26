@@ -5,7 +5,7 @@ import { Chart, PieController, ArcElement, TimeScale, Tooltip } from "chart.js";
 import "chartjs-adapter-moment";
 
 // Import utilities
-import { tailwindConfig } from "../utils/Utils";
+import { tailwindConfig } from "@/utils/utils";
 
 // Register Chart.js components
 Chart.register(PieController, ArcElement, TimeScale, Tooltip);

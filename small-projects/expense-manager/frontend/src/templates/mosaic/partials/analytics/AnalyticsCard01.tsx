@@ -3,7 +3,7 @@ import { chartAreaGradient } from "../../../../config/ChartjsConfig";
 import LineChart from "../../../../components/UI/charts/LineChart03";
 
 // Import utilities
-import { tailwindConfig, hexToRGB } from "../../utils/Utils";
+import { tailwindConfig, hexToRGB } from "../@/utils/utils";
 
 function AnalyticsCard01() {
 	const chartData = {

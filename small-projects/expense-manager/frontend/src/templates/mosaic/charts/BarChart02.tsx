@@ -14,7 +14,7 @@ import {
 import "chartjs-adapter-moment";
 
 // Import utilities
-import { formatValue } from "../utils/Utils";
+import { formatValue } from "@/utils/utils";
 
 Chart.register(BarController, BarElement, LinearScale, TimeScale, Tooltip, Legend);
 

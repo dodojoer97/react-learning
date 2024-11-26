@@ -2,7 +2,7 @@ import React from "react";
 import PieChart from "../../charts/PieChart";
 
 // Import utilities
-import { tailwindConfig } from "../../utils/Utils";
+import { tailwindConfig } from "../@/utils/utils";
 
 const FintechCard09: React.FC = () => {
 	const config = tailwindConfig();

@@ -2,7 +2,7 @@ import React from "react";
 import BarChart from "../../charts/BarChart06";
 
 // Import utilities
-import { tailwindConfig } from "../../utils/Utils";
+import { tailwindConfig } from "../@/utils/utils";
 
 const FintechCard04: React.FC = () => {
 	const chartData = {

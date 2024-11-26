@@ -15,7 +15,7 @@ import {
 import "chartjs-adapter-moment";
 
 // Import utilities
-import { formatThousands } from "../../../templates/mosaic/utils/Utils";
+import { formatThousands } from "@/utils/utils";
 
 Chart.register(LineController, LineElement, Filler, PointElement, LinearScale, TimeScale, Tooltip);
 

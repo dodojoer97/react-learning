@@ -4,7 +4,7 @@ import LineChart from "../../charts/LineChart04";
 import { Link } from "react-router-dom";
 
 // Import utilities
-import { tailwindConfig, hexToRGB } from "../../utils/Utils";
+import { tailwindConfig, hexToRGB } from "../@/utils/utils";
 
 function AnalyticsCard02() {
 	const chartData = {

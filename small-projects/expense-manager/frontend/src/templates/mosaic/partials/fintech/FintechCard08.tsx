@@ -3,7 +3,7 @@ import { chartAreaGradient } from "../../../../config/ChartjsConfig";
 import LineChart from "../../charts/LineChart07";
 
 // Import utilities
-import { tailwindConfig, hexToRGB } from "../../utils/Utils";
+import { tailwindConfig, hexToRGB } from "../@/utils/utils";
 
 const FintechCard09: React.FC = () => {
 	const chartData = {

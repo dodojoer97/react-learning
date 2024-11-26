@@ -1,6 +1,6 @@
 import React from "react";
 import UserMenu from "./DropdownProfile";
-import ThemeToggle from "../../../templates/mosaic/components/ThemeToggle";
+import ThemeToggle from "./ThemeToggle";
 
 interface HeaderProps {
 	sidebarOpen: boolean;

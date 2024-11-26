@@ -6,14 +6,13 @@ import { RootState, AppDispatch } from "@/store/store";
 import { logout } from "@/store/authSlice";
 
 import { Link } from "react-router-dom";
-import Transition from "../../../components/UI/Transition";
+import Transition from "../Transition";
 
 // Translation
 import { useTranslation } from "react-i18next";
 
 // Store
-
-import UserAvatar from "../images/user-avatar-32.png";
+import UserAvatar from "@/images/user-avatar-32.png";
 
 // Store
 interface DropdownProfileProps {

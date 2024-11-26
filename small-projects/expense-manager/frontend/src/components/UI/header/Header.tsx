@@ -1,9 +1,6 @@
-import React, { useState, useContext } from "react";
-import SearchModal from "../components/ModalSearch";
-import Notifications from "../components/DropdownNotifications";
-import Help from "../components/DropdownHelp";
-import UserMenu from "../components/DropdownProfile";
-import ThemeToggle from "../components/ThemeToggle";
+import React from "react";
+import UserMenu from "./DropdownProfile";
+import ThemeToggle from "../../../templates/mosaic/components/ThemeToggle";
 
 interface HeaderProps {
 	sidebarOpen: boolean;

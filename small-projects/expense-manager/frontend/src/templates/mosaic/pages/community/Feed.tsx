@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import Sidebar from "../../partials/Sidebar";
-import Header from "../../partials/Header";
+import Sidebar from "../../../../components/UI/sidebar/Sidebar";
+import Header from "../../../../components/UI/header/Header";
 import FeedLeftContent from "../../partials/community/FeedLeftContent";
 import FeedPosts from "../../partials/community/FeedPosts";
 import FeedRightContent from "../../partials/community/FeedRightContent";

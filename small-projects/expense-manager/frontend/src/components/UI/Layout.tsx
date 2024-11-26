@@ -1,18 +1,11 @@
 // React
 import { FC, PropsWithChildren, ReactNode, useState } from "react";
 
-import { Outlet, useLoaderData, useMatches } from "react-router-dom";
+import { Outlet, useMatches } from "react-router-dom";
 
 // Components
-// import Header from "@/components/UI/Header";
-
-import Header from "@/templates/mosaic/partials/Header";
-import Sidebar from "@/templates/mosaic/partials/Sidebar";
-
-// Context
-
-// Hooks
-import useLoading from "@/hooks/useLoading";
+import Header from "@/components/UI/header/Header";
+import Sidebar from "@/components/UI/sidebar/Sidebar";
 
 interface Props extends PropsWithChildren {
 	rightComponent?: ReactNode;

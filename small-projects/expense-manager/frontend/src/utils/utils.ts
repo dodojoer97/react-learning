@@ -173,7 +173,6 @@ const getLocale = (separator: string) => {
 
 export const formatAmount = (amount: number, separator: string, currency: string) => {
 	const locale = getLocale(separator);
-	console.log(locale);
 	return new Intl.NumberFormat(locale, {
 		style: "currency",
 		currency,

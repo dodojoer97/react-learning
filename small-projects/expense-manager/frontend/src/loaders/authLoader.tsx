@@ -8,7 +8,6 @@ import { getSettings } from "@/store/settingsSlice";
 // Loader to handle authentication logic and return title
 
 export const authLoader = async (token?: string) => {
-	console.log("authLoader");
 	const dispatch: AppDispatch = store.dispatch; // Get dispatch from the store
 
 	// Dispatch the initializeAuth action

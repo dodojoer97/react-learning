@@ -83,6 +83,8 @@ const mapTransactionsToChartData = (
 };
 
 const TransactionDoughnut: FC = () => {
+	console.log("re render TransactionDoughnut");
+
 	// i18n
 	const { t } = useTranslation();
 	// Get transactions and categories from the Redux store

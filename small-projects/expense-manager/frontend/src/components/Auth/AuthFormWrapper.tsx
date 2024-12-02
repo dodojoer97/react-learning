@@ -3,6 +3,7 @@ import type { FC, PropsWithChildren } from "react";
 
 // Router
 import { Link } from "react-router-dom";
+
 // Images
 import AuthImage from "@/images/auth-image.jpg";
 

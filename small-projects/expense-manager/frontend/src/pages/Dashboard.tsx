@@ -11,6 +11,7 @@ import TransactionLineChart from "@/components/Transaction/TransactionLineChart"
 
 // TODO add translations
 const Dashboard: FC = () => {
+	console.log("re render Dashboard");
 	const { t } = useTranslation();
 
 	return (

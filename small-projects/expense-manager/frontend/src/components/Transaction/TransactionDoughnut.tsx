@@ -90,7 +90,8 @@ const TransactionDoughnut: FC = () => {
 	// Get transactions and categories from the Redux store
 	const transactions = useSelector((state: RootState) => state.transaction.transactions);
 	const categories = useSelector((state: RootState) => state.categories.categories);
-
+	console.log(transactions);
+	console.log(categories);
 	// Hooks
 	const loadingAny: boolean = useLoading();
 

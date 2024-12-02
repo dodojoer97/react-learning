@@ -150,6 +150,7 @@ export const fetchTransactions = createAsyncThunk<
 >(
 	"transactions/fetchTransactions",
 	async ({ userId, startDate, endDate, completedOnly }, { rejectWithValue }) => {
+		alert("fetchTransactions");
 		try {
 			const transactions = await transactionService.getTransactionsByUser(
 				userId,

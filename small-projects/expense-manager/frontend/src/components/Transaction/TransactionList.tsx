@@ -3,8 +3,7 @@ import { useEffect, useMemo } from "react";
 
 // Redux
 import { useSelector, useDispatch } from "react-redux";
-import { fetchTransactions, getMappedTransactions } from "@/store/transactionSlice"; // Fetch transactions and mapped transactions
-import { fetchCategories } from "@/store/categorySlice"; // Fetch categories
+import { getMappedTransactions } from "@/store/transactionSlice"; // Fetch transactions and mapped transactions
 import { toggleOpen } from "@/store/openSlice"; // Open and close sliding panel
 import { RootState, AppDispatch } from "@/store/store"; // Store types
 
@@ -30,25 +29,9 @@ const TransactionList: FC<TransactionListProps> = ({ title, limit, type, status 
 	const transactions = useSelector((state: RootState) => state.transaction.transactions);
 	const categories = useSelector((state: RootState) => state.categories.categories);
 	const openSet = useSelector((state: RootState) => state.open.openSet); // Check if panel is open
-	const userId = useSelector((state: RootState) => state.auth.user?.uid); // Fetch the userId from the auth state
-	const selectedDates = useSelector((state: RootState) => state.transaction.selectedDates);
 
 	// Sliding panel identifier
 	const panelId = "transactionPanel";
-
-	// Fetch categories and transactions when the component mounts
-	useEffect(() => {
-		const handleFetch = async () => {
-			if (!categories.length && userId) {
-				await dispatch(fetchCategories(userId)); // Use userId when fetching categories
-			}
-
-			if (userId) {
-				await dispatch(fetchTransactions({ userId })); // Use userId when fetching transactions
-			}
-		};
-		handleFetch();
-	}, []);
 
 	// Memoized mapped transactions
 	const mappedTransactions = useMemo(

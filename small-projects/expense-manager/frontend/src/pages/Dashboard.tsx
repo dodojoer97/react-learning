@@ -1,8 +1,5 @@
-// React
-import type { FC } from "react";
-import { useEffect } from "react";
-
-// i18n
+import { FC, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 // Components
@@ -10,38 +7,37 @@ import TransactionList from "@/components/Transaction/TransactionList";
 import TransactionDoughnut from "@/components/Transaction/TransactionDoughnut";
 import TransactionLineChart from "@/components/Transaction/TransactionLineChart";
 
-// Redux
-import { useSelector, useDispatch } from "react-redux";
+// Selectors
+import { selectCategories } from "@/store/categorySlice";
+import { selectTransactions } from "@/store/transactionSlice";
 
-// Store
-import { fetchCategories } from "@/store/categorySlice"; // Fetch categories
-import { RootState, AppDispatch } from "@/store/store"; // Store types
+// Actions
+import { fetchCategories } from "@/store/categorySlice";
 import { fetchTransactions } from "@/store/transactionSlice";
 
-// TODO add translations
+// Store Types
+import { RootState, AppDispatch } from "@/store/store";
+
 const Dashboard: FC = () => {
-	console.log("re render Dashboard");
 	const { t } = useTranslation();
-
-	const userId = useSelector((state: RootState) => state.auth.user?.uid); // Fetch the userId from the auth state
-	const categories = useSelector((state: RootState) => state.categories.categories);
-
 	const dispatch = useDispatch<AppDispatch>();
+
+	const userId = useSelector((state: RootState) => state.auth.user?.uid);
+	const categories = useSelector(selectCategories);
+	const transactions = useSelector(selectTransactions);
 
 	// Fetch categories and transactions when the component mounts
 	useEffect(() => {
-		const handleFetch = async () => {
-			if (!categories.length && userId) {
-				await dispatch(fetchCategories(userId)); // Use userId when fetching categories
-			}
+		if (!userId) return; // Skip if no userId is available
 
-			if (userId) {
-				await dispatch(fetchTransactions({ userId })); // Use userId when fetching transactions
-			}
-		};
-		handleFetch();
-	}, []);
+		// Dispatch fetch actions
+		if (!categories.length) {
+			dispatch(fetchCategories(userId));
+		}
+		dispatch(fetchTransactions({ userId }));
+	}, [userId, dispatch, categories.length]);
 
+	// Render the dashboard content
 	return (
 		<div className="grid grid-cols-12 gap-6">
 			<TransactionDoughnut />

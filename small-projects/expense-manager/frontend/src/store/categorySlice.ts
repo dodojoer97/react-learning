@@ -1,8 +1,9 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createAsyncThunk, createSelector } from "@reduxjs/toolkit";
 import type { Category } from "@common";
 import SelectFieldOption from "@/models/SelectFieldOption";
 import CategoryService from "@/services/CategoryService";
 import categoryTypes from "@/data/categoryTypes";
+import { RootState } from "./store";
 
 // Define the state interface
 export interface CategorState {
@@ -125,3 +126,8 @@ const categorySlice = createSlice({
 // Export actions and reducer
 export const { setCategoryMode } = categorySlice.actions;
 export default categorySlice.reducer;
+
+export const selectCategories = createSelector(
+	(state: RootState) => state.categories.categories,
+	(categories) => categories
+);

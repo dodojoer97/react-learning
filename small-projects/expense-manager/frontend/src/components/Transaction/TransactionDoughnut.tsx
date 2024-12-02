@@ -8,6 +8,10 @@ import { useTranslation } from "react-i18next";
 import { RootState } from "@/store/store"; // Import the store types
 import { getMappedTransactions } from "@/store/transactionSlice"; // Redux function to map transactions
 
+// Selectors
+import { selectCategories } from "@/store/categorySlice";
+import { selectTransactions } from "@/store/transactionSlice";
+
 // Import the DoughnutChart component
 import DoughnutChart from "@/components/UI/charts/DoughnutChart";
 import Card from "@/components/UI/Card";
@@ -83,15 +87,12 @@ const mapTransactionsToChartData = (
 };
 
 const TransactionDoughnut: FC = () => {
-	console.log("re render TransactionDoughnut");
-
 	// i18n
 	const { t } = useTranslation();
 	// Get transactions and categories from the Redux store
-	const transactions = useSelector((state: RootState) => state.transaction.transactions);
-	const categories = useSelector((state: RootState) => state.categories.categories);
-	console.log(transactions);
-	console.log(categories);
+	const transactions = useSelector(selectTransactions);
+	const categories = useSelector(selectCategories);
+
 	// Hooks
 	const loadingAny: boolean = useLoading();
 

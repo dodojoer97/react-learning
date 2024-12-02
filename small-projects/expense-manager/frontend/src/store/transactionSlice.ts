@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction, createSelector } from "@reduxjs/toolkit";
 import TransactionService from "@/services/TransactionService";
 
 // Store
@@ -150,7 +150,6 @@ export const fetchTransactions = createAsyncThunk<
 >(
 	"transactions/fetchTransactions",
 	async ({ userId, startDate, endDate, completedOnly }, { rejectWithValue }) => {
-		alert("fetchTransactions");
 		try {
 			const transactions = await transactionService.getTransactionsByUser(
 				userId,
@@ -473,3 +472,8 @@ const transactionSlice = createSlice({
 export const { selectTransaction, updateDraftTransaction, clearError, setSelectedDates } =
 	transactionSlice.actions;
 export default transactionSlice.reducer;
+
+export const selectTransactions = createSelector(
+	(state: RootState) => state.transaction.transactions,
+	(transactions) => transactions
+);

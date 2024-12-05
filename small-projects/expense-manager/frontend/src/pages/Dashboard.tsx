@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
@@ -19,29 +19,32 @@ import { fetchTransactions } from "@/store/transactionSlice";
 import { RootState, AppDispatch } from "@/store/store";
 
 const Dashboard: FC = () => {
+	console.log("Dashboard");
 	const { t } = useTranslation();
 	const dispatch = useDispatch<AppDispatch>();
 
 	const userId = useSelector((state: RootState) => state.auth.user?.uid);
 	const categories = useSelector(selectCategories);
-	const transactions = useSelector(selectTransactions);
 
+	// const categories = useSelector(selectCategories);
 	// Fetch categories and transactions when the component mounts
-	useEffect(() => {
-		if (!userId) return; // Skip if no userId is available
+	const hasFetched = useRef(false);
 
-		// Dispatch fetch actions
-		if (!categories.length) {
-			dispatch(fetchCategories(userId));
+	useEffect(() => {
+		if (userId && !hasFetched.current) {
+			if (categories.length === 0) {
+				dispatch(fetchCategories(userId));
+			}
+			dispatch(fetchTransactions({ userId }));
+			hasFetched.current = true;
 		}
-		dispatch(fetchTransactions({ userId }));
-	}, [userId, dispatch, categories.length]);
+	}, [dispatch, userId, categories.length]);
 
 	// Render the dashboard content
 	return (
 		<div className="grid grid-cols-12 gap-6">
 			<TransactionDoughnut />
-			<TransactionList status="completed" title={t("transactions:latest")} limit={5} />
+			<TransactionList status="completed" title={t("transactions:latest")} limit={5} />x
 			<TransactionLineChart />
 		</div>
 	);

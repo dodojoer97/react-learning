@@ -83,6 +83,8 @@ const categorySlice = createSlice({
 				state.error = null; // Reset error on new request
 			})
 			.addCase(fetchCategories.fulfilled, (state, action) => {
+				console.log("fetchCategories.fulfilled");
+
 				state.categories = action.payload;
 				state.loading = false;
 			})

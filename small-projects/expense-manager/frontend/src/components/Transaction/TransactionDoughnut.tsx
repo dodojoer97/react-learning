@@ -1,7 +1,7 @@
-import React, { FC, useMemo, memo } from "react";
-import { useSelector } from "react-redux";
+import React, { FC, useMemo, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { RootState } from "@/store/store";
+import { RootState, AppDispatch } from "@/store/store";
 import { selectCategories } from "@/store/categorySlice";
 import { selectTransactions } from "@/store/transactionSlice";
 import { getMappedTransactions } from "@/store/transactionSlice";
@@ -10,6 +10,12 @@ import DoughnutChart from "@/components/UI/charts/DoughnutChart";
 import Placeholder from "../UI/PlaceHolder";
 import { ChartData } from "chart.js";
 import { TransactionWithCategory } from "@/mappers/TransactionCategoryAssigner";
+
+// Actions
+import { fetchCategories } from "@/store/categorySlice";
+import { fetchTransactions } from "@/store/transactionSlice";
+
+//
 
 // Utility function
 const generateRandomColor = (): string => {
@@ -50,14 +56,30 @@ const mapTransactionsToChartData = (
 	};
 };
 
-const TransactionDoughnut: FC = memo(() => {
+let isInitial = true;
+
+const TransactionDoughnut: FC = () => {
 	console.log("TransactionDoughnut");
+
 	const { t } = useTranslation();
 	const transactions = useSelector(selectTransactions);
 	const categories = useSelector(selectCategories);
 	const loading = useSelector((state: RootState) => state.categories.loading);
+	const userId = useSelector((state: RootState) => state.auth.user?.uid);
 
-	console.log("transactions.length: ", transactions.length);
+	const dispatch = useDispatch<AppDispatch>();
+
+	useEffect(() => {
+		if (userId && isInitial) {
+			if (categories.length === 0) {
+				dispatch(fetchCategories(userId));
+			}
+			dispatch(fetchTransactions({ userId }));
+
+			isInitial = false;
+		}
+	}, []);
+
 	const chartData = useMemo(() => {
 		if (!transactions.length || !categories.length) return null;
 		const transactionsWithCategory = getMappedTransactions(
@@ -84,6 +106,6 @@ const TransactionDoughnut: FC = memo(() => {
 			{!loading && chartData && <DoughnutChart data={chartData} width={389} height={260} />}
 		</Card>
 	);
-});
+};
 
 export default TransactionDoughnut;

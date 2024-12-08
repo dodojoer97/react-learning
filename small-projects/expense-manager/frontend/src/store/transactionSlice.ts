@@ -333,6 +333,7 @@ const transactionSlice = createSlice({
 				state.loading = true;
 			})
 			.addCase(fetchTransactions.fulfilled, (state, action: PayloadAction<Transaction[]>) => {
+				console.log("fetchTransactions.fulfilled");
 				state.transactions = action.payload;
 				state.loading = false;
 				state.error = null;

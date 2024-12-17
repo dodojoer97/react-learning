@@ -1,42 +1,54 @@
-"use client"
-import { useRef, useState } from "react"
-import classes from "./image-picker.module.css"
-import Image from "next/image"
+"use client";
+import { useRef, useState } from "react";
+import classes from "./image-picker.module.css";
+import Image from "next/image";
 
-export default function ImagePicker({label}) {
-    const [pickedImage, setPickedImage] = useState()
+export default function ImagePicker({ label, name }) {
+	const [pickedImage, setPickedImage] = useState();
 
-    const inputRef = useRef()
-    
-    function handlePickClick() {
-        inputRef.current.click()
-        console.log(inputRef.current.value)
-    }
+	const inputRef = useRef();
 
-    function handleImageChange(e) {
-        const file = e.target.files[0]
+	function handlePickClick() {
+		inputRef.current.click();
+		console.log(inputRef.current.value);
+	}
 
-        if(!file) return
+	function handleImageChange(e) {
+		const file = e.target.files[0];
 
-        const fileReader = new FileReader()
+		if (!file) return;
 
-        fileReader.onload = () => {
-            setPickedImage(fileReader.result)
-        }
+		const fileReader = new FileReader();
 
-        fileReader.readAsDataURL(file)
+		fileReader.onload = () => {
+			setPickedImage(fileReader.result);
+		};
 
-    }
-    
-    return <div className={classes.picker}>
-        <label htmlFor="image">{label}</label>
-        <div className={classes.controls}>
-            <div className={classes.preview}>
-                {!pickedImage && <p>Noimage</p>}
-                {pickedImage && <Image src={pickedImage} alt="Selected" fill/>}
-            </div>
-            <input onChange={handleImageChange} ref={inputRef} className={classes.input} required type="file" name="image" id="image" accept="image/png, image/jpeg"/>
-            <button onClick={handlePickClick} className={classes.button} type="button">Pick An image</button>
-        </div>
-    </div>
+		fileReader.readAsDataURL(file);
+	}
+
+	return (
+		<div className={classes.picker}>
+			<label htmlFor="image">{label}</label>
+			<div className={classes.controls}>
+				<div className={classes.preview}>
+					{!pickedImage && <p>Noimage</p>}
+					{pickedImage && <Image src={pickedImage} alt="Selected" fill />}
+				</div>
+				<input
+					onChange={handleImageChange}
+					ref={inputRef}
+					className={classes.input}
+					required
+					type="file"
+					name={name}
+					id="image"
+					accept="image/png, image/jpeg"
+				/>
+				<button onClick={handlePickClick} className={classes.button} type="button">
+					Pick An image
+				</button>
+			</div>
+		</div>
+	);
 }

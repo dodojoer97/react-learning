@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { saveMeal } from "./meals";
+import { revalidatePath } from "next/cache";
 
 function isInvalidText(text) {
 	return !text || text.trim() === "";
@@ -26,5 +27,6 @@ export async function shareMeal(prevState, formData) {
 	}
 
 	await saveMeal(meal);
+	revalidatePath('/meals', 'layout') // This function allows you to purge cached data on-demand for a specific path.
 	redirect("/meals");
 }

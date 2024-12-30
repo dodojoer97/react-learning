@@ -5,7 +5,7 @@ import type { FC } from "react";
 // FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import Transition from "@/templates/mosaic/utils/Transition";
+import Transition from "@/components/UI/Transition";
 import type SelectFieldOption from "@/models/SelectFieldOption";
 
 interface IDropdownProps {

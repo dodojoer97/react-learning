@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction, createSelector } from "@reduxjs/toolkit";
 import TransactionService from "@/services/TransactionService";
 
 // Store
@@ -333,6 +333,7 @@ const transactionSlice = createSlice({
 				state.loading = true;
 			})
 			.addCase(fetchTransactions.fulfilled, (state, action: PayloadAction<Transaction[]>) => {
+				console.log("fetchTransactions.fulfilled");
 				state.transactions = action.payload;
 				state.loading = false;
 				state.error = null;
@@ -472,3 +473,8 @@ const transactionSlice = createSlice({
 export const { selectTransaction, updateDraftTransaction, clearError, setSelectedDates } =
 	transactionSlice.actions;
 export default transactionSlice.reducer;
+
+export const selectTransactions = createSelector(
+	(state: RootState) => state.transaction.transactions,
+	(transactions) => transactions
+);

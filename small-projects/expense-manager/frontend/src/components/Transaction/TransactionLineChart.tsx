@@ -10,13 +10,13 @@ import { getMappedTransactions } from "@/store/transactionSlice"; // Fetch trans
 import { RootState } from "@/store/store"; // Store types
 
 // Components
-import LineChart from "@/templates/mosaic/charts/LineChart03";
+import LineChart from "@/components/UI/charts/LineChart03";
 import Card from "@/components/UI/Card"; // Import the new Card component
 import Loader from "@/components/UI/Loader";
 
 // Utility for chart configuration
-import { chartAreaGradient } from "@/templates/mosaic/charts/ChartjsConfig";
-import { tailwindConfig, hexToRGB } from "@/templates/mosaic/utils/Utils"; // Helper functions for Tailwind and color conversions
+import { chartAreaGradient } from "@/config/ChartjsConfig";
+import { tailwindConfig, hexToRGB } from "@/utils/utils"; // Helper functions for Tailwind and color conversions
 import { TransactionWithCategory } from "@/mappers/TransactionCategoryAssigner";
 import moment from "moment";
 import useLoading from "@/hooks/useLoading";

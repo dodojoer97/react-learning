@@ -2,7 +2,7 @@
 import { FC } from "react";
 
 // CSS
-import "./Loader.css";
+import classes from "./Loader.module.css";
 
 interface Props {
 	className?: string;
@@ -11,9 +11,9 @@ interface Props {
 const Loader: FC<Props> = ({ className }) => {
 	return (
 		<div className={`flex justify-center ${className}`}>
-			<div className="dot"></div>
-			<div className="dot"></div>
-			<div className="dot"></div>
+			<div className={classes.dot}></div>
+			<div className={classes.dot}></div>
+			<div className={classes.dot}></div>
 		</div>
 	);
 };

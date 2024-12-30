@@ -1,8 +1,9 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createAsyncThunk, createSelector } from "@reduxjs/toolkit";
 import type { Category } from "@common";
 import SelectFieldOption from "@/models/SelectFieldOption";
 import CategoryService from "@/services/CategoryService";
 import categoryTypes from "@/data/categoryTypes";
+import { RootState } from "./store";
 
 // Define the state interface
 export interface CategorState {
@@ -26,9 +27,10 @@ export const fetchCategories = createAsyncThunk(
 	"categories/fetchCategories",
 	async (userId: string, { rejectWithValue }) => {
 		const categoryService = new CategoryService();
+		console.log("fetchCategories");
 		try {
 			const categories = await categoryService.getCategories(userId);
-			return categories || [];
+			return categories;
 		} catch (error) {
 			return rejectWithValue("Failed to fetch categories");
 		}
@@ -81,6 +83,8 @@ const categorySlice = createSlice({
 				state.error = null; // Reset error on new request
 			})
 			.addCase(fetchCategories.fulfilled, (state, action) => {
+				console.log("fetchCategories.fulfilled");
+
 				state.categories = action.payload;
 				state.loading = false;
 			})
@@ -125,3 +129,8 @@ const categorySlice = createSlice({
 // Export actions and reducer
 export const { setCategoryMode } = categorySlice.actions;
 export default categorySlice.reducer;
+
+export const selectCategories = createSelector(
+	(state: RootState) => state.categories.categories,
+	(categories) => categories
+);

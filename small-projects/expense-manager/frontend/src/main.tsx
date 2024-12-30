@@ -14,8 +14,8 @@ import App from "./App.tsx";
 import "./index.css";
 
 // MOSAIC
-import "@/templates/mosaic/css/style.css";
-import "@/templates/mosaic/charts/ChartjsConfig";
+import "@/css/style.css";
+import "@/config/ChartjsConfig.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>

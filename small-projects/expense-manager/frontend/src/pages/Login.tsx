@@ -113,7 +113,7 @@ const Login: FC = () => {
 					<Input
 						id="password"
 						type={passwordInputType}
-						label={t("errors:enterPassword")}
+						label={t("forms:enterPassword")}
 						inputIcon={passwordInputType === "text" ? faEyeSlash : faEye}
 						required
 						disabled={isLoadingForm}

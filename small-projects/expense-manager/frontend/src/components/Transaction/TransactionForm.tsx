@@ -18,7 +18,7 @@ import Button from "@/components/UI/Button";
 import TextArea from "@/components/UI/TextArea";
 import Dropdown from "../UI/Dropdown";
 
-import DatePicker from "@/templates/mosaic/components/Datepicker";
+import DatePicker from "@/components/UI/Datepicker";
 
 // Hooks
 import useInput from "@/hooks/useInput";

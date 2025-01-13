@@ -21,7 +21,9 @@ export default function ChallengeItem({ challenge, onViewDetails, isExpanded }) 
 	}
 
 	return (
-		<li>
+		<motion.li
+			layout
+		>
 			<article className="challenge-item">
 				<header>
 					<img {...challenge.image} />
@@ -56,6 +58,6 @@ export default function ChallengeItem({ challenge, onViewDetails, isExpanded }) 
 					)}
 				</div>
 			</article>
-		</li>
+		</motion.li>
 	);
 }

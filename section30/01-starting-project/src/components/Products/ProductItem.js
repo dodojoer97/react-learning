@@ -1,17 +1,16 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-
+import React, {useContext} from 'react';
 import Card from '../UI/Card';
+import { ProductsContext } from '../../context/products-context';
+
 import './ProductItem.css';
-import { toggleFav } from '../../store/actions/products';
+
 
 const ProductItem = props => {
-  const dispatch = useDispatch();
+  const {toggleFavorite} = useContext(ProductsContext)
 
   const toggleFavHandler = () => {
-    dispatch(toggleFav(props.id));
-  };
-
+    toggleFavorite(props.id)
+  }
   return (
     <Card style={{ marginBottom: '1rem' }}>
       <div className="product-item">

@@ -1,9 +1,12 @@
 import React from "react"
 import Todo from "../models/todo"
 
+// Css
+import classes from "./TodoItem.module.css"
+
 const TodoComp: React.FC<{item: Todo}> = ({item}) => {
     return (
-        <li key={item.id}>{item.text}</li>
+        <li className={classes.item} key={item.id}>{item.text}</li>
     )
 }
 

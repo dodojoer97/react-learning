@@ -1,3 +1,5 @@
+import {useState} from "react"
+
 import './App.css';
 import NewTodo from './components/NewTodo';
 
@@ -6,14 +8,15 @@ import Todos from './components/Todos';
 import Todo from './models/todo';
 
 function App() {
-  const todos = [
-    new Todo('hey')
-  ]
+
+  const [todos, setTodods] = useState<Todo[]>(
+    [
+      new Todo('hey')
+    ]
+  )
 
   const onAddTodo = (text: string) => {
-    todos.push(
-      new Todo(text)
-    )
+    setTodods((prevTodos: Todo[]) => [...prevTodos, new Todo(text)])
   }
 
   return (

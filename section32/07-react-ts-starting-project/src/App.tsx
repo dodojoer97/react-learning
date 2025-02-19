@@ -1,30 +1,18 @@
-import {useState} from "react"
+import { useState } from "react"
 
-import './App.css';
-import NewTodo from './components/NewTodo';
+import "./App.css"
+import NewTodo from "./components/NewTodo"
 
 // Components
-import Todos from './components/Todos';
-import Todo from './models/todo';
+import Todos from "./components/Todos"
 
 function App() {
-
-  const [todos, setTodods] = useState<Todo[]>(
-    [
-      new Todo('hey')
-    ]
-  )
-
-  const onAddTodo = (text: string) => {
-    setTodods((prevTodos: Todo[]) => [...prevTodos, new Todo(text)])
-  }
-
-  return (
-    <div>
-      <NewTodo onAddTodo={onAddTodo}/>
-      <Todos items={todos}/>
-    </div>
-  );
+	return (
+		<div>
+			<NewTodo />
+			<Todos />
+		</div>
+	)
 }
 
-export default App;
+export default App
